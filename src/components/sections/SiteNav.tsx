@@ -1,14 +1,13 @@
 import { Button } from '../ui';
 
 const LINKS = [
-  { href: '/#como-trabajamos', label: 'Proceso' },
-  { href: '/#casos', label: 'Casos' },
-  { href: '/#brand', label: 'Sistema' },
-  { href: '/#faq', label: 'FAQ' },
+  { href: '/', label: 'Inicio' },
+  { href: '/design-system', label: 'Design System' },
+  { href: '/sections', label: 'Sections' },
 ];
 
 /**
- * Nav sticky minimal — CTA único alineado con hero/cierre.
+ * Nav sticky minimal — 3 links + CTA.
  */
 export function SiteNav() {
   return (
@@ -31,18 +30,11 @@ export function SiteNav() {
             </a>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
-          <a href="/work" className="hidden no-underline sm:inline-flex">
-            <Button size="sm" variant="ghost">
-              Work
-            </Button>
-          </a>
-          <a href="/contact" className="no-underline">
-            <Button size="sm" variant="primary">
-              Agendar llamada
-            </Button>
-          </a>
-        </div>
+        <a href="/contact" className="no-underline">
+          <Button size="sm" variant="primary">
+            Agendar llamada
+          </Button>
+        </a>
       </div>
     </header>
   );

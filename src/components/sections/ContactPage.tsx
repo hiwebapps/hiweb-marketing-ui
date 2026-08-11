@@ -1,6 +1,5 @@
 import { Button, TextArea, TextField, SelectField } from '../ui';
 import { FinalCta } from './FinalCta';
-import { SiteNav } from './SiteNav';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
 
@@ -10,7 +9,6 @@ import { SectionHeader } from './primitives/SectionHeader';
 export function ContactPage() {
   return (
     <div className="min-h-dvh bg-canvas">
-      <SiteNav />
       <main>
         <SectionBand>
           <div className="grid gap-12 md:grid-cols-2 md:items-start">

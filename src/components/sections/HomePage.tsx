@@ -1,15 +1,14 @@
 import { HeroSection } from './HeroSection';
 import { HomeAfterHero } from './HomeAfterHero';
-import { SiteNav } from './SiteNav';
 
 /**
  * Home ensamblada (para demos / client:only).
  * En index.astro preferimos HeroSection client:only + HomeAfterHero SSR.
+ * SiteNav vive en Layout.astro (global).
  */
 export function HomePage() {
   return (
     <div className="min-h-dvh bg-canvas">
-      <SiteNav />
       <main>
         <HeroSection />
         <HomeAfterHero />

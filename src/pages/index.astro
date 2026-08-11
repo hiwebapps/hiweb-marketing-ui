@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { HomeAfterHero, SiteNav } from '../components/sections';
+import { HomeAfterHero } from '../components/sections';
 import { HeroSection } from '../components/sections/HeroSection';
 ---
 
@@ -9,7 +9,6 @@ import { HeroSection } from '../components/sections/HeroSection';
 	description="Ayudamos a equipos de marketing a lograr leads y conversiones claras con mensaje, paid y web como un solo sistema."
 >
 	<div class="min-h-dvh bg-canvas">
-		<SiteNav client:load />
 		<main>
 			{/* GradientWaves (ogl) — hydrate only the hero island */}
 			<HeroSection client:only="react" />

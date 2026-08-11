@@ -64,27 +64,20 @@ export function DesignSystem() {
       <BackgroundMesh />
 
       <div className="relative z-10">
-        <header className="sticky top-0 z-20 border-b border-border bg-canvas/80 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
-            <a
-              href="/"
-              className="font-display text-sm font-semibold tracking-wide text-ink no-underline hover:text-ink/70"
-            >
-              ← Hiweb UI
-            </a>
-            <nav className="flex flex-wrap gap-1">
-              {SECTIONS.map((s) => (
-                <a
-                  key={s.id}
-                  href={`#${s.id}`}
-                  className="rounded-md px-2.5 py-1.5 font-display text-[11px] font-medium tracking-wide text-muted no-underline uppercase transition-colors hover:bg-surface hover:text-ink"
-                >
-                  {s.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-        </header>
+        {/* Section jump links — SiteNav global está en Layout */}
+        <div className="border-b border-border bg-canvas/60 backdrop-blur-md">
+          <nav className="mx-auto flex max-w-6xl flex-wrap gap-1 px-6 py-2.5">
+            {SECTIONS.map((s) => (
+              <a
+                key={s.id}
+                href={`#${s.id}`}
+                className="rounded-md px-2.5 py-1.5 font-display text-[11px] font-medium tracking-wide text-muted no-underline uppercase transition-colors hover:bg-surface hover:text-ink"
+              >
+                {s.label}
+              </a>
+            ))}
+          </nav>
+        </div>
 
         <main className="mx-auto max-w-6xl space-y-16 px-6 py-14 md:space-y-20 md:py-20">
           <section className="animate-hero-rise max-w-3xl">

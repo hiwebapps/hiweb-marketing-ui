@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { SiteNav } from '../components/sections/SiteNav';
 
 interface Props {
 	title?: string;
@@ -24,6 +25,7 @@ const {
 		<title>{title}</title>
 	</head>
 	<body>
+		<SiteNav client:load />
 		<slot />
 	</body>
 </html>

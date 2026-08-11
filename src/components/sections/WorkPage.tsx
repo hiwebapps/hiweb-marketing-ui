@@ -1,6 +1,5 @@
 import { CasePreview } from './CasePreview';
 import { FinalCta } from './FinalCta';
-import { SiteNav } from './SiteNav';
 import { TrustStrip } from './TrustStrip';
 
 /**
@@ -9,7 +8,6 @@ import { TrustStrip } from './TrustStrip';
 export function WorkPage() {
   return (
     <div className="min-h-dvh bg-canvas">
-      <SiteNav />
       <main>
         <div className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">

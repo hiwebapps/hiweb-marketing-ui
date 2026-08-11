@@ -39,17 +39,11 @@ export function SectionsKitPage() {
     <div className="min-h-dvh bg-canvas">
       <BackgroundMesh />
 
-      <header className="relative z-10 border-b border-border bg-canvas/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="/" className="font-display text-sm font-semibold text-ink no-underline">
-            ← Hiweb
-          </a>
-          <Badge>Sections Kit</Badge>
-        </div>
-      </header>
-
       <main className="relative z-10">
         <SectionBand>
+          <div className="mb-4">
+            <Badge>Sections Kit</Badge>
+          </div>
           <Eyebrow index="00">Kit de secciones</Eyebrow>
           <h1 className="mt-3 !text-4xl md:!text-6xl">
             Funnel de agencia, UI de producto
