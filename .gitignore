@@ -27,3 +27,4 @@ pnpm-debug.log*
 __MACOSX/
 .DS_Store
 
+.vercel

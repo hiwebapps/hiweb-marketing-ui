@@ -96,28 +96,32 @@
 }
 
 /*
- * Hero: fade solo hacia el copy (izquierda) y bordes verticales suaves.
- * El lado derecho queda opaco para que el muro “desborde” del viewport.
+ * Hero: soft dissolve so the wall blends into waves/copy —
+ * left fade toward copy, soft top/bottom, light right bleed.
  */
 .drift-wall.hero-drift-wall {
   -webkit-mask-image:
-    linear-gradient(to right, transparent 0%, #000 6%, #000 100%),
-    linear-gradient(to bottom, #000 0%, #000 100%);
-  -webkit-mask-composite: source-in;
+    radial-gradient(ellipse 78% 72% at 42% 48%, #000 42%, transparent 78%),
+    linear-gradient(to right, transparent 0%, #000 12%, #000 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-composite: source-in, source-in;
   mask-image:
-    linear-gradient(to right, transparent 0%, #000 6%, #000 100%),
-    linear-gradient(to bottom, #000 0%, #000 100%);
+    radial-gradient(ellipse 78% 72% at 42% 48%, #000 42%, transparent 78%),
+    linear-gradient(to right, transparent 0%, #000 12%, #000 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
   mask-composite: intersect;
 }
 
 @media (max-width: 767px) {
   .drift-wall.hero-drift-wall {
     -webkit-mask-image:
+      radial-gradient(ellipse 88% 80% at 50% 50%, #000 48%, transparent 82%),
       linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%),
-      linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
     mask-image:
+      radial-gradient(ellipse 88% 80% at 50% 50%, #000 48%, transparent 82%),
       linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%),
-      linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
   }
 }
 

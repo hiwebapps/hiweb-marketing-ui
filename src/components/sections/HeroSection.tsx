@@ -1,3 +1,4 @@
+import BorderGlow from '../effects/BorderGlow.jsx';
 import DriftWall from '../effects/DriftWall.jsx';
 import { HERO_PROJECT_TILES } from '../effects/heroProjectTiles.js';
 import HeroWavesBackground from '../effects/HeroWavesBackground';
@@ -11,6 +12,8 @@ type HeroSectionProps = {
   secondaryHref?: string;
   projects?: Array<{ image: string; title?: string; href?: string }>;
 };
+
+const HERO_GLOW_COLORS = ['#927AFE', '#01E7FF', '#E8FBFF'];
 
 /**
  * 01 · Hero — copy a la izquierda; DriftWall absolute a la derecha (bleed / overflow).
@@ -47,7 +50,7 @@ export function HeroSection({
           variance={0.4}
           parallax={0.55}
           lift={52}
-          fade={0.12}
+          fade={0.35}
           dim={0.95}
           grayscale={false}
           overlayColor="#070912"
@@ -64,20 +67,38 @@ export function HeroSection({
           <p className="mt-5 max-w-lg !text-lg !text-white/70">{description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href={primaryHref} className="no-underline">
-              <button
-                type="button"
-                className="inline-flex items-center justify-center rounded-lg bg-white px-7 py-3.5 font-display text-sm font-semibold tracking-wide text-[#111] transition-[transform,background-color] duration-150 hover:bg-white/90 active:scale-[0.98]"
+              <BorderGlow
+                className="hero-cta hero-cta--primary"
+                backgroundColor="#111111"
+                borderRadius={10}
+                glowRadius={22}
+                glowIntensity={0.5}
+                edgeSensitivity={24}
+                coneSpread={24}
+                animated={false}
+                fillOpacity={0.2}
+                glowColor="210 70 70"
+                colors={HERO_GLOW_COLORS}
               >
                 {primaryLabel}
-              </button>
+              </BorderGlow>
             </a>
             <a href={secondaryHref} className="no-underline">
-              <button
-                type="button"
-                className="inline-flex items-center justify-center rounded-lg border border-white/25 bg-transparent px-7 py-3.5 font-display text-sm font-semibold tracking-wide text-white transition-[transform,background-color] duration-150 hover:bg-white/10 active:scale-[0.98]"
+              <BorderGlow
+                className="hero-cta hero-cta--secondary"
+                backgroundColor="rgba(255,255,255,0.04)"
+                borderRadius={10}
+                glowRadius={22}
+                glowIntensity={0.55}
+                edgeSensitivity={24}
+                coneSpread={24}
+                animated={false}
+                fillOpacity={0.28}
+                glowColor="255 100 96"
+                colors={HERO_GLOW_COLORS}
               >
                 {secondaryLabel}
-              </button>
+              </BorderGlow>
             </a>
           </div>
         </div>

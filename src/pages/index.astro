@@ -9,11 +9,12 @@ import { HeroSection } from '../components/sections/HeroSection';
 	description="Ayudamos a equipos de marketing a lograr leads y conversiones claras con mensaje, paid y web como un solo sistema."
 >
 	<div class="min-h-dvh bg-canvas">
-		<SiteNav />
+		<SiteNav client:load />
 		<main>
 			{/* GradientWaves (ogl) — hydrate only the hero island */}
 			<HeroSection client:only="react" />
-			<HomeAfterHero />
+			{/* Buttons with BorderGlow need a React island */}
+			<HomeAfterHero client:load />
 		</main>
 
 		<footer class="border-t border-border bg-canvas">

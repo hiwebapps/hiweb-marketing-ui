@@ -4,6 +4,6 @@ import { DesignSystem } from '../components/DesignSystem';
 ---
 
 <Layout title="Design System — Hiweb Marketing">
-	<!-- SSR estático: evita hidratación React (jsxDEV) que dejaba la página en negro -->
-	<DesignSystem />
+	{/* BorderGlow CTAs need a React island */}
+	<DesignSystem client:only="react" />
 </Layout>

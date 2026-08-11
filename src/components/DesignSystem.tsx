@@ -185,7 +185,7 @@ export function DesignSystem() {
               id="botones"
               eyebrow="03 · Actions"
               title="Botones"
-              description="Primary negro (Cal). Secondary/outline con hairline. Motion rápida tipo Raycast (scale 0.98)."
+              description="Primary ink negro con BorderGlow sutil al hover (React Bits). Secondary/outline con hairline. Motion rápida tipo Raycast (scale 0.98)."
             />
             <CardGlass className="space-y-10 bg-surface p-6 sm:p-10">
               <div>
@@ -202,6 +202,10 @@ export function DesignSystem() {
                     Disabled
                   </Button>
                 </div>
+                <p className="mt-4 !text-sm text-muted">
+                  Acerca el cursor al borde del Primary/Secondary para ver el glow mesh
+                  (cyan · purple · soft white). Intensidad baja a propósito.
+                </p>
               </div>
 
               <div>
@@ -212,6 +216,18 @@ export function DesignSystem() {
                   <Button size="sm">Small</Button>
                   <Button size="md">Medium</Button>
                   <Button size="lg">Large</Button>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-border bg-[#070912] p-6">
+                <p className="mb-4 font-display text-xs tracking-[0.16em] text-white/45 uppercase">
+                  Sobre hero oscuro
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Button variant="primary">Agendar llamada</Button>
+                  <Button variant="secondary" glow={false}>
+                    Ver casos
+                  </Button>
                 </div>
               </div>
             </CardGlass>
