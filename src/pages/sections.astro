@@ -4,10 +4,6 @@ import { SectionsKitPage } from '../components/sections/SectionsKitPage';
 ---
 
 <Layout title="Sections Kit — Hiweb Marketing">
-	<SectionsKitPage />
+	{/* Includes HeroSection + GradientWaves */}
+	<SectionsKitPage client:only="react" />
 </Layout>
-
-<script>
-	import { initHeroShader } from '../scripts/hero-shader';
-	initHeroShader();
-</script>

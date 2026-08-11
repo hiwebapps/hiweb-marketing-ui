@@ -5,8 +5,6 @@ export { ProductFrame } from './primitives/ProductFrame';
 export { HeroAtmosphere } from './primitives/HeroAtmosphere';
 export type { AtmosphereVariant } from './primitives/HeroAtmosphere';
 export { HeroGradientShader } from './primitives/HeroGradientShader';
-export { ProjectMarquee3D } from './primitives/ProjectMarquee3D';
-export type { ProjectCard } from './primitives/ProjectMarquee3D';
 
 export { SiteNav } from './SiteNav';
 export { HeroSection } from './HeroSection';
@@ -26,6 +24,7 @@ export { FitSignal } from './FitSignal';
 export { FaqSection } from './FaqSection';
 export { FinalCta } from './FinalCta';
 export { HomePage } from './HomePage';
+export { HomeAfterHero } from './HomeAfterHero';
 export { WorkPage } from './WorkPage';
 export { ContactPage } from './ContactPage';
 export { SectionsKitPage } from './SectionsKitPage';

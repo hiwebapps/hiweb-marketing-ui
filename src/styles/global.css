@@ -175,6 +175,17 @@
   }
 }
 
+/* Hero dark: selección legible sobre fondo oscuro */
+.hero-contrast ::selection {
+  background-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
+.hero-contrast ::-moz-selection {
+  background-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
 /* Mesh blob drift — motion sutil, no ruido */
 @keyframes mesh-drift-a {
   0%,
@@ -243,72 +254,11 @@
     linear-gradient(180deg, #05060f 0%, #0a1030 42%, #121a3a 100%);
 }
 
-/* ── Project marquee 3D (horizontal coverflow, no black bars) ── */
-.hero-marquee-scene {
-  perspective: 1400px;
-  padding-block: 12px;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 6%,
-    #000 94%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 6%,
-    #000 94%,
-    transparent 100%
-  );
-}
-
-.hero-marquee-track {
-  transform-style: preserve-3d;
-  animation: hero-marquee-scroll 45s linear infinite;
-}
-
-.hero-marquee-3d:hover .hero-marquee-track {
-  animation-play-state: paused;
-}
-
-.hero-marquee-card {
-  transform: perspective(800px) rotateY(-9deg);
-}
-
-.hero-marquee-card:nth-child(even) {
-  transform: perspective(800px) rotateY(-5deg) translateY(4px);
-}
-
-.hero-marquee-card:hover {
-  transform: perspective(800px) rotateY(0deg) translateY(-6px) scale(1.04);
-  z-index: 2;
-}
-
-@keyframes hero-marquee-scroll {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    /* 50% because track is duplicated */
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .animate-mesh-a,
   .animate-mesh-b,
   .animate-mesh-c,
   .animate-hero-rise {
     animation: none;
-  }
-
-  .hero-marquee-track {
-    animation: none;
-  }
-
-  .hero-marquee-card {
-    transform: none;
   }
 }
