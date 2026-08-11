@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { HomePage } from '../components/sections';
+---
+
+<Layout
+	title="Hiweb Marketing — Pipeline medible"
+	description="Ayudamos a equipos de marketing a lograr leads y conversiones claras con mensaje, paid y web como un solo sistema."
+>
+	<HomePage />
+</Layout>
+
+<script>
+	import { initHeroShader } from '../scripts/hero-shader';
+	initHeroShader();
+</script>

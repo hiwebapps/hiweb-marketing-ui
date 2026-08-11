@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { DesignSystem } from '../components/DesignSystem';
+---
+
+<Layout title="Design System — Hiweb Marketing">
+	<!-- SSR estático: evita hidratación React (jsxDEV) que dejaba la página en negro -->
+	<DesignSystem />
+</Layout>

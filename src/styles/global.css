@@ -1,0 +1,314 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   Local fonts — /fonts (Borscha + Roboto Serif)
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: "Borscha";
+  src: url("../../fonts/borscha/borscha/Borscha-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Borscha";
+  src: url("../../fonts/borscha/borscha/Borscha-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Borscha";
+  src: url("../../fonts/borscha/borscha/Borscha-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Borscha";
+  src: url("../../fonts/borscha/borscha/Borscha-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Borscha";
+  src: url("../../fonts/borscha/borscha/Borscha-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Serif";
+  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Serif";
+  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Serif";
+  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Serif";
+  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Serif";
+  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─────────────────────────────────────────────
+   Hiweb Design Tokens — Light Product-Tool
+   Tipografía: Borscha (display) + Roboto Serif (body)
+   ───────────────────────────────────────────── */
+@theme {
+  /* Surfaces — light ladder */
+  --color-canvas: #ffffff;
+  --color-surface: #f5f5f5;
+  --color-surface-elevated: #eeeeee;
+  --color-ink: #111111;
+  --color-ink-soft: #3a3a3a;
+  --color-muted: #6b7280;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.14);
+
+  /* Brand neutrals (legacy + dark footer) */
+  --color-hiweb-dark: #070902;
+  --color-hiweb-dark-gray: #3a3a3a;
+  --color-hiweb-light: #f5f5f5;
+  --color-hiweb-light-gray: #dbdbdb;
+
+  /* Accents — racionados (focus / keywords / secondary) */
+  --color-accent-orange: #fe621c;
+  --color-accent-cyan: #01e7ff;
+  --color-accent-purple: #927afe;
+  --color-accent-lime: #dbe64c;
+  --color-accent-blue: #1e4990;
+  --color-accent-deep-blue: #2b2f8f;
+  --color-accent-red: #a91e23;
+  --color-accent-green: #74c465;
+  --color-accent-teal: #059b7a;
+
+  --blur-3xl: 64px;
+  --blur-4xl: 100px;
+
+  --font-display: "Borscha", system-ui, sans-serif;
+  --font-sans: "Roboto Serif", "Georgia", serif;
+  --font-serif: "Roboto Serif", "Georgia", serif;
+}
+
+/* ─────────────────────────────────────────────
+   Tipografía global — Borscha + Roboto Serif
+   ───────────────────────────────────────────── */
+@layer base {
+  html {
+    @apply antialiased;
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink-soft;
+    min-height: 100dvh;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-semibold tracking-tight text-ink;
+    overflow: visible;
+  }
+
+  h1 {
+    /* text-* de Tailwind trae line-height ~1 y pisa leading-* en @apply */
+    @apply text-4xl tracking-[-0.02em] sm:text-5xl md:text-6xl lg:text-7xl;
+    line-height: 1.2;
+    padding-bottom: 0.08em;
+  }
+
+  h2 {
+    @apply text-3xl tracking-[-0.015em] sm:text-4xl md:text-5xl;
+    line-height: 1.25;
+    padding-bottom: 0.06em;
+  }
+
+  h3 {
+    line-height: 1.3;
+    padding-bottom: 0.04em;
+  }
+
+  p {
+    @apply text-base leading-relaxed text-muted sm:text-lg;
+  }
+
+  a {
+    @apply text-ink underline-offset-4 transition-colors duration-150 hover:text-ink/70;
+  }
+
+  ::selection {
+    @apply bg-ink/10 text-ink;
+  }
+}
+
+/* Mesh blob drift — motion sutil, no ruido */
+@keyframes mesh-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(4%, -6%) scale(1.08);
+  }
+}
+
+@keyframes mesh-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5%, 4%) scale(1.06);
+  }
+}
+
+@keyframes mesh-drift-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(3%, 5%) scale(0.94);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-mesh-a {
+  animation: mesh-drift-a 18s ease-in-out infinite;
+}
+
+.animate-mesh-b {
+  animation: mesh-drift-b 22s ease-in-out infinite;
+}
+
+.animate-mesh-c {
+  animation: mesh-drift-c 16s ease-in-out infinite;
+}
+
+.animate-hero-rise {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Hero gradient shader fallback (Laravel / Arcade energy) ── */
+.hero-shader-fallback {
+  background:
+    radial-gradient(ellipse 75% 60% at 28% 18%, rgba(1, 231, 255, 0.55) 0%, transparent 58%),
+    radial-gradient(ellipse 65% 55% at 88% 42%, rgba(146, 122, 254, 0.5) 0%, transparent 58%),
+    radial-gradient(ellipse 55% 45% at 18% 78%, rgba(254, 98, 28, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 90% 50% at 50% 110%, rgba(90, 140, 255, 0.28) 0%, transparent 55%),
+    linear-gradient(180deg, #05060f 0%, #0a1030 42%, #121a3a 100%);
+}
+
+/* ── Project marquee 3D (horizontal coverflow, no black bars) ── */
+.hero-marquee-scene {
+  perspective: 1400px;
+  padding-block: 12px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+}
+
+.hero-marquee-track {
+  transform-style: preserve-3d;
+  animation: hero-marquee-scroll 45s linear infinite;
+}
+
+.hero-marquee-3d:hover .hero-marquee-track {
+  animation-play-state: paused;
+}
+
+.hero-marquee-card {
+  transform: perspective(800px) rotateY(-9deg);
+}
+
+.hero-marquee-card:nth-child(even) {
+  transform: perspective(800px) rotateY(-5deg) translateY(4px);
+}
+
+.hero-marquee-card:hover {
+  transform: perspective(800px) rotateY(0deg) translateY(-6px) scale(1.04);
+  z-index: 2;
+}
+
+@keyframes hero-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* 50% because track is duplicated */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-mesh-a,
+  .animate-mesh-b,
+  .animate-mesh-c,
+  .animate-hero-rise {
+    animation: none;
+  }
+
+  .hero-marquee-track {
+    animation: none;
+  }
+
+  .hero-marquee-card {
+    transform: none;
+  }
+}
