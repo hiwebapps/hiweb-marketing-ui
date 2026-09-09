@@ -1,91 +1,75 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────
-   Local fonts — /fonts (Borscha + Roboto Serif)
+   Local fonts — Clash Display (headings) + Inter (body)
    ───────────────────────────────────────────── */
 @font-face {
-  font-family: "Borscha";
-  src: url("../../fonts/borscha/borscha/Borscha-Regular.ttf") format("truetype");
+  font-family: "Clash Display";
+  src: url("/fonts/clash-display/ClashDisplay-Extralight.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Clash Display";
+  src: url("/fonts/clash-display/ClashDisplay-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Clash Display";
+  src: url("/fonts/clash-display/ClashDisplay-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Borscha";
-  src: url("../../fonts/borscha/borscha/Borscha-Medium.ttf") format("truetype");
+  font-family: "Clash Display";
+  src: url("/fonts/clash-display/ClashDisplay-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Borscha";
-  src: url("../../fonts/borscha/borscha/Borscha-SemiBold.ttf") format("truetype");
+  font-family: "Clash Display";
+  src: url("/fonts/clash-display/ClashDisplay-Semibold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Borscha";
-  src: url("../../fonts/borscha/borscha/Borscha-Bold.ttf") format("truetype");
+  font-family: "Clash Display";
+  src: url("/fonts/clash-display/ClashDisplay-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Borscha";
-  src: url("../../fonts/borscha/borscha/Borscha-Italic.ttf") format("truetype");
-  font-weight: 400;
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-Italic-Variable.ttf") format("truetype");
+  font-weight: 100 900;
   font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto Serif";
-  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto Serif";
-  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto Serif";
-  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto Serif";
-  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto Serif";
-  src: url("../../fonts/Roboto_Serif/Roboto_Serif/static/RobotoSerif-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
   font-display: swap;
 }
 
 /* ─────────────────────────────────────────────
    Hiweb Design Tokens — Light Product-Tool
-   Tipografía: Borscha (display) + Roboto Serif (body)
+   Tipografía: Clash Display (headings) + Inter (body)
    ───────────────────────────────────────────── */
 @theme {
   /* Surfaces — light ladder */
@@ -118,13 +102,13 @@
   --blur-3xl: 64px;
   --blur-4xl: 100px;
 
-  --font-display: "Borscha", system-ui, sans-serif;
-  --font-sans: "Roboto Serif", "Georgia", serif;
-  --font-serif: "Roboto Serif", "Georgia", serif;
+  --font-display: "Clash Display", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Inter", system-ui, sans-serif;
 }
 
 /* ─────────────────────────────────────────────
-   Tipografía global — Borscha + Roboto Serif
+   Tipografía global — Clash Display + Inter
    ───────────────────────────────────────────── */
 @layer base {
   html {
@@ -139,7 +123,8 @@
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     @apply font-display font-semibold tracking-tight text-ink;
     overflow: visible;
   }

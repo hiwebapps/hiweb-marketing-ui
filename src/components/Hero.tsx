@@ -3,7 +3,7 @@ import { CardGlass } from './CardGlass';
 import { Button } from './ui';
 
 /**
- * Hero light product-tool: canvas blanco, CTA negro, tipografía Borscha + Roboto Serif.
+ * Hero light product-tool: canvas blanco, CTA negro, tipografía Clash Display + Inter.
  */
 export function Hero() {
   return (
@@ -24,7 +24,7 @@ export function Hero() {
 
           <p className="mt-6 max-w-2xl">
             Light product-tool: claridad de Cal, disciplina de Linear y ritmo de
-            Raycast. Tipografía Borscha + Roboto Serif. Un acento, hairlines y CTAs negros.
+            Raycast. Tipografía Clash Display + Inter. Un acento, hairlines y CTAs negros.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">

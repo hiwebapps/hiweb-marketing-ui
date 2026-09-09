@@ -87,7 +87,7 @@ export function DesignSystem() {
             </h1>
             <p className="mt-5 !text-lg">
               Cal (luz) + Linear (disciplina) + Raycast (ritmo). Tipografía:
-              Borscha display, Roboto Serif body.
+              Clash Display (headings), Inter (body).
             </p>
           </section>
 
@@ -119,12 +119,12 @@ export function DesignSystem() {
               id="tipografia"
               eyebrow="02 · Type"
               title="Tipografía"
-              description="Familias locales en /fonts — Borscha (display) y Roboto Serif (body)."
+              description="Familias locales en /fonts — Clash Display (headings) e Inter (body)."
             />
             <CardGlass className="space-y-10 bg-surface p-6 sm:p-10">
               <div className="space-y-4 border-b border-border pb-8">
                 <p className="font-display text-xs tracking-[0.16em] text-muted uppercase">
-                  Display · Borscha · /fonts/borscha
+                  Display · Clash Display · /fonts/clash-display
                 </p>
                 <h1 className="!text-5xl !leading-[1.2] md:!text-7xl md:!leading-[1.2]">Heading 1</h1>
                 <h2 className="!text-4xl !leading-[1.25] md:!text-5xl md:!leading-[1.25]">Heading 2</h2>
@@ -138,7 +138,7 @@ export function DesignSystem() {
 
               <div className="space-y-4 border-b border-border pb-8">
                 <p className="font-display text-xs tracking-[0.16em] text-muted uppercase">
-                  Body · Roboto Serif · /fonts/Roboto_Serif
+                  Body · Inter · /fonts/inter
                 </p>
                 <p className="!text-lg text-ink-soft">
                   Párrafo large — Claridad, respiración y precisión. El producto habla;
@@ -231,7 +231,7 @@ export function DesignSystem() {
               id="formularios"
               eyebrow="04 · Forms"
               title="Inputs y controles"
-              description="Campos blancos, borde hairline, focus ring ink. Labels Borscha uppercase."
+              description="Campos blancos, borde hairline, focus ring ink. Labels Clash Display uppercase."
             />
             <CardGlass className="bg-surface p-6 sm:p-10">
               <div className="grid gap-6 md:grid-cols-2">
@@ -371,7 +371,7 @@ export function DesignSystem() {
 
           <footer className="border-t border-border pt-8 pb-4 text-center">
             <p className="!text-sm text-muted">
-              Hiweb Marketing · Light Product-Tool · Borscha + Roboto Serif
+              Hiweb Marketing · Light Product-Tool · Clash Display + Inter
             </p>
           </footer>
         </main>
