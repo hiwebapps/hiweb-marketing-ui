@@ -179,21 +179,33 @@ export const HOME_PILLARS = [
     title: 'Partner, no proveedor',
     description:
       'La eficiencia de un equipo interno con el alcance de una agencia enterprise. Un solo interlocutor, ejecución cross-border.',
+    icon: 'users',
+    accent: 'purple',
+    href: '/nosotros',
   },
   {
     title: 'Idioma de tu industria',
     description:
       'Casos, retos y métricas propias de tu sector. No traducimos un playbook genérico: hablamos como opera tu negocio.',
+    icon: 'globe',
+    accent: 'cyan',
+    href: '/industrias',
   },
   {
     title: 'Servicio atado a resultado',
     description:
       'Cada palanca —paid, SEO, web, CRM— se conecta a un outcome de negocio, no a una táctica aislada.',
+    icon: 'target',
+    accent: 'orange',
+    href: '/servicios',
   },
   {
     title: 'Evidencia verificable',
     description:
       'Trabajamos con empresas consolidadas. Resultados propios, cifras públicas y tecnología que podemos mostrar.',
+    icon: 'check',
+    accent: 'green',
+    href: '/portafolio',
   },
 ] as const;
 
