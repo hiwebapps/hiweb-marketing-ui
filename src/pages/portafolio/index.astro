@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { PageHero } from '../../components/sections/PageHero';
+import { SectionBand } from '../../components/sections/primitives/SectionBand';
+import { SectionHeader } from '../../components/sections/primitives/SectionHeader';
+import { CaseFilter } from '../../components/sections/CaseFilter';
+import { MetricsBand } from '../../components/sections/MetricsBand';
+import { FinalCta } from '../../components/sections/FinalCta';
+import { GLOBAL_METRICS } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
+const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
+const cases = await getCollection('casos');
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+---
+
+<Layout
+	title="Portafolio — Hiweb Marketing"
+	description="Resultados propios y verificables. Solo empresas consolidadas, filtrables por industria y servicio."
+	jsonLd={breadcrumbSchema([
+		{ name: 'Inicio', href: '/' },
+		{ name: 'Portafolio', href: '/portafolio' },
+	])}
+>
+	<main>
+		<PageHero
+			eyebrow="Portafolio"
+			title="Casos de empresas consolidadas"
+			description="Cliente, industria y un outcome que se puede leer en una línea. Filtra por sector o palanca."
+		/>
+		<SectionBand>
+			<SectionHeader
+				eyebrow="Filtro"
+				title="Industria × servicio"
+				description="Solo publicamos cuentas consolidadas. Si el cruce está vacío, el diagnóstico sigue abierto."
+			/>
+			<div class="mt-10">
+				<CaseFilter
+					client:load
+					industries={industries.map((item) => ({ slug: item.id, nombre: item.data.nombre }))}
+					services={services.map((item) => ({ slug: item.id, nombre: item.data.nombre }))}
+					cases={cases.map((item) => ({
+						id: item.id,
+						client: item.data.cliente,
+						industry: industryName[item.data.industria.id] ?? item.data.industria.id,
+						industrySlug: item.data.industria.id,
+						serviceSlugs: item.data.servicios.map((ref) => ref.id),
+						outcome: item.data.resultadoFrase,
+						title: item.data.titulo,
+						summary: item.data.resumen,
+						href: `/portafolio/${item.id}`,
+						accent: item.data.accent,
+					}))}
+				/>
+			</div>
+		</SectionBand>
+		<MetricsBand metrics={[...GLOBAL_METRICS]} tone="surface" />
+		<FinalCta client:load title="¿Un diagnóstico similar al de tu industria?" />
+	</main>
+</Layout>

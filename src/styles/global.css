@@ -247,3 +247,10 @@
     animation: none;
   }
 }
+
+/* Motion layer: hide reveals only after JS has marked the document as ready.
+   If the script fails, elements stay visible. */
+html.motion-ready [data-reveal]:not([data-motion]) {
+  opacity: 0;
+}
+

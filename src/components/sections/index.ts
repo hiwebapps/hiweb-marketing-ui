@@ -7,7 +7,21 @@ export type { AtmosphereVariant } from './primitives/HeroAtmosphere';
 export { HeroGradientShader } from './primitives/HeroGradientShader';
 
 export { SiteNav } from './SiteNav';
+export { SiteFooter } from './SiteFooter';
 export { HeroSection } from './HeroSection';
+export { PageHero } from './PageHero';
+export { PillarGrid } from './PillarGrid';
+export { ServiceGrid } from './ServiceGrid';
+export type { GridCard } from './ServiceGrid';
+export { IndustryGrid } from './IndustryGrid';
+export { ProcessPhases } from './ProcessPhases';
+export { MetricsBand } from './MetricsBand';
+export type { MetricItem } from './MetricsBand';
+export { AboutTeaser } from './AboutTeaser';
+export { CaseFilter } from './CaseFilter';
+export type { FilterableCase } from './CaseFilter';
+export { ContactForm } from './ContactForm';
+export { ContactDetails, CalendarPlaceholder } from './ContactDetails';
 export { TrustStrip } from './TrustStrip';
 export { ProblemPov } from './ProblemPov';
 export { HowItWorks } from './HowItWorks';
@@ -17,7 +31,7 @@ export {
   MockPerformancePanel,
   MockWebPanel,
 } from './ValueChapter';
-export { CasePreview } from './CasePreview';
+export { CasePreview, CaseCard } from './CasePreview';
 export type { CaseItem } from './CasePreview';
 export { SocialProof } from './SocialProof';
 export { FitSignal } from './FitSignal';

@@ -36,19 +36,40 @@ const DEFAULT_FAQS: FaqItem[] = [
 
 type FaqSectionProps = {
   items?: FaqItem[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  tone?: 'canvas' | 'surface';
+  withSchema?: boolean;
 };
 
 /**
- * 06 · FAQ — objeciones reales del ICP.
+ * FAQ — objeciones reales. Emite FAQPage schema cuando withSchema=true.
  */
-export function FaqSection({ items = DEFAULT_FAQS }: FaqSectionProps) {
+export function FaqSection({
+  items = DEFAULT_FAQS,
+  eyebrow = 'FAQ',
+  title = 'Objeciones antes de agendar',
+  description = 'Si falta la tuya, la resolvemos en la auditoría.',
+  tone = 'surface',
+  withSchema = true,
+}: FaqSectionProps) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  };
+
   return (
-    <SectionBand id="faq" tone="surface">
-      <SectionHeader
-        eyebrow="FAQ"
-        title="Objeciones antes de agendar"
-        description="Si falta la tuya, la resolvemos en la llamada."
-      />
+    <SectionBand id="faq" tone={tone}>
+      {withSchema ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ) : null}
+      <SectionHeader eyebrow={eyebrow} title={title} description={description} />
 
       <div className="mx-auto mt-12 max-w-3xl divide-y divide-border border-y border-border">
         {items.map((item) => (

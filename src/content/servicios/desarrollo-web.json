@@ -1,0 +1,35 @@
+{
+  "nombre": "Desarrollo Web",
+  "orden": 9,
+  "tagline": "La superficie donde convierte el sistema.",
+  "heroTitle": "Web de conversión: la misma promesa del anuncio, sin ornamento vacío.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Sitios y landings como producto: jerarquía clara, performance y un CTA que no se esconde."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Arquitectura por industria/servicio, diseño en el sistema Hiweb y build estático de alto rendimiento."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "Dejas el brochure. Cada URL tiene un trabajo: rankear, explicar o cerrar."
+    }
+  ],
+  "proceso": [
+    { "title": "Arquitectura", "description": "Sitemap atado a SEO, AEO y a las campañas que van a aterrizar." },
+    { "title": "Diseño y copy", "description": "Mismo lenguaje que branding y paid. Cero páginas huérfanas." },
+    { "title": "Build y medición", "description": "Lighthouse, tracking y un handoff que marketing puede operar." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Trabajan sobre WordPress?",
+      "answer": "Preferimos un stack estático (como este sitio) cuando la velocidad importa. Si el CMS es innegociable, lo hablamos en auditoría."
+    },
+    {
+      "question": "¿Incluye SEO técnico?",
+      "answer": "Sí: markup, schema, performance y enlazado interno. El contenido SEO profundo vive en el servicio de SEO."
+    }
+  ]
+}

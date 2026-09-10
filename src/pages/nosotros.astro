@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { PageHero } from '../components/sections/PageHero';
+import { PillarGrid } from '../components/sections/PillarGrid';
+import { AboutTeaser } from '../components/sections/AboutTeaser';
+import { ProcessPhases } from '../components/sections/ProcessPhases';
+import { FinalCta } from '../components/sections/FinalCta';
+import { SectionBand } from '../components/sections/primitives/SectionBand';
+import { SectionHeader } from '../components/sections/primitives/SectionHeader';
+import { HOME_PILLARS, PROCESS_PHASES, SITE } from '../data/site';
+import { breadcrumbSchema } from '../lib/schema';
+
+const values = [
+	{ title: 'Misión', description: 'Convertir marketing en un sistema de demanda medible para empresas consolidadas.' },
+	{ title: 'Visión', description: 'Ser el partner de industria que un director de marketing recomienda sin reservas.' },
+	{ title: 'Valores', description: 'Evidencia sobre teatro. Oficio sobre volumen. Un solo lenguaje entre marca, media y web.' },
+];
+---
+
+<Layout
+	title="Nosotros — Hiweb Marketing"
+	description={SITE.tagline}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Inicio', href: '/' },
+		{ name: 'Nosotros', href: '/nosotros' },
+	])}
+>
+	<main>
+		<PageHero
+			eyebrow="Nosotros"
+			title="Expertise colectivo, tecnología propia, capacidad cross-border."
+			description={SITE.tagline}
+		/>
+		<SectionBand>
+			<SectionHeader
+				eyebrow="Historia"
+				title="De agencia de tácticas a arquitectura por industria"
+				description="Hiweb nace de operar cuentas consolidadas donde el catálogo de servicios no bastaba. El comprador no busca 'SEO': busca un resultado en su sector. Reorganizamos oferta, prueba y equipo alrededor de eso."
+			/>
+		</SectionBand>
+		<SectionBand tone="surface">
+			<SectionHeader eyebrow="Misión, visión y valores" title="Lo que no negociamos" />
+			<ul class="mt-12 grid gap-4 md:grid-cols-3">
+				{values.map((item) => (
+					<li data-reveal class="rounded-2xl border border-border bg-canvas p-6">
+						<h3 class="font-display text-xl font-semibold text-ink">{item.title}</h3>
+						<p class="mt-2 !text-sm">{item.description}</p>
+					</li>
+				))}
+			</ul>
+		</SectionBand>
+		<PillarGrid pillars={[...HOME_PILLARS]} title="Diferenciadores" />
+		<SectionBand tone="surface">
+			<SectionHeader
+				eyebrow="Equipo"
+				title="Un núcleo senior, no una bancada de juniors invisibles"
+				description="Dirección de cuenta, estrategia, media, contenido y producto web. El roster se presenta en la auditoría — no en un mural de fotos de stock."
+			/>
+		</SectionBand>
+		<ProcessPhases
+			phases={[...PROCESS_PHASES]}
+			eyebrow="Tecnología propia"
+			title="Nuestro portal es parte del delivery"
+			description="Tablero, assets y señal en un solo lugar. Menos PDFs huérfanos; más operación."
+			tone="canvas"
+		/>
+		<AboutTeaser
+			eyebrow="Presencia"
+			title={`${SITE.locales.join(', ')}. Idiomas ES — EN en roadmap.`}
+			description="Operamos desde el sureste y el norte de México. La auditoría puede ser remota."
+		/>
+		<FinalCta client:load title="Hablemos de tu industria" />
+	</main>
+</Layout>

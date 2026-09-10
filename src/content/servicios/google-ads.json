@@ -1,0 +1,35 @@
+{
+  "nombre": "Google Ads",
+  "orden": 4,
+  "tagline": "Intención de compra capturada con estructura, no con campañas huérfanas.",
+  "heroTitle": "Google Ads: cada búsqueda cara tiene un destino que merece el clic.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Search, Performance Max y Demand Gen con estructura por intención — no una campaña 'todo el sitio'."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Keywords y assets alineados a páginas de industria/servicio. Conversión medida al outcome, no al formulario vanidoso."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "Bajas el CPA de búsquedas que ya querían comprarte. Dejas de pujar por ego de marca."
+    }
+  ],
+  "proceso": [
+    { "title": "Mapa de intención", "description": "Qué buscan en tu industria y qué páginas pueden cerrar." },
+    { "title": "Estructura y tracking", "description": "Campañas limpias, conversiones reales, sin duplicados." },
+    { "title": "Iteración de queries", "description": "Negativas, copy y landing en el mismo ciclo." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Incluye YouTube?",
+      "answer": "Cuando hay fit de awareness medible. No lo encendemos por moda."
+    },
+    {
+      "question": "¿Piden un mínimo de presupuesto?",
+      "answer": "Sí. Sin señal suficiente Google no aprende y nosotros no podemos leer. Lo hablamos en la auditoría."
+    }
+  ]
+}

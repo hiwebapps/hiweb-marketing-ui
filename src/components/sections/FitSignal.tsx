@@ -18,7 +18,7 @@ const DEFAULT_MODELS: Model[] = [
     description:
       'Diagnóstico + mensaje + una superficie (landing o campaña). Ideal antes de un retainer.',
     cta: 'Agendar llamada',
-    href: '/contact',
+    href: '/contacto',
   },
   {
     name: 'Retainer de growth',
@@ -26,7 +26,7 @@ const DEFAULT_MODELS: Model[] = [
     description:
       'Mensaje, paid y web en ciclos cortos. Board compartido y métricas acordadas.',
     cta: 'Agendar llamada',
-    href: '/contact',
+    href: '/contacto',
     featured: true,
   },
   {
@@ -35,7 +35,7 @@ const DEFAULT_MODELS: Model[] = [
     description:
       'Engagements desde un mínimo claro para calificar conversaciones. Te lo compartimos en la llamada.',
     cta: 'Hablar de scope',
-    href: '/contact',
+    href: '/contacto',
   },
 ];
 

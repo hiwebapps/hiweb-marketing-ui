@@ -19,12 +19,12 @@ const HERO_GLOW_COLORS = ['#927AFE', '#01E7FF', '#E8FBFF'];
  * 01 · Hero — copy a la izquierda; DriftWall absolute a la derecha (bleed / overflow).
  */
 export function HeroSection({
-  title = 'Pipeline medible para marcas que ya no pueden improvisar.',
-  description = 'Ayudamos a equipos de marketing a lograr leads y conversiones claras con mensaje, paid y web como un solo sistema.',
-  primaryLabel = 'Agendar llamada',
-  primaryHref = '/contact',
+  title = 'Partner estratégico con la eficiencia de un equipo interno y el alcance de una agencia enterprise.',
+  description = 'Hablamos el idioma de tu sector. Cada servicio se conecta a un resultado de negocio — no a una táctica aislada.',
+  primaryLabel = 'Agenda tu auditoría',
+  primaryHref = '/contacto',
   secondaryLabel = 'Ver casos',
-  secondaryHref = '#casos',
+  secondaryHref = '/portafolio',
   projects = HERO_PROJECT_TILES,
 }: HeroSectionProps) {
   return (
@@ -59,13 +59,13 @@ export function HeroSection({
 
       {/* Copy · izquierda; pointer-events solo en el bloque de texto
           para no bloquear hover del DriftWall en columnas cercanas */}
-      <div className="pointer-events-none relative z-10 mx-auto flex max-w-6xl flex-col justify-center px-6 pt-16 pb-[340px] md:min-h-[720px] md:pb-24 md:pt-24 lg:min-h-[780px]">
-        <div className="pointer-events-auto animate-hero-rise max-w-xl md:max-w-[42%] lg:max-w-lg">
+      <div className="pointer-events-none relative z-10 mx-auto flex max-w-6xl flex-col justify-center px-6 pt-32 pb-[340px] md:min-h-[720px] md:pb-24 md:pt-36 lg:min-h-[780px]">
+        <div className="pointer-events-auto max-w-xl md:max-w-[42%] lg:max-w-lg">
           <h1 className="!text-4xl !leading-[1.12] !text-white md:!text-5xl lg:!text-6xl">
             {title}
           </h1>
-          <p className="mt-5 max-w-lg !text-lg !text-white/70">{description}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <p data-reveal className="mt-5 max-w-lg !text-lg !text-white/70">{description}</p>
+          <div data-reveal className="mt-8 flex flex-wrap gap-3">
             <a href={primaryHref} className="no-underline">
               <BorderGlow
                 className="hero-cta hero-cta--primary"

@@ -45,7 +45,7 @@ export function HowItWorks({ steps = DEFAULT_STEPS }: HowItWorksProps) {
         description="Un framework con nombre: diagnóstico → sistema → ejecución. Mismo verbo de CTA en toda la página."
         actions={
           <>
-            <a href="/contact" className="no-underline">
+            <a href="/contacto" className="no-underline">
               <Button variant="primary">Agendar llamada</Button>
             </a>
             <a href="#casos" className="no-underline">

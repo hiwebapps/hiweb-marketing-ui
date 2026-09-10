@@ -15,9 +15,9 @@ type FinalCtaProps = {
  */
 export function FinalCta({
   title = 'Listos cuando tú lo estés.',
-  description = 'Cuéntanos el objetivo y el ICP. Te devolvemos un diagnóstico claro y el siguiente paso del Sistema Hiweb.',
-  primaryLabel = 'Agendar llamada',
-  primaryHref = '/contact',
+  description = 'Cuéntanos industria, objetivo e ICP. Te devolvemos un diagnóstico claro y el siguiente paso.',
+  primaryLabel = 'Agenda tu auditoría',
+  primaryHref = '/contacto',
   secondaryLabel = 'Escribir a Hiweb',
   secondaryHref = 'mailto:hola@hiweb.marketing',
 }: FinalCtaProps) {

@@ -1,0 +1,36 @@
+{
+  "nombre": "Turismo / Hotelería",
+  "orden": 4,
+  "tagline": "Ocupación y tarifa con marca, no solo con OTAs.",
+  "heroTitle": "Marketing hotelero: demanda directa con la disciplina de un revenue meeting.",
+  "heroDescription": "SEO, Meta, Google y web para grupos y propiedades que quieren bajar dependencia de OTAs sin perder ocupación.",
+  "retos": [
+    "Comisión de OTAs que se come el margen.",
+    "Estacionalidad mal leída y creatividades genéricas.",
+    "Sitio lento que no cierra la reserva que el anuncio prometió."
+  ],
+  "porQue": [
+    {
+      "title": "Directo como canal, no como deseo",
+      "description": "Paid + SEO + booking path medible. Menos 'branding hotelero' abstracto."
+    },
+    {
+      "title": "Oferta por temporada y segmento",
+      "description": "Familias, MICE, lujo o leisure — cada uno con un mensaje y una landing."
+    },
+    {
+      "title": "Operación en destino",
+      "description": "Presencia en Cancún y el sureste. Entendemos el inventario, no solo el anuncio."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Reemplazan a las OTAs?",
+      "answer": "No de un día a otro. Bajamos dependencia con demanda directa medible, sin apagar el canal que hoy llena."
+    },
+    {
+      "question": "¿Trabajan con un hotel o con grupos?",
+      "answer": "Ambos. En grupos estructuramos marca paraguas y performance por propiedad."
+    }
+  ]
+}

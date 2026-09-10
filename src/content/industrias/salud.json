@@ -1,0 +1,36 @@
+{
+  "nombre": "Sector Salud",
+  "orden": 2,
+  "tagline": "Demanda ética para clínicas y grupos médicos que cuidan reputación.",
+  "heroTitle": "Marketing para salud: pacientes calificados, sin teatro de descuentos.",
+  "heroDescription": "Campañas, SEO y web con cumplimiento y tono clínico. Más agendados de alto valor; menos ruido que daña la marca médica.",
+  "retos": [
+    "Regulación y claims que no se pueden improvisar.",
+    "Competencia por especialidad en la misma ciudad.",
+    "Agendas llenas de consultas que no convierten a tratamiento."
+  ],
+  "porQue": [
+    {
+      "title": "Tono clínico, no de marketplace",
+      "description": "Copy, creatividades y landing alineados a la ética de la práctica."
+    },
+    {
+      "title": "Captación con filtro",
+      "description": "SEO + paid + CRM para agendar al paciente correcto, no a cualquiera."
+    },
+    {
+      "title": "Reputación como activo",
+      "description": "Reseñas, contenidos y comunidad que sostienen la marca entre campañas."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Pueden trabajar con varias sedes?",
+      "answer": "Sí. Estructuramos campañas y analytics por sede / especialidad para no mezclar señal."
+    },
+    {
+      "question": "¿Hacen contenido médico?",
+      "answer": "Producimos la arquitectura y el mensaje. Los claims clínicos los valida el equipo médico del cliente."
+    }
+  ]
+}

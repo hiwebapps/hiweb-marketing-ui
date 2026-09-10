@@ -1,0 +1,26 @@
+{
+  "cliente": "Pulse",
+  "industria": "saas",
+  "servicios": ["branding", "meta-ads", "desarrollo-web"],
+  "resultadoFrase": "+184% demos calificadas",
+  "titulo": "Cómo Pulse alineó oferta y paid para llenar el calendario de ventas",
+  "resumen": "Reescribimos mensaje, landing y campañas. El equipo dejó de perseguir MQLs vacíos.",
+  "destacado": true,
+  "accent": "cyan",
+  "metricas": [
+    { "valor": 184, "prefix": "+", "suffix": "%", "label": "demos calificadas", "antes": "12 / mes", "despues": "34 / mes" },
+    { "valor": 2.1, "decimals": 1, "suffix": "×", "label": "tasa de show-up a demo" }
+  ],
+  "reto": "Pulse vendía un producto sólido con una oferta que nadie podía repetir. El paid llenaba el CRM de cuentas que ventas descartaba en la primera llamada.",
+  "estrategia": "Posicionamiento en una categoría clara, una landing por ICP y Meta/Google solo hacia esas URLs. CRM con SLA de 15 minutos.",
+  "fases": [
+    { "title": "Auditoría", "description": "Mapeo de ICP, mensajes en ads vs. web vs. pitch de ventas." },
+    { "title": "Sistema", "description": "Nueva oferta, landings y tracking. Un CTA: agendar demo." },
+    { "title": "Ejecución", "description": "Ciclos creativos semanales y recorte de audiencias de teatro." }
+  ],
+  "testimonio": {
+    "quote": "Nos ayudaron a aclarar una oferta compleja y convertirla en campañas que ventas sí podía usar. El pipeline dejó de depender de impulsos.",
+    "name": "María López",
+    "role": "CMO, Pulse"
+  }
+}

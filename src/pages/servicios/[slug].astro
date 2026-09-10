@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { PageHero } from '../../components/sections/PageHero';
+import { SectionBand } from '../../components/sections/primitives/SectionBand';
+import { IndustryGrid } from '../../components/sections/IndustryGrid';
+import { ProcessPhases } from '../../components/sections/ProcessPhases';
+import { CasePreview } from '../../components/sections/CasePreview';
+import { FaqSection } from '../../components/sections/FaqSection';
+import { FinalCta } from '../../components/sections/FinalCta';
+import { breadcrumbSchema, faqSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+	const services = await getCollection('servicios');
+	return services.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
+const cases = (await getCollection('casos')).filter((item) =>
+	item.data.servicios.some((ref) => ref.id === entry.id),
+);
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+const phases = entry.data.proceso.map((step, index) => ({
+	index: String(index + 1).padStart(2, '0'),
+	title: step.title,
+	description: step.description,
+}));
+---
+
+<Layout
+	title={`${entry.data.nombre} — Hiweb Marketing`}
+	description={entry.data.tagline}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Inicio', href: '/' },
+			{ name: 'Servicios', href: '/servicios' },
+			{ name: entry.data.nombre, href: `/servicios/${entry.id}` },
+		]),
+		faqSchema(entry.data.faqs),
+	]}
+>
+	<main>
+		<PageHero
+			eyebrow="Servicio"
+			title={entry.data.heroTitle}
+			description={entry.data.tagline}
+		/>
+		<SectionBand>
+			<ul class="grid gap-4 md:grid-cols-3">
+				{entry.data.cards.map((card) => (
+					<li data-reveal class="rounded-2xl border border-border bg-canvas p-6">
+						<h2 class="font-display text-xl font-semibold tracking-tight text-ink">{card.title}</h2>
+						<p class="mt-2 !text-sm">{card.description}</p>
+					</li>
+				))}
+			</ul>
+		</SectionBand>
+		<IndustryGrid
+			industries={industries.map((item) => ({
+				slug: item.id,
+				nombre: item.data.nombre,
+				tagline: item.data.tagline,
+			}))}
+			title="Cómo se lee este servicio en cada industria"
+			tone="surface"
+		/>
+		<ProcessPhases
+			phases={phases}
+			eyebrow="Cómo trabajamos"
+			title={`Proceso corto de ${entry.data.nombre}`}
+			tone="canvas"
+		/>
+		<CasePreview
+			cases={cases.map((item) => ({
+				client: item.data.cliente,
+				industry: industryName[item.data.industria.id] ?? item.data.industria.id,
+				outcome: item.data.resultadoFrase,
+				title: item.data.titulo,
+				summary: item.data.resumen,
+				href: `/portafolio/${item.id}`,
+				accent: item.data.accent,
+			}))}
+			title="Casos relacionados"
+		/>
+		<FaqSection items={entry.data.faqs} withSchema={false} />
+		<FinalCta client:load title={`Agenda un diagnóstico de ${entry.data.nombre}`} />
+	</main>
+</Layout>

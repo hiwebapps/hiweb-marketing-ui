@@ -10,6 +10,7 @@ type SectionHeaderProps = {
   tone?: 'default' | 'on-ink';
   className?: string;
   actions?: ReactNode;
+  split?: boolean;
 };
 
 /**
@@ -25,6 +26,7 @@ export function SectionHeader({
   tone = 'default',
   className = '',
   actions,
+  split = false,
 }: SectionHeaderProps) {
   const titleColor = tone === 'on-ink' ? 'text-canvas' : 'text-ink';
   const descColor = tone === 'on-ink' ? 'text-canvas/65' : 'text-muted';
@@ -45,6 +47,7 @@ export function SectionHeader({
       ) : null}
 
       <h2
+        data-split={split ? '' : undefined}
         className={[
           'mt-3 !text-3xl !leading-[1.2] tracking-[-0.02em] md:!text-5xl',
           titleColor,

@@ -1,7 +1,7 @@
 /**
  * Hiweb Marketing — Design Tokens
  * Light Product-Tool (Cal + Linear + Raycast)
- * Tipografía: Borscha + Roboto Serif (locales en /fonts)
+ * Tipografía: Clash Display + Inter (locales en /fonts)
  *
  * Astro + Tailwind v4 aplica tokens vía @theme en src/styles/global.css.
  */
@@ -48,9 +48,9 @@ export default {
         '4xl': '100px',
       },
       fontFamily: {
-        display: ['"Borscha"', 'system-ui', 'sans-serif'],
-        sans: ['"Roboto Serif"', 'Georgia', 'serif'],
-        serif: ['"Roboto Serif"', 'Georgia', 'serif'],
+        display: ['"Clash Display"', 'system-ui', 'sans-serif'],
+        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        serif: ['"Inter"', 'system-ui', 'sans-serif'],
       },
     },
   },

@@ -39,7 +39,7 @@ export function SectionsKitPage() {
     <div className="min-h-dvh bg-canvas">
       <BackgroundMesh />
 
-      <main className="relative z-10">
+      <main className="relative z-10 pt-28">
         <SectionBand>
           <div className="mb-4">
             <Badge>Sections Kit</Badge>
@@ -143,7 +143,7 @@ export function SectionsKitPage() {
             primaryLabel="Ver home"
             primaryHref="/"
             secondaryLabel="Contact"
-            secondaryHref="/contact"
+            secondaryHref="/contacto"
           />
         </div>
 
@@ -152,8 +152,8 @@ export function SectionsKitPage() {
             <a href="/" className="no-underline">
               <Button variant="primary">Abrir home ensamblada</Button>
             </a>
-            <a href="/work" className="no-underline">
-              <Button variant="secondary">Work</Button>
+            <a href="/portafolio" className="no-underline">
+              <Button variant="secondary">Portafolio</Button>
             </a>
             <a href="/design-system" className="no-underline">
               <Button variant="secondary">Design system</Button>

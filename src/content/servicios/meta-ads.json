@@ -1,0 +1,35 @@
+{
+  "nombre": "Meta Ads",
+  "orden": 3,
+  "tagline": "Demanda pagada en Meta con hipótesis, no con boosts.",
+  "heroTitle": "Meta Ads: creatividades con tesis y un destino que cierra.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Campañas en Facebook e Instagram diseñadas como experimentos, no como un presupuesto mensual a ciegas."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Oferta clara, creatividades con hipótesis, tracking limpio y una landing que dice lo mismo que el anuncio."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "Dejas de 'activar el pixel'. Empiezas a leer señal por industria y a recortar lo que no convierte."
+    }
+  ],
+  "proceso": [
+    { "title": "Oferta y ICP", "description": "Qué prometemos y a quién. Sin esto, Meta es ruido caro." },
+    { "title": "Sistema creativo", "description": "Ángulos, formatos y iteración semanal." },
+    { "title": "Lectura y recorte", "description": "Escalamos lo que trae el outcome acordado — no el CTR bonito." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Sirve Meta para B2B?",
+      "answer": "A veces, como apoyo. En SaaS y manufactura el peso suele estar en Google y LinkedIn. El diagnóstico lo dice con números, no con dogma."
+    },
+    {
+      "question": "¿Producen las creatividades?",
+      "answer": "Sí. Copy, diseño y variación forman parte del sistema. No recibimos un ZIP y 'optimizamos'."
+    }
+  ]
+}

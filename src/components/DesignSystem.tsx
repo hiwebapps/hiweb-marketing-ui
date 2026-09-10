@@ -63,7 +63,7 @@ export function DesignSystem() {
     <div className="relative min-h-dvh">
       <BackgroundMesh />
 
-      <div className="relative z-10">
+      <div className="relative z-10 pt-28">
         {/* Section jump links — SiteNav global está en Layout */}
         <div className="border-b border-border bg-canvas/60 backdrop-blur-md">
           <nav className="mx-auto flex max-w-6xl flex-wrap gap-1 px-6 py-2.5">

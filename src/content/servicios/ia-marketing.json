@@ -1,0 +1,35 @@
+{
+  "nombre": "IA Marketing",
+  "orden": 8,
+  "tagline": "IA aplicada a velocidad y señal — no a un chatbot de adorno.",
+  "heroTitle": "IA para marketing: más ciclos, mismo criterio de negocio.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Flujos de contenido, análisis y personalización con modelos al servicio de tu sistema — no una herramienta suelta."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Identificamos tareas de alto volumen (variantes creativas, clustering, briefs) y las industrializamos con control humano."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "El equipo deja de copiar/pegar. La calidad no baja: el cuello de botella se mueve a la decisión."
+    }
+  ],
+  "proceso": [
+    { "title": "Mapa de tareas", "description": "Qué vale la pena automatizar en tu operación actual." },
+    { "title": "Piloto", "description": "Un flujo, un KPI, un mes. Sin 'transformación digital'." },
+    { "title": "Escala con guardrails", "description": "Calibración de tono, revisión y medición." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Reemplazan al equipo creativo?",
+      "answer": "No. Aceleran variantes y análisis. La tesis creativa y el criterio de marca siguen siendo humanos."
+    },
+    {
+      "question": "¿Usan sus propios modelos?",
+      "answer": "Combinamos herramientas de mercado con flujos en nuestro portal. Lo importante es el proceso, no el hype del modelo."
+    }
+  ]
+}

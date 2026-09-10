@@ -1,0 +1,36 @@
+{
+  "nombre": "Restaurantes",
+  "orden": 5,
+  "tagline": "Reservas y ticket promedio, no solo alcance en Reels.",
+  "heroTitle": "Marketing para restaurantes: mesas llenas con una marca que se sostiene.",
+  "heroDescription": "Contenido, paid y reputación para grupos y conceptos consolidados. Menos vanity; más cubiertos y repetición.",
+  "retos": [
+    "Contenido constante sin sistema ni oferta clara.",
+    "Paid que trae cupón-hunters y no a huéspedes de ticket alto.",
+    "Reseñas y Google Business descuidados mientras se paga media."
+  ],
+  "porQue": [
+    {
+      "title": "Oferta por servicio, no por platillo suelto",
+      "description": "Comida de negocios, cena, eventos — cada uno con un CTA y un tracking."
+    },
+    {
+      "title": "Local + paid en el mismo mapa",
+      "description": "SEO local, Meta y reputación como un sistema, no como tres vendors."
+    },
+    {
+      "title": "Grupos, no pop-ups",
+      "description": "Trabajamos con operaciones consolidadas que pueden absorber la demanda."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Hacen community todos los días?",
+      "answer": "Sí, cuando el diagnóstico lo pide. El community está atado a reservas y reputación, no a un calendario decorativo."
+    },
+    {
+      "question": "¿Sirve para una sola sucursal?",
+      "answer": "Si la operación está consolidada, sí. Si aún están validando el concepto, esperamos."
+    }
+  ]
+}

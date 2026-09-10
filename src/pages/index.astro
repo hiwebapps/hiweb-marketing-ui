@@ -1,36 +1,50 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { HomeAfterHero } from '../components/sections';
+import { getCollection } from 'astro:content';
 import { HeroSection } from '../components/sections/HeroSection';
+import { HomeAfterHero } from '../components/sections/HomeAfterHero';
+import { FinalCta } from '../components/sections/FinalCta';
+import { GLOBAL_METRICS, SITE } from '../data/site';
+import { faqSchema } from '../lib/schema';
+import { HOME_FAQS } from '../data/site';
+
+const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
+const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
+const cases = await getCollection('casos');
+const featured = cases.filter((entry) => entry.data.destacado);
+
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
 ---
 
 <Layout
-	title="Hiweb Marketing — Pipeline medible"
-	description="Ayudamos a equipos de marketing a lograr leads y conversiones claras con mensaje, paid y web como un solo sistema."
+	title="Hiweb Marketing — Partner estratégico"
+	description={SITE.tagline}
+	jsonLd={faqSchema([...HOME_FAQS])}
 >
-	<div class="min-h-dvh bg-canvas">
-		<main>
-			{/* GradientWaves (ogl) — hydrate only the hero island */}
-			<HeroSection client:only="react" />
-			{/* Buttons with BorderGlow need a React island */}
-			<HomeAfterHero client:load />
-		</main>
-
-		<footer class="border-t border-border bg-canvas">
-			<div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-8">
-				<p class="font-display text-sm font-semibold text-ink">Hiweb Marketing</p>
-				<nav class="flex flex-wrap gap-4">
-					<a href="/work" class="!text-xs font-medium text-ink-soft no-underline hover:text-ink">
-						Work
-					</a>
-					<a href="/contact" class="!text-xs font-medium text-ink-soft no-underline hover:text-ink">
-						Contact
-					</a>
-					<a href="/sections" class="!text-xs font-medium text-ink-soft no-underline hover:text-ink">
-						Kit de secciones
-					</a>
-				</nav>
-			</div>
-		</footer>
-	</div>
+	<main>
+		<HeroSection client:only="react" />
+		<HomeAfterHero
+			services={services.map((item) => ({
+				slug: item.id,
+				nombre: item.data.nombre,
+				tagline: item.data.tagline,
+			}))}
+			industries={industries.map((item) => ({
+				slug: item.id,
+				nombre: item.data.nombre,
+				tagline: item.data.tagline,
+			}))}
+			cases={featured.map((item) => ({
+				client: item.data.cliente,
+				industry: industryName[item.data.industria.id] ?? item.data.industria.id,
+				outcome: item.data.resultadoFrase,
+				title: item.data.titulo,
+				summary: item.data.resumen,
+				href: `/portafolio/${item.id}`,
+				accent: item.data.accent,
+			}))}
+			metrics={[...GLOBAL_METRICS]}
+		/>
+		<FinalCta client:load />
+	</main>
 </Layout>

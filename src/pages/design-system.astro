@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { DesignSystem } from '../components/DesignSystem';
 ---
 
-<Layout title="Design System — Hiweb Marketing">
+<Layout title="Design System — Hiweb Marketing" noindex>
 	{/* BorderGlow CTAs need a React island */}
 	<DesignSystem client:only="react" />
 </Layout>

@@ -1,0 +1,36 @@
+{
+  "nombre": "Software (SaaS)",
+  "orden": 6,
+  "tagline": "Demos calificadas para productos que ya no pueden improvisar el pipeline.",
+  "heroTitle": "Marketing para SaaS: mensaje, paid y web como un solo sistema de demos.",
+  "heroDescription": "Posicionamiento, performance y producto web para equipos B2B que necesitan pipeline predecible — no MQLs de teatro.",
+  "retos": [
+    "Oferta compleja que ventas no puede repetir.",
+    "Paid que llena el CRM de cuentas que nunca van a comprar.",
+    "Web de features sin una razón clara para agendar."
+  ],
+  "porQue": [
+    {
+      "title": "Oferta que se entiende en segundos",
+      "description": "Posicionamiento y prueba social alineados. Menos slides; más decisión."
+    },
+    {
+      "title": "Paid con criterio de producto",
+      "description": "Hipótesis en creatividades, ICP duro y lectura de señal — no presupuesto a ciegas."
+    },
+    {
+      "title": "La web cierra la misma promesa",
+      "description": "Landing y app marketing como extensión del mensaje, no como brochure."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Trabajan PLG y sales-led?",
+      "answer": "Sales-led y hybrid. Si el producto aún no tiene ICP claro, el diagnóstico lo dice rápido."
+    },
+    {
+      "question": "¿Integran HubSpot u otro CRM?",
+      "answer": "Sí. El criterio es una fuente de verdad para marketing y ventas, no otra integración cosmética."
+    }
+  ]
+}

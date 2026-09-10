@@ -1,0 +1,35 @@
+{
+  "nombre": "CRM & Automatización",
+  "orden": 6,
+  "tagline": "El lead no se enfría entre el anuncio y el asesor.",
+  "heroTitle": "CRM y automatización: una fuente de verdad para marketing y ventas.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Handoff, nurturing y reporting en el CRM que ya usas — o en el que sí van a abrir."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Campos, pipelines y automatizaciones atados a un outcome. Menos zapier teatro; más SLA."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "Marketing deja de 'mandar leads'. Ventas deja de decir que no sirven. Ambos miran el mismo tablero."
+    }
+  ],
+  "proceso": [
+    { "title": "Mapa del handoff", "description": "Qué pasa hoy entre clic, form y primer contacto." },
+    { "title": "Modelo de datos", "description": "Campos, etapas y dueños. Sin eso, la automatización miente." },
+    { "title": "Flujos y SLA", "description": "Nurturing, alertas y métricas que alguien revisa de verdad." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Con qué CRMs trabajan?",
+      "answer": "HubSpot, Salesforce y stacks a medida. El criterio es adopción, no el logo del vendor."
+    },
+    {
+      "question": "¿Implementan desde cero?",
+      "answer": "Sí, o saneamos un CRM que ya es un cementerio de campos. El diagnóstico decide."
+    }
+  ]
+}

@@ -1,70 +1,41 @@
-import { CasePreview } from './CasePreview';
+import { HOME_FAQS, HOME_PILLARS, PROCESS_PHASES } from '../../data/site';
+import { AboutTeaser } from './AboutTeaser';
+import { CasePreview, type CaseItem } from './CasePreview';
 import { FaqSection } from './FaqSection';
-import { FinalCta } from './FinalCta';
-import { FitSignal } from './FitSignal';
-import { HowItWorks } from './HowItWorks';
-import { ProblemPov } from './ProblemPov';
+import { IndustryGrid } from './IndustryGrid';
+import { MetricsBand, type MetricItem } from './MetricsBand';
+import { PillarGrid } from './PillarGrid';
+import { ProcessPhases } from './ProcessPhases';
+import { ServiceGrid, type GridCard } from './ServiceGrid';
 import { SocialProof } from './SocialProof';
-import { TrustStrip } from './TrustStrip';
-import {
-  MockMessagePanel,
-  MockPerformancePanel,
-  MockWebPanel,
-  ValueChapter,
-} from './ValueChapter';
+
+type HomeAfterHeroProps = {
+  services: GridCard[];
+  industries: GridCard[];
+  cases: CaseItem[];
+  metrics: MetricItem[];
+};
 
 /**
- * Home body below the hero (SSR-safe — no WebGL).
+ * Home body below the hero — HTML estático, motion via data-* attributes.
  */
-export function HomeAfterHero() {
+export function HomeAfterHero({
+  services,
+  industries,
+  cases,
+  metrics,
+}: HomeAfterHeroProps) {
   return (
     <>
-      <TrustStrip />
-      <ProblemPov />
-      <HowItWorks />
-
-      <ValueChapter
-        id="brand"
-        index="01"
-        eyebrow="Mensaje"
-        title="Una oferta que se entiende en segundos"
-        description="Posicionamiento, narrativa y prueba social alineados. Menos slides; más decisión."
-        caption="Fig 01 · Mensaje"
-        tone="canvas"
-      >
-        <MockMessagePanel />
-      </ValueChapter>
-
-      <ValueChapter
-        id="performance"
-        index="02"
-        eyebrow="Performance"
-        title="Paid con criterio de producto"
-        description="Ciclos cortos, creatividades con hipótesis y lectura de señal — no presupuesto a ciegas."
-        caption="Fig 02 · Performance"
-        tone="surface"
-        reverse
-      >
-        <MockPerformancePanel />
-      </ValueChapter>
-
-      <ValueChapter
-        id="web"
-        index="03"
-        eyebrow="Producto web"
-        title="La superficie donde convierte el sistema"
-        description="Web y landing como extensión del mensaje: jerarquía clara, CTA negro, cero ornamento vacío."
-        caption="Fig 03 · Web"
-        tone="canvas"
-      >
-        <MockWebPanel />
-      </ValueChapter>
-
-      <CasePreview />
+      <PillarGrid pillars={[...HOME_PILLARS]} />
+      <ServiceGrid services={services} />
+      <IndustryGrid industries={industries} tone="surface" />
+      <CasePreview cases={cases} />
+      <MetricsBand metrics={metrics} tone="surface" />
       <SocialProof />
-      <FitSignal />
-      <FaqSection />
-      <FinalCta />
+      <ProcessPhases phases={[...PROCESS_PHASES]} tone="canvas" />
+      <AboutTeaser />
+      <FaqSection items={[...HOME_FAQS]} />
     </>
   );
 }

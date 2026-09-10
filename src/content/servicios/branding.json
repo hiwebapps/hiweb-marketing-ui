@@ -1,0 +1,35 @@
+{
+  "nombre": "Branding",
+  "orden": 5,
+  "tagline": "Una oferta que se entiende en segundos — y se sostiene en paid y web.",
+  "heroTitle": "Branding de negocio: posicionamiento que ventas puede repetir.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Posicionamiento, narrativa y sistema visual al servicio de la conversión — no un manual que nadie usa."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Oferta, prueba y tono por industria. El output entra a campañas, web y equipo comercial el mismo mes."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "Dejas de explicar quién eres en cada junta. El mercado te reconoce por un punto de vista, no por un logo."
+    }
+  ],
+  "proceso": [
+    { "title": "Posicionamiento", "description": "Categoría, enemigo y promesa. Corto, repetible." },
+    { "title": "Sistema", "description": "Mensaje, visual y prueba social alineados." },
+    { "title": "Activación", "description": "Web, ads y sales enablement usando el mismo lenguaje." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Hacen identidad visual desde cero?",
+      "answer": "Cuando hace falta. Muchas cuentas consolidadas necesitan mensaje y sistema, no otro isotipo."
+    },
+    {
+      "question": "¿Cuánto tarda?",
+      "answer": "Un sprint de posicionamiento cierra en semanas. Un rebrand profundo se acota en la auditoría."
+    }
+  ]
+}

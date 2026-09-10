@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { PageHero } from '../components/sections/PageHero';
+import { SectionBand } from '../components/sections/primitives/SectionBand';
+import { ContactForm } from '../components/sections/ContactForm';
+import { CalendarPlaceholder, ContactDetails } from '../components/sections/ContactDetails';
+import { FaqSection } from '../components/sections/FaqSection';
+import { FinalCta } from '../components/sections/FinalCta';
+import { CONTACT_FAQS } from '../data/site';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+---
+
+<Layout
+	title="Contacto — Hiweb Marketing"
+	description="Agenda tu auditoría. Formulario, calendario, teléfono, email y WhatsApp."
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Inicio', href: '/' },
+			{ name: 'Contacto', href: '/contacto' },
+		]),
+		faqSchema([...CONTACT_FAQS]),
+	]}
+>
+	<main>
+		<PageHero
+			eyebrow="Contacto"
+			title="Agenda tu auditoría"
+			description="Trae industria, objetivo y qué ya está en marcha. Respuesta en 24h. Sin compromiso de retainer."
+		/>
+		<SectionBand>
+			<div class="grid gap-10 lg:grid-cols-2 lg:items-start">
+				<ContactForm client:load />
+				<CalendarPlaceholder />
+			</div>
+		</SectionBand>
+		<ContactDetails />
+		<FaqSection
+			items={[...CONTACT_FAQS]}
+			title="Antes de escribir"
+			description="Tres respuestas rápidas. El resto, en la llamada."
+			withSchema={false}
+		/>
+		<FinalCta
+			client:load
+			title="¿Prefieres ir directo?"
+			primaryHref="mailto:hola@hiweb.marketing"
+			primaryLabel="Escribir ahora"
+			secondaryLabel="Ver casos"
+			secondaryHref="/portafolio"
+		/>
+	</main>
+</Layout>

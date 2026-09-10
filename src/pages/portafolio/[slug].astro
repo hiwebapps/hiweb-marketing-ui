@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { PageHero } from '../../components/sections/PageHero';
+import { SectionBand } from '../../components/sections/primitives/SectionBand';
+import { SectionHeader } from '../../components/sections/primitives/SectionHeader';
+import { ProcessPhases } from '../../components/sections/ProcessPhases';
+import { MetricsBand } from '../../components/sections/MetricsBand';
+import { CasePreview } from '../../components/sections/CasePreview';
+import { FinalCta } from '../../components/sections/FinalCta';
+import { breadcrumbSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+	const cases = await getCollection('casos');
+	return cases.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const industry = await getEntry(entry.data.industria);
+const relatedServices = await Promise.all(entry.data.servicios.map((ref) => getEntry(ref)));
+const allCases = await getCollection('casos');
+const related = allCases.filter(
+	(item) => item.id !== entry.id && item.data.industria.id === entry.data.industria.id,
+);
+---
+
+<Layout
+	title={`${entry.data.cliente} — ${entry.data.resultadoFrase}`}
+	description={entry.data.resumen}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Inicio', href: '/' },
+		{ name: 'Portafolio', href: '/portafolio' },
+		{ name: entry.data.cliente, href: `/portafolio/${entry.id}` },
+	])}
+>
+	<main>
+		<PageHero
+			eyebrow={`${entry.data.cliente} · ${industry?.data.nombre ?? ''}`}
+			title={`${entry.data.cliente}: ${entry.data.resultadoFrase}`}
+			description={entry.data.titulo}
+		/>
+
+		<SectionBand>
+			<div class="grid gap-10 md:grid-cols-2">
+				<div>
+					<SectionHeader eyebrow="Reto" title="Contexto inicial" description={entry.data.reto} />
+				</div>
+				<div>
+					<SectionHeader eyebrow="Estrategia" title="Servicios aplicados" description={entry.data.estrategia} />
+					<ul class="mt-6 flex flex-wrap gap-2">
+						{relatedServices.map((service) =>
+							service ? (
+								<li>
+									<a
+										href={`/servicios/${service.id}`}
+										class="rounded-full border border-border px-3 py-1 font-display text-xs font-medium text-ink no-underline"
+									>
+										{service.data.nombre}
+									</a>
+								</li>
+							) : null,
+						)}
+					</ul>
+				</div>
+			</div>
+		</SectionBand>
+
+		<ProcessPhases
+			phases={entry.data.fases.map((fase, index) => ({
+				index: String(index + 1).padStart(2, '0'),
+				title: fase.title,
+				description: fase.description,
+			}))}
+			eyebrow="Ejecución"
+			title="Cómo se hizo el trabajo"
+		/>
+
+		<MetricsBand
+			metrics={entry.data.metricas.map((metric) => ({
+				valor: metric.valor,
+				label: metric.label,
+				prefix: metric.prefix,
+				suffix: metric.suffix,
+				decimals: metric.decimals,
+			}))}
+			title="Antes y después"
+			description="Cifras verificables. Baseline incluido cuando aplica."
+			tone="canvas"
+		/>
+
+		{entry.data.testimonio ? (
+			<SectionBand tone="surface">
+				<figure data-reveal class="mx-auto max-w-3xl">
+					<blockquote class="font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
+						“{entry.data.testimonio.quote}”
+					</blockquote>
+					<figcaption class="mt-6 text-sm text-muted">
+						{entry.data.testimonio.name} · {entry.data.testimonio.role}
+					</figcaption>
+				</figure>
+			</SectionBand>
+		) : null}
+
+		{related.length ? (
+			<CasePreview
+				cases={related.map((item) => ({
+					client: item.data.cliente,
+					industry: industry?.data.nombre ?? '',
+					outcome: item.data.resultadoFrase,
+					title: item.data.titulo,
+					summary: item.data.resumen,
+					href: `/portafolio/${item.id}`,
+					accent: item.data.accent,
+				}))}
+				title="Más casos de esta industria"
+			/>
+		) : null}
+
+		<FinalCta client:load title="Agenda un diagnóstico similar" />
+	</main>
+</Layout>

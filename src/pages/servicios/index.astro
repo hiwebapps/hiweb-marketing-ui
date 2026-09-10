@@ -1,0 +1,63 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { PageHero } from '../../components/sections/PageHero';
+import { ServiceGrid } from '../../components/sections/ServiceGrid';
+import { IndustryGrid } from '../../components/sections/IndustryGrid';
+import { ProcessPhases } from '../../components/sections/ProcessPhases';
+import { CasePreview } from '../../components/sections/CasePreview';
+import { FinalCta } from '../../components/sections/FinalCta';
+import { PROCESS_PHASES } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
+const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
+const cases = await getCollection('casos');
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+---
+
+<Layout
+	title="Servicios — Hiweb Marketing"
+	description="Marketing 360: nueve servicios conectados a un resultado de industria, no a una táctica aislada."
+	jsonLd={breadcrumbSchema([
+		{ name: 'Inicio', href: '/' },
+		{ name: 'Servicios', href: '/servicios' },
+	])}
+>
+	<main>
+		<PageHero
+			eyebrow="Servicios"
+			title="Catálogo 360. Un sistema, no nueve vendors."
+			description="Redes, SEO, paid, branding, CRM, community, IA y web. Cada palanca se conecta a un outcome de tu sector."
+		/>
+		<ServiceGrid
+			services={services.map((item) => ({
+				slug: item.id,
+				nombre: item.data.nombre,
+				tagline: item.data.tagline,
+			}))}
+		/>
+		<IndustryGrid
+			industries={industries.map((item) => ({
+				slug: item.id,
+				nombre: item.data.nombre,
+				tagline: item.data.tagline,
+			}))}
+			title="El mismo servicio, un playbook distinto por industria"
+			tone="surface"
+		/>
+		<ProcessPhases phases={[...PROCESS_PHASES]} tone="canvas" />
+		<CasePreview
+			cases={cases.slice(0, 3).map((item) => ({
+				client: item.data.cliente,
+				industry: industryName[item.data.industria.id] ?? item.data.industria.id,
+				outcome: item.data.resultadoFrase,
+				title: item.data.titulo,
+				summary: item.data.resumen,
+				href: `/portafolio/${item.id}`,
+				accent: item.data.accent,
+			}))}
+		/>
+		<FinalCta client:load title="Elige palanca después del diagnóstico" />
+	</main>
+</Layout>

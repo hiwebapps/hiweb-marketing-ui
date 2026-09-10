@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { PageHero } from '../components/sections/PageHero';
+import { SectionBand } from '../components/sections/primitives/SectionBand';
+import { SITE } from '../data/site';
+---
+
+<Layout
+	title={`Aviso de privacidad — ${SITE.legalName}`}
+	description={`Privacidad de datos de contacto de ${SITE.legalName}.`}
+	noindex
+>
+	<main>
+		<PageHero eyebrow="Legal" title="Aviso de privacidad" />
+		<SectionBand>
+			<p class="max-w-2xl !text-base">
+				Documento de trabajo. {SITE.legalName} recaba los datos del formulario de contacto
+				(nombre, email, empresa y contexto) únicamente para responder la solicitud de
+				auditoría. No vendemos bases. Puedes escribir a {SITE.email} para ejercer tus derechos.
+			</p>
+		</SectionBand>
+	</main>
+</Layout>

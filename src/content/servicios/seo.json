@@ -1,0 +1,35 @@
+{
+  "nombre": "SEO",
+  "orden": 2,
+  "tagline": "Demanda que no se apaga cuando pausas la campaña.",
+  "heroTitle": "SEO por industria: intención de búsqueda, no artículos de relleno.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Arquitectura, contenidos y autoridad para capturar la demanda que tu comprador ya está buscando."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Mapeo de intención por industria, páginas que convierten y un plan editorial con keyword principal por URL."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "Dejas de competir solo a CPC. El sitio gana posiciones en las preguntas que importan a tu sector."
+    }
+  ],
+  "proceso": [
+    { "title": "Auditoría técnica y de intención", "description": "Indexación, canibalización y gaps reales de tu industria." },
+    { "title": "Arquitectura", "description": "Hubs de servicio e industria que se enlazan — AEO incluido." },
+    { "title": "Publicación con medición", "description": "Cada URL tiene un trabajo y un KPI. No un blog decorativo." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Cuánto tarda el SEO?",
+      "answer": "Las bases técnicas se ven en semanas. Posiciones competitivas, en trimestres. Lo combinamos con paid mientras el orgánico madura."
+    },
+    {
+      "question": "¿Hacen SEO local y nacional?",
+      "answer": "Sí. Clínicas y restaurantes piden local; SaaS y manufactura suelen pedir nacional o cross-border."
+    }
+  ]
+}

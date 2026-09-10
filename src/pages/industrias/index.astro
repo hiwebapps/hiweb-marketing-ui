@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { PageHero } from '../../components/sections/PageHero';
+import { IndustryGrid } from '../../components/sections/IndustryGrid';
+import { PillarGrid } from '../../components/sections/PillarGrid';
+import { CasePreview } from '../../components/sections/CasePreview';
+import { FinalCta } from '../../components/sections/FinalCta';
+import { HOME_PILLARS } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
+const cases = await getCollection('casos');
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+---
+
+<Layout
+	title="Industrias — Hiweb Marketing"
+	description="Hablamos el idioma de tu sector: manufactura, salud, inmobiliarias, turismo, restaurantes y SaaS."
+	jsonLd={breadcrumbSchema([
+		{ name: 'Inicio', href: '/' },
+		{ name: 'Industrias', href: '/industrias' },
+	])}
+>
+	<main>
+		<PageHero
+			eyebrow="Industrias"
+			title="De lista de servicios a arquitectura por industria"
+			description="Casos, retos y palancas propias de tu sector. El catálogo existe; el playbook cambia."
+		/>
+		<IndustryGrid
+			industries={industries.map((item) => ({
+				slug: item.id,
+				nombre: item.data.nombre,
+				tagline: item.data.tagline,
+			}))}
+		/>
+		<PillarGrid
+			eyebrow="Por qué Hiweb"
+			title="Un partner que ya operó en tu mesa de decisiones"
+			pillars={[...HOME_PILLARS]}
+			tone="surface"
+		/>
+		<CasePreview
+			cases={cases.slice(0, 3).map((item) => ({
+				client: item.data.cliente,
+				industry: industryName[item.data.industria.id] ?? item.data.industria.id,
+				outcome: item.data.resultadoFrase,
+				title: item.data.titulo,
+				summary: item.data.resumen,
+				href: `/portafolio/${item.id}`,
+				accent: item.data.accent,
+			}))}
+		/>
+		<FinalCta client:load title="Agenda un diagnóstico por industria" />
+	</main>
+</Layout>

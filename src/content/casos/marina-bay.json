@@ -1,0 +1,26 @@
+{
+  "cliente": "Marina Bay",
+  "industria": "turismo-hoteleria",
+  "servicios": ["seo", "meta-ads", "google-ads"],
+  "resultadoFrase": "+22% reserva directa",
+  "titulo": "Marina Bay bajó dependencia de OTAs sin apagar ocupación",
+  "resumen": "SEO + paid hacia un booking path más rápido. La marca dejó de pagar comisión por cada noche obvia.",
+  "destacado": true,
+  "accent": "purple",
+  "metricas": [
+    { "valor": 22, "prefix": "+", "suffix": "%", "label": "reserva directa", "antes": "18% mix", "despues": "40% mix" },
+    { "valor": 9, "prefix": "−", "suffix": " pts", "label": "comisión OTA sobre occupancy" }
+  ],
+  "reto": "El hotel llenaba, pero el margen se iba en OTAs. El sitio era lento y las campañas de marca canibalizaban búsquedas que ya iban a reservar.",
+  "estrategia": "Demanda directa: SEO de destino + brand search limpio + Meta para estancia y temporada, todo a un booking path medible.",
+  "fases": [
+    { "title": "Auditoría", "description": "Mix OTA vs. directo, velocidad del sitio, canibalización de marca." },
+    { "title": "Path de reserva", "description": "Web y tracking. Un CTA: reservar en el motor propio." },
+    { "title": "Media", "description": "Brand search, SEO de destino y Meta por segmento." }
+  ],
+  "testimonio": {
+    "quote": "No apagamos Booking. Aprendimos a no pagarle las noches que el huésped ya nos buscaba por nombre.",
+    "name": "Laura Chen",
+    "role": "Revenue manager, Marina Bay"
+  }
+}

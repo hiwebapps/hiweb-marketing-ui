@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { PageHero } from '../../components/sections/PageHero';
+import { ServiceGrid } from '../../components/sections/ServiceGrid';
+import { PillarGrid } from '../../components/sections/PillarGrid';
+import { CasePreview } from '../../components/sections/CasePreview';
+import { FaqSection } from '../../components/sections/FaqSection';
+import { FinalCta } from '../../components/sections/FinalCta';
+import { breadcrumbSchema, faqSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+	const industries = await getCollection('industrias');
+	return industries.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
+const cases = (await getCollection('casos')).filter((item) => item.data.industria.id === entry.id);
+---
+
+<Layout
+	title={`${entry.data.nombre} — Hiweb Marketing`}
+	description={entry.data.heroDescription}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Inicio', href: '/' },
+			{ name: 'Industrias', href: '/industrias' },
+			{ name: entry.data.nombre, href: `/industrias/${entry.id}` },
+		]),
+		faqSchema(entry.data.faqs),
+	]}
+>
+	<main>
+		<PageHero
+			eyebrow={entry.data.nombre}
+			title={entry.data.heroTitle}
+			description={entry.data.heroDescription}
+		/>
+		<ServiceGrid
+			services={services.map((item) => ({
+				slug: item.id,
+				nombre: item.data.nombre,
+				tagline: item.data.tagline,
+			}))}
+			title={`Nueve servicios, leídos como ${entry.data.nombre}`}
+			description="Elige la palanca. El diagnóstico define el orden."
+		/>
+		<PillarGrid
+			eyebrow="Por qué Hiweb"
+			title={`Por qué Hiweb en ${entry.data.nombre.toLowerCase()}`}
+			pillars={entry.data.porQue}
+			tone="surface"
+		/>
+		<CasePreview
+			cases={cases.map((item) => ({
+				client: item.data.cliente,
+				industry: entry.data.nombre,
+				outcome: item.data.resultadoFrase,
+				title: item.data.titulo,
+				summary: item.data.resumen,
+				href: `/portafolio/${item.id}`,
+				accent: item.data.accent,
+			}))}
+			title={`Casos en ${entry.data.nombre.toLowerCase()}`}
+			description={
+				cases.length
+					? 'Resultados de empresas consolidadas en este sector.'
+					: 'Estamos documentando más casos de este sector. El diagnóstico sigue abierto.'
+			}
+		/>
+		<FaqSection
+			items={entry.data.faqs}
+			title={`Preguntas de ${entry.data.nombre.toLowerCase()}`}
+			withSchema={false}
+		/>
+		<FinalCta
+			client:load
+			title={`Agenda un diagnóstico para ${entry.data.nombre.toLowerCase()}`}
+		/>
+	</main>
+</Layout>

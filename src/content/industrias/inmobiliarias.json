@@ -1,0 +1,36 @@
+{
+  "nombre": "Inmobiliarias",
+  "orden": 3,
+  "tagline": "Leads de inventario real, no de formularios vacíos.",
+  "heroTitle": "Marketing inmobiliario: tráfico que visita, no que solo da like.",
+  "heroDescription": "Paid, SEO y CRM para desarrollos y brokers consolidados. Calificamos intención de compra y aceleramos el cierre con el inventario correcto.",
+  "retos": [
+    "Costo por lead alto y baja visita a sala de ventas.",
+    "Inventario que no se explica en un anuncio de 15 segundos.",
+    "Seguimiento lento entre marketing y asesores."
+  ],
+  "porQue": [
+    {
+      "title": "Oferta por prototipo, no por zona genérica",
+      "description": "Cada campaña apunta a un inventario y un buyer, no a 'bienes raíces en la ciudad'."
+    },
+    {
+      "title": "CRM que no deja enfriar el lead",
+      "description": "Automatización y handoff al asesor con contexto, no con un Excel."
+    },
+    {
+      "title": "Prueba en desarrollos vivos",
+      "description": "Casos de inventario real, con visitas y apartados — no vanity metrics."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Sirve para brokers y para desarrolladores?",
+      "answer": "Sí. El sistema cambia: el broker vende relación e inventario mixto; el desarrollador vende un masterplan. El diagnóstico lo separa."
+    },
+    {
+      "question": "¿Integran Portales y CRM?",
+      "answer": "Priorizamos el stack que ya usan. El objetivo es señal única, no otra herramienta que nadie abre."
+    }
+  ]
+}

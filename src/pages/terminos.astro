@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { PageHero } from '../components/sections/PageHero';
+import { SectionBand } from '../components/sections/primitives/SectionBand';
+import { SITE } from '../data/site';
+---
+
+<Layout
+	title={`Términos — ${SITE.legalName}`}
+	description="Condiciones de uso del sitio Hiweb Marketing."
+	noindex
+>
+	<main>
+		<PageHero eyebrow="Legal" title="Términos" />
+		<SectionBand>
+			<p class="max-w-2xl !text-base">
+				El contenido de este sitio es informativo. Los casos publicados corresponden a empresas
+				consolidadas y cifras verificables. La contratación de servicios se formaliza en un
+				alcance aparte, después de la auditoría. Contacto: {SITE.email}.
+			</p>
+		</SectionBand>
+	</main>
+</Layout>

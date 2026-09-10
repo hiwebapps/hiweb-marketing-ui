@@ -1,0 +1,36 @@
+{
+  "nombre": "Manufactura",
+  "orden": 1,
+  "tagline": "Demanda calificada para plantas que ya no pueden depender del referido.",
+  "heroTitle": "Marketing para manufactura: pipeline B2B con criterio industrial.",
+  "heroDescription": "Hablamos el idioma de planta, ciclo largo y comité de compra. Paid, SEO y web al servicio de cotizaciones que ventas sí puede cerrar.",
+  "retos": [
+    "Ciclos de venta largos con múltiples tomadores de decisión.",
+    "Oferta técnica que no se entiende fuera de planta.",
+    "Dependencia de ferias, referidos y un comercial heroico."
+  ],
+  "porQue": [
+    {
+      "title": "Mensaje para comité, no para likes",
+      "description": "Traducimos specs a una oferta que compras, operaciones y dirección pueden decir que sí."
+    },
+    {
+      "title": "Canales con señal industrial",
+      "description": "LinkedIn, Google y web como sistema. Menos MQLs vacíos; más RFQs."
+    },
+    {
+      "title": "Prueba verificable",
+      "description": "Casos de plantas consolidadas, no de workshops de fin de semana."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Sirve Meta Ads para manufactura?",
+      "answer": "Como apoyo de marca, a veces. El core suele ser Google, LinkedIn y una web que califique. El diagnóstico lo define por cuenta."
+    },
+    {
+      "question": "¿Trabajan con exportadores?",
+      "answer": "Sí. Operamos cross-border y adaptamos mensaje y tracking a mercados, no solo a un país."
+    }
+  ]
+}

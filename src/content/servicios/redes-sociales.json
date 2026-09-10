@@ -1,0 +1,35 @@
+{
+  "nombre": "Redes Sociales",
+  "orden": 1,
+  "tagline": "Presencia que empuja un resultado, no un calendario vacío.",
+  "heroTitle": "Redes sociales atadas a demanda, no a vanidad.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Arquitectura de canales, contenidos y comunidad alineada a la oferta de tu industria."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Un sistema editorial + paid social cuando hay señal. Cada pieza tiene un trabajo: autoridad, prueba o conversión."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "Dejas de publicar por inercia. El feed sostiene la misma promesa que tu web y tus campañas."
+    }
+  ],
+  "proceso": [
+    { "title": "Diagnóstico de canales", "description": "Qué redes importan en tu sector y cuáles son ruido." },
+    { "title": "Sistema editorial", "description": "Pilares, oferta y prueba social en un ritmo sostenible." },
+    { "title": "Lectura de señal", "description": "Qué contenidos merecen media y cuáles se quedan orgánicos." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Incluye community management?",
+      "answer": "Puede. Community Manager es un servicio aparte cuando la conversación diaria es el cuello de botella."
+    },
+    {
+      "question": "¿Trabajan TikTok y LinkedIn?",
+      "answer": "Según industria. Manufactura no usa el mismo mix que restaurantes. El diagnóstico lo define."
+    }
+  ]
+}

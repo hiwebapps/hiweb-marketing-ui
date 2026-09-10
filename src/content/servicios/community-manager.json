@@ -1,0 +1,35 @@
+{
+  "nombre": "Community Manager",
+  "orden": 7,
+  "tagline": "Conversación diaria con criterio de marca y de negocio.",
+  "heroTitle": "Community management: la marca responde como opera.",
+  "cards": [
+    {
+      "title": "Qué es",
+      "description": "Operación de comunidad, inbox y reputación con tono de tu industria — no un community genérico."
+    },
+    {
+      "title": "Cómo funciona",
+      "description": "Guías de voz, SLA de respuesta y escalamiento a ventas o sucursal. El community no improvisar reclamos."
+    },
+    {
+      "title": "Qué cambia",
+      "description": "Dejas de perder reservas, citas o demos en el DM. La conversación suma a la prueba social."
+    }
+  ],
+  "proceso": [
+    { "title": "Voz y guardrails", "description": "Qué se responde, qué se escala, qué nunca se promete." },
+    { "title": "Operación", "description": "Calendario, inbox y reportes de temas reales — no de likes." },
+    { "title": "Cierre de loop", "description": "Insights de comunidad vuelven a oferta y a campañas." }
+  ],
+  "faqs": [
+    {
+      "question": "¿Es lo mismo que redes sociales?",
+      "answer": "No. Redes define el sistema; community opera la conversación. Muchas cuentas necesitan ambos; algunas, solo uno."
+    },
+    {
+      "question": "¿Cubren horarios de destino?",
+      "answer": "Sí, especialmente en restaurantes y hotelería. El SLA se acuerda en el kickoff."
+    }
+  ]
+}
