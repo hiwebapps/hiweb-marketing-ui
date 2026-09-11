@@ -1,5 +1,5 @@
 import { HeroSection } from './HeroSection';
-import { HomeAfterHero } from './HomeAfterHero';
+import { HomeAfterHero, HomeBelowFold } from './HomeAfterHero';
 
 /**
  * Home ensamblada (para demos / client:only).
@@ -10,12 +10,8 @@ export function HomePage() {
     <div className="min-h-dvh bg-canvas">
       <main>
         <HeroSection />
-        <HomeAfterHero
-          services={[]}
-          industries={[]}
-          cases={[]}
-          metrics={[]}
-        />
+        <HomeAfterHero services={[]} />
+        <HomeBelowFold cases={[]} metrics={[]} />
       </main>
     </div>
   );

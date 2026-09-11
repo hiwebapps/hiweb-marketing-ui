@@ -60,10 +60,12 @@ const phases = entry.data.proceso.map((step, index) => ({
 			</ul>
 		</SectionBand>
 		<IndustryGrid
+			client:visible
 			industries={industries.map((item) => ({
 				slug: item.id,
 				nombre: item.data.nombre,
 				tagline: item.data.tagline,
+				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
 			title="Cómo se lee este servicio en cada industria"
 			tone="surface"

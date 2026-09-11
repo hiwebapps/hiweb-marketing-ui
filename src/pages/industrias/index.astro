@@ -29,10 +29,12 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 			description="Casos, retos y palancas propias de tu sector. El catálogo existe; el playbook cambia."
 		/>
 		<IndustryGrid
+			client:visible
 			industries={industries.map((item) => ({
 				slug: item.id,
 				nombre: item.data.nombre,
 				tagline: item.data.tagline,
+				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
 		/>
 		<PillarGrid

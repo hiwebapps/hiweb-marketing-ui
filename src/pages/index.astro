@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { HeroSection } from '../components/sections/HeroSection';
-import { HomeAfterHero } from '../components/sections/HomeAfterHero';
+import { HomeAfterHero, HomeBelowFold } from '../components/sections/HomeAfterHero';
+import { IndustryGrid } from '../components/sections/IndustryGrid';
 import { FinalCta } from '../components/sections/FinalCta';
 import { GLOBAL_METRICS, SITE } from '../data/site';
 import { faqSchema } from '../lib/schema';
@@ -29,11 +30,18 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				nombre: item.data.nombre,
 				tagline: item.data.tagline,
 			}))}
+		/>
+		<IndustryGrid
+			client:visible
+			tone="surface"
 			industries={industries.map((item) => ({
 				slug: item.id,
 				nombre: item.data.nombre,
 				tagline: item.data.tagline,
+				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
+		/>
+		<HomeBelowFold
 			cases={featured.map((item) => ({
 				client: item.data.cliente,
 				industry: industryName[item.data.industria.id] ?? item.data.industria.id,

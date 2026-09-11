@@ -4,7 +4,6 @@ import { useGSAP } from '@gsap/react';
 import {
   NAV_EXPLORE,
   NAV_INDUSTRY_ITEMS,
-  NAV_LINKS,
   NAV_SERVICE_GROUPS,
   SITE,
 } from '../../data/site';
@@ -115,111 +114,43 @@ export function SiteNav() {
               <span className="hw-nav__brand-text">Hiweb</span>
             </a>
 
-            <button
-              type="button"
-              className="hw-nav__burger"
-              aria-expanded={mobileOpen}
-              aria-controls="hw-nav-sheet"
-              aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
-              onClick={() => setMobileOpen(true)}
-            >
-              <span className="hw-nav__burger-line" />
-              <span className="hw-nav__burger-line" />
-              <span className="hw-nav__burger-line" />
-            </button>
+            <ul className="hw-nav__links">
+              <li className="hw-nav__item">
+                <a href="/nosotros" className="hw-nav__link">
+                  Nosotros
+                </a>
+              </li>
 
-            <div className="hw-nav__menu">
-              <ul className="hw-nav__links">
-                <li className="hw-nav__item hw-nav__item--dropdown">
-                  <button
-                    type="button"
-                    className={['hw-nav__link', open === 'industrias' ? 'is-open' : ''].filter(Boolean).join(' ')}
-                    aria-expanded={open === 'industrias'}
-                    aria-controls={industriasId}
-                    onClick={() => toggle('industrias')}
+              <li className="hw-nav__item hw-nav__item--dropdown">
+                <button
+                  type="button"
+                  className={['hw-nav__link', open === 'industrias' ? 'is-open' : ''].filter(Boolean).join(' ')}
+                  aria-expanded={open === 'industrias'}
+                  aria-controls={industriasId}
+                  onClick={() => toggle('industrias')}
+                >
+                  Industrias
+                  <Chevron open={open === 'industrias'} />
+                </button>
+                {open === 'industrias' ? (
+                  <div
+                    ref={panelRef}
+                    id={industriasId}
+                    className="hw-nav__dropdown hw-nav__dropdown--industries"
                   >
-                    Industrias
-                    <Chevron open={open === 'industrias'} />
-                  </button>
-                  {open === 'industrias' ? (
-                    <div
-                      ref={panelRef}
-                      id={industriasId}
-                      className="hw-nav__dropdown hw-nav__dropdown--industries"
-                    >
-                      {chunk(NAV_INDUSTRY_ITEMS, 2).map((column, index) => (
-                        <div key={index} className="hw-nav__dropdown-col">
-                          <p className={index === 0 ? 'hw-nav__dropdown-heading' : 'hw-nav__dropdown-heading hw-nav__dropdown-heading--ghost'}>
-                            Industrias
-                          </p>
-                          <ul className="hw-nav__dropdown-list">
-                            {column.map((item) => (
-                              <li key={item.slug}>
-                                <a
-                                  href={`/industrias/${item.slug}`}
-                                  className="hw-nav__dropdown-link"
-                                  onClick={() => setOpen(null)}
-                                >
-                                  <span className="hw-nav__dropdown-icon" aria-hidden="true">
-                                    <NavIcon name={item.icon} />
-                                  </span>
-                                  <span className="hw-nav__dropdown-copy">
-                                    <span className="hw-nav__dropdown-title">{item.nombre}</span>
-                                    <span className="hw-nav__dropdown-desc">{item.desc}</span>
-                                  </span>
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-                </li>
-
-                <li className="hw-nav__item hw-nav__item--dropdown">
-                  <button
-                    type="button"
-                    className={['hw-nav__link', open === 'servicios' ? 'is-open' : ''].filter(Boolean).join(' ')}
-                    aria-expanded={open === 'servicios'}
-                    aria-controls={serviciosId}
-                    onClick={() => toggle('servicios')}
-                  >
-                    Servicios
-                    <Chevron open={open === 'servicios'} />
-                  </button>
-                  {open === 'servicios' ? (
-                    <div ref={panelRef} id={serviciosId} className="hw-nav__dropdown">
-                      {NAV_SERVICE_GROUPS.map((group) => (
-                        <div key={group.heading} className="hw-nav__dropdown-col">
-                          <p className="hw-nav__dropdown-heading">{group.heading}</p>
-                          <ul className="hw-nav__dropdown-list">
-                            {group.items.map((item) => (
-                              <li key={item.slug}>
-                                <a
-                                  href={`/servicios/${item.slug}`}
-                                  className="hw-nav__dropdown-link"
-                                  onClick={() => setOpen(null)}
-                                >
-                                  <span className="hw-nav__dropdown-icon" aria-hidden="true">
-                                    <NavIcon name={item.icon} />
-                                  </span>
-                                  <span className="hw-nav__dropdown-copy">
-                                    <span className="hw-nav__dropdown-title">{item.nombre}</span>
-                                    <span className="hw-nav__dropdown-desc">{item.desc}</span>
-                                  </span>
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                      <div className="hw-nav__dropdown-col">
-                        <p className="hw-nav__dropdown-heading">Explorar</p>
+                    {chunk(NAV_INDUSTRY_ITEMS, 2).map((column, index) => (
+                      <div key={index} className="hw-nav__dropdown-col">
+                        <p className={index === 0 ? 'hw-nav__dropdown-heading' : 'hw-nav__dropdown-heading hw-nav__dropdown-heading--ghost'}>
+                          Industrias
+                        </p>
                         <ul className="hw-nav__dropdown-list">
-                          {NAV_EXPLORE.map((item) => (
-                            <li key={item.href}>
-                              <a href={item.href} className="hw-nav__dropdown-link" onClick={() => setOpen(null)}>
+                          {column.map((item) => (
+                            <li key={item.slug}>
+                              <a
+                                href={`/industrias/${item.slug}`}
+                                className="hw-nav__dropdown-link"
+                                onClick={() => setOpen(null)}
+                              >
                                 <span className="hw-nav__dropdown-icon" aria-hidden="true">
                                   <NavIcon name={item.icon} />
                                 </span>
@@ -232,18 +163,95 @@ export function SiteNav() {
                           ))}
                         </ul>
                       </div>
-                    </div>
-                  ) : null}
-                </li>
+                    ))}
+                  </div>
+                ) : null}
+              </li>
 
-                {NAV_LINKS.map((link) => (
-                  <li key={link.href} className="hw-nav__item">
-                    <a href={link.href} className="hw-nav__link">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <li className="hw-nav__item hw-nav__item--dropdown">
+                <button
+                  type="button"
+                  className={['hw-nav__link', open === 'servicios' ? 'is-open' : ''].filter(Boolean).join(' ')}
+                  aria-expanded={open === 'servicios'}
+                  aria-controls={serviciosId}
+                  onClick={() => toggle('servicios')}
+                >
+                  Servicios
+                  <Chevron open={open === 'servicios'} />
+                </button>
+                {open === 'servicios' ? (
+                  <div ref={panelRef} id={serviciosId} className="hw-nav__dropdown">
+                    {NAV_SERVICE_GROUPS.map((group) => (
+                      <div key={group.heading} className="hw-nav__dropdown-col">
+                        <p className="hw-nav__dropdown-heading">{group.heading}</p>
+                        <ul className="hw-nav__dropdown-list">
+                          {group.items.map((item) => (
+                            <li key={item.slug}>
+                              <a
+                                href={`/servicios/${item.slug}`}
+                                className="hw-nav__dropdown-link"
+                                onClick={() => setOpen(null)}
+                              >
+                                <span className="hw-nav__dropdown-icon" aria-hidden="true">
+                                  <NavIcon name={item.icon} />
+                                </span>
+                                <span className="hw-nav__dropdown-copy">
+                                  <span className="hw-nav__dropdown-title">{item.nombre}</span>
+                                  <span className="hw-nav__dropdown-desc">{item.desc}</span>
+                                </span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                    <div className="hw-nav__dropdown-col">
+                      <p className="hw-nav__dropdown-heading">Explorar</p>
+                      <ul className="hw-nav__dropdown-list">
+                        {NAV_EXPLORE.map((item) => (
+                          <li key={item.href}>
+                            <a href={item.href} className="hw-nav__dropdown-link" onClick={() => setOpen(null)}>
+                              <span className="hw-nav__dropdown-icon" aria-hidden="true">
+                                <NavIcon name={item.icon} />
+                              </span>
+                              <span className="hw-nav__dropdown-copy">
+                                <span className="hw-nav__dropdown-title">{item.nombre}</span>
+                                <span className="hw-nav__dropdown-desc">{item.desc}</span>
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ) : null}
+              </li>
+
+              <li className="hw-nav__item">
+                <a href="/portafolio" className="hw-nav__link">
+                  Casos de Éxito
+                </a>
+              </li>
+              <li className="hw-nav__item">
+                <a href="/blog" className="hw-nav__link">
+                  Blog
+                </a>
+              </li>
+            </ul>
+
+            <div className="hw-nav__end">
+              <button
+                type="button"
+                className="hw-nav__burger"
+                aria-expanded={mobileOpen}
+                aria-controls="hw-nav-sheet"
+                aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
+                onClick={() => setMobileOpen(true)}
+              >
+                <span className="hw-nav__burger-line" />
+                <span className="hw-nav__burger-line" />
+                <span className="hw-nav__burger-line" />
+              </button>
 
               <div className="hw-nav__ctas">
                 <a
@@ -330,6 +338,14 @@ export function SiteNav() {
 
             <SheetSection title="Explorar">
               <li>
+                <a href="/nosotros" className="hw-nav-sheet__link">
+                  <span className="hw-nav-sheet__icon" aria-hidden="true">
+                    <NavIcon name="users" />
+                  </span>
+                  <span className="hw-nav-sheet__label">Nosotros</span>
+                </a>
+              </li>
+              <li>
                 <a href="/industrias" className="hw-nav-sheet__link">
                   <span className="hw-nav-sheet__icon" aria-hidden="true">
                     <NavIcon name="building" />
@@ -343,14 +359,6 @@ export function SiteNav() {
                     <NavIcon name="grid" />
                   </span>
                   <span className="hw-nav-sheet__label">Todos los servicios</span>
-                </a>
-              </li>
-              <li>
-                <a href="/nosotros" className="hw-nav-sheet__link">
-                  <span className="hw-nav-sheet__icon" aria-hidden="true">
-                    <NavIcon name="users" />
-                  </span>
-                  <span className="hw-nav-sheet__label">Nosotros</span>
                 </a>
               </li>
               {NAV_EXPLORE.map((item) => (

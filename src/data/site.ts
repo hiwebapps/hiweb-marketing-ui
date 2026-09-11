@@ -37,8 +37,8 @@ export const NAV_SERVICES = [
 ] as const;
 
 export const NAV_LINKS = [
-  { href: '/portafolio', label: 'Casos de Éxito' },
   { href: '/nosotros', label: 'Nosotros' },
+  { href: '/portafolio', label: 'Casos de Éxito' },
   { href: '/blog', label: 'Blog' },
 ] as const;
 

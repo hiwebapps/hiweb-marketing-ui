@@ -2,7 +2,6 @@ import { HOME_FAQS, HOME_PILLARS, PROCESS_PHASES } from '../../data/site';
 import { AboutTeaser } from './AboutTeaser';
 import { CasePreview, type CaseItem } from './CasePreview';
 import { FaqSection } from './FaqSection';
-import { IndustryGrid } from './IndustryGrid';
 import { MetricsBand, type MetricItem } from './MetricsBand';
 import { PillarGrid } from './PillarGrid';
 import { ProcessPhases } from './ProcessPhases';
@@ -11,25 +10,29 @@ import { SocialProof } from './SocialProof';
 
 type HomeAfterHeroProps = {
   services: GridCard[];
-  industries: GridCard[];
+};
+
+type HomeBelowFoldProps = {
   cases: CaseItem[];
   metrics: MetricItem[];
 };
 
 /**
  * Home body below the hero — HTML estático, motion via data-* attributes.
+ * IndustryGrid is a client island in index.astro so the slider can hydrate.
  */
-export function HomeAfterHero({
-  services,
-  industries,
-  cases,
-  metrics,
-}: HomeAfterHeroProps) {
+export function HomeAfterHero({ services }: HomeAfterHeroProps) {
   return (
     <>
       <PillarGrid pillars={[...HOME_PILLARS]} />
       <ServiceGrid services={services} />
-      <IndustryGrid industries={industries} tone="surface" />
+    </>
+  );
+}
+
+export function HomeBelowFold({ cases, metrics }: HomeBelowFoldProps) {
+  return (
+    <>
       <CasePreview cases={cases} />
       <MetricsBand metrics={metrics} tone="surface" />
       <SocialProof />
