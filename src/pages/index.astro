@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { HeroSection } from '../components/sections/HeroSection';
+import { HeroStudioA } from '../components/sections/HeroStudioA';
 import { HomeAfterHero, HomeBelowFold } from '../components/sections/HomeAfterHero';
 import { IndustryGrid } from '../components/sections/IndustryGrid';
 import { FinalCta } from '../components/sections/FinalCta';
@@ -23,7 +23,7 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 	jsonLd={faqSchema([...HOME_FAQS])}
 >
 	<main>
-		<HeroSection client:only="react" />
+		<HeroStudioA client:only="react" />
 		<HomeAfterHero
 			services={services.map((item) => ({
 				slug: item.id,

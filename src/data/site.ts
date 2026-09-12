@@ -312,6 +312,7 @@ export const GLOBAL_METRICS = [
 ] as const;
 
 export const LEGAL_LINKS = [
+  { href: '/sections', label: 'Sections' },
   { href: '/aviso-de-privacidad', label: 'Aviso de privacidad' },
   { href: '/terminos', label: 'Términos' },
 ] as const;

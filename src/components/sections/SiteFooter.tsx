@@ -18,6 +18,17 @@ export function SiteFooter() {
           </a>
           <p className="mt-3 max-w-xs !text-sm !leading-relaxed text-muted">{SITE.tagline}</p>
           <p className="mt-4 !text-xs text-muted">{SITE.locales.join(' · ')}</p>
+          <nav className="mt-5 flex flex-col gap-1.5" aria-label="Kit interno">
+            <a href="/sections" className="!text-sm text-ink-soft no-underline hover:text-ink">
+              Kit de secciones
+            </a>
+            <a href="/sections#demo-hero-studio-a" className="!text-sm text-ink-soft no-underline hover:text-ink">
+              Hero Studio A
+            </a>
+            <a href="/sections#demo-hero-studio-b" className="!text-sm text-ink-soft no-underline hover:text-ink">
+              Hero Studio B
+            </a>
+          </nav>
         </div>
 
         <div>

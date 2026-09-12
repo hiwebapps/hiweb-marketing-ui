@@ -7,6 +7,8 @@ import {
   FinalCta,
   FitSignal,
   HeroSection,
+  HeroStudioA,
+  HeroStudioB,
   HowItWorks,
   ProblemPov,
   ProductFrame,
@@ -19,6 +21,8 @@ import {
 } from './index';
 
 const KIT = [
+  { id: 'hero-studio-a', name: 'Hero Studio A', source: 'Coverflow 3D', role: 'Carrusel infinito, saturación y autoplay 3.5s' },
+  { id: 'hero-studio-b', name: 'Hero Studio B', source: 'Split / mockups', role: 'Copy + browser/phones apilados con GSAP' },
   { id: 'hero', name: 'HeroSection', source: 'Laravel / Arcade', role: 'Shader + ICP + marquee 3D' },
   { id: 'trust', name: 'TrustStrip', source: 'Cal / Kalungi', role: 'Logos + métrica' },
   { id: 'pov', name: 'ProblemPov', source: 'B2B agency', role: 'Espejo del buyer' },
@@ -87,6 +91,24 @@ export function SectionsKitPage() {
             </ProductFrame>
           </div>
         </SectionBand>
+
+        <div id="demo-hero-studio-a" className="scroll-mt-28">
+          <div className="border-y border-border bg-surface px-6 py-3">
+            <p className="mx-auto max-w-6xl font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
+              Hero Studio A · Coverflow 3D
+            </p>
+          </div>
+          <HeroStudioA />
+        </div>
+
+        <div id="demo-hero-studio-b" className="scroll-mt-28">
+          <div className="border-y border-border bg-surface px-6 py-3">
+            <p className="mx-auto max-w-6xl font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
+              Hero Studio B · Stack
+            </p>
+          </div>
+          <HeroStudioB />
+        </div>
 
         <div id="demo-hero">
           <HeroSection

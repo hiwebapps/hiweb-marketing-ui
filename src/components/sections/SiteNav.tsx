@@ -7,6 +7,7 @@ import {
   NAV_SERVICE_GROUPS,
   SITE,
 } from '../../data/site';
+import { Button } from '../ui';
 import './SiteNav.css';
 
 gsap.registerPlugin(useGSAP);
@@ -23,8 +24,10 @@ type IconName =
 export function SiteNav() {
   const [open, setOpen] = useState<MenuKey>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  const lastY = useRef(0);
   const industriasId = useId();
   const serviciosId = useId();
 
@@ -65,13 +68,42 @@ export function SiteNav() {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    lastY.current = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastY.current;
+      lastY.current = y;
+
+      if (mobileOpen || open) {
+        setHidden(false);
+        return;
+      }
+      if (y < 48) {
+        setHidden(false);
+        return;
+      }
+      if (delta > 8) setHidden(true);
+      else if (delta < -8) setHidden(false);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [mobileOpen, open]);
+
   const toggle = (key: Exclude<MenuKey, null>) => {
     setOpen((current) => (current === key ? null : key));
   };
 
   return (
     <>
-      <header ref={navRef} className={['hw-nav', mobileOpen ? 'is-open' : ''].filter(Boolean).join(' ')}>
+      <header
+        ref={navRef}
+        className={['hw-nav', mobileOpen ? 'is-open' : '', hidden ? 'is-hidden' : '']
+          .filter(Boolean)
+          .join(' ')}
+      >
         <svg className="hw-nav__filter" aria-hidden="true" focusable="false">
           <filter
             id="hw-nav-glass-distortion"
@@ -262,20 +294,9 @@ export function SiteNav() {
                 >
                   WhatsApp
                 </a>
-                <a href="/contacto" className="hw-nav__btn hw-nav__btn--agenda">
-                  Agenda tu Auditoría
-                  <span className="hw-nav__btn-icon" aria-hidden="true">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M5 12H19M19 12L13 6M19 12L13 18"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </a>
+                <Button href="/contacto" size="sm" variant="primary" className="hw-nav__ds-cta no-underline">
+                  Agenda tu auditoría
+                </Button>
               </div>
             </div>
           </nav>
@@ -383,9 +404,9 @@ export function SiteNav() {
             >
               WhatsApp
             </a>
-            <a href="/contacto" className="hw-nav-sheet__cta hw-nav-sheet__cta--primary">
-              Agenda tu Auditoría
-            </a>
+            <Button href="/contacto" size="md" variant="primary" className="hw-nav-sheet__ds-cta no-underline">
+              Agenda tu auditoría
+            </Button>
           </div>
         </div>
       ) : null}

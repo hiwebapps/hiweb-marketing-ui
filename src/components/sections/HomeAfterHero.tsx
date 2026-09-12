@@ -24,7 +24,7 @@ type HomeBelowFoldProps = {
 export function HomeAfterHero({ services }: HomeAfterHeroProps) {
   return (
     <>
-      <PillarGrid pillars={[...HOME_PILLARS]} />
+      <PillarGrid pillars={[...HOME_PILLARS]} tone="wash" />
       <ServiceGrid services={services} />
     </>
   );

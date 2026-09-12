@@ -4,8 +4,8 @@ type SectionBandProps = {
   id?: string;
   children: ReactNode;
   className?: string;
-  /** surface = #f5f5f5 band; canvas = white; ink = dark closer (Cal footer pattern) */
-  tone?: 'canvas' | 'surface' | 'ink';
+  /** surface = #f5f5f5 band; canvas = white; ink = dark closer; wash = sin fondo (deja ver el hero) */
+  tone?: 'canvas' | 'surface' | 'ink' | 'wash';
   as?: 'section' | 'div' | 'footer';
   /** Sin padding vertical interno (trust strip, etc.) */
   dense?: boolean;
@@ -15,6 +15,7 @@ const tones = {
   canvas: 'bg-canvas text-ink',
   surface: 'bg-surface text-ink',
   ink: 'bg-ink text-canvas',
+  wash: 'bg-transparent text-ink',
 } as const;
 
 /**

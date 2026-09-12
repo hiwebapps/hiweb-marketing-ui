@@ -21,6 +21,15 @@
   max-width: var(--hw-nav-max);
   margin-inline: auto;
   overflow: visible;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+.hw-nav.is-hidden {
+  transform: translate3d(0, calc(-100% - var(--hw-nav-top)), 0);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hw-nav__filter {
@@ -343,18 +352,19 @@
   background: #fff;
 }
 
-.hw-nav__btn--agenda {
-  width: auto;
-  min-width: 220px;
-  height: 56px;
-  padding: 12px 14px 12px 24px;
-  color: #fff;
-  background: var(--hw-nav-cta);
-  border: 2px solid var(--hw-nav-cta);
-  border-radius: 3.25rem;
-  box-shadow:
-    0 0 4px 2px rgba(35, 39, 46, 0.24),
-    inset 0 2px 2px rgba(255, 255, 255, 0.24);
+.hw-nav__ds-cta {
+  display: inline-flex;
+  align-items: center;
+}
+
+.hw-nav-sheet__ds-cta {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.hw-nav-sheet__ds-cta .ui-btn {
+  width: 100%;
 }
 
 .hw-nav__btn--agenda:hover {
@@ -651,6 +661,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hw-nav,
   .hw-nav__burger-line,
   .hw-nav__link,
   .hw-nav__dropdown-link,

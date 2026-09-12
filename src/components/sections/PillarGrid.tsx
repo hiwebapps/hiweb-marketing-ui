@@ -19,7 +19,7 @@ type PillarGridProps = {
   title?: string;
   description?: string;
   pillars: Pillar[];
-  tone?: 'canvas' | 'surface';
+  tone?: 'canvas' | 'surface' | 'wash';
   ctaLabel?: string;
 };
 

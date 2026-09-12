@@ -1,16 +1,28 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 import BorderGlow from '../effects/BorderGlow.jsx';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'orange' | 'outline';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type SharedButtonProps = {
   variant?: ButtonVariant;
   size?: ButtonSize;
   children: ReactNode;
   /** Soft BorderGlow on hover — default on for primary */
   glow?: boolean;
 };
+
+type ButtonAsButton = SharedButtonProps &
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    href?: undefined;
+  };
+
+type ButtonAsLink = SharedButtonProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'type'> & {
+    href: string;
+  };
+
+type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const GLOW_COLORS = ['#927AFE', '#01E7FF', '#E8FBFF'];
 
@@ -42,69 +54,84 @@ export function Button({
   className = '',
   children,
   disabled,
-  type = 'button',
   glow,
+  href,
   ...props
 }: ButtonProps) {
   const useGlow = glow ?? variant === 'primary';
+  const isLink = typeof href === 'string';
+  const resetClass = [
+    'ui-btn-reset inline-flex appearance-none border-0 bg-transparent p-0',
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
+    disabled ? 'pointer-events-none opacity-40' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+  const plainClass = [
+    'inline-flex items-center justify-center gap-2 rounded-lg font-display font-semibold tracking-wide',
+    'transition-[transform,background-color,border-color,color] duration-150',
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
+    'active:scale-[0.98]',
+    disabled ? 'pointer-events-none opacity-40' : '',
+    plainVariants[variant],
+    plainSizes[size],
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   if (useGlow && !disabled && (variant === 'primary' || variant === 'secondary')) {
     const isPrimary = variant === 'primary';
-    return (
-      <button
-        type={type}
-        disabled={disabled}
+    const glowInner = (
+      <BorderGlow
         className={[
-          'ui-btn-reset inline-flex appearance-none border-0 bg-transparent p-0',
-          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
-          'disabled:pointer-events-none disabled:opacity-40',
-          className,
-        ]
-          .filter(Boolean)
-          .join(' ')}
-        {...props}
+          'ui-btn',
+          isPrimary ? 'ui-btn--primary' : 'ui-btn--secondary',
+          sizePad[size],
+        ].join(' ')}
+        backgroundColor={isPrimary ? '#111111' : '#ffffff'}
+        borderRadius={10}
+        glowRadius={22}
+        glowIntensity={0.55}
+        edgeSensitivity={22}
+        coneSpread={26}
+        animated={false}
+        fillOpacity={0.22}
+        glowColor={isPrimary ? '210 80 78' : '260 70 72'}
+        colors={GLOW_COLORS}
       >
-        <BorderGlow
-          className={[
-            'ui-btn',
-            isPrimary ? 'ui-btn--primary' : 'ui-btn--secondary',
-            sizePad[size],
-          ].join(' ')}
-          backgroundColor={isPrimary ? '#111111' : '#ffffff'}
-          borderRadius={10}
-          glowRadius={22}
-          glowIntensity={0.55}
-          edgeSensitivity={22}
-          coneSpread={26}
-          animated={false}
-          fillOpacity={0.22}
-          glowColor={isPrimary ? '210 80 78' : '260 70 72'}
-          colors={GLOW_COLORS}
-        >
-          {children}
-        </BorderGlow>
+        {children}
+      </BorderGlow>
+    );
+
+    if (isLink) {
+      return (
+        <a href={href} className={resetClass} aria-disabled={disabled} {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}>
+          {glowInner}
+        </a>
+      );
+    }
+
+    const { type = 'button', ...buttonProps } = props as ButtonHTMLAttributes<HTMLButtonElement>;
+    return (
+      <button type={type} disabled={disabled} className={resetClass} {...buttonProps}>
+        {glowInner}
       </button>
     );
   }
 
+  if (isLink) {
+    return (
+      <a href={href} className={plainClass} aria-disabled={disabled} {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}>
+        {children}
+      </a>
+    );
+  }
+
+  const { type = 'button', ...buttonProps } = props as ButtonHTMLAttributes<HTMLButtonElement>;
   return (
-    <button
-      type={type}
-      disabled={disabled}
-      className={[
-        'inline-flex items-center justify-center gap-2 rounded-lg font-display font-semibold tracking-wide',
-        'transition-[transform,background-color,border-color,color] duration-150',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
-        'disabled:pointer-events-none disabled:opacity-40',
-        'active:scale-[0.98]',
-        plainVariants[variant],
-        plainSizes[size],
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
-      {...props}
-    >
+    <button type={type} disabled={disabled} className={plainClass} {...buttonProps}>
       {children}
     </button>
   );

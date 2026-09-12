@@ -1,0 +1,244 @@
+.hero-studio-b {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: min(100dvh, 880px);
+  background: #ffffff;
+  color: #111111;
+}
+
+.hero-studio-b__inner {
+  display: grid;
+  align-items: center;
+  gap: 3rem;
+  width: min(1160px, calc(100% - 2.5rem));
+  min-height: min(100dvh, 880px);
+  margin-inline: auto;
+  padding: 8.25rem 0 4.5rem;
+}
+
+.hero-studio-b__copy {
+  max-width: 34rem;
+}
+
+.hero-studio-b__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.35rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #3a3a3a;
+}
+
+.hero-studio-b__dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
+}
+
+.hero-studio-b__title {
+  margin: 0;
+  font-size: clamp(2.4rem, 5.4vw, 4.35rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: #111111;
+}
+
+.hero-studio-b__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.82em;
+  height: 0.82em;
+  margin: 0 0.08em;
+  vertical-align: 0.04em;
+  border-radius: 0.22em;
+  overflow: hidden;
+}
+
+.hero-studio-b__chip svg {
+  width: 68%;
+  height: 68%;
+}
+
+.hero-studio-b__chip--figma {
+  background: #111111;
+}
+
+.hero-studio-b__chip--rocket {
+  background: #ff5a36;
+}
+
+.hero-studio-b__lead {
+  margin: 1.25rem 0 0;
+  max-width: 32rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #6b7280;
+}
+
+.hero-studio-b__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 2rem;
+  padding: 0.82rem 1.35rem 0.82rem 1.5rem;
+  border-radius: 999px;
+  background: #111111;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hero-studio-b__cta:hover {
+  color: #ffffff;
+  background: #1f1f1f;
+}
+
+.hero-studio-b__cta svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.hero-studio-b__stage {
+  position: relative;
+  min-height: 420px;
+  height: 100%;
+}
+
+.hero-studio-b__device {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  background: #fff;
+  text-decoration: none;
+  will-change: transform;
+}
+
+.hero-studio-b__browser {
+  top: 6%;
+  right: 8%;
+  width: min(420px, 78%);
+  border-radius: 1.15rem;
+  box-shadow:
+    0 28px 60px rgba(17, 17, 17, 0.14),
+    0 4px 12px rgba(17, 17, 17, 0.06);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.hero-studio-b__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.7rem;
+  background: #f4f4f5;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+}
+
+.hero-studio-b__dots {
+  display: flex;
+  gap: 0.28rem;
+}
+
+.hero-studio-b__dots span {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 999px;
+  background: #d4d4d8;
+}
+
+.hero-studio-b__dots span:nth-child(1) {
+  background: #ff5f57;
+}
+
+.hero-studio-b__dots span:nth-child(2) {
+  background: #febc2e;
+}
+
+.hero-studio-b__dots span:nth-child(3) {
+  background: #28c840;
+}
+
+.hero-studio-b__url {
+  flex: 1;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #9ca3af;
+  font-size: 0.62rem;
+  letter-spacing: 0.01em;
+}
+
+.hero-studio-b__float {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-studio-b__browser img,
+.hero-studio-b__phone img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-studio-b__screen {
+  aspect-ratio: 16 / 10.4;
+  background: #eef4fb;
+}
+
+.hero-studio-b__phone {
+  width: min(158px, 34%);
+  aspect-ratio: 9 / 18.4;
+  border-radius: 1.45rem;
+  padding: 0.38rem;
+  background: #111111;
+  box-shadow: 0 22px 40px rgba(17, 17, 17, 0.22);
+}
+
+.hero-studio-b__phone img {
+  border-radius: 1.1rem;
+}
+
+.hero-studio-b__phone--left {
+  left: 0;
+  bottom: 4%;
+  z-index: 3;
+}
+
+.hero-studio-b__phone--right {
+  right: 0;
+  bottom: 10%;
+  z-index: 3;
+}
+
+@media (min-width: 900px) {
+  .hero-studio-b__inner {
+    grid-template-columns: 1fr 1.05fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 899px) {
+  .hero-studio-b__inner {
+    padding-top: 7.5rem;
+    min-height: 0;
+  }
+
+  .hero-studio-b__stage {
+    min-height: 360px;
+  }
+
+  .hero-studio-b__browser {
+    right: 12%;
+    width: min(360px, 72%);
+  }
+}

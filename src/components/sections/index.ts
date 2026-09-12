@@ -9,6 +9,8 @@ export { HeroGradientShader } from './primitives/HeroGradientShader';
 export { SiteNav } from './SiteNav';
 export { SiteFooter } from './SiteFooter';
 export { HeroSection } from './HeroSection';
+export { HeroStudioA } from './HeroStudioA';
+export { HeroStudioB } from './HeroStudioB';
 export { PageHero } from './PageHero';
 export { PillarGrid } from './PillarGrid';
 export { ServiceGrid } from './ServiceGrid';
