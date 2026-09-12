@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
+import { Button } from '../ui';
 import './HeroStudioA.css';
 
 gsap.registerPlugin(useGSAP);
@@ -24,6 +25,8 @@ type HeroStudioAProps = {
   description?: string;
   primaryLabel?: string;
   primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
 };
 
 function wrap(index: number, length: number) {
@@ -58,8 +61,10 @@ function prefersReducedMotion() {
 export function HeroStudioA({
   title = 'Experiencias digitales que sí mueven pipeline.',
   description = 'Estrategia, diseño y media como un solo sistema. Menos improvisación; más señal, oferta clara y web que cierra.',
-  primaryLabel = 'Agenda tu auditoría',
+  primaryLabel = 'Agenda tu auditoría gratuita',
   primaryHref = '/contacto',
+  secondaryLabel = 'Ver Casos de Éxito',
+  secondaryHref = '/portafolio',
 }: HeroStudioAProps) {
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -114,7 +119,9 @@ export function HeroStudioA({
 
       gsap.set(cards, { xPercent: -50, yPercent: -50, transformPerspective: 1400 });
       gsap.set('.hero-studio-a__card img', { clearProps: 'filter' });
-      gsap.set('.hero-studio-a__card-label', { clearProps: 'opacity,visibility,transform' });
+      gsap.set('.hero-studio-a__card-label, .hero-studio-a__card-cta-wrap', {
+        clearProps: 'opacity,visibility,transform',
+      });
       layout(false);
 
       if (!prefersReducedMotion()) {
@@ -125,7 +132,7 @@ export function HeroStudioA({
           duration: MOTION.duration,
           ease: MOTION.ease,
         });
-        gsap.from('.hero-studio-a__cta', {
+        gsap.from('.hero-studio-a__actions', {
           y: 16,
           autoAlpha: 0,
           duration: MOTION.durationFast,
@@ -192,9 +199,16 @@ export function HeroStudioA({
 
       <div className="hero-studio-a__inner">
         <div className="hero-studio-a__copy">
-          <p className="hero-studio-a__eyebrow">Partner estratégico</p>
           <h2 className="hero-studio-a__title">{title}</h2>
           <p className="hero-studio-a__lead">{description}</p>
+          <div className="hero-studio-a__actions">
+            <Button href={primaryHref} variant="primary" size="md" className="no-underline">
+              {primaryLabel}
+            </Button>
+            <Button href={secondaryHref} variant="secondary" size="md" className="no-underline">
+              {secondaryLabel}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -209,19 +223,26 @@ export function HeroStudioA({
         <p ref={liveRef} className="sr-only" aria-live="polite" />
         <div className="hero-studio-a__track">
           {SLIDES.map((slide) => (
-            <a key={slide.title} href={PROJECT_HREF} className="hero-studio-a__card">
-              <img src={slide.image} alt="" draggable={false} />
+            <div key={slide.title} className="hero-studio-a__card">
+              <a href={PROJECT_HREF} className="hero-studio-a__card-media" aria-label={slide.title}>
+                <img src={slide.image} alt="" draggable={false} />
+              </a>
               <span className="hero-studio-a__card-label">{slide.title}</span>
-            </a>
+              <div className="hero-studio-a__card-cta-wrap">
+                <Button
+                  href={PROJECT_HREF}
+                  variant="secondary"
+                  size="sm"
+                  className="hero-studio-a__card-cta no-underline !h-8 !px-3 !text-xs"
+                >
+                  ver proyecto
+                </Button>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      <div className="hero-studio-a__inner hero-studio-a__inner--footer">
-        <a href={primaryHref} className="hero-studio-a__cta">
-          {primaryLabel}
-        </a>
-      </div>
     </section>
   );
 }

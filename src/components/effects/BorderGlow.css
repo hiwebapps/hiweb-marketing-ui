@@ -1,3 +1,9 @@
+@property --cursor-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 45deg;
+}
+
 .border-glow-card {
   --edge-proximity: 0;
   --cursor-angle: 45deg;
@@ -35,11 +41,51 @@
   z-index: -1;
 }
 
-.border-glow-card:not(:hover):not(.sweep-active)::before,
-.border-glow-card:not(:hover):not(.sweep-active)::after,
-.border-glow-card:not(:hover):not(.sweep-active) > .edge-light {
+.border-glow-card:not(:hover):not(.sweep-active):not(.is-live)::before,
+.border-glow-card:not(:hover):not(.sweep-active):not(.is-live)::after,
+.border-glow-card:not(:hover):not(.sweep-active):not(.is-live) > .edge-light {
   opacity: 0;
   transition: opacity 0.75s ease-in-out;
+}
+
+.border-glow-card.is-live {
+  --edge-proximity: 92;
+  animation: border-glow-orbit 5.5s linear infinite;
+}
+
+.border-glow-card.is-live::before,
+.border-glow-card.is-live::after,
+.border-glow-card.is-live > .edge-light {
+  opacity: 1;
+}
+
+.border-glow-card.is-live:hover {
+  --edge-proximity: 100;
+  --fill-opacity: 0.52;
+  transform: translate3d(0, -1px, 0.01px) scale(1.035);
+  animation-duration: 2s;
+}
+
+@keyframes border-glow-orbit {
+  from {
+    --cursor-angle: 0deg;
+  }
+  to {
+    --cursor-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-glow-card.is-live {
+    animation: none;
+  }
+
+  .border-glow-card.is-live:hover,
+  .ui-btn.border-glow-card:hover,
+  .hero-cta.border-glow-card:hover,
+  .ui-btn-popup:hover {
+    transform: none;
+  }
 }
 
 /* colored mesh-gradient border */
@@ -146,12 +192,23 @@
   display: inline-grid;
   box-shadow: none;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform 0.2s ease;
+}
+
+.ui-btn.border-glow-card:hover,
+.hero-cta.border-glow-card:hover,
+.ui-btn-popup:hover {
+  transform: translate3d(0, -1px, 0.01px) scale(1.035);
 }
 
 .ui-btn.border-glow-card:active,
-.hero-cta.border-glow-card:active {
+.hero-cta.border-glow-card:active,
+.ui-btn-popup:active {
   transform: scale(0.98);
+}
+
+.ui-btn-popup {
+  transition: transform 0.2s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .ui-btn .border-glow-inner,
@@ -168,25 +225,35 @@
 }
 
 .ui-btn--sm .border-glow-inner {
-  padding: 0.5rem 1rem;
-  font-size: 0.75rem;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  font-size: 0.875rem;
 }
 
 .ui-btn--md .border-glow-inner,
 .hero-cta .border-glow-inner {
-  padding: 0.875rem 1.75rem;
-  font-size: 0.875rem;
+  min-height: 50px;
+  padding: 0 1.5rem;
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
 .ui-btn--lg .border-glow-inner {
-  padding: 1rem 2rem;
+  min-height: 56px;
+  padding: 0 2rem;
   font-size: 1rem;
 }
 
-/* Primary: ink black, subtle glow on hover only */
+/* Primary: ink pill, mesh glow always on */
 .ui-btn--primary.border-glow-card,
 .hero-cta--primary.border-glow-card {
   border-color: rgb(255 255 255 / 12%);
+}
+
+.ui-btn--primary.is-live:hover {
+  box-shadow:
+    0 0 18px -2px rgb(146 122 254 / 0.45),
+    0 0 28px -6px rgb(1 231 255 / 0.28);
 }
 
 .ui-btn--primary .border-glow-inner,

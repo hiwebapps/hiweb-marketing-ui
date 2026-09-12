@@ -178,7 +178,7 @@ export function DesignSystem() {
               id="botones"
               eyebrow="03 · Actions"
               title="Botones"
-              description="Primary ink negro con BorderGlow sutil al hover (React Bits). Secondary/outline con hairline. Motion rápida tipo Raycast (scale 0.98)."
+              description="Primary ink en pastilla (50px) con mesh glow continuo en el borde. En hover el orbit se acelera, el halo se abre y la pastilla se eleva. Secondary/outline con hairline."
             />
             <CardGlass className="space-y-10 bg-surface p-6 sm:p-10">
               <div>
@@ -196,8 +196,8 @@ export function DesignSystem() {
                   </Button>
                 </div>
                 <p className="mt-4 !text-sm text-muted">
-                  Acerca el cursor al borde del Primary/Secondary para ver el glow mesh
-                  (cyan · purple · soft white). Intensidad baja a propósito.
+                  El Primary mantiene el mesh (cyan · purple · soft white) orbitando solo.
+                  En hover el orbit se acelera, el halo se abre y la pastilla se eleva.
                 </p>
               </div>
 

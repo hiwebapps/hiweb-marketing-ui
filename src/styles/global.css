@@ -113,12 +113,15 @@
 @layer base {
   html {
     @apply antialiased;
+    overflow-x: hidden;
     color-scheme: light;
   }
 
   body {
     @apply bg-canvas font-sans text-ink-soft;
     min-height: 100dvh;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   h1,

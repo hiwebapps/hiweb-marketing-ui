@@ -3,14 +3,13 @@ import '../styles/global.css';
 import '../components/sections/SiteNav.css';
 import { SiteNav } from '../components/sections/SiteNav';
 import { SiteFooter } from '../components/sections/SiteFooter';
-import JsonLd from '../components/seo/JsonLd.astro';
 import { SITE } from '../data/site';
-import { organizationSchema } from '../lib/schema';
 
 interface Props {
 	title?: string;
 	description?: string;
 	canonical?: string;
+	/** Kept for callers; this preview is always noindex. */
 	noindex?: boolean;
 	ogImage?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[] | object | object[];
@@ -20,9 +19,7 @@ const {
 	title = 'Hiweb Marketing — Partner estratégico',
 	description = SITE.tagline,
 	canonical,
-	noindex = false,
 	ogImage = '/favicon.svg',
-	jsonLd,
 } = Astro.props;
 
 const canonicalUrl = canonical
@@ -31,9 +28,6 @@ const ogImageUrl = ogImage.startsWith('http')
 	? ogImage
 	: new URL(ogImage, Astro.site ?? Astro.url).href;
 
-const schema = jsonLd
-	? [organizationSchema(), ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])]
-	: organizationSchema();
 ---
 
 <!doctype html>
@@ -43,7 +37,8 @@ const schema = jsonLd
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
-		{noindex ? <meta name="robots" content="noindex, nofollow" /> : null}
+		<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+		<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -78,7 +73,6 @@ const schema = jsonLd
 				}
 			}, 2500);
 		</script>
-		<JsonLd data={schema} />
 	</head>
 	<body>
 		<SiteNav client:load />

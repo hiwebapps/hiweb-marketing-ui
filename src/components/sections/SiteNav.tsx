@@ -5,7 +5,6 @@ import {
   NAV_EXPLORE,
   NAV_INDUSTRY_ITEMS,
   NAV_SERVICE_GROUPS,
-  SITE,
 } from '../../data/site';
 import { Button } from '../ui';
 import './SiteNav.css';
@@ -28,6 +27,7 @@ export function SiteNav() {
   const panelRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const lastY = useRef(0);
+  const closeTimer = useRef(0);
   const industriasId = useId();
   const serviciosId = useId();
 
@@ -56,6 +56,7 @@ export function SiteNav() {
     document.addEventListener('mousedown', onPointer);
     document.addEventListener('keydown', onKey);
     return () => {
+      window.clearTimeout(closeTimer.current);
       document.removeEventListener('mousedown', onPointer);
       document.removeEventListener('keydown', onKey);
     };
@@ -92,8 +93,14 @@ export function SiteNav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [mobileOpen, open]);
 
-  const toggle = (key: Exclude<MenuKey, null>) => {
-    setOpen((current) => (current === key ? null : key));
+  const openMenu = (key: Exclude<MenuKey, null>) => {
+    window.clearTimeout(closeTimer.current);
+    setOpen(key);
+  };
+
+  const scheduleClose = () => {
+    window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => setOpen(null), 140);
   };
 
   return (
@@ -153,13 +160,17 @@ export function SiteNav() {
                 </a>
               </li>
 
-              <li className="hw-nav__item hw-nav__item--dropdown">
+              <li
+                className="hw-nav__item hw-nav__item--dropdown"
+                onMouseEnter={() => openMenu('industrias')}
+                onMouseLeave={scheduleClose}
+              >
                 <button
                   type="button"
                   className={['hw-nav__link', open === 'industrias' ? 'is-open' : ''].filter(Boolean).join(' ')}
                   aria-expanded={open === 'industrias'}
                   aria-controls={industriasId}
-                  onClick={() => toggle('industrias')}
+                  onClick={() => openMenu('industrias')}
                 >
                   Industrias
                   <Chevron open={open === 'industrias'} />
@@ -200,13 +211,17 @@ export function SiteNav() {
                 ) : null}
               </li>
 
-              <li className="hw-nav__item hw-nav__item--dropdown">
+              <li
+                className="hw-nav__item hw-nav__item--dropdown"
+                onMouseEnter={() => openMenu('servicios')}
+                onMouseLeave={scheduleClose}
+              >
                 <button
                   type="button"
                   className={['hw-nav__link', open === 'servicios' ? 'is-open' : ''].filter(Boolean).join(' ')}
                   aria-expanded={open === 'servicios'}
                   aria-controls={serviciosId}
-                  onClick={() => toggle('servicios')}
+                  onClick={() => openMenu('servicios')}
                 >
                   Servicios
                   <Chevron open={open === 'servicios'} />
@@ -286,15 +301,7 @@ export function SiteNav() {
               </button>
 
               <div className="hw-nav__ctas">
-                <a
-                  href={SITE.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hw-nav__btn hw-nav__btn--whatsapp"
-                >
-                  WhatsApp
-                </a>
-                <Button href="/contacto" size="sm" variant="primary" className="hw-nav__ds-cta no-underline">
+                <Button href="/contacto" size="md" variant="primary" className="hw-nav__ds-cta no-underline">
                   Agenda tu auditoría
                 </Button>
               </div>
@@ -396,14 +403,6 @@ export function SiteNav() {
           </div>
 
           <div className="hw-nav-sheet__footer">
-            <a
-              href={SITE.whatsapp}
-              className="hw-nav-sheet__cta hw-nav-sheet__cta--ghost"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WhatsApp
-            </a>
             <Button href="/contacto" size="md" variant="primary" className="hw-nav-sheet__ds-cta no-underline">
               Agenda tu auditoría
             </Button>

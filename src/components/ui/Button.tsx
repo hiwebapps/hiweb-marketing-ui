@@ -43,9 +43,9 @@ const plainVariants: Record<ButtonVariant, string> = {
 };
 
 const plainSizes: Record<ButtonSize, string> = {
-  sm: 'px-4 py-2 text-xs',
-  md: 'px-7 py-3.5 text-sm',
-  lg: 'px-8 py-4 text-base',
+  sm: 'h-[44px] px-5 text-sm',
+  md: 'h-[50px] px-6 text-base',
+  lg: 'h-[56px] px-8 text-base',
 };
 
 export function Button({
@@ -69,10 +69,8 @@ export function Button({
     .filter(Boolean)
     .join(' ');
   const plainClass = [
-    'inline-flex items-center justify-center gap-2 rounded-lg font-display font-semibold tracking-wide',
-    'transition-[transform,background-color,border-color,color] duration-150',
+    'ui-btn-popup inline-flex items-center justify-center gap-2 rounded-full font-display font-semibold tracking-wide',
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
-    'active:scale-[0.98]',
     disabled ? 'pointer-events-none opacity-40' : '',
     plainVariants[variant],
     plainSizes[size],
@@ -91,13 +89,14 @@ export function Button({
           sizePad[size],
         ].join(' ')}
         backgroundColor={isPrimary ? '#111111' : '#ffffff'}
-        borderRadius={10}
-        glowRadius={22}
-        glowIntensity={0.55}
-        edgeSensitivity={22}
-        coneSpread={26}
+        borderRadius={isPrimary ? 999 : 10}
+        glowRadius={isPrimary ? 18 : 22}
+        glowIntensity={isPrimary ? 0.72 : 0.55}
+        edgeSensitivity={isPrimary ? 12 : 22}
+        coneSpread={isPrimary ? 32 : 26}
         animated={false}
-        fillOpacity={0.22}
+        loop={isPrimary}
+        fillOpacity={isPrimary ? 0.3 : 0.22}
         glowColor={isPrimary ? '210 80 78' : '260 70 72'}
         colors={GLOW_COLORS}
       >

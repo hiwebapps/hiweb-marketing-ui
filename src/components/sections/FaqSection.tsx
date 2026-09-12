@@ -52,7 +52,7 @@ export function FaqSection({
   title = 'Objeciones antes de agendar',
   description = 'Si falta la tuya, la resolvemos en la auditoría.',
   tone = 'surface',
-  withSchema = true,
+  withSchema = false,
 }: FaqSectionProps) {
   const schema = {
     '@context': 'https://schema.org',
