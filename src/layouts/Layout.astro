@@ -3,6 +3,7 @@ import '../styles/global.css';
 import '../components/sections/SiteNav.css';
 import { SiteNav } from '../components/sections/SiteNav';
 import { SiteFooter } from '../components/sections/SiteFooter';
+import { ScrollIndicator } from '../components/effects/ScrollIndicator';
 import { SITE } from '../data/site';
 
 interface Props {
@@ -76,6 +77,7 @@ const ogImageUrl = ogImage.startsWith('http')
 	</head>
 	<body>
 		<SiteNav client:load />
+		<ScrollIndicator client:load />
 		<slot />
 		<SiteFooter />
 		<script src="../scripts/motion.ts"></script>

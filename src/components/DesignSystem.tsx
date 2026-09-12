@@ -1,5 +1,6 @@
 import { BackgroundMesh } from './BackgroundMesh';
 import { CardGlass } from './CardGlass';
+import { ScrollIndicatorDemo } from './effects/ScrollIndicator';
 import {
   Badge,
   Button,
@@ -34,6 +35,7 @@ const SECTIONS = [
   { id: 'badges', label: 'Badges' },
   { id: 'surfaces', label: 'Surfaces' },
   { id: 'enlaces', label: 'Enlaces' },
+  { id: 'scroll', label: 'Scroll' },
 ] as const;
 
 function SectionTitle({
@@ -293,9 +295,9 @@ export function DesignSystem() {
               id="badges"
               eyebrow="05 · Status"
               title="Badges"
-              description="Etiquetas compactas. Neutral por defecto; color solo para estado."
+              description="Pastilla circular con el mismo tratamiento que las cards de Industrias: fill surface y halo lavado del acento."
             />
-            <CardGlass className="bg-surface p-6 sm:p-10">
+            <CardGlass className="p-6 sm:p-10">
               <div className="flex flex-wrap gap-2">
                 <Badge variant="neutral">Neutral</Badge>
                 <Badge variant="cyan">Cyan</Badge>
@@ -366,6 +368,27 @@ export function DesignSystem() {
                 <span className="font-medium text-ink">claridad de producto</span> con{' '}
                 <span className="font-medium text-ink">ritmo de interfaz</span>.
               </p>
+            </CardGlass>
+          </section>
+
+          <section>
+            <SectionTitle
+              id="scroll"
+              eyebrow="08 · Motion"
+              title="Scroll indicator"
+              description="Riel a la derecha con checkpoints de cada section. Gradiente purple → cyan → orange. El script de la página vive en Layout; esta caja prueba la variante contenida."
+            />
+            <CardGlass className="space-y-6 bg-surface p-6 sm:p-10">
+              <p className="!text-sm text-ink-soft">
+                Referencia: Gradient Vertical Scroll Progress Bar (FreeFrontend). Tokens:{' '}
+                <span className="font-mono text-ink">#927afe</span>
+                {' · '}
+                <span className="font-mono text-ink">#01e7ff</span>
+                {' · '}
+                <span className="font-mono text-ink">#fe621c</span>
+                . Cuadrados = arranque de cada section. Hover para el nombre; click para saltar.
+              </p>
+              <ScrollIndicatorDemo />
             </CardGlass>
           </section>
 

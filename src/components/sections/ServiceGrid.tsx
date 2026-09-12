@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { ServiceIcon, SERVICE_ICON_NAMES, type ServiceIconName } from '../icons/ServiceIcons';
+import { Badge } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
 import './ServiceGrid.css';
@@ -64,9 +65,7 @@ export function ServiceGrid({
   return (
     <SectionBand id="servicios" tone={tone}>
       <div className="flex justify-center">
-        <span className="rounded-full border border-border bg-canvas px-3 py-1 font-display text-[11px] font-medium tracking-[0.16em] uppercase text-muted">
-          {eyebrow}
-        </span>
+        <Badge>{eyebrow}</Badge>
       </div>
       <SectionHeader title={title} description={description} align="center" className="mt-5" />
 

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Eyebrow } from './Eyebrow';
+import { Badge } from '../../ui';
 
 type SectionHeaderProps = {
   eyebrow?: string;
@@ -41,9 +41,11 @@ export function SectionHeader({
         .join(' ')}
     >
       {eyebrow ? (
-        <Eyebrow index={index} tone={tone} className={align === 'center' ? 'justify-center' : ''}>
-          {eyebrow}
-        </Eyebrow>
+        <div className={align === 'center' ? 'flex justify-center' : ''}>
+          <Badge tone={tone === 'on-ink' ? 'on-ink' : 'default'}>
+            {index ? `${index} · ${eyebrow}` : eyebrow}
+          </Badge>
+        </div>
       ) : null}
 
       <h2

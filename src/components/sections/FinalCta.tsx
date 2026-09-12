@@ -1,4 +1,4 @@
-import { Button } from '../ui';
+import { Badge, Button } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
 
 type FinalCtaProps = {
@@ -24,9 +24,9 @@ export function FinalCta({
   return (
     <SectionBand id="contacto" tone="ink" as="section">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="font-display text-xs font-medium tracking-[0.18em] text-canvas/50 uppercase">
-          Siguiente paso
-        </p>
+        <div className="flex justify-center">
+          <Badge tone="on-ink">Siguiente paso</Badge>
+        </div>
         <h2 className="mt-4 !text-3xl !leading-[1.2] text-canvas md:!text-5xl">{title}</h2>
         <p className="mx-auto mt-4 max-w-xl !text-base text-canvas/65 md:!text-lg">
           {description}

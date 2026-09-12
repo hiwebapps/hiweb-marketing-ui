@@ -1,0 +1,86 @@
+.ui-badge {
+  --badge-accent: var(--color-accent-purple);
+  --badge-fill: var(--color-surface);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  margin: 0.28rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.28rem 0.72rem;
+  background: var(--badge-fill);
+  color: var(--color-ink);
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ui-badge::before {
+  content: "";
+  position: absolute;
+  inset: -0.28rem;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      130% 90% at 10% 6%,
+      color-mix(in srgb, var(--badge-accent) 58%, white) 0%,
+      transparent 56%
+    ),
+    radial-gradient(
+      95% 80% at 94% 100%,
+      color-mix(in srgb, var(--badge-accent) 40%, white) 0%,
+      transparent 50%
+    ),
+    color-mix(in srgb, var(--badge-accent) 26%, white);
+}
+
+.ui-badge--neutral,
+.ui-badge--purple {
+  --badge-accent: var(--color-accent-purple);
+}
+
+.ui-badge--cyan {
+  --badge-accent: var(--color-accent-cyan);
+}
+
+.ui-badge--orange {
+  --badge-accent: var(--color-accent-orange);
+}
+
+.ui-badge--lime {
+  --badge-accent: var(--color-accent-lime);
+}
+
+.ui-badge--success {
+  --badge-accent: var(--color-accent-green);
+}
+
+.ui-badge--danger {
+  --badge-accent: var(--color-accent-red);
+}
+
+.ui-badge--on-ink {
+  --badge-fill: color-mix(in srgb, white 8%, transparent);
+  color: rgba(245, 245, 245, 0.9);
+}
+
+.ui-badge--on-ink::before {
+  background:
+    radial-gradient(
+      130% 90% at 10% 6%,
+      color-mix(in srgb, var(--badge-accent) 46%, transparent) 0%,
+      transparent 56%
+    ),
+    radial-gradient(
+      95% 80% at 94% 100%,
+      color-mix(in srgb, var(--badge-accent) 32%, transparent) 0%,
+      transparent 50%
+    ),
+    color-mix(in srgb, var(--badge-accent) 28%, transparent);
+}

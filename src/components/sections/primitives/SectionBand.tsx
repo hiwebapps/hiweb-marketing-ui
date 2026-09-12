@@ -33,6 +33,7 @@ export function SectionBand({
   return (
     <Tag
       id={id}
+      {...(id ? { 'data-scroll-section': id } : {})}
       className={['relative scroll-mt-24', tones[tone], className].filter(Boolean).join(' ')}
     >
       <div

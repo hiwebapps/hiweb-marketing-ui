@@ -4,17 +4,34 @@ import { getCollection } from 'astro:content';
 import { HeroStudioA } from '../components/sections/HeroStudioA';
 import { HomeAfterHero, HomeBelowFold } from '../components/sections/HomeAfterHero';
 import { IndustryGrid } from '../components/sections/IndustryGrid';
+import { CaseStories } from '../components/sections/CaseStories';
 import { FinalCta } from '../components/sections/FinalCta';
-import { GLOBAL_METRICS, SITE } from '../data/site';
+import { SITE } from '../data/site';
 import { faqSchema } from '../lib/schema';
 import { HOME_FAQS } from '../data/site';
 
 const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
 const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
-const cases = await getCollection('casos');
-const featured = cases.filter((entry) => entry.data.destacado);
-
+const CASE_ORDER = ['pulse', 'norte-industrial', 'marina-bay', 'clinica-aurora'];
+const cases = (await getCollection('casos')).sort((a, b) => {
+	const left = CASE_ORDER.indexOf(a.id);
+	const right = CASE_ORDER.indexOf(b.id);
+	return (left === -1 ? 99 : left) - (right === -1 ? 99 : right);
+});
 const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+
+function formatCaseStat(metric: {
+	valor: number;
+	prefix?: string;
+	suffix?: string;
+	decimals?: number;
+	label: string;
+}) {
+	const value = `${metric.prefix ?? ''}${
+		metric.decimals != null ? metric.valor.toFixed(metric.decimals) : metric.valor
+	}${metric.suffix ?? ''}`;
+	return { value, label: metric.label };
+}
 ---
 
 <Layout
@@ -33,7 +50,7 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 		/>
 		<IndustryGrid
 			client:visible
-			tone="surface"
+			tone="canvas"
 			industries={industries.map((item) => ({
 				slug: item.id,
 				nombre: item.data.nombre,
@@ -41,18 +58,19 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
 		/>
-		<HomeBelowFold
-			cases={featured.map((item) => ({
+		<CaseStories
+			client:visible
+			stories={cases.map((item) => ({
 				client: item.data.cliente,
-				industry: industryName[item.data.industria.id] ?? item.data.industria.id,
-				outcome: item.data.resultadoFrase,
-				title: item.data.titulo,
-				summary: item.data.resumen,
-				href: `/portafolio/${item.id}`,
-				accent: item.data.accent,
+				quote: item.data.testimonio?.quote ?? item.data.resumen,
+				name: item.data.testimonio?.name ?? item.data.cliente,
+				role: item.data.testimonio?.role
+					?? industryName[item.data.industria.id]
+					?? item.data.industria.id,
+				stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
 			}))}
-			metrics={[...GLOBAL_METRICS]}
 		/>
+		<HomeBelowFold />
 		<FinalCta client:load />
 	</main>
 </Layout>

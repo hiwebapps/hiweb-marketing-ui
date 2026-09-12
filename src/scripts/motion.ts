@@ -100,30 +100,6 @@ function bindExtras() {
         },
       });
     });
-
-    document.querySelectorAll<HTMLElement>('[data-chapters]').forEach((el) => {
-      const steps = el.querySelectorAll<HTMLElement>('[data-chapter]');
-      if (steps.length < 2) return;
-
-      gsap.set(steps, { opacity: 0.28 });
-      gsap.set(steps[0], { opacity: 1 });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 12%',
-          end: `+=${Math.min(steps.length * 420, 1400)}`,
-          pin: true,
-          scrub: 0.8,
-        },
-      });
-
-      steps.forEach((step, i) => {
-        if (i === 0) return;
-        tl.to(steps[i - 1], { opacity: 0.28, duration: 1 }, i - 1);
-        tl.to(step, { opacity: 1, duration: 1 }, i - 1);
-      });
-    });
   });
 }
 

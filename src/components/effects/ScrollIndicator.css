@@ -1,0 +1,208 @@
+.hw-scroll-indicator {
+  --hw-scroll-track: rgba(17, 17, 17, 0.1);
+  --hw-scroll-p: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 7.25rem;
+  right: 1.15rem;
+  bottom: 1.75rem;
+  z-index: 1500;
+  width: 12px;
+}
+
+.hw-scroll-indicator__track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 17, 17, 0.06) 0%,
+    rgba(17, 17, 17, 0.14) 18%,
+    rgba(17, 17, 17, 0.14) 82%,
+    rgba(17, 17, 17, 0.06) 100%
+  );
+  transform: translateX(-50%);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.35);
+}
+
+.hw-scroll-indicator__fill {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transform: scaleY(var(--hw-scroll-p));
+  transform-origin: top center;
+  background: linear-gradient(
+    180deg,
+    var(--color-accent-purple) 0%,
+    var(--color-accent-cyan) 48%,
+    var(--color-accent-orange) 100%
+  );
+}
+
+.hw-scroll-indicator__tip {
+  position: absolute;
+  top: calc(var(--hw-scroll-p) * 100%);
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 1.5px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-accent-cyan) 45%, white),
+    0 0 8px color-mix(in srgb, var(--color-accent-cyan) 40%, transparent);
+  transform: translate(-50%, -50%);
+}
+
+.hw-scroll-indicator__marks {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hw-scroll-indicator__marks > li {
+  display: contents;
+}
+
+.hw-scroll-indicator__mark {
+  pointer-events: auto;
+  position: absolute;
+  left: 50%;
+  top: calc(var(--t) * 100%);
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.hw-scroll-indicator__dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(17, 17, 17, 0.22);
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--color-canvas, #fff);
+  transform: translate(-50%, -50%);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hw-scroll-indicator__mark.is-passed .hw-scroll-indicator__dot,
+.hw-scroll-indicator__mark.is-active .hw-scroll-indicator__dot {
+  border-color: transparent;
+  background: var(--color-accent-cyan);
+}
+
+.hw-scroll-indicator__mark.is-active .hw-scroll-indicator__dot {
+  box-shadow:
+    0 0 0 2px var(--color-canvas, #fff),
+    0 0 7px color-mix(in srgb, var(--color-accent-cyan) 45%, transparent);
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.hw-scroll-indicator__label {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.88);
+  color: #f5f5f5;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-4px, -50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hw-scroll-indicator__mark:hover .hw-scroll-indicator__label,
+.hw-scroll-indicator__mark:focus-visible .hw-scroll-indicator__label {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.hw-scroll-indicator__mark:focus-visible {
+  outline: none;
+}
+
+.hw-scroll-indicator__mark:focus-visible .hw-scroll-indicator__dot {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.hw-scroll-indicator--contained {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.65rem;
+  left: auto;
+  bottom: 0.85rem;
+  z-index: 2;
+}
+
+.hw-scroll-demo {
+  position: relative;
+  overflow: auto;
+  height: 22rem;
+  padding: 1.25rem 2.35rem 1.25rem 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-canvas);
+}
+
+.hw-scroll-demo__block + .hw-scroll-demo__block {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.hw-scroll-demo__copy p + p {
+  margin-top: 0.85rem;
+}
+
+@media (max-width: 767px) {
+  .hw-scroll-indicator {
+    top: 6.5rem;
+    right: 0.45rem;
+    bottom: 1.15rem;
+    width: 10px;
+  }
+
+  .hw-scroll-indicator__label {
+    display: none;
+  }
+
+  .hw-scroll-indicator__tip {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hw-scroll-indicator__dot,
+  .hw-scroll-indicator__label {
+    transition: none;
+  }
+}

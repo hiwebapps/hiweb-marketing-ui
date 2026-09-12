@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { PillarIcon, PILLAR_ICON_NAMES, type PillarIconName } from '../icons/PillarIcons';
+import { Badge } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
 import './PillarGrid.css';
@@ -47,9 +48,7 @@ export function PillarGrid({
   return (
     <SectionBand id="diferenciadores" tone={tone}>
       <div className="flex justify-center">
-        <span className="rounded-full border border-border bg-canvas px-3 py-1 font-display text-[11px] font-medium tracking-[0.16em] uppercase text-muted">
-          {eyebrow}
-        </span>
+        <Badge>{eyebrow}</Badge>
       </div>
       <SectionHeader
         title={title}

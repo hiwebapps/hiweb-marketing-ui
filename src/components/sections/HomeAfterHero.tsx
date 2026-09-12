@@ -1,20 +1,12 @@
 import { HOME_FAQS, HOME_PILLARS, PROCESS_PHASES } from '../../data/site';
 import { AboutTeaser } from './AboutTeaser';
-import { CasePreview, type CaseItem } from './CasePreview';
 import { FaqSection } from './FaqSection';
-import { MetricsBand, type MetricItem } from './MetricsBand';
 import { PillarGrid } from './PillarGrid';
 import { ProcessPhases } from './ProcessPhases';
 import { ServiceGrid, type GridCard } from './ServiceGrid';
-import { SocialProof } from './SocialProof';
 
 type HomeAfterHeroProps = {
   services: GridCard[];
-};
-
-type HomeBelowFoldProps = {
-  cases: CaseItem[];
-  metrics: MetricItem[];
 };
 
 /**
@@ -30,12 +22,9 @@ export function HomeAfterHero({ services }: HomeAfterHeroProps) {
   );
 }
 
-export function HomeBelowFold({ cases, metrics }: HomeBelowFoldProps) {
+export function HomeBelowFold() {
   return (
     <>
-      <CasePreview cases={cases} />
-      <MetricsBand metrics={metrics} tone="surface" />
-      <SocialProof />
       <ProcessPhases phases={[...PROCESS_PHASES]} tone="canvas" />
       <AboutTeaser />
       <FaqSection items={[...HOME_FAQS]} />

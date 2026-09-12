@@ -2,8 +2,8 @@
   position: relative;
   isolation: isolate;
   overflow: visible;
-  min-height: min(100dvh, 920px);
-  padding-bottom: 4.25rem;
+  min-height: min(108dvh, 980px);
+  padding-bottom: 5rem;
   background: transparent;
   color: #111111;
 }
@@ -115,7 +115,7 @@
   align-items: center;
   width: min(1100px, calc(100% - 2.5rem));
   margin-inline: auto;
-  padding: 8.25rem 0 0;
+  padding: 10.75rem 0 0;
   text-align: center;
 }
 
@@ -158,8 +158,8 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  height: clamp(280px, 40vw, 400px);
-  margin-top: 2.75rem;
+  height: clamp(240px, 36vw, 340px);
+  margin-top: 2.25rem;
   overflow-x: clip;
   overflow-y: visible;
   perspective: 1400px;
@@ -182,7 +182,7 @@
   left: 50%;
   display: block;
   overflow: hidden;
-  width: min(320px, 68vw);
+  width: min(400px, 70vw);
   aspect-ratio: 16 / 10;
   box-sizing: border-box;
   border-radius: 4px;
@@ -322,14 +322,19 @@
 
 @media (max-width: 767px) {
   .hero-studio-a {
-    padding-bottom: 3.5rem;
+    padding-bottom: 4rem;
   }
 
   .hero-studio-a__inner {
-    padding-top: 7.4rem;
+    padding-top: 8.85rem;
+  }
+
+  .hero-studio-a__stage {
+    height: clamp(210px, 58vw, 260px);
+    margin-top: 1.85rem;
   }
 
   .hero-studio-a__card {
-    width: min(250px, 72vw);
+    width: min(280px, 78vw);
   }
 }

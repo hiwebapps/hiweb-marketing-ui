@@ -36,6 +36,8 @@ export {
 } from './ValueChapter';
 export { CasePreview, CaseCard } from './CasePreview';
 export type { CaseItem } from './CasePreview';
+export { CaseStories } from './CaseStories';
+export type { CaseStory, CaseStoryStat } from './CaseStories';
 export { SocialProof } from './SocialProof';
 export { FitSignal } from './FitSignal';
 export { FaqSection } from './FaqSection';

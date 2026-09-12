@@ -1,7 +1,7 @@
 import { Badge, Button } from '../ui';
 import { BackgroundMesh } from '../BackgroundMesh';
 import {
-  CasePreview,
+  CaseStories,
   Eyebrow,
   FaqSection,
   FinalCta,
@@ -28,7 +28,7 @@ const KIT = [
   { id: 'pov', name: 'ProblemPov', source: 'B2B agency', role: 'Espejo del buyer' },
   { id: 'steps', name: 'HowItWorks', source: 'Sistema Hiweb', role: 'Framework nombrado 01–03' },
   { id: 'chapter', name: 'ValueChapter', source: 'Linear', role: '1 outcome + 1 evidencia UI' },
-  { id: 'cases', name: 'CasePreview', source: 'Agencia', role: '2–3 cases con métrica' },
+  { id: 'cases', name: 'CaseStories', source: 'Agencia', role: 'Slider de casos con foto, quote y métrica' },
   { id: 'proof', name: 'SocialProof', source: 'Raycast / Cal', role: 'Quotes con outcome' },
   { id: 'fit', name: 'FitSignal', source: 'Kalungi', role: 'Engagement / fit' },
   { id: 'faq', name: 'FaqSection', source: 'Cal', role: 'Objeciones ICP' },
@@ -143,7 +143,7 @@ export function SectionsKitPage() {
         </div>
 
         <div id="demo-cases">
-          <CasePreview />
+          <CaseStories />
         </div>
 
         <div id="demo-proof">

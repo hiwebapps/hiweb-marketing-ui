@@ -24,13 +24,12 @@ export function ProcessPhases({
 }: ProcessPhasesProps) {
   return (
     <SectionBand id="proceso" tone={tone}>
-      <div data-chapters>
+      <div>
         <SectionHeader eyebrow={eyebrow} title={title} description={description} />
         <ol className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {phases.map((phase) => (
             <li
               key={phase.index}
-              data-chapter
               data-reveal
               className="rounded-2xl border border-border bg-canvas p-6"
             >

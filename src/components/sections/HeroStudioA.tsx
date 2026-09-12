@@ -43,12 +43,12 @@ function shortest(delta: number, length: number) {
 function metrics() {
   const width = typeof window === 'undefined' ? 1200 : window.innerWidth;
   if (width < 700) {
-    return { spacing: 148, scaleStep: 0.2, rotate: 9, visible: 1.65 };
+    return { spacing: 168, scaleStep: 0.2, rotate: 9, visible: 1.65 };
   }
   if (width < 1024) {
-    return { spacing: 196, scaleStep: 0.17, rotate: 10, visible: 2.15 };
+    return { spacing: 228, scaleStep: 0.17, rotate: 10, visible: 2.15 };
   }
-  return { spacing: 238, scaleStep: 0.15, rotate: 11, visible: 2.35 };
+  return { spacing: 286, scaleStep: 0.15, rotate: 11, visible: 2.35 };
 }
 
 function prefersReducedMotion() {
@@ -188,7 +188,13 @@ export function HeroStudioA({
   );
 
   return (
-    <section ref={rootRef} className="hero-studio-a" aria-label="Hero Studio A">
+    <section
+      ref={rootRef}
+      id="inicio"
+      data-scroll-section="inicio"
+      className="hero-studio-a"
+      aria-label="Hero Studio A"
+    >
       <div className="hero-studio-a__wash" aria-hidden="true">
         <span className="hero-studio-a__blob hero-studio-a__blob--tl" />
         <span className="hero-studio-a__blob hero-studio-a__blob--tr" />

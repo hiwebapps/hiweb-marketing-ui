@@ -11,7 +11,7 @@ export function HomePage() {
       <main>
         <HeroStudioA />
         <HomeAfterHero services={[]} />
-        <HomeBelowFold cases={[]} metrics={[]} />
+        <HomeBelowFold />
       </main>
     </div>
   );
