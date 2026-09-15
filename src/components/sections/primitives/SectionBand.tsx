@@ -38,7 +38,7 @@ export function SectionBand({
     >
       <div
         className={[
-          'mx-auto w-full max-w-6xl px-6',
+          'mx-auto w-full max-w-[var(--section-max)] px-6',
           dense ? 'py-0' : 'py-16 md:py-24',
         ].join(' ')}
       >

@@ -48,7 +48,7 @@ export function PillarGrid({
   return (
     <SectionBand id="diferenciadores" tone={tone}>
       <div className="flex justify-center">
-        <Badge>{eyebrow}</Badge>
+        <Badge variant="orange">{eyebrow}</Badge>
       </div>
       <SectionHeader
         title={title}

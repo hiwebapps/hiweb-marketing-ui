@@ -56,7 +56,7 @@ const schemas = [
 			</article>
 		</SectionBand>
 		{entry.data.faqs.length ? (
-			<FaqSection items={entry.data.faqs} title="Preguntas del artículo" withSchema={false} />
+			<FaqSection client:visible items={entry.data.faqs} title="Preguntas del artículo" withSchema={false} />
 		) : null}
 		<FinalCta client:load />
 	</main>

@@ -10,7 +10,7 @@ export function WorkPage() {
     <div className="min-h-dvh bg-canvas">
       <main>
         <div className="border-b border-border">
-          <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
+          <div className="mx-auto w-full max-w-[var(--section-max)] px-6 py-16 md:py-20">
             <p className="font-display text-xs font-medium tracking-[0.2em] text-muted uppercase">
               Work
             </p>

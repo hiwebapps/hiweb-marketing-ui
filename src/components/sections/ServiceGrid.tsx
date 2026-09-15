@@ -65,7 +65,7 @@ export function ServiceGrid({
   return (
     <SectionBand id="servicios" tone={tone}>
       <div className="flex justify-center">
-        <Badge>{eyebrow}</Badge>
+        <Badge variant="cyan">{eyebrow}</Badge>
       </div>
       <SectionHeader title={title} description={description} align="center" className="mt-5" />
 

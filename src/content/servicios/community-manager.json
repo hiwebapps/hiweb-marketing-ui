@@ -3,6 +3,9 @@
   "orden": 7,
   "tagline": "Conversación diaria con criterio de marca y de negocio.",
   "heroTitle": "Community management: la marca responde como opera.",
+  "heroDescription": "Conversación diaria con criterio de marca y de negocio. La marca responde como opera.",
+  "heroImage": "/images/services/community-manager-hero.jpg",
+  "heroImageAlt": "Dos personas revisando contenido en una laptop",
   "cards": [
     {
       "title": "Qué es",

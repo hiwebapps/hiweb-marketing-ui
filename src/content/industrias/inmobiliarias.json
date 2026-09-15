@@ -4,6 +4,9 @@
   "tagline": "Leads de inventario real, no de formularios vacíos.",
   "heroTitle": "Marketing inmobiliario: tráfico que visita, no que solo da like.",
   "heroDescription": "Paid, SEO y CRM para desarrollos y brokers consolidados. Calificamos intención de compra y aceleramos el cierre con el inventario correcto.",
+  "heroImage": "/images/industries/inmobiliarias.jpg",
+  "heroImageAlt": "Residencia de lujo con jardín y fachada iluminada",
+  "heroBadge": "Visitas reales",
   "retos": [
     "Costo por lead alto y baja visita a sala de ventas.",
     "Inventario que no se explica en un anuncio de 15 segundos.",
@@ -25,12 +28,28 @@
   ],
   "faqs": [
     {
+      "question": "¿Para qué tipo de inmobiliaria es Hiweb?",
+      "answer": "Desarrolladores y brokers consolidados que ya invierten en captación y necesitan visitas a inventario real, no formularios vacíos."
+    },
+    {
+      "question": "¿Cómo es el proceso de trabajo?",
+      "answer": "Auditoría de oferta, canales y CRM, mapa de palancas y ciclos cortos. El orden lo define el diagnóstico, no un paquete genérico de real estate."
+    },
+    {
+      "question": "¿Cuánto tarda ver resultados?",
+      "answer": "Un mapa en días, primeros experimentos en 2–4 semanas y lectura de visitas y apartados en ciclos de 60–90 días."
+    },
+    {
       "question": "¿Sirve para brokers y para desarrolladores?",
       "answer": "Sí. El sistema cambia: el broker vende relación e inventario mixto; el desarrollador vende un masterplan. El diagnóstico lo separa."
     },
     {
       "question": "¿Integran Portales y CRM?",
       "answer": "Priorizamos el stack que ya usan. El objetivo es señal única, no otra herramienta que nadie abre."
+    },
+    {
+      "question": "¿Hay un mínimo de inversión?",
+      "answer": "Sí. El mínimo se comparte en la auditoría para proteger foco y calidad, sin pricing teatro en la página."
     }
   ]
 }

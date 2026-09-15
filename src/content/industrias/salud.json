@@ -4,6 +4,9 @@
   "tagline": "Demanda ética para clínicas y grupos médicos que cuidan reputación.",
   "heroTitle": "Marketing para salud: pacientes calificados, sin teatro de descuentos.",
   "heroDescription": "Campañas, SEO y web con cumplimiento y tono clínico. Más agendados de alto valor; menos ruido que daña la marca médica.",
+  "heroImage": "/images/industries/salud.jpg",
+  "heroImageAlt": "Quirófano de un hospital con mesa quirúrgica e iluminación clínica",
+  "heroBadge": "Agenda calificada",
   "retos": [
     "Regulación y claims que no se pueden improvisar.",
     "Competencia por especialidad en la misma ciudad.",
@@ -25,12 +28,28 @@
   ],
   "faqs": [
     {
+      "question": "¿Para qué tipo de clínica o grupo es Hiweb?",
+      "answer": "Prácticas y grupos consolidados que ya invierten en captación y necesitan pacientes de alto valor, con tono clínico y reputación cuidada."
+    },
+    {
+      "question": "¿Cómo es el proceso de trabajo?",
+      "answer": "Auditoría de oferta, canales y cumplimiento, mapa de palancas y ciclos cortos. El orden lo define el diagnóstico, no un paquete genérico de salud."
+    },
+    {
+      "question": "¿Cuánto tarda ver resultados?",
+      "answer": "Un mapa en días, primeros experimentos en 2–4 semanas y lectura de agenda calificada en ciclos de 60–90 días."
+    },
+    {
       "question": "¿Pueden trabajar con varias sedes?",
       "answer": "Sí. Estructuramos campañas y analytics por sede / especialidad para no mezclar señal."
     },
     {
       "question": "¿Hacen contenido médico?",
       "answer": "Producimos la arquitectura y el mensaje. Los claims clínicos los valida el equipo médico del cliente."
+    },
+    {
+      "question": "¿Hay un mínimo de inversión?",
+      "answer": "Sí. El mínimo se comparte en la auditoría para proteger foco y calidad, sin pricing teatro en la página."
     }
   ]
 }

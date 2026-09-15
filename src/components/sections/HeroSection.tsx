@@ -59,7 +59,7 @@ export function HeroSection({
 
       {/* Copy · izquierda; pointer-events solo en el bloque de texto
           para no bloquear hover del DriftWall en columnas cercanas */}
-      <div className="pointer-events-none relative z-10 mx-auto flex max-w-6xl flex-col justify-center px-6 pt-32 pb-[340px] md:min-h-[720px] md:pb-24 md:pt-36 lg:min-h-[780px]">
+      <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-[var(--section-max)] flex-col justify-center px-6 pt-32 pb-[340px] md:min-h-[720px] md:pb-24 md:pt-36 lg:min-h-[780px]">
         <div className="pointer-events-auto max-w-xl md:max-w-[42%] lg:max-w-lg">
           <h1 className="!text-4xl !leading-[1.12] !text-white md:!text-5xl lg:!text-6xl">
             {title}

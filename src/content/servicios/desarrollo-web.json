@@ -3,6 +3,9 @@
   "orden": 9,
   "tagline": "La superficie donde convierte el sistema.",
   "heroTitle": "Web de conversión: la misma promesa del anuncio, sin ornamento vacío.",
+  "heroDescription": "La superficie donde convierte el sistema. Sitios y landings con la misma promesa del anuncio, sin ornamento vacío.",
+  "heroImage": "/images/services/desarrollo-web-hero.jpg",
+  "heroImageAlt": "Pantalla con código de un sitio web en desarrollo",
   "cards": [
     {
       "title": "Qué es",

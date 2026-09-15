@@ -1,7 +1,7 @@
 :root {
   --hw-nav-top: 1.5rem;
   --hw-nav-z: 2000;
-  --hw-nav-max: 1300px;
+  --hw-nav-max: var(--section-max, 1300px);
   --hw-nav-min-height: 4.5rem;
   --hw-nav-glass-border: rgba(255, 255, 255, 0.12);
   --hw-nav-glass-shadow: 0 0 20px rgba(0, 0, 0, 0.22), 0 8px 24px rgba(0, 0, 0, 0.4),
@@ -211,7 +211,7 @@
   z-index: 2;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  width: min(100%, 72rem);
+  width: min(100%, var(--hw-nav-max));
   max-width: calc(100vw - 2rem);
   margin-inline: auto;
   padding: 1.25rem 0.5rem;

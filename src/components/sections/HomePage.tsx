@@ -1,5 +1,7 @@
+import { PROCESS_PHASES } from '../../data/site';
 import { HeroStudioA } from './HeroStudioA';
 import { HomeAfterHero, HomeBelowFold } from './HomeAfterHero';
+import { ProcessPhases } from './ProcessPhases';
 
 /**
  * Home ensamblada (para demos / client:only).
@@ -11,6 +13,7 @@ export function HomePage() {
       <main>
         <HeroStudioA />
         <HomeAfterHero services={[]} />
+        <ProcessPhases phases={[...PROCESS_PHASES]} tone="canvas" />
         <HomeBelowFold />
       </main>
     </div>

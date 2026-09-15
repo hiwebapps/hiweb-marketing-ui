@@ -68,7 +68,7 @@ export function DesignSystem() {
       <div className="relative z-10 pt-28">
         {/* Section jump links — SiteNav global está en Layout */}
         <div className="border-b border-border bg-canvas/60 backdrop-blur-md">
-          <nav className="mx-auto flex max-w-6xl flex-wrap gap-1 px-6 py-2.5">
+          <nav className="mx-auto flex w-full max-w-[var(--section-max)] flex-wrap gap-1 px-6 py-2.5">
             {SECTIONS.map((s) => (
               <a
                 key={s.id}
@@ -81,7 +81,7 @@ export function DesignSystem() {
           </nav>
         </div>
 
-        <main className="mx-auto max-w-6xl space-y-16 px-6 py-14 md:space-y-20 md:py-20">
+        <main className="mx-auto w-full max-w-[var(--section-max)] space-y-16 px-6 py-14 md:space-y-20 md:py-20">
           <section className="animate-hero-rise max-w-3xl">
             <Badge>Design System</Badge>
             <h1 className="mt-5 !text-4xl !leading-[1.2] md:!text-6xl md:!leading-[1.2]">
@@ -295,7 +295,7 @@ export function DesignSystem() {
               id="badges"
               eyebrow="05 · Status"
               title="Badges"
-              description="Pastilla circular con el mismo tratamiento que las cards de Industrias: fill surface y halo lavado del acento."
+              description="Pastilla circular sólida con los acentos del sistema: purple, cyan, orange y lime."
             />
             <CardGlass className="p-6 sm:p-10">
               <div className="flex flex-wrap gap-2">

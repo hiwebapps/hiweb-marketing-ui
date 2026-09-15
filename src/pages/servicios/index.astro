@@ -48,7 +48,7 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 			title="El mismo servicio, un playbook distinto por industria"
 			tone="surface"
 		/>
-		<ProcessPhases phases={[...PROCESS_PHASES]} tone="canvas" />
+		<ProcessPhases client:visible phases={[...PROCESS_PHASES]} tone="canvas" />
 		<CasePreview
 			cases={cases.slice(0, 3).map((item) => ({
 				client: item.data.cliente,

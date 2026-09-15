@@ -1,0 +1,221 @@
+.final-cta {
+  --cta-ink: #111111;
+  --cta-canvas: #f5f5f5;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 0;
+  background: var(--cta-ink);
+  color: var(--cta-canvas);
+}
+
+.final-cta__panel {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(32rem, 72vh, 42rem);
+  background: var(--cta-ink);
+}
+
+.final-cta__marquee {
+  pointer-events: none;
+  position: absolute;
+  inset: -8% -4% auto;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding-top: 1.1rem;
+}
+
+.final-cta__row {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.final-cta__row:last-child::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgb(17 17 17 / 0) 0%,
+    rgb(17 17 17 / 0.35) 38%,
+    var(--cta-ink) 100%
+  );
+}
+
+.final-cta__track {
+  display: flex;
+  width: max-content;
+  gap: 0.7rem;
+  animation: final-cta-marquee 38s linear infinite;
+  will-change: transform;
+}
+
+.final-cta__row--reverse .final-cta__track {
+  animation-duration: 46s;
+  animation-direction: reverse;
+}
+
+.final-cta__row:nth-child(3) .final-cta__track {
+  animation-duration: 32s;
+}
+
+.final-cta__row:nth-child(4) .final-cta__track {
+  animation-duration: 52s;
+}
+
+.final-cta__card {
+  flex: 0 0 auto;
+  overflow: hidden;
+  height: 7.35rem;
+  border-radius: 1rem;
+  background: #1a1a1a;
+}
+
+.final-cta__card--s {
+  width: 9.5rem;
+}
+
+.final-cta__card--m {
+  width: 13.5rem;
+}
+
+.final-cta__card--l {
+  width: 17.25rem;
+}
+
+.final-cta__card--xl {
+  width: 21.5rem;
+}
+
+.final-cta__card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.final-cta__veil {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(12 12 12 / 0.08) 0%,
+      rgb(12 12 12 / 0.18) 32%,
+      rgb(12 12 12 / 0.78) 62%,
+      rgb(12 12 12 / 0.96) 100%
+    );
+}
+
+.final-cta__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: min(var(--section-max, 1300px), 100%);
+  min-height: inherit;
+  margin-inline: auto;
+  padding: 4.5rem 1.5rem 3.4rem;
+  text-align: center;
+}
+
+.final-cta__title {
+  margin: 1rem 0 0;
+  max-width: 16ch;
+  color: var(--cta-canvas);
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: clamp(2rem, 4.4vw, 3.35rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+}
+
+.final-cta__lead {
+  margin: 0.9rem 0 0;
+  max-width: 34ch;
+  color: rgb(245 245 245 / 0.62);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.final-cta__btn {
+  margin-top: 1.75rem;
+}
+
+.final-cta__btn:focus-visible {
+  outline: 2px solid var(--cta-canvas);
+  outline-offset: 3px;
+}
+
+@keyframes final-cta-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (max-width: 860px) {
+  .final-cta__panel {
+    min-height: 30rem;
+  }
+
+  .final-cta__card {
+    height: 5.6rem;
+    border-radius: 0.85rem;
+  }
+
+  .final-cta__card--s {
+    width: 7.5rem;
+  }
+
+  .final-cta__card--m {
+    width: 10.5rem;
+  }
+
+  .final-cta__card--l {
+    width: 13.25rem;
+  }
+
+  .final-cta__card--xl {
+    width: 16.5rem;
+  }
+
+  .final-cta__content {
+    padding: 3.5rem 1.15rem 2.4rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .final-cta__panel {
+    min-height: 28rem;
+  }
+
+  .final-cta__marquee {
+    gap: 0.5rem;
+  }
+
+  .final-cta__track {
+    gap: 0.5rem;
+  }
+
+  .final-cta__title {
+    max-width: 14ch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .final-cta__track {
+    animation: none;
+  }
+}

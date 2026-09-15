@@ -19,6 +19,7 @@ export type CaseStory = {
   role: string;
   stats: CaseStoryStat[];
   photo?: string;
+  href?: string;
 };
 
 type CaseStoriesProps = {
@@ -87,10 +88,7 @@ const SWIPE_THRESHOLD = 56;
 const PORTFOLIO_HREF = '/portafolio';
 
 function visibleCount() {
-  if (typeof window === 'undefined') return 3;
-  if (window.innerWidth < 700) return 1;
-  if (window.innerWidth < 1024) return 2;
-  return 3;
+  return 1;
 }
 
 function trackGap(track: HTMLElement) {
@@ -118,7 +116,7 @@ export function CaseStories({
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [perView, setPerView] = useState(3);
+  const [perView, setPerView] = useState(1);
   const drag = useRef({
     pointerId: -1,
     startX: 0,
@@ -128,6 +126,7 @@ export function CaseStories({
   });
 
   const lastIndex = Math.max(stories.length - perView, 0);
+  const canSlide = lastIndex > 0;
   const goTo = useCallback(
     (next: number) => {
       setActiveIndex(Math.max(0, Math.min(lastIndex, next)));
@@ -135,16 +134,8 @@ export function CaseStories({
     [lastIndex],
   );
 
-  const layoutSlides = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const nextView = visibleCount();
-    setPerView(nextView);
-    const gap = trackGap(track);
-    const width = (track.parentElement?.clientWidth ?? track.clientWidth) + 0;
-    const slideW = (width - gap * (nextView - 1)) / nextView;
-    track.style.setProperty('--case-slide-w', `${slideW}px`);
-    track.style.setProperty('--case-gap', `${gap}px`);
+  const syncPerView = useCallback(() => {
+    setPerView(visibleCount());
   }, []);
 
   useGSAP(
@@ -152,7 +143,7 @@ export function CaseStories({
       const track = trackRef.current;
       if (!track) return;
 
-      layoutSlides();
+      syncPerView();
       const slide = track.querySelector<HTMLElement>('.case-stories__slide');
       const slideW = slide?.offsetWidth || 320;
       const gap = trackGap(track);
@@ -170,18 +161,18 @@ export function CaseStories({
   useGSAP(
     () => {
       const onResize = () => {
-        layoutSlides();
+        syncPerView();
         setActiveIndex((current) => Math.min(current, Math.max(stories.length - visibleCount(), 0)));
       };
       window.addEventListener('resize', onResize);
-      layoutSlides();
+      syncPerView();
       return () => window.removeEventListener('resize', onResize);
     },
     { scope: rootRef, dependencies: [stories.length] },
   );
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0) return;
+    if (!canSlide || event.button !== 0) return;
     const track = trackRef.current;
     if (!track) return;
     drag.current = {
@@ -194,6 +185,7 @@ export function CaseStories({
   };
 
   const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!canSlide) return;
     const state = drag.current;
     const track = trackRef.current;
     if (state.pointerId !== event.pointerId || !track) return;
@@ -209,6 +201,7 @@ export function CaseStories({
   };
 
   const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!canSlide) return;
     const state = drag.current;
     if (state.pointerId !== event.pointerId) return;
     event.currentTarget.classList.remove('is-dragging');
@@ -235,6 +228,8 @@ export function CaseStories({
         <span className="case-stories__blob case-stories__blob--a" />
         <span className="case-stories__blob case-stories__blob--b" />
         <span className="case-stories__blob case-stories__blob--c" />
+        <span className="case-stories__blob case-stories__blob--d" />
+        <span className="case-stories__blob case-stories__blob--e" />
       </div>
 
       <div ref={rootRef} className="case-stories">
@@ -244,16 +239,23 @@ export function CaseStories({
           description={description}
           align="center"
           tone="on-ink"
+          badgeVariant="lime"
         />
 
         <div
-          className="case-stories__stage"
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
+          className={['case-stories__stage', canSlide ? 'is-slider' : 'is-static'].join(' ')}
+          onPointerDown={canSlide ? onPointerDown : undefined}
+          onPointerMove={canSlide ? onPointerMove : undefined}
+          onPointerUp={canSlide ? onPointerUp : undefined}
+          onPointerCancel={canSlide ? onPointerUp : undefined}
         >
-          <ul ref={trackRef} className="case-stories__track" aria-label="Casos de éxito">
+          <ul
+            ref={trackRef}
+            className={['case-stories__track', stories.length <= perView ? 'is-short' : '']
+              .filter(Boolean)
+              .join(' ')}
+            aria-label="Casos de éxito"
+          >
             {stories.map((story, index) => (
               <li key={`${story.client}-${story.name}`} className="case-stories__slide">
                 <article className="case-story">
@@ -281,7 +283,7 @@ export function CaseStories({
                         <p className="case-story__name">{story.name}</p>
                         <p className="case-story__role">{story.role}</p>
                       </div>
-                      <a href={PORTFOLIO_HREF} className="case-story__cta">
+                      <a href={story.href ?? PORTFOLIO_HREF} className="case-story__cta">
                         Ver caso →
                       </a>
                     </div>

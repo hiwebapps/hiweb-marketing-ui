@@ -43,6 +43,7 @@ export function ValueChapter({
           index={index}
           title={title}
           description={description}
+          badgeVariant="cyan"
         />
         <ProductFrame caption={caption}>{children}</ProductFrame>
       </div>

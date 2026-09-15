@@ -5,10 +5,14 @@ import { HeroStudioA } from '../components/sections/HeroStudioA';
 import { HomeAfterHero, HomeBelowFold } from '../components/sections/HomeAfterHero';
 import { IndustryGrid } from '../components/sections/IndustryGrid';
 import { CaseStories } from '../components/sections/CaseStories';
+import { ProcessPhases } from '../components/sections/ProcessPhases';
+import { FaqSection } from '../components/sections/FaqSection';
 import { FinalCta } from '../components/sections/FinalCta';
-import { SITE } from '../data/site';
+import '../components/sections/TeamGrid.css';
+import '../components/sections/FaqSection.css';
+import '../components/sections/CaseStories.css';
 import { faqSchema } from '../lib/schema';
-import { HOME_FAQS } from '../data/site';
+import { HOME_FAQ_CATEGORIES, HOME_FAQS, PROCESS_PHASES, SITE } from '../data/site';
 
 const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
 const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
@@ -70,7 +74,9 @@ function formatCaseStat(metric: {
 				stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
 			}))}
 		/>
+		<ProcessPhases client:visible phases={[...PROCESS_PHASES]} tone="canvas" />
 		<HomeBelowFold />
+		<FaqSection client:visible categories={[...HOME_FAQ_CATEGORIES]} />
 		<FinalCta client:load />
 	</main>
 </Layout>

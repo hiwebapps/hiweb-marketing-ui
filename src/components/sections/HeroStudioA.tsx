@@ -218,34 +218,40 @@ export function HeroStudioA({
         </div>
       </div>
 
-      <div
-        ref={stageRef}
-        className="hero-studio-a__stage"
-        role="region"
-        aria-roledescription="carrusel"
-        aria-label="Proyectos recientes"
-        tabIndex={0}
-      >
-        <p ref={liveRef} className="sr-only" aria-live="polite" />
-        <div className="hero-studio-a__track">
-          {SLIDES.map((slide) => (
-            <div key={slide.title} className="hero-studio-a__card">
-              <a href={PROJECT_HREF} className="hero-studio-a__card-media" aria-label={slide.title}>
-                <img src={slide.image} alt="" draggable={false} />
-              </a>
-              <span className="hero-studio-a__card-label">{slide.title}</span>
-              <div className="hero-studio-a__card-cta-wrap">
-                <Button
-                  href={PROJECT_HREF}
-                  variant="secondary"
-                  size="sm"
-                  className="hero-studio-a__card-cta no-underline !h-8 !px-3 !text-xs"
-                >
-                  ver proyecto
-                </Button>
+      <div className="hero-studio-a__carousel">
+        <div
+          ref={stageRef}
+          className="hero-studio-a__stage"
+          role="region"
+          aria-roledescription="carrusel"
+          aria-label="Proyectos recientes"
+          tabIndex={0}
+        >
+          <p ref={liveRef} className="sr-only" aria-live="polite" />
+          <div className="hero-studio-a__track">
+            {SLIDES.map((slide) => (
+              <div key={slide.title} className="hero-studio-a__card">
+                <a href={PROJECT_HREF} className="hero-studio-a__card-media" aria-label={slide.title}>
+                  <img src={slide.image} alt="" draggable={false} />
+                </a>
+                <span className="hero-studio-a__card-label">{slide.title}</span>
+                <div className="hero-studio-a__card-cta-wrap">
+                  <Button
+                    href={PROJECT_HREF}
+                    variant="secondary"
+                    size="sm"
+                    className="hero-studio-a__card-cta no-underline !h-8 !px-3 !text-xs"
+                  >
+                    ver proyecto
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+        <div className="hero-studio-a__edges" aria-hidden="true">
+          <span className="hero-studio-a__edge hero-studio-a__edge--left" />
+          <span className="hero-studio-a__edge hero-studio-a__edge--right" />
         </div>
       </div>
 

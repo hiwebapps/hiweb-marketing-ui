@@ -243,33 +243,217 @@ export const HOME_ABOUT = {
     'Hiweb combina equipo senior, un portal propio y presencia en Mérida, Cancún y Monterrey. Operamos como extensión de tu dirección de marketing — con el músculo de una agencia enterprise.',
 } as const;
 
-export const HOME_FAQS = [
+export const TEAM_MEMBERS = [
   {
-    question: '¿Para qué tipo de empresa es Hiweb?',
-    answer:
-      'Empresas consolidadas que ya invierten en marketing y necesitan un partner por industria: mensaje, paid, web y CRM como sistema. Si buscas una agencia genérica de tácticas sueltas, no somos el fit.',
+    name: 'Mariana Solís',
+    role: 'Dirección de estrategia',
+    bio: 'Colecciona cafeteras y discute frameworks antes del primer espresso.',
+    photo: '/images/team/mariana.png',
+    accent: 'cyan',
+    socials: {
+      tiktok: 'https://www.tiktok.com',
+      instagram: 'https://www.instagram.com',
+      linkedin: 'https://www.linkedin.com',
+    },
   },
   {
-    question: '¿Trabajan por industria o por servicio?',
-    answer:
-      'Por industria. Cada servicio se conecta a un resultado de negocio de tu sector. El catálogo existe para que elijas la palanca; el diagnóstico define el orden.',
+    name: 'Diego Rangel',
+    role: 'Head of performance',
+    bio: 'Corre 10K los domingos y odia los reportes teatro con pasión atlética.',
+    photo: '/images/team/diego.png',
+    accent: 'purple',
+    socials: {
+      tiktok: 'https://www.tiktok.com',
+      instagram: 'https://www.instagram.com',
+      linkedin: 'https://www.linkedin.com',
+    },
   },
   {
-    question: '¿Cuánto tarda ver resultados?',
-    answer:
-      'La auditoría cierra un mapa en días. Los primeros experimentos salen en 2–4 semanas. Los outcomes de pipeline se leen en ciclos de 60–90 días.',
+    name: 'Valeria Chen',
+    role: 'Dirección creativa',
+    bio: 'Hace sourdough y recorta anuncios en el mismo cuaderno.',
+    photo: '/images/team/valeria.png',
+    accent: 'orange',
+    socials: {
+      tiktok: 'https://www.tiktok.com',
+      instagram: 'https://www.instagram.com',
+      linkedin: 'https://www.linkedin.com',
+    },
   },
   {
-    question: '¿Solo hacen ads?',
-    answer:
-      'No. Integramos branding, SEO, paid, web, CRM e IA. Separar marca de performance es lo que suele romper la conversión.',
-  },
-  {
-    question: '¿Cómo se ve el día a día?',
-    answer:
-      'Ciclos cortos, tablero compartido y métricas acordadas. Sin reportes teatro: decisiones con evidencia.',
+    name: 'Andrés Palomo',
+    role: 'Lead producto web',
+    bio: 'Arma Lego a las 11pm y discute Core Web Vitals al desayuno.',
+    photo: '/images/team/andres.png',
+    accent: 'lime',
+    socials: {
+      tiktok: 'https://www.tiktok.com',
+      instagram: 'https://www.instagram.com',
+      linkedin: 'https://www.linkedin.com',
+    },
   },
 ] as const;
+
+export const HOME_FAQ_CATEGORIES = [
+  {
+    id: 'general',
+    label: 'General',
+    items: [
+      {
+        question: '¿Para qué tipo de empresa es Hiweb?',
+        answer:
+          'Empresas que ya invierten en marketing y necesitan un partner por industria: mensaje, paid, web y CRM como sistema.',
+      },
+      {
+        question: '¿Cómo es el proceso de trabajo?',
+        answer:
+          'Auditoría, mapa de palancas y ciclos cortos. El orden lo define el diagnóstico, no un paquete genérico.',
+      },
+      {
+        question: '¿Cuánto tarda ver resultados?',
+        answer:
+          'Un mapa en días, primeros experimentos en 2–4 semanas y lectura de pipeline en ciclos de 60–90 días.',
+      },
+      {
+        question: '¿Hay un mínimo de inversión?',
+        answer:
+          'Sí. El mínimo se comparte en la auditoría para proteger foco y calidad, sin pricing teatro en la home.',
+      },
+    ],
+  },
+  {
+    id: 'seo',
+    label: 'SEO',
+    items: [
+      {
+        question: '¿El SEO es técnico, de contenidos o ambos?',
+        answer:
+          'Cubrimos arquitectura, señal on-page y contenidos atados a la oferta. No publicamos por volumen.',
+      },
+      {
+        question: '¿En cuánto tiempo se mueve el orgánico?',
+        answer:
+          'Depende de autoridad e índice. Suele haber señal táctica en semanas y movimiento de rankings en trimestres.',
+      },
+      {
+        question: '¿El SEO se conecta con paid y web?',
+        answer:
+          'Sí. Keywords, landing y mensaje se alinean para no pelear entre canales.',
+      },
+      {
+        question: '¿Trabajan SEO local y nacional?',
+        answer:
+          'Ambos, según industria y captura de demanda. El mapa sale del diagnóstico.',
+      },
+    ],
+  },
+  {
+    id: 'redes-sociales',
+    label: 'Redes sociales',
+    items: [
+      {
+        question: '¿Gestionan redes o solo la estrategia?',
+        answer:
+          'Estrategia, contenidos y pauta cuando social es una palanca real del sistema. No community por inercia.',
+      },
+      {
+        question: '¿En qué plataformas publican?',
+        answer:
+          'Donde está el ICP. No abrimos perfiles de más si no hay hipótesis de demanda.',
+      },
+      {
+        question: '¿Cómo miden el retorno de social?',
+        answer:
+          'Conversión asistida, leads y costo por resultado. Vanity metrics no entran al tablero.',
+      },
+      {
+        question: '¿Incluyen pauta en Meta u otras redes?',
+        answer:
+          'Sí, cuando el canal califica. Creatividades y destino se diseñan con el mismo mensaje.',
+      },
+    ],
+  },
+  {
+    id: 'web',
+    label: 'Web',
+    items: [
+      {
+        question: '¿Rediseñan sitios existentes?',
+        answer:
+          'Sí, si el sitio actual frena conversión. Partimos de oferta, prueba y tracking, no de un restyling cosmética.',
+      },
+      {
+        question: '¿La web queda lista para ads y CRM?',
+        answer:
+          'Ese es el estándar: landings, eventos y handoff a CRM. La web es superficie del sistema.',
+      },
+      {
+        question: '¿Cuánto tarda un sitio o una landing?',
+        answer:
+          'Una landing de experimento en semanas. Un sitio completo depende de alcance y contenidos.',
+      },
+      {
+        question: '¿Con qué stack construyen?',
+        answer:
+          'El que mejor sirva al performance y al mantenimiento. El stack se decide en diagnóstico.',
+      },
+    ],
+  },
+  {
+    id: 'google-ads',
+    label: 'Google Ads',
+    items: [
+      {
+        question: '¿Manejan campañas de Google Ads?',
+        answer:
+          'Search, Performance Max y demanda cuando hay señal. Sin cuentas “siempre prendidas” sin hipótesis.',
+      },
+      {
+        question: '¿Cuál es el presupuesto mínimo recomendado?',
+        answer:
+          'El suficiente para leer señal. Lo calibramos en la auditoría según industria y ticket.',
+      },
+      {
+        question: '¿Incluyen creatividades y landing?',
+        answer:
+          'Sí. Anuncio y destino se diseñan juntos. Un ads sin landing alineada no entra al sistema.',
+      },
+      {
+        question: '¿Con qué frecuencia reportan?',
+        answer:
+          'Tablero compartido y ciclos cortos. Decisiones con evidencia, no un PDF mensual de teatro.',
+      },
+    ],
+  },
+  {
+    id: 'branding',
+    label: 'Branding',
+    items: [
+      {
+        question: '¿Hacen identidad visual completa?',
+        answer:
+          'Cuando la marca no sostiene la oferta. Branding al servicio de conversión, no de un book aislado.',
+      },
+      {
+        question: '¿El branding se conecta con performance?',
+        answer:
+          'Sí. Mensaje, verbal y visual se usan en web, ads y contenidos. Separarlos suele romper la conversión.',
+      },
+      {
+        question: '¿Rediseñan una marca existente?',
+        answer:
+          'Si el sistema actual no escala o no se entiende. El alcance se define en el diagnóstico.',
+      },
+      {
+        question: '¿Entregan un sistema o solo un logo?',
+        answer:
+          'Un sistema aplicable: voz, piezas y reglas de uso. El logo solo no es un entregable nuestro.',
+      },
+    ],
+  },
+] as const;
+
+export const HOME_FAQS = HOME_FAQ_CATEGORIES.flatMap((category) => category.items);
 
 export const CONTACT_FAQS = [
   {

@@ -43,6 +43,7 @@ export function HowItWorks({ steps = DEFAULT_STEPS }: HowItWorksProps) {
         eyebrow="Sistema Hiweb"
         title="De la duda al pipeline en tres pasos"
         description="Un framework con nombre: diagnóstico → sistema → ejecución. Mismo verbo de CTA en toda la página."
+        badgeVariant="cyan"
         actions={
           <>
             <a href="/contacto" className="no-underline">

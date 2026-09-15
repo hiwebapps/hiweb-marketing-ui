@@ -94,7 +94,7 @@ export function SectionsKitPage() {
 
         <div id="demo-hero-studio-a" className="scroll-mt-28">
           <div className="border-y border-border bg-surface px-6 py-3">
-            <p className="mx-auto max-w-6xl font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
+            <p className="mx-auto max-w-[var(--section-max)] font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
               Hero Studio A · Coverflow 3D
             </p>
           </div>
@@ -103,7 +103,7 @@ export function SectionsKitPage() {
 
         <div id="demo-hero-studio-b" className="scroll-mt-28">
           <div className="border-y border-border bg-surface px-6 py-3">
-            <p className="mx-auto max-w-6xl font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
+            <p className="mx-auto max-w-[var(--section-max)] font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
               Hero Studio B · Stack
             </p>
           </div>

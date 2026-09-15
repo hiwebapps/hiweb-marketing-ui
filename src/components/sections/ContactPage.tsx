@@ -16,6 +16,7 @@ export function ContactPage() {
               eyebrow="Contacto"
               title="Cuéntanos el objetivo"
               description="Respuesta en 24h. Trae ICP, canal actual y qué outcome buscas en 90 días."
+              badgeVariant="orange"
             />
             <form
               className="space-y-4 rounded-2xl border border-border bg-surface p-6 md:p-8"

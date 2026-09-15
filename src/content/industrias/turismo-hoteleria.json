@@ -4,6 +4,9 @@
   "tagline": "Ocupación y tarifa con marca, no solo con OTAs.",
   "heroTitle": "Marketing hotelero: demanda directa con la disciplina de un revenue meeting.",
   "heroDescription": "SEO, Meta, Google y web para grupos y propiedades que quieren bajar dependencia de OTAs sin perder ocupación.",
+  "heroImage": "/images/industries/turismo-hoteleria.jpg",
+  "heroImageAlt": "Piscina y terraza de un hotel de playa al atardecer",
+  "heroBadge": "Reserva directa",
   "retos": [
     "Comisión de OTAs que se come el margen.",
     "Estacionalidad mal leída y creatividades genéricas.",
@@ -25,12 +28,28 @@
   ],
   "faqs": [
     {
+      "question": "¿Para qué tipo de hotel o grupo es Hiweb?",
+      "answer": "Propiedades y grupos consolidados que ya invierten en ocupación y quieren demanda directa medible, sin apagar el canal que hoy llena."
+    },
+    {
+      "question": "¿Cómo es el proceso de trabajo?",
+      "answer": "Auditoría de oferta, OTAs y booking path, mapa de palancas y ciclos cortos. El orden lo define el diagnóstico, no un paquete genérico hotelero."
+    },
+    {
+      "question": "¿Cuánto tarda ver resultados?",
+      "answer": "Un mapa en días, primeros experimentos en 2–4 semanas y lectura de reserva directa y tarifa en ciclos de 60–90 días."
+    },
+    {
       "question": "¿Reemplazan a las OTAs?",
       "answer": "No de un día a otro. Bajamos dependencia con demanda directa medible, sin apagar el canal que hoy llena."
     },
     {
       "question": "¿Trabajan con un hotel o con grupos?",
       "answer": "Ambos. En grupos estructuramos marca paraguas y performance por propiedad."
+    },
+    {
+      "question": "¿Hay un mínimo de inversión?",
+      "answer": "Sí. El mínimo se comparte en la auditoría para proteger foco y calidad, sin pricing teatro en la página."
     }
   ]
 }

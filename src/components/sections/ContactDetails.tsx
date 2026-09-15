@@ -10,6 +10,7 @@ export function ContactDetails() {
           eyebrow="Contacto directo"
           title="Teléfono, email y WhatsApp"
           description="Si ya tienes contexto, escríbenos. El formulario nos ayuda a llegar con brief."
+          badgeVariant="purple"
         />
         <ul className="mt-10 grid gap-4 md:grid-cols-3">
           {[
@@ -33,6 +34,7 @@ export function ContactDetails() {
         <SectionHeader
           eyebrow="Qué pasa después"
           title="Tres pasos, sin teatro de propuesta de 80 páginas"
+          badgeVariant="cyan"
         />
         <ol className="mt-12 grid gap-4 md:grid-cols-3">
           {CONTACT_NEXT_STEPS.map((step) => (
@@ -49,6 +51,7 @@ export function ContactDetails() {
           eyebrow="Presencia"
           title="Mérida, Cancún y Monterrey"
           description="Operamos cross-border. La auditoría puede ser remota o en sede."
+          badgeVariant="orange"
         />
         <ul className="mt-10 grid gap-4 md:grid-cols-3">
           {SITE.locales.map((city) => (

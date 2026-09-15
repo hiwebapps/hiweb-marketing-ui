@@ -4,6 +4,9 @@
   "tagline": "Reservas y ticket promedio, no solo alcance en Reels.",
   "heroTitle": "Marketing para restaurantes: mesas llenas con una marca que se sostiene.",
   "heroDescription": "Contenido, paid y reputación para grupos y conceptos consolidados. Menos vanity; más cubiertos y repetición.",
+  "heroImage": "/images/industries/restaurantes.jpg",
+  "heroImageAlt": "Comedor de un restaurante con mesas servidas e iluminación cálida",
+  "heroBadge": "Mesas y ticket",
   "retos": [
     "Contenido constante sin sistema ni oferta clara.",
     "Paid que trae cupón-hunters y no a huéspedes de ticket alto.",
@@ -25,12 +28,28 @@
   ],
   "faqs": [
     {
+      "question": "¿Para qué tipo de restaurante es Hiweb?",
+      "answer": "Grupos y conceptos consolidados que ya invierten en marketing y necesitan cubiertos y ticket, no solo alcance en Reels."
+    },
+    {
+      "question": "¿Cómo es el proceso de trabajo?",
+      "answer": "Auditoría de oferta, reputación y canales, mapa de palancas y ciclos cortos. El orden lo define el diagnóstico, no un calendario genérico."
+    },
+    {
+      "question": "¿Cuánto tarda ver resultados?",
+      "answer": "Un mapa en días, primeros experimentos en 2–4 semanas y lectura de reservas y repetición en ciclos de 60–90 días."
+    },
+    {
       "question": "¿Hacen community todos los días?",
       "answer": "Sí, cuando el diagnóstico lo pide. El community está atado a reservas y reputación, no a un calendario decorativo."
     },
     {
       "question": "¿Sirve para una sola sucursal?",
       "answer": "Si la operación está consolidada, sí. Si aún están validando el concepto, esperamos."
+    },
+    {
+      "question": "¿Hay un mínimo de inversión?",
+      "answer": "Sí. El mínimo se comparte en la auditoría para proteger foco y calidad, sin pricing teatro en la página."
     }
   ]
 }

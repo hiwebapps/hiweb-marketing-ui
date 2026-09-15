@@ -46,6 +46,7 @@ export function SocialProof({ quotes = DEFAULT_QUOTES }: SocialProofProps) {
         eyebrow="Prueba social"
         title="Lo que dicen cuando el resultado es el tema"
         description="Quotes ancladas a un outcome — no a “gran equipo”."
+        badgeVariant="lime"
       />
 
       <ul className="mt-12 grid gap-4 md:grid-cols-3">

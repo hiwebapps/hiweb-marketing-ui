@@ -33,6 +33,7 @@ export function MetricsBand({
         title={title}
         description={description}
         tone={onInk ? 'on-ink' : 'default'}
+        badgeVariant={onInk ? 'lime' : 'cyan'}
       />
       <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {metrics.map((metric) => (

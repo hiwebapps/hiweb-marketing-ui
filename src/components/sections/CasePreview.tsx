@@ -100,6 +100,7 @@ export function CasePreview({
         eyebrow={eyebrow}
         title={title}
         description={description}
+        badgeVariant="lime"
         actions={
           <a
             href="/portafolio"

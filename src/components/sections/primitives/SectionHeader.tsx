@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Badge } from '../../ui';
+import { Badge, type BadgeVariant } from '../../ui';
 
 type SectionHeaderProps = {
   eyebrow?: string;
@@ -8,6 +8,7 @@ type SectionHeaderProps = {
   description?: ReactNode;
   align?: 'left' | 'center';
   tone?: 'default' | 'on-ink';
+  badgeVariant?: BadgeVariant;
   className?: string;
   actions?: ReactNode;
   split?: boolean;
@@ -24,6 +25,7 @@ export function SectionHeader({
   description,
   align = 'left',
   tone = 'default',
+  badgeVariant = 'purple',
   className = '',
   actions,
   split = false,
@@ -42,7 +44,7 @@ export function SectionHeader({
     >
       {eyebrow ? (
         <div className={align === 'center' ? 'flex justify-center' : ''}>
-          <Badge tone={tone === 'on-ink' ? 'on-ink' : 'default'}>
+          <Badge variant={badgeVariant} tone={tone === 'on-ink' ? 'on-ink' : 'default'}>
             {index ? `${index} · ${eyebrow}` : eyebrow}
           </Badge>
         </div>

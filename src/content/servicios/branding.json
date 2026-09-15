@@ -3,6 +3,9 @@
   "orden": 5,
   "tagline": "Una oferta que se entiende en segundos — y se sostiene en paid y web.",
   "heroTitle": "Branding de negocio: posicionamiento que ventas puede repetir.",
+  "heroDescription": "Una oferta que se entiende en segundos — y se sostiene en paid y web. Posicionamiento que ventas puede repetir.",
+  "heroImage": "/images/services/branding-hero.jpg",
+  "heroImageAlt": "Cuaderno con wireframes de interfaz, pluma y teléfono sobre una mesa",
   "cards": [
     {
       "title": "Qué es",

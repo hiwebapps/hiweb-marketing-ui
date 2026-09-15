@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import './Badge.css';
 
-type BadgeVariant = 'cyan' | 'orange' | 'purple' | 'lime' | 'neutral' | 'success' | 'danger';
+export type BadgeVariant = 'cyan' | 'orange' | 'purple' | 'lime' | 'neutral' | 'success' | 'danger';
 
 type BadgeProps = {
   children: ReactNode;
@@ -16,10 +16,17 @@ export function Badge({
   tone = 'default',
   className = '',
 }: BadgeProps) {
-  const skin = tone === 'on-ink' ? 'on-ink' : variant;
-
   return (
-    <span className={['ui-badge', `ui-badge--${skin}`, className].filter(Boolean).join(' ')}>
+    <span
+      className={[
+        'ui-badge',
+        `ui-badge--${variant}`,
+        tone === 'on-ink' ? 'ui-badge--on-ink' : '',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
       {children}
     </span>
   );

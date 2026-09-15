@@ -4,6 +4,9 @@
   "tagline": "Demanda calificada para plantas que ya no pueden depender del referido.",
   "heroTitle": "Marketing para manufactura: pipeline B2B con criterio industrial.",
   "heroDescription": "Hablamos el idioma de planta, ciclo largo y comité de compra. Paid, SEO y web al servicio de cotizaciones que ventas sí puede cerrar.",
+  "heroImage": "/images/industries/manufactura.jpg",
+  "heroImageAlt": "Operario en una planta industrial junto a maquinaria pesada",
+  "heroBadge": "Pipeline B2B",
   "retos": [
     "Ciclos de venta largos con múltiples tomadores de decisión.",
     "Oferta técnica que no se entiende fuera de planta.",
@@ -25,12 +28,28 @@
   ],
   "faqs": [
     {
+      "question": "¿Para qué tipo de planta es Hiweb?",
+      "answer": "Plantas y grupos industriales que ya invierten en marketing y necesitan demanda calificada: mensaje para comité, paid, web y CRM como sistema — no un calendario de ferias."
+    },
+    {
+      "question": "¿Cómo es el proceso de trabajo?",
+      "answer": "Auditoría de oferta y canales, mapa de palancas y ciclos cortos. El orden lo define el diagnóstico, no un paquete genérico para manufactura."
+    },
+    {
+      "question": "¿Cuánto tarda ver resultados en un ciclo B2B?",
+      "answer": "Un mapa en días, primeros experimentos en 2–4 semanas y lectura de RFQs y pipeline en ciclos de 60–90 días. El industrial no se mide en likes."
+    },
+    {
       "question": "¿Sirve Meta Ads para manufactura?",
       "answer": "Como apoyo de marca, a veces. El core suele ser Google, LinkedIn y una web que califique. El diagnóstico lo define por cuenta."
     },
     {
       "question": "¿Trabajan con exportadores?",
       "answer": "Sí. Operamos cross-border y adaptamos mensaje y tracking a mercados, no solo a un país."
+    },
+    {
+      "question": "¿Hay un mínimo de inversión?",
+      "answer": "Sí. El mínimo se comparte en la auditoría para proteger foco y calidad, sin pricing teatro en la página."
     }
   ]
 }

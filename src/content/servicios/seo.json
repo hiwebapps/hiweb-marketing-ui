@@ -3,6 +3,9 @@
   "orden": 2,
   "tagline": "Demanda que no se apaga cuando pausas la campaña.",
   "heroTitle": "SEO por industria: intención de búsqueda, no artículos de relleno.",
+  "heroDescription": "Demanda que no se apaga cuando pausas la campaña. Arquitectura, contenidos y autoridad para las búsquedas que tu comprador ya está haciendo.",
+  "heroImage": "/images/services/seo-hero.jpg",
+  "heroImageAlt": "Dashboard de analítica web con métricas de carga, bounce rate y sesiones",
   "cards": [
     {
       "title": "Qué es",

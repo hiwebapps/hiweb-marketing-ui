@@ -105,6 +105,13 @@
   --font-display: "Clash Display", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-serif: "Inter", system-ui, sans-serif;
+
+  /* Section shells — 1300px at xl+, fluid below */
+  --container-6xl: 1300px;
+}
+
+:root {
+  --section-max: 1300px;
 }
 
 /* ─────────────────────────────────────────────

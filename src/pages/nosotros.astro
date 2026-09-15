@@ -36,10 +36,11 @@ const values = [
 				eyebrow="Historia"
 				title="De agencia de tácticas a arquitectura por industria"
 				description="Hiweb nace de operar cuentas consolidadas donde el catálogo de servicios no bastaba. El comprador no busca 'SEO': busca un resultado en su sector. Reorganizamos oferta, prueba y equipo alrededor de eso."
+				badgeVariant="purple"
 			/>
 		</SectionBand>
 		<SectionBand tone="surface">
-			<SectionHeader eyebrow="Misión, visión y valores" title="Lo que no negociamos" />
+			<SectionHeader eyebrow="Misión, visión y valores" title="Lo que no negociamos" badgeVariant="cyan" />
 			<ul class="mt-12 grid gap-4 md:grid-cols-3">
 				{values.map((item) => (
 					<li data-reveal class="rounded-2xl border border-border bg-canvas p-6">
@@ -55,9 +56,11 @@ const values = [
 				eyebrow="Equipo"
 				title="Un núcleo senior, no una bancada de juniors invisibles"
 				description="Dirección de cuenta, estrategia, media, contenido y producto web. El roster se presenta en la auditoría — no en un mural de fotos de stock."
+				badgeVariant="orange"
 			/>
 		</SectionBand>
 		<ProcessPhases
+			client:visible
 			phases={[...PROCESS_PHASES]}
 			eyebrow="Tecnología propia"
 			title="Nuestro portal es parte del delivery"

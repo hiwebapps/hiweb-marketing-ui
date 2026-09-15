@@ -1,6 +1,11 @@
 ---
 import '../styles/global.css';
 import '../components/sections/SiteNav.css';
+import '../components/sections/SiteFooter.css';
+import '../components/sections/FinalCta.css';
+import '../components/sections/IndustryHero.css';
+import '../components/sections/CaseStories.css';
+import '../components/sections/FaqSection.css';
 import { SiteNav } from '../components/sections/SiteNav';
 import { SiteFooter } from '../components/sections/SiteFooter';
 import { ScrollIndicator } from '../components/effects/ScrollIndicator';
@@ -75,11 +80,11 @@ const ogImageUrl = ogImage.startsWith('http')
 			}, 2500);
 		</script>
 	</head>
-	<body>
+	<body id="top">
 		<SiteNav client:load />
 		<ScrollIndicator client:load />
 		<slot />
-		<SiteFooter />
+		<SiteFooter client:idle />
 		<script src="../scripts/motion.ts"></script>
 	</body>
 </html>

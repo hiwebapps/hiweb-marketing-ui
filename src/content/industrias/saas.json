@@ -4,6 +4,9 @@
   "tagline": "Demos calificadas para productos que ya no pueden improvisar el pipeline.",
   "heroTitle": "Marketing para SaaS: mensaje, paid y web como un solo sistema de demos.",
   "heroDescription": "Posicionamiento, performance y producto web para equipos B2B que necesitan pipeline predecible — no MQLs de teatro.",
+  "heroImage": "/images/industries/saas.jpg",
+  "heroImageAlt": "Pantalla con código en un entorno de desarrollo de software",
+  "heroBadge": "Demos calificadas",
   "retos": [
     "Oferta compleja que ventas no puede repetir.",
     "Paid que llena el CRM de cuentas que nunca van a comprar.",
@@ -25,12 +28,28 @@
   ],
   "faqs": [
     {
+      "question": "¿Para qué tipo de SaaS es Hiweb?",
+      "answer": "Productos B2B consolidados que ya invierten en pipeline y necesitan demos calificadas: mensaje, paid y web como un solo sistema."
+    },
+    {
+      "question": "¿Cómo es el proceso de trabajo?",
+      "answer": "Auditoría de oferta, paid y web, mapa de palancas y ciclos cortos. El orden lo define el diagnóstico, no un paquete genérico de growth."
+    },
+    {
+      "question": "¿Cuánto tarda ver resultados?",
+      "answer": "Un mapa en días, primeros experimentos en 2–4 semanas y lectura de demos y pipeline en ciclos de 60–90 días."
+    },
+    {
       "question": "¿Trabajan PLG y sales-led?",
       "answer": "Sales-led y hybrid. Si el producto aún no tiene ICP claro, el diagnóstico lo dice rápido."
     },
     {
       "question": "¿Integran HubSpot u otro CRM?",
       "answer": "Sí. El criterio es una fuente de verdad para marketing y ventas, no otra integración cosmética."
+    },
+    {
+      "question": "¿Hay un mínimo de inversión?",
+      "answer": "Sí. El mínimo se comparte en la auditoría para proteger foco y calidad, sin pricing teatro en la página."
     }
   ]
 }

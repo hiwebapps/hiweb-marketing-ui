@@ -1,14 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { PageHero } from '../../components/sections/PageHero';
+import { IndustryHero } from '../../components/sections/IndustryHero';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
 import { IndustryGrid } from '../../components/sections/IndustryGrid';
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
-import { CasePreview } from '../../components/sections/CasePreview';
+import { CaseStories } from '../../components/sections/CaseStories';
 import { FaqSection } from '../../components/sections/FaqSection';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
+import type { BadgeVariant } from '../../components/ui';
+import '../../components/sections/CaseStories.css';
 
 export async function getStaticPaths() {
 	const services = await getCollection('servicios');
@@ -29,6 +31,32 @@ const phases = entry.data.proceso.map((step, index) => ({
 	title: step.title,
 	description: step.description,
 }));
+
+const serviceHeroBadges: { label: string; variant: BadgeVariant }[] = [
+	{ label: entry.data.nombre, variant: 'lime' },
+];
+
+function formatCaseStat(metric: {
+	valor: number;
+	prefix?: string;
+	suffix?: string;
+	decimals?: number;
+	label: string;
+}) {
+	const value = `${metric.prefix ?? ''}${
+		metric.decimals != null ? metric.valor.toFixed(metric.decimals) : metric.valor
+	}${metric.suffix ?? ''}`;
+	return { value, label: metric.label };
+}
+
+const caseStories = cases.map((item) => ({
+	client: item.data.cliente,
+	quote: item.data.testimonio?.quote ?? item.data.resumen,
+	name: item.data.testimonio?.name ?? item.data.cliente,
+	role: item.data.testimonio?.role ?? industryName[item.data.industria.id] ?? entry.data.nombre,
+	stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
+	href: `/portafolio/${item.id}`,
+}));
 ---
 
 <Layout
@@ -44,10 +72,14 @@ const phases = entry.data.proceso.map((step, index) => ({
 	]}
 >
 	<main>
-		<PageHero
-			eyebrow="Servicio"
+		<IndustryHero
 			title={entry.data.heroTitle}
-			description={entry.data.tagline}
+			description={entry.data.heroDescription ?? entry.data.tagline}
+			image={entry.data.heroImage ?? `/images/services/${entry.id}-hero.jpg`}
+			imageAlt={entry.data.heroImageAlt ?? `Imagen de ${entry.data.nombre}`}
+			badges={serviceHeroBadges}
+			ctaLabel="Ver casos de éxito"
+			ctaHref="#casos"
 		/>
 		<SectionBand>
 			<ul class="grid gap-4 md:grid-cols-3">
@@ -68,27 +100,27 @@ const phases = entry.data.proceso.map((step, index) => ({
 				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
 			title="Cómo se lee este servicio en cada industria"
-			tone="surface"
+			tone="canvas"
 		/>
 		<ProcessPhases
+			client:visible
 			phases={phases}
 			eyebrow="Cómo trabajamos"
 			title={`Proceso corto de ${entry.data.nombre}`}
 			tone="canvas"
 		/>
-		<CasePreview
-			cases={cases.map((item) => ({
-				client: item.data.cliente,
-				industry: industryName[item.data.industria.id] ?? item.data.industria.id,
-				outcome: item.data.resultadoFrase,
-				title: item.data.titulo,
-				summary: item.data.resumen,
-				href: `/portafolio/${item.id}`,
-				accent: item.data.accent,
-			}))}
-			title="Casos relacionados"
+		<CaseStories
+			client:visible
+			eyebrow="Casos"
+			title={`Casos de ${entry.data.nombre}`}
+			description={
+				cases.length
+					? 'Resultados de empresas consolidadas donde este servicio fue palanca.'
+					: 'Estamos documentando más casos de este servicio. El diagnóstico sigue abierto.'
+			}
+			stories={caseStories}
 		/>
-		<FaqSection items={entry.data.faqs} withSchema={false} />
+		<FaqSection client:visible items={entry.data.faqs} withSchema={false} />
 		<FinalCta client:load title={`Agenda un diagnóstico de ${entry.data.nombre}`} />
 	</main>
 </Layout>

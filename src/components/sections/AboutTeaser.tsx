@@ -17,9 +17,9 @@ export function AboutTeaser({
   return (
     <SectionBand id="nosotros" tone="canvas">
       <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr] md:items-end">
-        <SectionHeader eyebrow={eyebrow} title={title} description={description} />
+        <SectionHeader eyebrow={eyebrow} title={title} description={description} badgeVariant="cyan" />
         <div data-reveal className="rounded-2xl border border-border bg-surface p-6">
-          <Badge>Presencia</Badge>
+          <Badge variant="cyan">Presencia</Badge>
           <p className="mt-3 font-display text-lg font-semibold text-ink">
             Mérida · Cancún · Monterrey
           </p>

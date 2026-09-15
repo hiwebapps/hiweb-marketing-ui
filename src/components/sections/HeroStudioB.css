@@ -11,7 +11,7 @@
   display: grid;
   align-items: center;
   gap: 3rem;
-  width: min(1160px, calc(100% - 2.5rem));
+  width: min(var(--section-max, 1300px), calc(100% - 2.5rem));
   min-height: min(100dvh, 880px);
   margin-inline: auto;
   padding: 8.25rem 0 4.5rem;

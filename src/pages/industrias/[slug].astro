@@ -1,13 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { PageHero } from '../../components/sections/PageHero';
+import { IndustryHero } from '../../components/sections/IndustryHero';
 import { ServiceGrid } from '../../components/sections/ServiceGrid';
 import { PillarGrid } from '../../components/sections/PillarGrid';
-import { CasePreview } from '../../components/sections/CasePreview';
+import { CaseStories } from '../../components/sections/CaseStories';
 import { FaqSection } from '../../components/sections/FaqSection';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
+import type { BadgeVariant } from '../../components/ui';
+import '../../components/sections/CaseStories.css';
+import '../../components/sections/FaqSection.css';
 
 export async function getStaticPaths() {
 	const industries = await getCollection('industrias');
@@ -20,6 +23,42 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
 const cases = (await getCollection('casos')).filter((item) => item.data.industria.id === entry.id);
+const heroImage = entry.data.heroImage ?? `/images/industries/${entry.id}.jpg`;
+const heroBadgeFallback: Record<string, string> = {
+	manufactura: 'Pipeline B2B',
+	salud: 'Agenda calificada',
+	inmobiliarias: 'Visitas reales',
+	'turismo-hoteleria': 'Reserva directa',
+	restaurantes: 'Mesas y ticket',
+	saas: 'Demos calificadas',
+};
+const heroBadge = entry.data.heroBadge ?? heroBadgeFallback[entry.id];
+const industryHeroBadges: { label: string; variant: BadgeVariant }[] = [
+	{ label: entry.data.nombre, variant: 'lime' },
+	...(heroBadge ? [{ label: heroBadge, variant: 'cyan' as const }] : []),
+];
+
+function formatCaseStat(metric: {
+	valor: number;
+	prefix?: string;
+	suffix?: string;
+	decimals?: number;
+	label: string;
+}) {
+	const value = `${metric.prefix ?? ''}${
+		metric.decimals != null ? metric.valor.toFixed(metric.decimals) : metric.valor
+	}${metric.suffix ?? ''}`;
+	return { value, label: metric.label };
+}
+
+const caseStories = cases.map((item) => ({
+	client: item.data.cliente,
+	quote: item.data.testimonio?.quote ?? item.data.resumen,
+	name: item.data.testimonio?.name ?? item.data.cliente,
+	role: item.data.testimonio?.role ?? entry.data.nombre,
+	stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
+	href: `/portafolio/${item.id}`,
+}));
 ---
 
 <Layout
@@ -35,10 +74,14 @@ const cases = (await getCollection('casos')).filter((item) => item.data.industri
 	]}
 >
 	<main>
-		<PageHero
-			eyebrow={entry.data.nombre}
+		<IndustryHero
 			title={entry.data.heroTitle}
 			description={entry.data.heroDescription}
+			image={heroImage}
+			imageAlt={entry.data.heroImageAlt ?? `Imagen de ${entry.data.nombre}`}
+			badges={industryHeroBadges}
+			ctaLabel="Ver casos de éxito"
+			ctaHref="#casos"
 		/>
 		<ServiceGrid
 			services={services.map((item) => ({
@@ -53,26 +96,21 @@ const cases = (await getCollection('casos')).filter((item) => item.data.industri
 			eyebrow="Por qué Hiweb"
 			title={`Por qué Hiweb en ${entry.data.nombre.toLowerCase()}`}
 			pillars={entry.data.porQue}
-			tone="surface"
+			tone="canvas"
 		/>
-		<CasePreview
-			cases={cases.map((item) => ({
-				client: item.data.cliente,
-				industry: entry.data.nombre,
-				outcome: item.data.resultadoFrase,
-				title: item.data.titulo,
-				summary: item.data.resumen,
-				href: `/portafolio/${item.id}`,
-				accent: item.data.accent,
-			}))}
+		<CaseStories
+			client:visible
+			eyebrow="Casos"
 			title={`Casos en ${entry.data.nombre.toLowerCase()}`}
 			description={
 				cases.length
 					? 'Resultados de empresas consolidadas en este sector.'
 					: 'Estamos documentando más casos de este sector. El diagnóstico sigue abierto.'
 			}
+			stories={caseStories}
 		/>
 		<FaqSection
+			client:visible
 			items={entry.data.faqs}
 			title={`Preguntas de ${entry.data.nombre.toLowerCase()}`}
 			withSchema={false}

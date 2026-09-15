@@ -46,10 +46,10 @@ const related = allCases.filter(
 		<SectionBand>
 			<div class="grid gap-10 md:grid-cols-2">
 				<div>
-					<SectionHeader eyebrow="Reto" title="Contexto inicial" description={entry.data.reto} />
+					<SectionHeader eyebrow="Reto" title="Contexto inicial" description={entry.data.reto} badgeVariant="purple" />
 				</div>
 				<div>
-					<SectionHeader eyebrow="Estrategia" title="Servicios aplicados" description={entry.data.estrategia} />
+					<SectionHeader eyebrow="Estrategia" title="Servicios aplicados" description={entry.data.estrategia} badgeVariant="cyan" />
 					<ul class="mt-6 flex flex-wrap gap-2">
 						{relatedServices.map((service) =>
 							service ? (
@@ -69,6 +69,7 @@ const related = allCases.filter(
 		</SectionBand>
 
 		<ProcessPhases
+			client:visible
 			phases={entry.data.fases.map((fase, index) => ({
 				index: String(index + 1).padStart(2, '0'),
 				title: fase.title,

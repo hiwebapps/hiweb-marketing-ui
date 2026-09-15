@@ -3,6 +3,9 @@
   "orden": 4,
   "tagline": "Intención de compra capturada con estructura, no con campañas huérfanas.",
   "heroTitle": "Google Ads: cada búsqueda cara tiene un destino que merece el clic.",
+  "heroDescription": "Intención de compra capturada con estructura, no con campañas huérfanas. Cada búsqueda cara tiene un destino que merece el clic.",
+  "heroImage": "/images/services/google-ads-hero.jpg",
+  "heroImageAlt": "Manos escribiendo en una laptop frente a un monitor de trabajo",
   "cards": [
     {
       "title": "Qué es",

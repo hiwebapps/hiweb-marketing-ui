@@ -53,6 +53,7 @@ export function FitSignal({ models = DEFAULT_MODELS }: FitSignalProps) {
         eyebrow="Engagement"
         title="Elige el nivel de soporte que necesitas ahora"
         description="Mismo sistema Hiweb — distinta profundidad. El CTA es uno: agendar y decidir juntos."
+        badgeVariant="purple"
       />
 
       <ul className="mt-12 grid gap-4 md:grid-cols-3">

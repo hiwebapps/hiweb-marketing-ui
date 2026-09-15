@@ -3,6 +3,9 @@
   "orden": 1,
   "tagline": "Presencia que empuja un resultado, no un calendario vacío.",
   "heroTitle": "Redes sociales atadas a demanda, no a vanidad.",
+  "heroDescription": "Presencia que empuja un resultado, no un calendario vacío. Arquitectura de canales y contenidos alineada a la oferta de tu industria.",
+  "heroImage": "/images/services/redes-sociales-hero.jpg",
+  "heroImageAlt": "Silueta de un creador con cámara en un set con luz cinematográfica",
   "cards": [
     {
       "title": "Qué es",

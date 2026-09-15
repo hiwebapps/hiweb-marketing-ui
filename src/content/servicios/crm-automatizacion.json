@@ -3,6 +3,9 @@
   "orden": 6,
   "tagline": "El lead no se enfría entre el anuncio y el asesor.",
   "heroTitle": "CRM y automatización: una fuente de verdad para marketing y ventas.",
+  "heroDescription": "El lead no se enfría entre el anuncio y el asesor. Una fuente de verdad para marketing y ventas.",
+  "heroImage": "/images/services/crm-automatizacion-hero.jpg",
+  "heroImageAlt": "Laptop con un dashboard de usuarios, métricas y actividad",
   "cards": [
     {
       "title": "Qué es",

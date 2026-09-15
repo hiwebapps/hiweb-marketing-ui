@@ -1,9 +1,7 @@
-import { HOME_FAQS, HOME_PILLARS, PROCESS_PHASES } from '../../data/site';
-import { AboutTeaser } from './AboutTeaser';
-import { FaqSection } from './FaqSection';
+import { HOME_PILLARS } from '../../data/site';
 import { PillarGrid } from './PillarGrid';
-import { ProcessPhases } from './ProcessPhases';
 import { ServiceGrid, type GridCard } from './ServiceGrid';
+import { TeamGrid } from './TeamGrid';
 
 type HomeAfterHeroProps = {
   services: GridCard[];
@@ -16,18 +14,12 @@ type HomeAfterHeroProps = {
 export function HomeAfterHero({ services }: HomeAfterHeroProps) {
   return (
     <>
-      <PillarGrid pillars={[...HOME_PILLARS]} tone="wash" />
+      <PillarGrid pillars={[...HOME_PILLARS]} tone="canvas" />
       <ServiceGrid services={services} />
     </>
   );
 }
 
 export function HomeBelowFold() {
-  return (
-    <>
-      <ProcessPhases phases={[...PROCESS_PHASES]} tone="canvas" />
-      <AboutTeaser />
-      <FaqSection items={[...HOME_FAQS]} />
-    </>
-  );
+  return <TeamGrid />;
 }

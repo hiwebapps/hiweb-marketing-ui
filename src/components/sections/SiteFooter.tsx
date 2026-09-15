@@ -1,118 +1,260 @@
-import {
-  LEGAL_LINKS,
-  NAV_INDUSTRIES,
-  NAV_SERVICES,
-  SITE,
-} from '../../data/site';
+import { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
+import { useGSAP } from '@gsap/react';
+import { LEGAL_LINKS, NAV_LINKS, SITE } from '../../data/site';
+import { MOTION } from '../../lib/motion';
+import './SiteFooter.css';
+
+gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
+
+const MENU = [
+  { href: '/nosotros', label: 'Nosotros' },
+  { href: '/industrias', label: 'Industrias' },
+  { href: '/servicios', label: 'Servicios' },
+  ...NAV_LINKS.filter((item) => item.href !== '/nosotros'),
+  { href: '/contacto', label: 'Contacto' },
+];
+
+const CONTACT = [
+  { href: SITE.phoneHref, label: SITE.phone },
+  { href: `mailto:${SITE.email}`, label: SITE.email },
+  { href: SITE.whatsapp, label: 'WhatsApp' },
+];
+
+function IconInstagram() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="4" y="4" width="16" height="16" rx="4.5" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="12" cy="12" r="3.4" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="16.6" cy="7.4" r="0.9" fill="currentColor" />
+    </svg>
+  );
+}
+
+function IconLinkedIn() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M7.4 9.4H4.8V19h2.6V9.4ZM6.1 5C5.2 5 4.5 5.7 4.5 6.6s.7 1.6 1.6 1.6 1.6-.7 1.6-1.6S7 5 6.1 5ZM19.2 12.3c0-2.4-1.3-3.6-3.4-3.6-1.5 0-2.3.8-2.7 1.4V9.4H10.5c0 1.1 0 9.6 0 9.6h2.6v-5.4c0-.3 0-.6.1-.8.3-.6.9-1.2 1.9-1.2 1.3 0 1.9.9 1.9 2.3V19h2.6v-6.7h-.4Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function prefersReducedMotion() {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
 
 /**
- * Footer global — columnas de industrias, servicios, contacto y legal.
+ * Footer — panel dark + wordmark gigante, SplitText y ScrollTrigger.
  */
 export function SiteFooter() {
+  const rootRef = useRef<HTMLElement>(null);
+  const year = new Date().getFullYear();
+
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      if (!root || prefersReducedMotion()) return;
+
+      const title = root.querySelector<HTMLElement>('.site-footer__title');
+      const mark = root.querySelector<HTMLElement>('.site-footer__mark');
+      const bits = root.querySelectorAll<HTMLElement>(
+        '.site-footer__brand, .site-footer__form, .site-footer__col, .site-footer__bar, .site-footer__legal',
+      );
+
+      gsap.set(bits, { y: 22, autoAlpha: 0 });
+      gsap.to(bits, {
+        y: 0,
+        autoAlpha: 1,
+        duration: MOTION.duration,
+        ease: MOTION.ease,
+        stagger: 0.07,
+        scrollTrigger: {
+          trigger: root,
+          start: 'top 88%',
+          once: true,
+        },
+      });
+
+      if (title) {
+        SplitText.create(title, {
+          type: 'words,lines',
+          autoSplit: true,
+          mask: 'lines',
+          aria: 'auto',
+          onSplit(self) {
+            return gsap.fromTo(
+              self.words,
+              { yPercent: 110 },
+              {
+                yPercent: 0,
+                duration: MOTION.durationSlow,
+                ease: MOTION.ease,
+                stagger: 0.055,
+                scrollTrigger: {
+                  trigger: title,
+                  start: 'top 92%',
+                  once: true,
+                },
+              },
+            );
+          },
+        });
+      }
+
+      if (mark) {
+        SplitText.create(mark, {
+          type: 'chars',
+          charsClass: 'site-footer__char',
+          aria: 'none',
+          autoSplit: true,
+          onSplit(self) {
+            return gsap.fromTo(
+              self.chars,
+              { yPercent: 70, autoAlpha: 0, rotateX: 38 },
+              {
+                yPercent: 0,
+                autoAlpha: 1,
+                rotateX: 0,
+                transformOrigin: '50% 100%',
+                duration: 1.05,
+                ease: 'power3.out',
+                stagger: 0.07,
+                scrollTrigger: {
+                  trigger: mark,
+                  start: 'top 98%',
+                  once: true,
+                },
+              },
+            );
+          },
+        });
+
+        gsap.fromTo(
+          mark,
+          { yPercent: 16 },
+          {
+            yPercent: 0,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: root,
+              start: 'top bottom',
+              end: 'bottom bottom',
+              scrub: 1.15,
+            },
+          },
+        );
+      }
+    },
+    { scope: rootRef },
+  );
+
   return (
-    <footer className="border-t border-border bg-canvas">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <a href="/" className="font-display text-sm font-semibold tracking-wide text-ink no-underline">
-            {SITE.name}
-          </a>
-          <p className="mt-3 max-w-xs !text-sm !leading-relaxed text-muted">{SITE.tagline}</p>
-          <p className="mt-4 !text-xs text-muted">{SITE.locales.join(' · ')}</p>
-          <nav className="mt-5 flex flex-col gap-1.5" aria-label="Kit interno">
-            <a href="/sections" className="!text-sm text-ink-soft no-underline hover:text-ink">
-              Kit de secciones
-            </a>
-            <a href="/sections#demo-hero-studio-a" className="!text-sm text-ink-soft no-underline hover:text-ink">
-              Hero Studio A
-            </a>
-            <a href="/sections#demo-hero-studio-b" className="!text-sm text-ink-soft no-underline hover:text-ink">
-              Hero Studio B
-            </a>
-          </nav>
-        </div>
+    <footer ref={rootRef} className="site-footer">
+      <div className="site-footer__wash" aria-hidden="true">
+        <span className="site-footer__grad site-footer__grad--a" />
+        <span className="site-footer__grad site-footer__grad--b" />
+        <span className="site-footer__grad site-footer__grad--c" />
+      </div>
 
-        <div>
-          <p className="font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
-            Industrias
-          </p>
-          <ul className="mt-3 space-y-1.5">
-            {NAV_INDUSTRIES.map((item) => (
-              <li key={item.slug}>
+      <div className="site-footer__inner">
+        <div className="site-footer__panel">
+          <div className="site-footer__top">
+            <div className="site-footer__intro">
+              <p className="site-footer__brand">{SITE.name}</p>
+              <h2 className="site-footer__title">Agenda una auditoría. Llegamos con mapa, no con deck.</h2>
+              <form className="site-footer__form" action="/contacto" method="get">
+                <label className="sr-only" htmlFor="footer-email">
+                  Email de trabajo
+                </label>
+                <input
+                  id="footer-email"
+                  className="site-footer__input"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  placeholder="Email de trabajo"
+                  required
+                />
+                <button className="site-footer__submit" type="submit" aria-label="Ir a contacto">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M3 8h10M9 4l4 4-4 4"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </form>
+            </div>
+
+            <nav className="site-footer__col" aria-label="Menú">
+              <p className="site-footer__heading">Menú</p>
+              <ul>
+                {MENU.map((item) => (
+                  <li key={item.href}>
+                    <a href={item.href}>{item.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav className="site-footer__col" aria-label="Contacto">
+              <p className="site-footer__heading">Contacto</p>
+              <ul>
+                {CONTACT.map((item) => (
+                  <li key={item.href}>
+                    <a href={item.href}>{item.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          <div className="site-footer__bar">
+            <p className="site-footer__locales">{SITE.locales.join(' · ')}</p>
+            <div className="site-footer__tools">
+              {SITE.socials.map((item) => (
                 <a
-                  href={`/industrias/${item.slug}`}
-                  className="!text-sm text-ink-soft no-underline hover:text-ink"
+                  key={item.label}
+                  href={item.href}
+                  className="site-footer__icon"
+                  aria-label={item.label}
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  {item.nombre}
+                  {item.label === 'Instagram' ? <IconInstagram /> : <IconLinkedIn />}
                 </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+              ))}
+            </div>
+          </div>
 
-        <div>
-          <p className="font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
-            Servicios
-          </p>
-          <ul className="mt-3 space-y-1.5">
-            {NAV_SERVICES.map((item) => (
-              <li key={item.slug}>
-                <a
-                  href={`/servicios/${item.slug}`}
-                  className="!text-sm text-ink-soft no-underline hover:text-ink"
-                >
-                  {item.nombre}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p className="font-display text-[11px] font-medium tracking-[0.16em] text-muted uppercase">
-            Contacto
-          </p>
-          <ul className="mt-3 space-y-1.5">
-            <li>
-              <a href={SITE.phoneHref} className="!text-sm text-ink-soft no-underline hover:text-ink">
-                {SITE.phone}
-              </a>
-            </li>
-            <li>
-              <a href={`mailto:${SITE.email}`} className="!text-sm text-ink-soft no-underline hover:text-ink">
-                {SITE.email}
-              </a>
-            </li>
-            <li>
-              <a href={SITE.whatsapp} className="!text-sm text-ink-soft no-underline hover:text-ink">
-                WhatsApp
-              </a>
-            </li>
-            {SITE.socials.map((item) => (
-              <li key={item.label}>
-                <a href={item.href} className="!text-sm text-ink-soft no-underline hover:text-ink">
+          <div className="site-footer__legal">
+            <p>
+              © {year} {SITE.legalName}
+            </p>
+            <nav aria-label="Legal">
+              {LEGAL_LINKS.map((item) => (
+                <a key={item.href} href={item.href}>
                   {item.label}
                 </a>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </nav>
+            <a href="#top" className="site-footer__totop">
+              Volver arriba ↑
+            </a>
+          </div>
         </div>
       </div>
 
-      <div className="border-t border-border">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-5">
-          <p className="!text-xs text-muted">© {new Date().getFullYear()} {SITE.legalName}</p>
-          <nav className="flex flex-wrap gap-4">
-            {LEGAL_LINKS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="!text-xs font-medium text-ink-soft no-underline hover:text-ink"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        </div>
+      <div className="site-footer__mark-wrap" aria-hidden="true">
+        <p className="site-footer__mark">Hiweb</p>
       </div>
     </footer>
   );

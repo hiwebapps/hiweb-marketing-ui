@@ -41,6 +41,7 @@ export function ProblemPov({
         eyebrow="Punto de vista"
         title={title}
         description={description}
+        badgeVariant="orange"
       />
       <ul className="mt-12 grid gap-8 md:grid-cols-3">
         {pains.map((pain) => (
