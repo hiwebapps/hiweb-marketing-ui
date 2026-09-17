@@ -21,5 +21,11 @@ export function HomeAfterHero({ services }: HomeAfterHeroProps) {
 }
 
 export function HomeBelowFold() {
-  return <TeamGrid />;
+  return (
+    <TeamGrid
+      limit={4}
+      ctaLabel="Conoce a todo el equipo"
+      ctaHref="/nosotros#nosotros"
+    />
+  );
 }

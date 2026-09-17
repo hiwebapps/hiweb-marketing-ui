@@ -16,6 +16,7 @@ export type Pillar = {
 };
 
 type PillarGridProps = {
+  id?: string;
   eyebrow?: string;
   title?: string;
   description?: string;
@@ -34,6 +35,7 @@ const ACCENT_HEX: Record<PillarAccent, string> = {
 const DEFAULT_ACCENTS: PillarAccent[] = ['purple', 'cyan', 'orange', 'green'];
 
 export function PillarGrid({
+  id = 'diferenciadores',
   eyebrow = 'Diferenciadores',
   title = 'Cuatro razones para no contratar una agencia genérica',
   description = 'Partner interno, idioma de industria, servicios atados a resultado y evidencia verificable.',
@@ -46,7 +48,7 @@ export function PillarGrid({
   const onSurface = tone === 'surface';
 
   return (
-    <SectionBand id="diferenciadores" tone={tone}>
+    <SectionBand id={id} tone={tone}>
       <div className="flex justify-center">
         <Badge variant="orange">{eyebrow}</Badge>
       </div>

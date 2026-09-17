@@ -1,14 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, getEntry } from 'astro:content';
-import { PageHero } from '../../components/sections/PageHero';
+import { CaseTelescopeHero } from '../../components/sections/CaseTelescopeHero';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
 import { SectionHeader } from '../../components/sections/primitives/SectionHeader';
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { MetricsBand } from '../../components/sections/MetricsBand';
+import { CaseStories } from '../../components/sections/CaseStories';
 import { CasePreview } from '../../components/sections/CasePreview';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../lib/schema';
+import { postCoverUrl } from '../../lib/blog';
+import '../../components/sections/CaseTelescopeHero.css';
+import '../../components/sections/MetricsBand.css';
+import '../../components/sections/CaseStories.css';
 
 export async function getStaticPaths() {
 	const cases = await getCollection('casos');
@@ -25,6 +30,36 @@ const allCases = await getCollection('casos');
 const related = allCases.filter(
 	(item) => item.id !== entry.id && item.data.industria.id === entry.data.industria.id,
 );
+
+const heroImage =
+	industry?.data.heroImage ?? postCoverUrl(`caso-${entry.id}`, 1600, 1000);
+const floatImages = [
+	...relatedServices
+		.map((service) => service?.data.heroImage)
+		.filter((src): src is string => Boolean(src)),
+	industry?.data.heroImage,
+	...Array.from({ length: 10 }, (_, index) =>
+		postCoverUrl(`${entry.id}-float-${index}`, 400, 500),
+	),
+].filter((src): src is string => Boolean(src));
+
+const projectWords = entry.data.cliente.trim().split(/\s+/);
+const projectMid = Math.max(1, Math.ceil(projectWords.length / 2));
+const titleLeft = projectWords.slice(0, projectMid).join(' ');
+const titleRight = projectWords.slice(projectMid).join(' ');
+
+function formatCaseStat(metric: {
+	valor: number;
+	prefix?: string;
+	suffix?: string;
+	decimals?: number;
+	label: string;
+}) {
+	const value = `${metric.prefix ?? ''}${
+		metric.decimals != null ? metric.valor.toFixed(metric.decimals) : metric.valor
+	}${metric.suffix ?? ''}`;
+	return { value, label: metric.label };
+}
 ---
 
 <Layout
@@ -37,10 +72,13 @@ const related = allCases.filter(
 	])}
 >
 	<main>
-		<PageHero
-			eyebrow={`${entry.data.cliente} · ${industry?.data.nombre ?? ''}`}
-			title={`${entry.data.cliente}: ${entry.data.resultadoFrase}`}
-			description={entry.data.titulo}
+		<CaseTelescopeHero
+			client:load
+			titleLeft={titleLeft}
+			titleRight={titleRight}
+			image={heroImage}
+			imageAlt={industry?.data.heroImageAlt ?? `Imagen del caso ${entry.data.cliente}`}
+			floatImages={floatImages}
 		/>
 
 		<SectionBand>
@@ -80,29 +118,42 @@ const related = allCases.filter(
 		/>
 
 		<MetricsBand
+			client:visible
 			metrics={entry.data.metricas.map((metric) => ({
 				valor: metric.valor,
 				label: metric.label,
 				prefix: metric.prefix,
 				suffix: metric.suffix,
 				decimals: metric.decimals,
+				detail:
+					metric.antes && metric.despues
+						? `De ${metric.antes} a ${metric.despues}`
+						: metric.despues
+							? metric.despues
+							: undefined,
 			}))}
 			title="Antes y después"
-			description="Cifras verificables. Baseline incluido cuando aplica."
-			tone="canvas"
+			titleMuted="en cifras verificables"
+			description="Baseline incluido cuando aplica. Números de negocio, no recortes de Ads Manager."
 		/>
 
 		{entry.data.testimonio ? (
-			<SectionBand tone="surface">
-				<figure data-reveal class="mx-auto max-w-3xl">
-					<blockquote class="font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-						“{entry.data.testimonio.quote}”
-					</blockquote>
-					<figcaption class="mt-6 text-sm text-muted">
-						{entry.data.testimonio.name} · {entry.data.testimonio.role}
-					</figcaption>
-				</figure>
-			</SectionBand>
+			<CaseStories
+				client:visible
+				eyebrow="Testimonio"
+				title={`Lo que dice ${entry.data.cliente}`}
+				description="Voz del cliente. Sin quotes inventadas ni outcomes ornamentales."
+				stories={[
+					{
+						client: entry.data.cliente,
+						quote: entry.data.testimonio.quote,
+						name: entry.data.testimonio.name,
+						role: entry.data.testimonio.role,
+						stats: entry.data.metricas.slice(0, 2).map(formatCaseStat),
+						href: `/portafolio/${entry.id}`,
+					},
+				]}
+			/>
 		) : null}
 
 		{related.length ? (

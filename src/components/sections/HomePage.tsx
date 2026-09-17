@@ -4,8 +4,8 @@ import { HomeAfterHero, HomeBelowFold } from './HomeAfterHero';
 import { ProcessPhases } from './ProcessPhases';
 
 /**
- * Home ensamblada (para demos / client:only).
- * En index.astro preferimos HeroStudioA client:only + HomeAfterHero SSR.
+ * Home ensamblada (para demos).
+ * En index.astro preferimos HeroStudioA client:load + HomeAfterHero SSR.
  */
 export function HomePage() {
   return (

@@ -1,9 +1,18 @@
-import type { CSSProperties, ReactNode } from 'react';
-import { TEAM_MEMBERS } from '../../data/site';
+import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import {
+  TEAM_CATEGORIES,
+  TEAM_MEMBERS,
+  type TeamCategory,
+} from '../../data/site';
+import { MOTION } from '../../lib/motion';
 import { Badge, Button, type BadgeVariant } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
 import './TeamGrid.css';
+
+gsap.registerPlugin(useGSAP);
 
 type TeamAccent = BadgeVariant;
 
@@ -18,9 +27,12 @@ export type TeamMember = {
   role: string;
   bio: string;
   photo: string;
+  category: TeamCategory;
   accent?: TeamAccent;
   socials?: TeamSocials;
 };
+
+type FilterId = 'all' | TeamCategory;
 
 type TeamGridProps = {
   eyebrow?: string;
@@ -29,9 +41,18 @@ type TeamGridProps = {
   ctaLabel?: string;
   ctaHref?: string;
   members?: TeamMember[];
+  /** Cap visible members (homepage). Filters ignore this when active. */
+  limit?: number;
+  /** Category filter row — use on /nosotros */
+  showFilters?: boolean;
 };
 
 const ACCENTS: TeamAccent[] = ['cyan', 'purple', 'orange', 'lime'];
+
+const FILTERS: ReadonlyArray<{ id: FilterId; label: string }> = [
+  { id: 'all', label: 'Todos' },
+  ...TEAM_CATEGORIES,
+];
 
 function IconTikTok() {
   return (
@@ -91,10 +112,52 @@ export function TeamGrid({
   eyebrow = 'Equipo',
   title = 'Conoce al equipo Hiweb',
   description = 'Un núcleo senior en estrategia, performance, creativo y producto web. Las caras que sí aparecen en la auditoría.',
-  ctaLabel = 'Conoce nuestra trayectoria',
+  ctaLabel = 'Conoce a todo el equipo',
   ctaHref = '/nosotros',
   members = [...TEAM_MEMBERS],
+  limit,
+  showFilters = false,
 }: TeamGridProps) {
+  const [filter, setFilter] = useState<FilterId>('all');
+  const gridRef = useRef<HTMLUListElement>(null);
+
+  const filtered =
+    showFilters && filter !== 'all'
+      ? members.filter((member) => member.category === filter)
+      : members;
+
+  const visible =
+    !showFilters && limit != null ? filtered.slice(0, limit) : filtered;
+
+  const visibleKey = visible.map((member) => member.name).join('|');
+
+  useGSAP(
+    () => {
+      if (!showFilters) return;
+      const cards = gsap.utils.toArray<HTMLElement>('.team-card', gridRef.current);
+      if (!cards.length) return;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set(cards, { opacity: 1, y: 0 });
+        return;
+      }
+
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: MOTION.revealY },
+        {
+          opacity: 1,
+          y: 0,
+          duration: MOTION.duration,
+          ease: MOTION.ease,
+          stagger: MOTION.stagger,
+          overwrite: true,
+        },
+      );
+    },
+    { scope: gridRef, dependencies: [showFilters, filter, visibleKey] },
+  );
+
   return (
     <SectionBand id="nosotros" tone="canvas">
       <div className="team">
@@ -110,14 +173,35 @@ export function TeamGrid({
           </div>
         </div>
 
-        <ul className="team__grid">
-          {members.map((member, index) => {
+        {showFilters ? (
+          <div className="team__filters" role="group" aria-label="Filtrar por categoría">
+            {FILTERS.map((item) => {
+              const active = filter === item.id;
+              return (
+                <Button
+                  key={item.id}
+                  type="button"
+                  size="sm"
+                  variant={active ? 'primary' : 'secondary'}
+                  glow={active}
+                  aria-pressed={active}
+                  onClick={() => setFilter(item.id)}
+                >
+                  {item.label}
+                </Button>
+              );
+            })}
+          </div>
+        ) : null}
+
+        <ul ref={gridRef} className="team__grid">
+          {visible.map((member, index) => {
             const accent = member.accent ?? ACCENTS[index % ACCENTS.length];
 
             return (
               <li
                 key={member.name}
-                data-reveal
+                data-reveal={showFilters ? undefined : true}
                 className={`team-card team-card--${accent}`}
               >
                 <div

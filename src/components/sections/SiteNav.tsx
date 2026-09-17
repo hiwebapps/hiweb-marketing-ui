@@ -6,6 +6,7 @@ import {
   NAV_INDUSTRY_ITEMS,
   NAV_SERVICE_GROUPS,
 } from '../../data/site';
+import { MOTION } from '../../lib/motion';
 import { Button } from '../ui';
 import './SiteNav.css';
 
@@ -30,6 +31,30 @@ export function SiteNav() {
   const closeTimer = useRef(0);
   const industriasId = useId();
   const serviciosId = useId();
+
+  useGSAP(
+    () => {
+      const nav = navRef.current;
+      const shell = nav?.querySelector('.hw-nav__shell');
+      if (!nav || !shell) return;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        nav.classList.add('is-ready');
+        return;
+      }
+
+      gsap.set(shell, { y: -16, autoAlpha: 0 });
+      nav.classList.add('is-ready');
+      gsap.to(shell, {
+        y: 0,
+        autoAlpha: 1,
+        duration: MOTION.duration,
+        delay: 0.06,
+        ease: MOTION.ease,
+      });
+    },
+    { scope: navRef },
+  );
 
   useGSAP(
     () => {
@@ -319,7 +344,6 @@ export function SiteNav() {
                 <span className="hw-nav-sheet__brand-text">Hiweb</span>
               </a>
               <div className="hw-nav-sheet__header-actions">
-                <span className="hw-nav-sheet__pill">Menú</span>
                 <button
                   type="button"
                   className="hw-nav-sheet__close"
@@ -336,10 +360,30 @@ export function SiteNav() {
           </div>
 
           <div className="hw-nav-sheet__scroll">
+            <SheetNavLink href="/nosotros" onNavigate={() => setMobileOpen(false)}>
+              Nosotros
+            </SheetNavLink>
+
             <SheetSection title="Industrias">
+              <li>
+                <a
+                  href="/industrias"
+                  className="hw-nav-sheet__link"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <span className="hw-nav-sheet__icon" aria-hidden="true">
+                    <NavIcon name="grid" />
+                  </span>
+                  <span className="hw-nav-sheet__label">Todas las industrias</span>
+                </a>
+              </li>
               {NAV_INDUSTRY_ITEMS.map((item) => (
                 <li key={item.slug}>
-                  <a href={`/industrias/${item.slug}`} className="hw-nav-sheet__link">
+                  <a
+                    href={`/industrias/${item.slug}`}
+                    className="hw-nav-sheet__link"
+                    onClick={() => setMobileOpen(false)}
+                  >
                     <span className="hw-nav-sheet__icon" aria-hidden="true">
                       <NavIcon name={item.icon} />
                     </span>
@@ -349,57 +393,44 @@ export function SiteNav() {
               ))}
             </SheetSection>
 
-            {NAV_SERVICE_GROUPS.map((group) => (
-              <SheetSection key={group.heading} title={group.heading}>
-                {group.items.map((item) => (
-                  <li key={item.slug}>
-                    <a href={`/servicios/${item.slug}`} className="hw-nav-sheet__link">
-                      <span className="hw-nav-sheet__icon" aria-hidden="true">
-                        <NavIcon name={item.icon} />
-                      </span>
-                      <span className="hw-nav-sheet__label">{item.nombre}</span>
-                    </a>
-                  </li>
-                ))}
-              </SheetSection>
-            ))}
-
-            <SheetSection title="Explorar">
+            <SheetSection title="Servicios">
               <li>
-                <a href="/nosotros" className="hw-nav-sheet__link">
-                  <span className="hw-nav-sheet__icon" aria-hidden="true">
-                    <NavIcon name="users" />
-                  </span>
-                  <span className="hw-nav-sheet__label">Nosotros</span>
-                </a>
-              </li>
-              <li>
-                <a href="/industrias" className="hw-nav-sheet__link">
-                  <span className="hw-nav-sheet__icon" aria-hidden="true">
-                    <NavIcon name="building" />
-                  </span>
-                  <span className="hw-nav-sheet__label">Todas las industrias</span>
-                </a>
-              </li>
-              <li>
-                <a href="/servicios" className="hw-nav-sheet__link">
+                <a
+                  href="/servicios"
+                  className="hw-nav-sheet__link"
+                  onClick={() => setMobileOpen(false)}
+                >
                   <span className="hw-nav-sheet__icon" aria-hidden="true">
                     <NavIcon name="grid" />
                   </span>
                   <span className="hw-nav-sheet__label">Todos los servicios</span>
                 </a>
               </li>
-              {NAV_EXPLORE.map((item) => (
-                <li key={item.href}>
-                  <a href={item.href} className="hw-nav-sheet__link">
-                    <span className="hw-nav-sheet__icon" aria-hidden="true">
-                      <NavIcon name={item.icon} />
-                    </span>
-                    <span className="hw-nav-sheet__label">{item.nombre}</span>
-                  </a>
-                </li>
-              ))}
+              {NAV_SERVICE_GROUPS.flatMap((group) =>
+                group.items.map((item) => (
+                  <li key={item.slug}>
+                    <a
+                      href={`/servicios/${item.slug}`}
+                      className="hw-nav-sheet__link"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <span className="hw-nav-sheet__icon" aria-hidden="true">
+                        <NavIcon name={item.icon} />
+                      </span>
+                      <span className="hw-nav-sheet__label">{item.nombre}</span>
+                    </a>
+                  </li>
+                )),
+              )}
             </SheetSection>
+
+            <SheetNavLink href="/portafolio" onNavigate={() => setMobileOpen(false)}>
+              Casos de Éxito
+            </SheetNavLink>
+
+            <SheetNavLink href="/blog" onNavigate={() => setMobileOpen(false)}>
+              Blog
+            </SheetNavLink>
           </div>
 
           <div className="hw-nav-sheet__footer">
@@ -413,11 +444,49 @@ export function SiteNav() {
   );
 }
 
-function SheetSection({ title, children }: { title: string; children: ReactNode }) {
+function SheetNavLink({
+  href,
+  children,
+  onNavigate,
+}: {
+  href: string;
+  children: ReactNode;
+  onNavigate?: () => void;
+}) {
   return (
-    <section className="hw-nav-sheet__section">
-      <h2 className="hw-nav-sheet__heading">{title}</h2>
-      <ul className="hw-nav-sheet__list">{children}</ul>
+    <div className="hw-nav-sheet__section">
+      <a href={href} className="hw-nav-sheet__heading hw-nav-sheet__heading--link" onClick={onNavigate}>
+        <span>{children}</span>
+      </a>
+    </div>
+  );
+}
+
+function SheetSection({ title, children }: { title: string; children: ReactNode }) {
+  const [expanded, setExpanded] = useState(false);
+  const panelId = useId();
+
+  return (
+    <section className={['hw-nav-sheet__section', expanded ? 'is-open' : ''].filter(Boolean).join(' ')}>
+      <button
+        type="button"
+        className="hw-nav-sheet__heading"
+        aria-expanded={expanded}
+        aria-controls={panelId}
+        onClick={() => setExpanded((current) => !current)}
+      >
+        <span>{title}</span>
+        <Chevron open={expanded} />
+      </button>
+      <div
+        id={panelId}
+        className="hw-nav-sheet__panel"
+        role="region"
+        aria-label={title}
+        hidden={!expanded}
+      >
+        <ul className="hw-nav-sheet__list">{children}</ul>
+      </div>
     </section>
   );
 }

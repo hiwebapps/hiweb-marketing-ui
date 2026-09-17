@@ -1,0 +1,272 @@
+.presence-map {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 5.5rem 0 4.5rem;
+  background:
+    radial-gradient(ellipse 55% 45% at 50% 0%, rgba(1, 231, 255, 0.12), transparent 58%),
+    radial-gradient(ellipse 40% 35% at 12% 80%, rgba(146, 122, 254, 0.1), transparent 55%),
+    #07090f;
+  color: #f5f5f5;
+}
+
+.presence-map__grid {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(1, 231, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(1, 231, 255, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
+}
+
+.presence-map__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.25rem;
+  width: 100%;
+  max-width: var(--section-max);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.presence-map__header {
+  max-width: 42rem;
+  text-align: center;
+}
+
+.presence-map__badge {
+  display: inline-flex;
+  margin: 0;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid rgba(1, 231, 255, 0.45);
+  border-radius: 999px;
+  color: var(--color-accent-cyan);
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.presence-map__title {
+  margin: 1.15rem 0 0;
+  color: #f5f5f5;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.presence-map__accent {
+  color: var(--color-accent-cyan);
+}
+
+.presence-map__lead {
+  margin: 1rem auto 0;
+  max-width: 36rem;
+  color: rgba(245, 245, 245, 0.62);
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.presence-map__stage {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.presence-map__stage.is-dragging {
+  cursor: grabbing;
+}
+
+.presence-map__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.presence-map__pin {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(6px);
+  transition: opacity 280ms ease, filter 280ms ease, transform 280ms ease;
+}
+
+.presence-map__pin-dot {
+  flex-shrink: 0;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-accent-cyan);
+  box-shadow:
+    0 0 0 4px rgba(1, 231, 255, 0.18),
+    0 0 18px rgba(1, 231, 255, 0.55);
+  animation: presence-pulse 2.4s ease-in-out infinite;
+}
+
+.presence-map__pin-card {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(1, 231, 255, 0.35);
+  border-radius: 0.55rem;
+  background: rgba(7, 9, 15, 0.82);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.presence-map__pin-label {
+  margin: 0;
+  color: #f5f5f5;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.presence-map__pin-detail {
+  margin: 0.15rem 0 0;
+  color: rgba(245, 245, 245, 0.55);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+/* CSS Anchor Positioning — pins follow cobe marker anchors when supported */
+@supports (anchor-name: --x) {
+  .presence-map__pin--mexico {
+    position-anchor: --cobe-mexico;
+    bottom: anchor(top);
+    left: anchor(center);
+    translate: -50% -0.35rem;
+    opacity: var(--cobe-visible-mexico, 0);
+    filter: blur(calc((1 - var(--cobe-visible-mexico, 0)) * 8px));
+  }
+
+  .presence-map__pin--usa {
+    position-anchor: --cobe-usa;
+    bottom: anchor(top);
+    left: anchor(center);
+    translate: -50% -0.35rem;
+    opacity: var(--cobe-visible-usa, 0);
+    filter: blur(calc((1 - var(--cobe-visible-usa, 0)) * 8px));
+  }
+
+  .presence-map__pin--canada {
+    position-anchor: --cobe-canada;
+    bottom: anchor(top);
+    left: anchor(center);
+    translate: -50% -0.35rem;
+    opacity: var(--cobe-visible-canada, 0);
+    filter: blur(calc((1 - var(--cobe-visible-canada, 0)) * 8px));
+  }
+}
+
+/* Fallback layout when anchors are unsupported */
+@supports not (anchor-name: --x) {
+  .presence-map__pin--mexico {
+    top: 58%;
+    left: 42%;
+    opacity: 1;
+    filter: none;
+  }
+
+  .presence-map__pin--usa {
+    top: 38%;
+    left: 48%;
+    opacity: 1;
+    filter: none;
+  }
+
+  .presence-map__pin--canada {
+    top: 22%;
+    left: 46%;
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.presence-map__footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.presence-map__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.85rem;
+  padding: 0.7rem 1.35rem;
+  border-radius: 999px;
+  background: var(--color-accent-cyan);
+  color: #07090f;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  box-shadow: 0 0 28px rgba(1, 231, 255, 0.28);
+}
+
+.presence-map__cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 0 36px rgba(1, 231, 255, 0.4);
+}
+
+@keyframes presence-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 4px rgba(1, 231, 255, 0.18),
+      0 0 18px rgba(1, 231, 255, 0.55);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(1, 231, 255, 0.08),
+      0 0 28px rgba(1, 231, 255, 0.75);
+  }
+}
+
+@media (max-width: 800px) {
+  .presence-map {
+    padding: 4.25rem 0 3.5rem;
+  }
+
+  .presence-map__stage {
+    width: min(100%, 420px);
+  }
+
+  .presence-map__pin-detail {
+    white-space: normal;
+    max-width: 9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presence-map__pin-dot,
+  .presence-map__cta {
+    animation: none;
+    transition: none;
+  }
+
+  .presence-map__cta:hover {
+    transform: none;
+  }
+}

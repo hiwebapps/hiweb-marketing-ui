@@ -16,42 +16,54 @@ function prefersReducedMotion() {
 }
 
 function unused<T extends Element>(selector: string) {
-  return Array.from(document.querySelectorAll<T>(`${selector}:not([data-motion])`));
+  return Array.from(
+    document.querySelectorAll<T>(`${selector}:not([data-motion]):not([data-motion-pending])`),
+  );
 }
 
 function mark(el: HTMLElement, kind: string) {
+  delete el.dataset.motionPending;
   el.dataset.motion = kind;
 }
 
 function bindSplits() {
-  const run = () => {
-    unused<HTMLElement>('[data-split]').forEach((el) => {
-      mark(el, 'split');
+  const targets = unused<HTMLElement>('[data-split]');
+  if (!targets.length) return;
+
+  const run = (els: HTMLElement[]) => {
+    els.forEach((el) => {
+      if (el.dataset.motion || el.dataset.motionPending != null) return;
+      el.dataset.motionPending = '1';
+
       SplitText.create(el, {
         type: 'lines',
         autoSplit: true,
         aria: 'auto',
         onSplit(self) {
-          return gsap.fromTo(
-            self.lines,
-            { y: 28, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: MOTION.duration,
-              ease: MOTION.ease,
-              stagger: 0.07,
+          gsap.set(self.lines, { y: 28, opacity: 0 });
+          mark(el, 'split');
+          return gsap.to(self.lines, {
+            y: 0,
+            opacity: 1,
+            duration: MOTION.duration,
+            ease: MOTION.ease,
+            stagger: 0.07,
+            overwrite: 'auto',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
             },
-          );
+          });
         },
       });
     });
   };
 
   if (document.fonts?.ready) {
-    document.fonts.ready.then(run).catch(run);
+    document.fonts.ready.then(() => run(targets)).catch(() => run(targets));
   } else {
-    run();
+    run(targets);
   }
 }
 
@@ -130,6 +142,47 @@ function bindCounters() {
   });
 }
 
+function scanMotion() {
+  bindSplits();
+  bindReveals();
+  bindCounters();
+  bindExtras();
+  ScrollTrigger.refresh();
+}
+
+let observerBound = false;
+
+function observeLateIslands() {
+  if (observerBound) return;
+  observerBound = true;
+
+  let scheduled = 0;
+  const schedule = () => {
+    window.clearTimeout(scheduled);
+    scheduled = window.setTimeout(() => {
+      scanMotion();
+    }, 80);
+  };
+
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type !== 'childList' || mutation.addedNodes.length === 0) continue;
+      for (const node of mutation.addedNodes) {
+        if (!(node instanceof HTMLElement)) continue;
+        if (
+          node.matches?.('[data-split], [data-reveal], [data-counter]') ||
+          node.querySelector?.('[data-split]:not([data-motion]), [data-reveal]:not([data-motion]), [data-counter]:not([data-motion])')
+        ) {
+          schedule();
+          return;
+        }
+      }
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
 export function initMotion() {
   window.__HIWEB_MOTION__ = true;
 
@@ -139,11 +192,8 @@ export function initMotion() {
   }
 
   document.documentElement.classList.add('motion-ready');
-  bindSplits();
-  bindReveals();
-  bindCounters();
-  bindExtras();
-  ScrollTrigger.refresh();
+  scanMotion();
+  observeLateIslands();
 }
 
 function boot() {

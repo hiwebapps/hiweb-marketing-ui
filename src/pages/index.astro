@@ -44,7 +44,7 @@ function formatCaseStat(metric: {
 	jsonLd={faqSchema([...HOME_FAQS])}
 >
 	<main>
-		<HeroStudioA client:only="react" />
+		<HeroStudioA client:load />
 		<HomeAfterHero
 			services={services.map((item) => ({
 				slug: item.id,

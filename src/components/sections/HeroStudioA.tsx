@@ -124,21 +124,55 @@ export function HeroStudioA({
       });
       layout(false);
 
+      const root = rootRef.current;
+      const copyBits = gsap.utils.toArray<HTMLElement>(
+        '.hero-studio-a__title, .hero-studio-a__lead',
+      );
+      const actions = root?.querySelector('.hero-studio-a__actions');
+      const carousel = root?.querySelector('.hero-studio-a__carousel');
+
       if (!prefersReducedMotion()) {
-        gsap.from('.hero-studio-a__copy > *', {
-          y: MOTION.revealY,
-          autoAlpha: 0,
+        // Set hidden state before unlocking CSS so there is no visible → hidden flash.
+        gsap.set(copyBits, { y: MOTION.revealY, autoAlpha: 0 });
+        if (actions) gsap.set(actions, { y: 16, autoAlpha: 0 });
+        if (carousel) {
+          gsap.set(carousel, {
+            y: 26,
+            autoAlpha: 0,
+            scale: 0.982,
+            transformOrigin: '50% 55%',
+          });
+        }
+        root?.classList.add('is-ready');
+
+        gsap.to(copyBits, {
+          y: 0,
+          autoAlpha: 1,
           stagger: MOTION.stagger,
           duration: MOTION.duration,
           ease: MOTION.ease,
         });
-        gsap.from('.hero-studio-a__actions', {
-          y: 16,
-          autoAlpha: 0,
-          duration: MOTION.durationFast,
-          delay: 0.35,
-          ease: MOTION.ease,
-        });
+        if (actions) {
+          gsap.to(actions, {
+            y: 0,
+            autoAlpha: 1,
+            duration: MOTION.durationFast,
+            delay: 0.28,
+            ease: MOTION.ease,
+          });
+        }
+        if (carousel) {
+          gsap.to(carousel, {
+            y: 0,
+            autoAlpha: 1,
+            scale: 1,
+            duration: MOTION.durationSlow,
+            delay: 0.4,
+            ease: MOTION.ease,
+          });
+        }
+      } else {
+        root?.classList.add('is-ready');
       }
 
       const step = contextSafe((dir: number) => {
@@ -248,10 +282,6 @@ export function HeroStudioA({
               </div>
             ))}
           </div>
-        </div>
-        <div className="hero-studio-a__edges" aria-hidden="true">
-          <span className="hero-studio-a__edge hero-studio-a__edge--left" />
-          <span className="hero-studio-a__edge hero-studio-a__edge--right" />
         </div>
       </div>
 

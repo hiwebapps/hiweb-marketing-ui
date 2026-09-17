@@ -13,6 +13,13 @@
   flex-shrink: 0;
 }
 
+.team__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.75rem;
+}
+
 .team__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -20,6 +27,10 @@
   margin: 2.75rem 0 0;
   padding: 0;
   list-style: none;
+}
+
+.team__filters + .team__grid {
+  margin-top: 1.75rem;
 }
 
 .team-card {
@@ -89,7 +100,7 @@
 
 .team-card__wash {
   z-index: 2;
-  background: linear-gradient(to top, var(--member-accent) 0%, transparent 100%);
+  background: linear-gradient(to top, var(--member-accent) 0%, transparent 50%);
   -webkit-mask-image: var(--photo);
   mask-image: var(--photo);
   -webkit-mask-size: cover;

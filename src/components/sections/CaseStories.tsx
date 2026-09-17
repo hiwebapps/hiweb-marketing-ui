@@ -1,11 +1,13 @@
 import { useCallback, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { MOTION } from '../../lib/motion';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
 import './CaseStories.css';
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export type CaseStoryStat = {
   value: string;
@@ -104,6 +106,49 @@ function photoFor(story: CaseStory, index: number) {
   return story.photo ?? PHOTO_FALLBACKS[story.client] ?? `https://i.pravatar.cc/900?img=${5 + index * 7}`;
 }
 
+function parseStatValue(raw: string) {
+  const match = raw.trim().match(/^([+\-−–]?)(\d+(?:[.,]\d+)?)(.*)$/u);
+  if (!match) return null;
+  const numberPart = match[2].replace(',', '.');
+  const decimals = numberPart.includes('.') ? (numberPart.split('.')[1]?.length ?? 0) : 0;
+  return {
+    sign: match[1] === '-' || match[1] === '−' || match[1] === '–' ? '−' : match[1],
+    number: Number.parseFloat(numberPart),
+    suffix: match[3],
+    decimals,
+  };
+}
+
+function formatCountedValue(sign: string, value: number, decimals: number, suffix: string) {
+  return `${sign}${value.toFixed(decimals)}${suffix}`;
+}
+
+function countUpStat(el: HTMLElement) {
+  const raw = el.dataset.statValue ?? el.textContent ?? '';
+  const parsed = parseStatValue(raw);
+  if (!parsed) {
+    el.textContent = raw;
+    return;
+  }
+
+  if (prefersReducedMotion()) {
+    el.textContent = formatCountedValue(parsed.sign, parsed.number, parsed.decimals, parsed.suffix);
+    return;
+  }
+
+  const state = { val: 0 };
+  el.textContent = formatCountedValue(parsed.sign, 0, parsed.decimals, parsed.suffix);
+  gsap.to(state, {
+    val: parsed.number,
+    duration: MOTION.durationSlow,
+    ease: MOTION.ease,
+    overwrite: true,
+    onUpdate: () => {
+      el.textContent = formatCountedValue(parsed.sign, state.val, parsed.decimals, parsed.suffix);
+    },
+  });
+}
+
 /**
  * Casos como slider de cards — foto, quote, métricas, persona.
  */
@@ -124,6 +169,7 @@ export function CaseStories({
     delta: 0,
     dragging: false,
   });
+  const statsEntered = useRef(false);
 
   const lastIndex = Math.max(stories.length - perView, 0);
   const canSlide = lastIndex > 0;
@@ -137,6 +183,17 @@ export function CaseStories({
   const syncPerView = useCallback(() => {
     setPerView(visibleCount());
   }, []);
+
+  const runActiveStats = useCallback(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const slides = root.querySelectorAll<HTMLElement>('.case-stories__slide');
+    const active = slides[activeIndex] ?? slides[0];
+    if (!active) return;
+    active.querySelectorAll<HTMLElement>('[data-stat-value]').forEach(countUpStat);
+  }, [activeIndex]);
+  const runActiveStatsRef = useRef(runActiveStats);
+  runActiveStatsRef.current = runActiveStats;
 
   useGSAP(
     () => {
@@ -169,6 +226,42 @@ export function CaseStories({
       return () => window.removeEventListener('resize', onResize);
     },
     { scope: rootRef, dependencies: [stories.length] },
+  );
+
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      if (!root) return;
+      statsEntered.current = false;
+
+      const trigger = ScrollTrigger.create({
+        trigger: root,
+        start: 'top 78%',
+        once: true,
+        onEnter: () => {
+          statsEntered.current = true;
+          runActiveStatsRef.current();
+        },
+      });
+
+      if (trigger.isActive) {
+        statsEntered.current = true;
+        runActiveStatsRef.current();
+      }
+
+      return () => {
+        trigger.kill();
+      };
+    },
+    { scope: rootRef, dependencies: [stories] },
+  );
+
+  useGSAP(
+    () => {
+      if (!statsEntered.current) return;
+      runActiveStats();
+    },
+    { dependencies: [activeIndex, runActiveStats] },
   );
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -261,18 +354,22 @@ export function CaseStories({
                 <article className="case-story">
                   <div className="case-story__photo">
                     <img src={photoFor(story, index)} alt="" draggable={false} />
-                    <span className="case-story__mark">{story.client}</span>
                   </div>
                   <div className="case-story__body">
-                    <p className="case-story__quote">“{story.quote}”</p>
+                    <div className="case-story__lead">
+                      <span className="case-story__mark">{story.client}</span>
+                      <p className="case-story__quote">“{story.quote}”</p>
+                    </div>
                     {story.stats.length ? (
                       <dl className="case-story__stats">
                         {story.stats.slice(0, 2).map((stat) => (
                           <div key={`${stat.value}-${stat.label}`} className="case-story__stat">
                             <dt className="sr-only">{stat.label}</dt>
                             <dd>
-                              <span className="case-story__stat-value">{stat.value}</span>
-                              {` ${stat.label}`}
+                              <span className="case-story__stat-value" data-stat-value={stat.value}>
+                                {stat.value}
+                              </span>
+                              <span className="case-story__stat-label">{stat.label}</span>
                             </dd>
                           </div>
                         ))}

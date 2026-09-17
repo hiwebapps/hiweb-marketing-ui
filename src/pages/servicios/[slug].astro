@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { IndustryHero } from '../../components/sections/IndustryHero';
-import { SectionBand } from '../../components/sections/primitives/SectionBand';
+import { PillarGrid } from '../../components/sections/PillarGrid';
 import { IndustryGrid } from '../../components/sections/IndustryGrid';
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { CaseStories } from '../../components/sections/CaseStories';
@@ -10,6 +10,7 @@ import { FaqSection } from '../../components/sections/FaqSection';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
 import type { BadgeVariant } from '../../components/ui';
+import { iconForServiceOverviewCard } from '../../components/icons/PillarIcons';
 import '../../components/sections/CaseStories.css';
 
 export async function getStaticPaths() {
@@ -35,6 +36,12 @@ const phases = entry.data.proceso.map((step, index) => ({
 const serviceHeroBadges: { label: string; variant: BadgeVariant }[] = [
 	{ label: entry.data.nombre, variant: 'lime' },
 ];
+
+const serviceOverviewPillars = entry.data.cards.map((card, index) => ({
+	title: card.title,
+	description: card.description,
+	icon: iconForServiceOverviewCard(card.title, index),
+}));
 
 function formatCaseStat(metric: {
 	valor: number;
@@ -81,16 +88,14 @@ const caseStories = cases.map((item) => ({
 			ctaLabel="Ver casos de éxito"
 			ctaHref="#casos"
 		/>
-		<SectionBand>
-			<ul class="grid gap-4 md:grid-cols-3">
-				{entry.data.cards.map((card) => (
-					<li data-reveal class="rounded-2xl border border-border bg-canvas p-6">
-						<h2 class="font-display text-xl font-semibold tracking-tight text-ink">{card.title}</h2>
-						<p class="mt-2 !text-sm">{card.description}</p>
-					</li>
-				))}
-			</ul>
-		</SectionBand>
+		<PillarGrid
+			id="overview"
+			eyebrow="El servicio"
+			title={`Cómo se entiende ${entry.data.nombre}`}
+			description={entry.data.tagline}
+			pillars={serviceOverviewPillars}
+			tone="canvas"
+		/>
 		<IndustryGrid
 			client:visible
 			industries={industries.map((item) => ({

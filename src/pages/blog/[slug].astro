@@ -1,11 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
-import { PageHero } from '../../components/sections/PageHero';
-import { SectionBand } from '../../components/sections/primitives/SectionBand';
-import { FaqSection } from '../../components/sections/FaqSection';
+import { BlogPostToc } from '../../components/sections/BlogPostToc';
 import { FinalCta } from '../../components/sections/FinalCta';
-import { articleSchema, breadcrumbSchema, faqSchema } from '../../lib/schema';
+import { Button } from '../../components/ui';
+import { articleSchema, breadcrumbSchema } from '../../lib/schema';
+import { extractPostHeadings, postCoverUrl } from '../../lib/blog';
+import '../../components/sections/BlogPost.css';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('posts');
@@ -17,6 +18,26 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const allPosts = await getCollection('posts');
+const related = allPosts
+	.filter((post) => post.id !== entry.id)
+	.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf())
+	.slice(0, 4);
+
+const headings = extractPostHeadings(entry.body);
+const cover = postCoverUrl(entry.id);
+const dateLabel = entry.data.fecha.toLocaleDateString('es-MX', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+const initials = entry.data.autor
+	.split(/\s+/)
+	.filter(Boolean)
+	.slice(0, 2)
+	.map((part) => part[0]?.toUpperCase() ?? '')
+	.join('');
+
 const schemas = [
 	breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
@@ -30,7 +51,6 @@ const schemas = [
 		author: entry.data.autor,
 		date: entry.data.fecha,
 	}),
-	...(entry.data.faqs.length ? [faqSchema(entry.data.faqs)] : []),
 ];
 ---
 
@@ -40,24 +60,95 @@ const schemas = [
 	jsonLd={schemas}
 >
 	<main>
-		<PageHero
-			eyebrow={entry.data.keyword}
-			title={entry.data.title}
-			description={entry.data.description}
-		/>
-		<SectionBand>
-			<article class="prose-hiweb mx-auto max-w-3xl">
-				<p class="!text-sm text-muted">
-					{entry.data.autor} · {entry.data.fecha.toLocaleDateString('es-MX')}
-				</p>
-				<div class="mt-8 space-y-4 [&_a]:underline [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-2xl [&_h3]:mt-6 [&_h3]:font-display [&_li]:!text-base [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:!text-base [&_ul]:list-disc [&_ul]:pl-5">
-					<Content />
+		<section class="blog-post">
+			<div class="blog-post__shell">
+				<div class="blog-post__toc-wrap">
+					<BlogPostToc client:load headings={headings} />
 				</div>
-			</article>
-		</SectionBand>
-		{entry.data.faqs.length ? (
-			<FaqSection client:visible items={entry.data.faqs} title="Preguntas del artículo" withSchema={false} />
-		) : null}
+
+				<header class="blog-post__header">
+					<nav class="blog-post__crumb" aria-label="Breadcrumb">
+						<a href="/">Home</a>
+						<span aria-hidden="true"> / </span>
+						<a href="/blog">Blog</a>
+					</nav>
+					<h1 data-split class="blog-post__title">{entry.data.title}</h1>
+					<div class="blog-post__meta">
+						<span class="blog-post__avatar" aria-hidden="true">{initials || 'HW'}</span>
+						<span>por {entry.data.autor}</span>
+						<span class="blog-post__meta-sep" aria-hidden="true">|</span>
+						<span>Actualizado: {dateLabel}</span>
+					</div>
+
+					<figure class="blog-post__cover">
+						<img
+							src={cover}
+							alt=""
+							width={1200}
+							height={720}
+							loading="eager"
+						/>
+					</figure>
+				</header>
+
+				<article class="blog-post__main">
+					<div class="blog-post__body" data-blog-body>
+						<Content />
+					</div>
+				</article>
+
+				<aside class="blog-post__related" aria-label="Artículos relacionados">
+					<div class="blog-post__related-card">
+						<p class="blog-post__related-title">Relacionados</p>
+						{
+							related.length ? (
+								<ul class="blog-post__related-list">
+									{related.map((post) => (
+										<li>
+											<a class="blog-post__related-link" href={`/blog/${post.id}`}>
+												<span class="blog-post__related-media">
+													<img
+														src={postCoverUrl(post.id, 240, 240)}
+														alt=""
+														width={240}
+														height={240}
+														loading="lazy"
+													/>
+												</span>
+												<span class="blog-post__related-copy">
+													<p class="blog-post__related-tag">{post.data.keyword}</p>
+													<p class="blog-post__related-name">{post.data.title}</p>
+												</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							) : (
+								<p class="mt-3 !text-sm text-muted">Más artículos pronto.</p>
+							)
+						}
+						<div class="blog-post__related-cta">
+							<Button href="/blog" variant="secondary" size="sm" className="w-full no-underline">
+								Ver todos los artículos
+							</Button>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</section>
+
 		<FinalCta client:load />
 	</main>
 </Layout>
+
+<script define:vars={{ headings }}>
+	const body = document.querySelector('[data-blog-body]');
+	if (body && Array.isArray(headings)) {
+		const nodes = body.querySelectorAll('h2, h3');
+		nodes.forEach((node, index) => {
+			const heading = headings[index];
+			if (!heading) return;
+			node.id = heading.id;
+		});
+	}
+</script>

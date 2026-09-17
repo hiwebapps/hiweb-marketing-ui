@@ -243,12 +243,21 @@ export const HOME_ABOUT = {
     'Hiweb combina equipo senior, un portal propio y presencia en Mérida, Cancún y Monterrey. Operamos como extensión de tu dirección de marketing — con el músculo de una agencia enterprise.',
 } as const;
 
+export type TeamCategory = 'web' | 'redes' | 'diseno';
+
+export const TEAM_CATEGORIES = [
+  { id: 'web', label: 'Web' },
+  { id: 'redes', label: 'Redes Sociales' },
+  { id: 'diseno', label: 'Diseño' },
+] as const satisfies ReadonlyArray<{ id: TeamCategory; label: string }>;
+
 export const TEAM_MEMBERS = [
   {
     name: 'Mariana Solís',
     role: 'Dirección de estrategia',
     bio: 'Colecciona cafeteras y discute frameworks antes del primer espresso.',
     photo: '/images/team/mariana.png',
+    category: 'redes',
     accent: 'cyan',
     socials: {
       tiktok: 'https://www.tiktok.com',
@@ -261,6 +270,7 @@ export const TEAM_MEMBERS = [
     role: 'Head of performance',
     bio: 'Corre 10K los domingos y odia los reportes teatro con pasión atlética.',
     photo: '/images/team/diego.png',
+    category: 'redes',
     accent: 'purple',
     socials: {
       tiktok: 'https://www.tiktok.com',
@@ -273,6 +283,7 @@ export const TEAM_MEMBERS = [
     role: 'Dirección creativa',
     bio: 'Hace sourdough y recorta anuncios en el mismo cuaderno.',
     photo: '/images/team/valeria.png',
+    category: 'diseno',
     accent: 'orange',
     socials: {
       tiktok: 'https://www.tiktok.com',
@@ -285,10 +296,83 @@ export const TEAM_MEMBERS = [
     role: 'Lead producto web',
     bio: 'Arma Lego a las 11pm y discute Core Web Vitals al desayuno.',
     photo: '/images/team/andres.png',
+    category: 'web',
     accent: 'lime',
     socials: {
       tiktok: 'https://www.tiktok.com',
       instagram: 'https://www.instagram.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    name: 'Sofía Méndez',
+    role: 'Frontend lead',
+    bio: 'Refactoriza a medianoche y colecciona tipografías como si fueran vinilos.',
+    photo: '/images/team/andres.png',
+    category: 'web',
+    accent: 'cyan',
+    socials: {
+      tiktok: 'https://www.tiktok.com',
+      instagram: 'https://www.instagram.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    name: 'Luis Ortega',
+    role: 'Full-stack engineer',
+    bio: 'Deploya en viernes (sí) y cocina pasta al dente mientras espera el build.',
+    photo: '/images/team/diego.png',
+    category: 'web',
+    accent: 'purple',
+    socials: {
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    name: 'Camila Ruiz',
+    role: 'Social media lead',
+    bio: 'Programa reels a las 6am y todavía responde DMs con humor.',
+    photo: '/images/team/mariana.png',
+    category: 'redes',
+    accent: 'orange',
+    socials: {
+      tiktok: 'https://www.tiktok.com',
+      instagram: 'https://www.instagram.com',
+    },
+  },
+  {
+    name: 'Héctor Nava',
+    role: 'Paid media specialist',
+    bio: 'Ajusta pujas entre series y nunca pierde un pixel de tracking.',
+    photo: '/images/team/diego.png',
+    category: 'redes',
+    accent: 'lime',
+    socials: {
+      linkedin: 'https://www.linkedin.com',
+      instagram: 'https://www.instagram.com',
+    },
+  },
+  {
+    name: 'Elena Vargas',
+    role: 'Brand designer',
+    bio: 'Diseña sistemas tipográficos y planta suculentas con la misma precisión.',
+    photo: '/images/team/valeria.png',
+    category: 'diseno',
+    accent: 'cyan',
+    socials: {
+      instagram: 'https://www.instagram.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    name: 'Bruno Castillo',
+    role: 'Motion designer',
+    bio: 'Anima microinteracciones mientras el café se enfría. Otra vez.',
+    photo: '/images/team/andres.png',
+    category: 'diseno',
+    accent: 'purple',
+    socials: {
+      tiktok: 'https://www.tiktok.com',
       linkedin: 'https://www.linkedin.com',
     },
   },

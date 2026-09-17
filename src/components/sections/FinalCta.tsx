@@ -95,7 +95,7 @@ export function FinalCta({
           <Badge variant="lime" tone="on-ink">
             {badge}
           </Badge>
-          <h2 className="final-cta__title">{title}</h2>
+          <h2 data-split className="final-cta__title">{title}</h2>
           <p className="final-cta__lead">{description}</p>
           <Button href={primaryHref} variant="primary" size="md" className="final-cta__btn no-underline">
             {primaryLabel}

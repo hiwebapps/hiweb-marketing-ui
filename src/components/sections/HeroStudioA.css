@@ -12,6 +12,17 @@
   color: #f5f5f5;
 }
 
+/* Hide reveal targets until GSAP owns opacity — prevents visible→hidden flash on hydrate.
+   Scoped to html.motion-ready so no-JS fallback (Layout clears the class) restores visibility. */
+@media (prefers-reduced-motion: no-preference) {
+  html.motion-ready .hero-studio-a:not(.is-ready) .hero-studio-a__title,
+  html.motion-ready .hero-studio-a:not(.is-ready) .hero-studio-a__lead,
+  html.motion-ready .hero-studio-a:not(.is-ready) .hero-studio-a__actions,
+  html.motion-ready .hero-studio-a:not(.is-ready) .hero-studio-a__carousel {
+    opacity: 0;
+  }
+}
+
 .hero-studio-a__wash {
   pointer-events: none;
   position: absolute;
@@ -173,42 +184,6 @@
   overflow-y: visible;
   perspective: 1400px;
   outline: none;
-}
-
-.hero-studio-a__edges {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-}
-
-.hero-studio-a__edge {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: min(22vw, 280px);
-}
-
-.hero-studio-a__edge--left {
-  left: 0;
-  background: linear-gradient(
-    90deg,
-    #111111 0%,
-    rgb(17 17 17 / 0.82) 28%,
-    rgb(17 17 17 / 0.38) 58%,
-    rgb(17 17 17 / 0) 100%
-  );
-}
-
-.hero-studio-a__edge--right {
-  right: 0;
-  background: linear-gradient(
-    270deg,
-    #111111 0%,
-    rgb(17 17 17 / 0.82) 28%,
-    rgb(17 17 17 / 0.38) 58%,
-    rgb(17 17 17 / 0) 100%
-  );
 }
 
 .hero-studio-a__stage:focus-visible {
@@ -384,9 +359,5 @@
 
   .hero-studio-a__card {
     width: min(280px, 78vw);
-  }
-
-  .hero-studio-a__edge {
-    width: min(28vw, 120px);
   }
 }

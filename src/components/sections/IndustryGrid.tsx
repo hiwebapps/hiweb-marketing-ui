@@ -203,7 +203,7 @@ export function IndustryGrid({
         <div className="industry-slider__layout">
           <header className="industry-slider__intro">
             <Badge variant="purple">{eyebrow}</Badge>
-            <h2 className="mt-3 max-w-sm !text-3xl !leading-[1.15] tracking-[-0.03em] text-ink md:!text-[2.65rem]">
+            <h2 data-split className="mt-3 max-w-sm !text-3xl !leading-[1.15] tracking-[-0.03em] text-ink md:!text-[2.65rem]">
               {title}
             </h2>
             {description ? <p className="mt-4 max-w-sm !text-sm !leading-relaxed md:!text-base">{description}</p> : null}

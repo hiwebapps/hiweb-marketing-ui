@@ -26,7 +26,7 @@ export function PageHero({
       <div className="relative mx-auto w-full max-w-[var(--section-max)] px-6 pt-32 pb-14 md:pt-36 md:pb-20">
         <div className="max-w-3xl">
           {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-          <h1 data-reveal className="mt-3 !text-4xl md:!text-6xl">
+          <h1 data-split className="mt-3 !text-4xl md:!text-6xl">
             {title}
           </h1>
           {description ? <p className="mt-5 max-w-2xl">{description}</p> : null}

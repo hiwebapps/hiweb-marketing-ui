@@ -49,7 +49,7 @@ export function SectionsKitPage() {
             <Badge>Sections Kit</Badge>
           </div>
           <Eyebrow index="00">Kit de secciones</Eyebrow>
-          <h1 className="mt-3 !text-4xl md:!text-6xl">
+          <h1 data-split className="mt-3 !text-4xl md:!text-6xl">
             Funnel de agencia, UI de producto
           </h1>
           <p className="mt-4 max-w-2xl !text-lg">

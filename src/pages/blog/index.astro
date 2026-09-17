@@ -1,17 +1,59 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { PageHero } from '../../components/sections/PageHero';
+import { BlogHero } from '../../components/sections/BlogHero';
+import { BlogIndex, type BlogCategory } from '../../components/sections/BlogIndex';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
-import { BlogIndex } from '../../components/sections/BlogIndex';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../lib/schema';
+import { postCoverUrl } from '../../lib/blog';
+import '../../components/sections/BlogHero.css';
+import '../../components/sections/BlogIndex.css';
 
 const posts = (await getCollection('posts')).sort(
 	(a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf(),
 );
-const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
-const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
+
+function resolveCategory(post: (typeof posts)[number]): BlogCategory {
+	const service = post.data.categoriaServicio?.id ?? '';
+	const industry = post.data.categoriaIndustria?.id ?? '';
+	if (
+		service === 'branding' ||
+		service === 'desarrollo-web' ||
+		service === 'contenido' ||
+		service === 'community-manager'
+	) {
+		return 'creativo';
+	}
+	if (
+		service === 'google-ads' ||
+		service === 'meta-ads' ||
+		service === 'seo' ||
+		service === 'crm-automatizacion' ||
+		service === 'redes-sociales'
+	) {
+		return 'performance';
+	}
+	if (industry) return 'industrias';
+	return 'estrategia';
+}
+
+const cards = posts.map((post) => ({
+	id: post.id,
+	title: post.data.title,
+	description: post.data.description,
+	keyword: post.data.keyword,
+	autor: post.data.autor,
+	fecha: post.data.fecha.toLocaleDateString('es-MX'),
+	featured: post.data.featured,
+	category: resolveCategory(post),
+	industria: post.data.categoriaIndustria?.id,
+	servicio: post.data.categoriaServicio?.id,
+	image: postCoverUrl(post.id, 800, 520),
+	ctaLabel: 'Leer artículo',
+}));
+
+const featured = cards.find((post) => post.featured) ?? cards[0];
 ---
 
 <Layout
@@ -23,28 +65,20 @@ const services = (await getCollection('servicios')).sort((a, b) => a.data.orden 
 	])}
 >
 	<main>
-		<PageHero
-			eyebrow="Blog"
-			title="Marketing por industria, escrito para decidir"
-			description="Artículos con keyword, respuesta directa y enlaces a servicios o casos. No un magazine."
-		/>
-		<SectionBand>
-			<BlogIndex
-				client:load
-				posts={posts.map((post) => ({
-					id: post.id,
-					title: post.data.title,
-					description: post.data.description,
-					keyword: post.data.keyword,
-					autor: post.data.autor,
-					fecha: post.data.fecha.toLocaleDateString('es-MX'),
-					featured: post.data.featured,
-					industria: post.data.categoriaIndustria?.id,
-					servicio: post.data.categoriaServicio?.id,
-				}))}
-				industries={industries.map((item) => ({ slug: item.id, nombre: item.data.nombre }))}
-				services={services.map((item) => ({ slug: item.id, nombre: item.data.nombre }))}
+		{featured ? (
+			<BlogHero
+				featured={{
+					id: featured.id,
+					title: featured.title,
+					description: featured.description,
+					keyword: featured.keyword,
+					image: featured.image,
+					ctaLabel: 'Descubrir más',
+				}}
 			/>
+		) : null}
+		<SectionBand tone="canvas">
+			<BlogIndex client:load posts={cards} />
 		</SectionBand>
 		<FinalCta client:load title="¿Lo aplicamos a tu industria?" />
 	</main>

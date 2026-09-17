@@ -17,6 +17,7 @@ type SectionHeaderProps = {
 /**
  * Cabecera de sección: eyebrow (opcional) + H2 outcome + 1 subtítulo.
  * Una sección = un trabajo mental (Linear/Cal).
+ * Por defecto el título usa SplitText vía [data-split] en motion.ts.
  */
 export function SectionHeader({
   eyebrow,
@@ -28,7 +29,7 @@ export function SectionHeader({
   badgeVariant = 'purple',
   className = '',
   actions,
-  split = false,
+  split = true,
 }: SectionHeaderProps) {
   const titleColor = tone === 'on-ink' ? 'text-canvas' : 'text-ink';
   const descColor = tone === 'on-ink' ? 'text-canvas/65' : 'text-muted';

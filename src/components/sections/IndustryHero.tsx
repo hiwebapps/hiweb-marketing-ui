@@ -11,6 +11,8 @@ type IndustryHeroProps = {
   description: string;
   image: string;
   imageAlt?: string;
+  /** CSS object-position for the background photo */
+  imagePosition?: string;
   badges?: IndustryHeroBadge[];
   ctaLabel?: string;
   ctaHref?: string;
@@ -25,6 +27,7 @@ export function IndustryHero({
   description,
   image,
   imageAlt = '',
+  imagePosition = 'center 42%',
   badges = [{ label: 'Industria', variant: 'lime' }],
   ctaLabel = 'Ver casos de éxito',
   ctaHref = '#casos',
@@ -44,6 +47,7 @@ export function IndustryHero({
           height={1600}
           decoding="async"
           fetchPriority="high"
+          style={{ objectPosition: imagePosition }}
         />
       </div>
 
@@ -68,7 +72,7 @@ export function IndustryHero({
               ))}
             </div>
           ) : null}
-          <h1 className="industry-hero__title">{title}</h1>
+          <h1 data-split className="industry-hero__title">{title}</h1>
           <p className="industry-hero__lead">{description}</p>
           <div className="industry-hero__actions">
             <Button href={ctaHref} variant="primary" size="md" className="no-underline">

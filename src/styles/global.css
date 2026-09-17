@@ -120,7 +120,7 @@
 @layer base {
   html {
     @apply antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
     color-scheme: light;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -135,7 +135,7 @@
   body {
     @apply bg-canvas font-sans text-ink-soft;
     min-height: 100dvh;
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100%;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -274,9 +274,10 @@
   }
 }
 
-/* Motion layer: hide reveals only after JS has marked the document as ready.
+/* Motion layer: hide reveals/splits only after JS has marked the document as ready.
    If the script fails, elements stay visible. */
-html.motion-ready [data-reveal]:not([data-motion]) {
+html.motion-ready [data-reveal]:not([data-motion]),
+html.motion-ready [data-split]:not([data-motion]) {
   opacity: 0;
 }
 

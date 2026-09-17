@@ -14,7 +14,7 @@ export function WorkPage() {
             <p className="font-display text-xs font-medium tracking-[0.2em] text-muted uppercase">
               Work
             </p>
-            <h1 className="mt-4 !text-4xl !leading-[1.15] md:!text-6xl">
+            <h1 data-split className="mt-4 !text-4xl !leading-[1.15] md:!text-6xl">
               Casos con outcome, no solo craft.
             </h1>
             <p className="mt-5 max-w-2xl !text-lg text-ink-soft">
