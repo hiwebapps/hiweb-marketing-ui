@@ -140,10 +140,19 @@
 }
 
 .blog-hero__feature-media {
+  position: relative;
   aspect-ratio: 16 / 9;
   max-height: 9.5rem;
   overflow: hidden;
   background: var(--color-surface);
+}
+
+.blog-hero__feature-read {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 1;
+  box-shadow: 0 8px 20px rgba(17, 17, 17, 0.12);
 }
 
 .blog-hero__feature-media img {

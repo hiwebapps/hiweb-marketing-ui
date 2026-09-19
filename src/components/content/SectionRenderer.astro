@@ -1,0 +1,262 @@
+---
+import { CasePreview } from '../sections/CasePreview';
+import { CaseStories } from '../sections/CaseStories';
+import { FaqSection } from '../sections/FaqSection';
+import { FinalCta } from '../sections/FinalCta';
+import { IndustryGrid } from '../sections/IndustryGrid';
+import { IndustryHero } from '../sections/IndustryHero';
+import { IndustryServices } from '../sections/IndustryServices';
+import { MetricsBand } from '../sections/MetricsBand';
+import { PageHero } from '../sections/PageHero';
+import { PillarGrid, type Pillar, type PillarAccent } from '../sections/PillarGrid';
+import { PresenceMap } from '../sections/PresenceMap';
+import { ProcessPhases } from '../sections/ProcessPhases';
+import { ServiceGrid } from '../sections/ServiceGrid';
+import { TeamGrid, type TeamMember } from '../sections/TeamGrid';
+import type { PillarIconName } from '../icons/PillarIcons';
+import type { BadgeVariant } from '../ui';
+import { formatCaseStat } from '../../lib/content/format';
+import type { CaseRecord, LandingSection } from '../../lib/content/types';
+
+type AtmosphereVariant = 'none' | 'spotlight' | 'mesh' | 'wash';
+
+interface Props {
+	section: LandingSection;
+	industryName?: Record<string, string>;
+}
+
+const { section, industryName = {} } = Astro.props;
+
+const PILLAR_ICONS: PillarIconName[] = ['users', 'globe', 'target', 'check', 'layers', 'workflow'];
+const PILLAR_ACCENTS: PillarAccent[] = ['purple', 'cyan', 'orange', 'green'];
+const BADGES: BadgeVariant[] = ['cyan', 'orange', 'purple', 'lime', 'neutral'];
+
+function asPillarIcon(value?: string): PillarIconName | undefined {
+	return PILLAR_ICONS.includes(value as PillarIconName) ? (value as PillarIconName) : undefined;
+}
+
+function asPillarAccent(value?: string): PillarAccent | undefined {
+	return PILLAR_ACCENTS.includes(value as PillarAccent) ? (value as PillarAccent) : undefined;
+}
+
+function asBadge(value?: string): BadgeVariant {
+	return BADGES.includes(value as BadgeVariant) ? (value as BadgeVariant) : 'lime';
+}
+
+function asAtmosphere(value?: string): AtmosphereVariant {
+	return value === 'mesh' || value === 'wash' || value === 'none' ? value : 'spotlight';
+}
+
+function storiesFrom(cases: CaseRecord[]) {
+	return cases.map((item) => ({
+		client: item.data.cliente,
+		quote: item.data.testimonio?.quote ?? item.data.resumen,
+		name: item.data.testimonio?.name ?? item.data.cliente,
+		role:
+			item.data.testimonio?.role
+			?? industryName[item.data.industria.id]
+			?? item.data.industria.id,
+		stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
+		href: `/portafolio/${item.id}`,
+	}));
+}
+
+function previewsFrom(cases: CaseRecord[]) {
+	return cases.slice(0, 3).map((item) => ({
+		client: item.data.cliente,
+		industry: industryName[item.data.industria.id] ?? item.data.industria.id,
+		outcome: item.data.resultadoFrase,
+		title: item.data.titulo,
+		summary: item.data.resumen,
+		href: `/portafolio/${item.id}`,
+		accent: item.data.accent,
+	}));
+}
+---
+
+{section._type === 'pageHero' && section.variant === 'photo' ? (
+	<IndustryHero
+		title={section.title}
+		description={section.description ?? ''}
+		image={section.image ?? '/images/services/desarrollo-web-hero.jpg'}
+		imageAlt={section.imageAlt ?? section.title}
+		imagePosition={section.imagePosition}
+		badges={section.badges?.map((badge) => ({ label: badge.label, variant: asBadge(badge.variant) }))}
+		ctaLabel={section.cta?.label}
+		ctaHref={section.cta?.href}
+	/>
+) : null}
+
+{section._type === 'pageHero' && section.variant !== 'photo' ? (
+	<PageHero
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		atmosphere={asAtmosphere(section.atmosphere)}
+	/>
+) : null}
+
+{section._type === 'pillarGrid' ? (
+	<PillarGrid
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		tone={section.tone}
+		ctaLabel={section.ctaLabel}
+		pillars={section.pillars.map((pillar) => ({
+			title: pillar.title,
+			description: pillar.description,
+			icon: asPillarIcon(pillar.icon),
+			accent: asPillarAccent(pillar.accent),
+			href: pillar.href,
+		})) as Pillar[]}
+	/>
+) : null}
+
+{section._type === 'serviceGrid' && section.variant === 'industry' ? (
+	<IndustryServices
+		industryName={section.industryName ?? 'esta industria'}
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		tone={section.tone}
+		services={section.services.map((item) => ({
+			slug: item.id,
+			nombre: item.nombre,
+			description: item.tagline,
+		}))}
+	/>
+) : null}
+
+{section._type === 'serviceGrid' && section.variant !== 'industry' ? (
+	<ServiceGrid
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		tone={section.tone}
+		services={section.services.map((item) => ({
+			slug: item.id,
+			nombre: item.nombre,
+			tagline: item.tagline,
+		}))}
+	/>
+) : null}
+
+{section._type === 'industryGrid' ? (
+	<IndustryGrid
+		client:visible
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		tone={section.tone}
+		industries={section.industries.map((item) => ({
+			slug: item.id,
+			nombre: item.nombre,
+			tagline: item.tagline,
+			puntos: item.puntos,
+		}))}
+	/>
+) : null}
+
+{section._type === 'processPhases' ? (
+	<ProcessPhases
+		client:visible
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		tone={section.tone}
+		phases={section.phases}
+	/>
+) : null}
+
+{section._type === 'caseStories' ? (
+	<CaseStories
+		client:visible
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		stories={storiesFrom(section.cases)}
+	/>
+) : null}
+
+{section._type === 'casePreview' ? (
+	<CasePreview
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		tone={section.tone}
+		cases={previewsFrom(section.cases)}
+	/>
+) : null}
+
+{section._type === 'faqSection' ? (
+	<FaqSection
+		client:visible
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		tone={section.tone}
+		items={section.items}
+		withSchema={false}
+	/>
+) : null}
+
+{section._type === 'finalCta' ? (
+	<FinalCta
+		client:load
+		badge={section.badge}
+		title={section.title}
+		description={section.description}
+		primaryLabel={section.primaryCta?.label}
+		primaryHref={section.primaryCta?.href}
+		secondaryLabel={section.secondaryCta?.label}
+		secondaryHref={section.secondaryCta?.href}
+	/>
+) : null}
+
+{section._type === 'teamGrid' ? (
+	<TeamGrid
+		client:visible
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		limit={section.limit}
+		showFilters={section.showFilters}
+		ctaLabel={section.cta?.label}
+		ctaHref={section.cta?.href}
+		members={section.people as TeamMember[]}
+	/>
+) : null}
+
+{section._type === 'metricsBand' ? (
+	<MetricsBand
+		client:visible
+		eyebrow={section.eyebrow}
+		title={section.title}
+		titleMuted={section.titleMuted}
+		description={section.description}
+		primaryLabel={section.primaryCta?.label}
+		primaryHref={section.primaryCta?.href}
+		secondaryLabel={section.secondaryCta?.label}
+		secondaryHref={section.secondaryCta?.href}
+		metrics={section.metrics.map((metric) => ({
+			valor: metric.valor,
+			label: metric.label,
+			prefix: metric.prefix,
+			suffix: metric.suffix,
+			decimals: metric.decimals,
+			detail: metric.antes && metric.despues ? `${metric.antes} → ${metric.despues}` : undefined,
+		}))}
+	/>
+) : null}
+
+{section._type === 'presenceMap' ? (
+	<PresenceMap
+		client:visible
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		ctaLabel={section.cta?.label}
+		ctaHref={section.cta?.href}
+	/>
+) : null}

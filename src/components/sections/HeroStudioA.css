@@ -184,6 +184,16 @@
   overflow-y: visible;
   perspective: 1400px;
   outline: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.hero-studio-a__stage.is-dragging {
+  cursor: grabbing;
+}
+
+.hero-studio-a__stage.is-dragging a {
+  pointer-events: none;
 }
 
 .hero-studio-a__stage:focus-visible {
@@ -210,6 +220,7 @@
   box-shadow: 0 8px 18px rgba(17, 17, 17, 0.08);
   text-decoration: none;
   user-select: none;
+  touch-action: pan-y;
   transform-style: preserve-3d;
   will-change: transform, box-shadow;
   transition: box-shadow 0.45s ease;
@@ -245,6 +256,7 @@
   border-radius: inherit;
   text-decoration: none;
   color: inherit;
+  touch-action: pan-y;
 }
 
 .hero-studio-a__card-media::after {

@@ -1,6 +1,8 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCases, getServices, industryStaticPaths } from '../../lib/content';
 import { IndustryHero } from '../../components/sections/IndustryHero';
 import { IndustryServices } from '../../components/sections/IndustryServices';
 import { PillarGrid } from '../../components/sections/PillarGrid';
@@ -10,44 +12,38 @@ import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
 import { industryServiceDescription } from '../../data/industryServices';
 import type { BadgeVariant } from '../../components/ui';
+import { formatCaseStat } from '../../lib/content/format';
+import type { IndustryRecord } from '../../lib/content/types';
 import '../../components/sections/CaseStories.css';
 import '../../components/sections/FaqSection.css';
 import '../../components/sections/IndustryServices.css';
 
 export async function getStaticPaths() {
-	const industries = await getCollection('industrias');
-	return industries.map((entry) => ({
-		params: { slug: entry.id },
-		props: { entry },
-	}));
+	return industryStaticPaths();
+}
+
+interface Props {
+	entry: IndustryRecord;
 }
 
 const { entry } = Astro.props;
-const services = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
-const cases = (await getCollection('casos')).filter((item) => item.data.industria.id === entry.id);
+const services = await getServices();
+const cases = (await getCases()).filter((item) => item.data.industria.id === entry.id);
 const heroImage = entry.data.heroImage ?? `/images/industries/${entry.id}.jpg`;
 const industryHeroBadges: { label: string; variant: BadgeVariant }[] = [
 	{ label: entry.data.nombre, variant: 'lime' },
 ];
+const blurbByService = Object.fromEntries(
+	entry.data.serviceBlurbs.map((item) => [item.serviceSlug, item.description]),
+);
 
 const industryServices = services.map((item) => ({
 	slug: item.id,
 	nombre: item.data.nombre,
-	description: industryServiceDescription(entry.id, item.id, entry.data.nombre),
+	description:
+		blurbByService[item.id] ??
+		industryServiceDescription(entry.id, item.id, entry.data.nombre),
 }));
-
-function formatCaseStat(metric: {
-	valor: number;
-	prefix?: string;
-	suffix?: string;
-	decimals?: number;
-	label: string;
-}) {
-	const value = `${metric.prefix ?? ''}${
-		metric.decimals != null ? metric.valor.toFixed(metric.decimals) : metric.valor
-	}${metric.suffix ?? ''}`;
-	return { value, label: metric.label };
-}
 
 const caseStories = cases.map((item) => ({
 	client: item.data.cliente,
@@ -60,8 +56,9 @@ const caseStories = cases.map((item) => ({
 ---
 
 <Layout
-	title={`${entry.data.nombre} — Hiweb Marketing`}
-	description={entry.data.heroDescription}
+	title={entry.data.seo?.metaTitle ?? `${entry.data.nombre} — Hiweb Marketing`}
+	description={entry.data.seo?.metaDescription ?? entry.data.heroDescription}
+	ogImage={entry.data.seo?.ogImage ?? heroImage}
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Inicio', href: '/' },

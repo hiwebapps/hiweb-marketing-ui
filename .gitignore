@@ -15,7 +15,14 @@ pnpm-debug.log*
 
 # environment variables
 .env
+.env.local
 .env.production
+
+# Sanity / Wrangler
+.sanity
+.sanity-revalidate.secret
+schema.json
+.wrangler
 
 # macOS-specific files
 .DS_Store

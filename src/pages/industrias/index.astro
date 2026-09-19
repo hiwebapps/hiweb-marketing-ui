@@ -1,6 +1,8 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCases, getIndustries } from '../../lib/content';
 import { PageHero } from '../../components/sections/PageHero';
 import { IndustryGrid } from '../../components/sections/IndustryGrid';
 import { PillarGrid } from '../../components/sections/PillarGrid';
@@ -9,8 +11,8 @@ import { FinalCta } from '../../components/sections/FinalCta';
 import { HOME_PILLARS } from '../../data/site';
 import { breadcrumbSchema } from '../../lib/schema';
 
-const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
-const cases = await getCollection('casos');
+const industries = await getIndustries();
+const cases = await getCases();
 const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
 ---
 

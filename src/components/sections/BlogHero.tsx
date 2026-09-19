@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { BLOG_READING_MINUTES } from '../../lib/blog';
+import { Badge } from '../ui';
 import './BlogHero.css';
 
 export type BlogFeaturedPost = {
@@ -6,6 +8,8 @@ export type BlogFeaturedPost = {
   title: string;
   description: string;
   keyword?: string;
+  servicioNombre?: string;
+  readingMinutes?: number;
   image?: string;
   ctaLabel?: string;
   href?: string;
@@ -67,9 +71,14 @@ export function BlogHero({
           >
             <div className="blog-hero__feature-media">
               <img src={image} alt="" width={720} height={480} loading="eager" />
+              <Badge variant="lime" className="blog-hero__feature-read">
+                {`${featured.readingMinutes ?? BLOG_READING_MINUTES} minutos`}
+              </Badge>
             </div>
             <div className="blog-hero__feature-body">
-              {featured.keyword ? (
+              {featured.servicioNombre ? (
+                <p className="blog-hero__feature-tag">{featured.servicioNombre}</p>
+              ) : featured.keyword ? (
                 <p className="blog-hero__feature-tag">{featured.keyword}</p>
               ) : null}
               <h2 className="blog-hero__feature-title">{featured.title}</h2>

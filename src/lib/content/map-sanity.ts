@@ -1,0 +1,460 @@
+import { urlForWidth } from '../../sanity/image';
+import type {
+  AboutCopy,
+  CaseRecord,
+  CmsImage,
+  FaqItem,
+  HomeCopy,
+  IndustryRecord,
+  LandingCta,
+  LandingPage,
+  LandingSection,
+  PersonRecord,
+  PostRecord,
+  ProcessPhase,
+  SeoFields,
+  ServiceRecord,
+} from './types';
+
+function seoOf(doc: {
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  ogImage?: CmsImage | null;
+}): SeoFields | undefined {
+  const ogImage = urlForWidth(doc.ogImage, 1200);
+  if (!doc.metaTitle && !doc.metaDescription && !ogImage) return undefined;
+  return {
+    metaTitle: doc.metaTitle ?? undefined,
+    metaDescription: doc.metaDescription ?? undefined,
+    ogImage,
+  };
+}
+
+function imageUrl(image: CmsImage | null | undefined, width = 1600) {
+  return urlForWidth(image, width);
+}
+
+function imageAlt(image: CmsImage | null | undefined, fallback?: string) {
+  if (image && typeof image === 'object' && 'alt' in image && typeof image.alt === 'string') {
+    return image.alt;
+  }
+  return fallback;
+}
+
+export function mapIndustry(doc: Record<string, unknown>): IndustryRecord {
+  const image = doc.heroImage as CmsImage | undefined;
+  return {
+    id: String(doc.id),
+    data: {
+      nombre: String(doc.nombre ?? ''),
+      orden: Number(doc.orden ?? 0),
+      tagline: String(doc.tagline ?? ''),
+      heroTitle: String(doc.heroTitle ?? ''),
+      heroDescription: String(doc.heroDescription ?? ''),
+      heroImage: imageUrl(image) ?? undefined,
+      heroImageAlt: imageAlt(image),
+      heroBadge: doc.heroBadge ? String(doc.heroBadge) : undefined,
+      retos: Array.isArray(doc.retos) ? doc.retos.map(String) : [],
+      porQue: Array.isArray(doc.porQue) ? (doc.porQue as IndustryRecord['data']['porQue']) : [],
+      faqs: Array.isArray(doc.faqs) ? (doc.faqs as IndustryRecord['data']['faqs']) : [],
+      serviceBlurbs: Array.isArray(doc.serviceBlurbs)
+        ? (doc.serviceBlurbs as IndustryRecord['data']['serviceBlurbs']).filter(
+            (item) => item.serviceSlug,
+          )
+        : [],
+      seo: seoOf(doc),
+    },
+  };
+}
+
+export function mapService(doc: Record<string, unknown>): ServiceRecord {
+  const image = doc.heroImage as CmsImage | undefined;
+  return {
+    id: String(doc.id),
+    data: {
+      nombre: String(doc.nombre ?? ''),
+      orden: Number(doc.orden ?? 0),
+      tagline: String(doc.tagline ?? ''),
+      heroTitle: String(doc.heroTitle ?? ''),
+      heroDescription: doc.heroDescription ? String(doc.heroDescription) : undefined,
+      heroImage: imageUrl(image) ?? undefined,
+      heroImageAlt: imageAlt(image),
+      heroBadge: doc.heroBadge ? String(doc.heroBadge) : undefined,
+      cards: Array.isArray(doc.cards) ? (doc.cards as ServiceRecord['data']['cards']) : [],
+      proceso: Array.isArray(doc.proceso) ? (doc.proceso as ServiceRecord['data']['proceso']) : [],
+      faqs: Array.isArray(doc.faqs) ? (doc.faqs as ServiceRecord['data']['faqs']) : [],
+      seo: seoOf(doc),
+    },
+  };
+}
+
+export function mapCase(doc: Record<string, unknown>): CaseRecord {
+  const servicios = Array.isArray(doc.servicios)
+    ? (doc.servicios as Array<{ id?: string; nombre?: string; heroImage?: CmsImage }>)
+        .filter((item) => item?.id)
+        .map((item) => ({
+          id: String(item.id),
+          nombre: item.nombre,
+          heroImage: imageUrl(item.heroImage, 800),
+        }))
+    : [];
+
+  const industria = doc.industria as { id?: string } | undefined;
+  const accent = doc.accent === 'orange' || doc.accent === 'purple' ? doc.accent : 'cyan';
+
+  return {
+    id: String(doc.id),
+    data: {
+      cliente: String(doc.cliente ?? ''),
+      industria: { id: String(industria?.id ?? '') },
+      servicios,
+      resultadoFrase: String(doc.resultadoFrase ?? ''),
+      titulo: String(doc.titulo ?? ''),
+      resumen: String(doc.resumen ?? ''),
+      destacado: Boolean(doc.destacado),
+      accent,
+      metricas: Array.isArray(doc.metricas) ? (doc.metricas as CaseRecord['data']['metricas']) : [],
+      reto: String(doc.reto ?? ''),
+      estrategia: String(doc.estrategia ?? ''),
+      fases: Array.isArray(doc.fases) ? (doc.fases as CaseRecord['data']['fases']) : [],
+      testimonio: doc.testimonio as CaseRecord['data']['testimonio'],
+      seo: seoOf(doc),
+    },
+  };
+}
+
+export function mapPost(doc: Record<string, unknown>): PostRecord {
+  const cover = doc.cover as CmsImage | undefined;
+  const fechaRaw = doc.fecha;
+  const fecha =
+    fechaRaw instanceof Date
+      ? fechaRaw
+      : new Date(typeof fechaRaw === 'string' ? fechaRaw : Date.now());
+
+  return {
+    id: String(doc.id),
+    data: {
+      title: String(doc.title ?? ''),
+      description: String(doc.description ?? ''),
+      keyword: String(doc.keyword ?? ''),
+      autor: String(doc.authorName ?? doc.autor ?? 'Hiweb'),
+      fecha,
+      featured: Boolean(doc.featured),
+      categoriaServicio: (doc.categoriaServicio as { id?: string; nombre?: string } | undefined)?.id
+        ? {
+            id: String((doc.categoriaServicio as { id: string }).id),
+            nombre: (doc.categoriaServicio as { nombre?: string }).nombre
+              ? String((doc.categoriaServicio as { nombre: string }).nombre)
+              : undefined,
+          }
+        : undefined,
+      categoriaIndustria: (doc.categoriaIndustria as { id?: string } | undefined)?.id
+        ? { id: String((doc.categoriaIndustria as { id: string }).id) }
+        : undefined,
+      faqs: Array.isArray(doc.faqs) ? (doc.faqs as PostRecord['data']['faqs']) : [],
+      seo: seoOf(doc),
+    },
+    coverUrl: imageUrl(cover, 1200),
+    portableText: Array.isArray(doc.body) ? doc.body : undefined,
+  };
+}
+
+export function mapPerson(doc: Record<string, unknown>): PersonRecord {
+  const photo = doc.photo as CmsImage | undefined;
+  const category = doc.category === 'web' || doc.category === 'diseno' ? doc.category : 'redes';
+  return {
+    name: String(doc.name ?? ''),
+    role: String(doc.role ?? ''),
+    bio: String(doc.bio ?? ''),
+    photo: imageUrl(photo, 800) ?? '/images/team/andres.png',
+    category,
+    accent: doc.accent ? String(doc.accent) : undefined,
+    socials: (doc.socials as PersonRecord['socials']) ?? undefined,
+  };
+}
+
+export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
+  if (!doc) return null;
+  const process = Array.isArray(doc.process)
+    ? (doc.process as Array<{ index?: string; title: string; description: string }>).map(
+        (step, index) => ({
+          index: step.index || String(index + 1).padStart(2, '0'),
+          title: step.title,
+          description: step.description,
+        }),
+      )
+    : undefined;
+  return {
+    heroTitle: doc.heroTitle ? String(doc.heroTitle) : undefined,
+    heroLead: doc.heroLead ? String(doc.heroLead) : undefined,
+    primaryCta: doc.primaryCta as HomeCopy['primaryCta'],
+    secondaryCta: doc.secondaryCta as HomeCopy['secondaryCta'],
+    process,
+    faqCategories: Array.isArray(doc.faqCategories)
+      ? (doc.faqCategories as HomeCopy['faqCategories'])
+      : undefined,
+    seo: seoOf(doc),
+  };
+}
+
+export function mapAbout(doc: Record<string, unknown> | null): AboutCopy | null {
+  if (!doc) return null;
+  const image = doc.heroImage as CmsImage | undefined;
+  return {
+    heroTitle: doc.heroTitle ? String(doc.heroTitle) : undefined,
+    heroDescription: doc.heroDescription ? String(doc.heroDescription) : undefined,
+    heroImage: imageUrl(image) ?? undefined,
+    heroImageAlt: imageAlt(image),
+    historyEyebrow: doc.historyEyebrow ? String(doc.historyEyebrow) : undefined,
+    historyTitle: doc.historyTitle ? String(doc.historyTitle) : undefined,
+    historyDescription: doc.historyDescription ? String(doc.historyDescription) : undefined,
+    historyColumns: Array.isArray(doc.historyColumns)
+      ? (doc.historyColumns as AboutCopy['historyColumns'])
+      : undefined,
+    seo: seoOf(doc),
+  };
+}
+
+function asCta(value: unknown): LandingCta | undefined {
+  if (!value || typeof value !== 'object') return undefined;
+  const cta = value as { label?: string; href?: string };
+  if (!cta.label || !cta.href) return undefined;
+  return { label: String(cta.label), href: String(cta.href) };
+}
+
+function asTone(value: unknown): 'canvas' | 'surface' {
+  return value === 'surface' ? 'surface' : 'canvas';
+}
+
+function asSource(value: unknown): 'all' | 'refs' {
+  return value === 'refs' ? 'refs' : 'all';
+}
+
+function mapLandingCases(value: unknown): CaseRecord[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item) => item && typeof item === 'object' && (item as { id?: string }).id)
+    .map((item) => mapCase(item as Record<string, unknown>));
+}
+
+export function mapLandingSection(doc: Record<string, unknown>): LandingSection | null {
+  const type = String(doc._type ?? '');
+
+  switch (type) {
+    case 'pageHero': {
+      const variant = doc.variant === 'photo' ? 'photo' : 'plain';
+      const image = doc.image as CmsImage | undefined;
+      const atmosphere =
+        doc.atmosphere === 'mesh' || doc.atmosphere === 'wash' || doc.atmosphere === 'none'
+          ? doc.atmosphere
+          : 'spotlight';
+      return {
+        _type: 'pageHero',
+        variant,
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: String(doc.title ?? ''),
+        description: doc.description ? String(doc.description) : undefined,
+        image: imageUrl(image) ?? undefined,
+        imageAlt: imageAlt(image),
+        imagePosition: doc.imagePosition ? String(doc.imagePosition) : undefined,
+        badges: Array.isArray(doc.badges)
+          ? (doc.badges as Array<{ label?: string; variant?: string }>)
+              .filter((badge) => badge.label)
+              .map((badge) => ({ label: String(badge.label), variant: badge.variant }))
+          : undefined,
+        cta: asCta(doc.cta),
+        atmosphere,
+      };
+    }
+    case 'pillarGrid':
+      return {
+        _type: 'pillarGrid',
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        tone: asTone(doc.tone),
+        pillars: Array.isArray(doc.pillars)
+          ? (doc.pillars as Array<{ title?: string; description?: string; icon?: string; accent?: string; href?: string }>)
+              .filter((item) => item.title)
+              .map((item) => ({
+                title: String(item.title),
+                description: String(item.description ?? ''),
+                icon: item.icon,
+                accent: item.accent,
+                href: item.href,
+              }))
+          : [],
+        ctaLabel: doc.ctaLabel ? String(doc.ctaLabel) : undefined,
+      };
+    case 'serviceGrid':
+      return {
+        _type: 'serviceGrid',
+        variant: doc.variant === 'industry' ? 'industry' : 'catalog',
+        source: asSource(doc.source),
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        tone: asTone(doc.tone),
+        industryName: doc.industryName ? String(doc.industryName) : undefined,
+        services: Array.isArray(doc.services)
+          ? (doc.services as Array<{ id?: string; nombre?: string; tagline?: string }>)
+              .filter((item) => item.id)
+              .map((item) => ({
+                id: String(item.id),
+                nombre: String(item.nombre ?? ''),
+                tagline: String(item.tagline ?? ''),
+              }))
+          : [],
+      };
+    case 'industryGrid':
+      return {
+        _type: 'industryGrid',
+        source: asSource(doc.source),
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        tone: asTone(doc.tone),
+        industries: Array.isArray(doc.industries)
+          ? (doc.industries as Array<{ id?: string; nombre?: string; tagline?: string; porQue?: { title?: string }[] }>)
+              .filter((item) => item.id)
+              .map((item) => ({
+                id: String(item.id),
+                nombre: String(item.nombre ?? ''),
+                tagline: String(item.tagline ?? ''),
+                puntos: Array.isArray(item.porQue)
+                  ? item.porQue.map((punto) => String(punto.title ?? '')).filter(Boolean)
+                  : undefined,
+              }))
+          : [],
+      };
+    case 'processPhases': {
+      const phases: ProcessPhase[] = Array.isArray(doc.phases)
+        ? (doc.phases as Array<{ index?: string; title?: string; description?: string }>).map(
+            (step, index) => ({
+              index: step.index || String(index + 1).padStart(2, '0'),
+              title: String(step.title ?? ''),
+              description: String(step.description ?? ''),
+            }),
+          )
+        : [];
+      return {
+        _type: 'processPhases',
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        tone: asTone(doc.tone),
+        phases,
+      };
+    }
+    case 'caseStories':
+      return {
+        _type: 'caseStories',
+        source: asSource(doc.source),
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        cases: mapLandingCases(doc.cases),
+      };
+    case 'casePreview':
+      return {
+        _type: 'casePreview',
+        source: asSource(doc.source),
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        tone: asTone(doc.tone),
+        cases: mapLandingCases(doc.cases),
+      };
+    case 'faqSection': {
+      const inline = Array.isArray(doc.items) ? (doc.items as FaqItem[]) : [];
+      const fromLibrary = Array.isArray(doc.faqFromLibrary) ? (doc.faqFromLibrary as FaqItem[]) : [];
+      return {
+        _type: 'faqSection',
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        tone: asTone(doc.tone),
+        items: [...fromLibrary, ...inline].filter((item) => item?.question && item?.answer),
+      };
+    }
+    case 'finalCta':
+      return {
+        _type: 'finalCta',
+        badge: doc.badge ? String(doc.badge) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        primaryCta: asCta(doc.primaryCta),
+        secondaryCta: asCta(doc.secondaryCta),
+      };
+    case 'teamGrid':
+      return {
+        _type: 'teamGrid',
+        source: asSource(doc.source),
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        limit: typeof doc.limit === 'number' ? doc.limit : undefined,
+        showFilters: Boolean(doc.showFilters),
+        cta: asCta(doc.cta),
+        people: Array.isArray(doc.people)
+          ? (doc.people as Record<string, unknown>[]).filter((item) => item?.name).map(mapPerson)
+          : [],
+      };
+    case 'metricsBand':
+      return {
+        _type: 'metricsBand',
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        titleMuted: doc.titleMuted ? String(doc.titleMuted) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        metrics: Array.isArray(doc.metrics)
+          ? (doc.metrics as Array<{
+              valor?: number;
+              label?: string;
+              prefix?: string;
+              suffix?: string;
+              decimals?: number;
+              antes?: string;
+              despues?: string;
+            }>)
+              .filter((item) => item.label)
+              .map((item) => ({
+                valor: Number(item.valor ?? 0),
+                label: String(item.label),
+                prefix: item.prefix,
+                suffix: item.suffix,
+                decimals: item.decimals,
+                antes: item.antes,
+                despues: item.despues,
+              }))
+          : [],
+        primaryCta: asCta(doc.primaryCta),
+        secondaryCta: asCta(doc.secondaryCta),
+      };
+    case 'presenceMap':
+      return {
+        _type: 'presenceMap',
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        cta: asCta(doc.cta),
+      };
+    default:
+      return null;
+  }
+}
+
+export function mapLanding(doc: Record<string, unknown>): LandingPage {
+  const sections = Array.isArray(doc.sections)
+    ? doc.sections
+        .map((section) => mapLandingSection(section as Record<string, unknown>))
+        .filter((section): section is LandingSection => Boolean(section))
+    : [];
+
+  return {
+    id: String(doc.id),
+    title: String(doc.title ?? ''),
+    sections,
+    seo: seoOf(doc),
+  };
+}

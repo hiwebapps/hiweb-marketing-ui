@@ -1,0 +1,82 @@
+---
+interface BlockSpan {
+  text?: string;
+}
+
+interface Block {
+  children?: BlockSpan[];
+}
+
+interface CellObject {
+  value?: Block[] | null;
+}
+
+interface Props {
+  node: {
+    _type?: string;
+    caption?: string | null;
+    hasHeaderRow?: boolean | null;
+    headerRows?: number | null;
+    rows?: Array<{
+      cells?: Array<string | CellObject | null> | null;
+    } | null> | null;
+  };
+}
+
+function cellToPlain(cell: string | CellObject | null | undefined): string {
+  if (cell == null) return '';
+  if (typeof cell === 'string') return cell;
+  const blocks = cell.value ?? [];
+  return blocks
+    .flatMap((block) => block.children ?? [])
+    .map((span) => span.text ?? '')
+    .join('')
+    .trim();
+}
+
+const { node } = Astro.props;
+const rows = (node.rows ?? [])
+  .map((row) => (row?.cells ?? []).map((cell) => cellToPlain(cell)))
+  .filter((cells) => cells.some(Boolean) || cells.length > 0);
+
+if (!rows.length) {
+  return null;
+}
+
+const hasHeader =
+  typeof node.headerRows === 'number' ? node.headerRows > 0 : node.hasHeaderRow !== false;
+
+const header = hasHeader ? rows[0] : null;
+const body = hasHeader ? rows.slice(1) : rows;
+const headerLabels = header ?? [];
+---
+
+<figure class="blog-table-wrap">
+  {node.caption ? <figcaption class="blog-table__caption">{node.caption}</figcaption> : null}
+  <table class="blog-table">
+    {
+      header ? (
+        <thead>
+          <tr>
+            {header.map((cell) => (
+              <th scope="col">{cell}</th>
+            ))}
+          </tr>
+        </thead>
+      ) : null
+    }
+    <tbody>
+      {
+        body.map((cells) => (
+          <tr>
+            {cells.map((cell, i) => (
+              <td data-label={headerLabels[i] || (i === 0 ? 'Criterio' : `Columna ${i + 1}`)}>
+                {cell}
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</figure>

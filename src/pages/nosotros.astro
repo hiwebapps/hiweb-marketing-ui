@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import Layout from '../layouts/Layout.astro';
 import { IndustryHero } from '../components/sections/IndustryHero';
 import { AboutHistory } from '../components/sections/AboutHistory';
@@ -7,16 +9,30 @@ import { PresenceMap } from '../components/sections/PresenceMap';
 import { ProcessPhases } from '../components/sections/ProcessPhases';
 import { TeamGrid } from '../components/sections/TeamGrid';
 import { FinalCta } from '../components/sections/FinalCta';
-import { HOME_PILLARS, PROCESS_PHASES, SITE } from '../data/site';
+import { HOME_PILLARS, SITE } from '../data/site';
 import { breadcrumbSchema } from '../lib/schema';
+import { getAboutCopy, getHomeCopy, getPeople } from '../lib/content';
+import type { TeamMember } from '../components/sections/TeamGrid';
 import '../components/sections/AboutHistory.css';
 import '../components/sections/TeamGrid.css';
 import '../components/sections/PresenceMap.css';
+
+const about = await getAboutCopy();
+const home = await getHomeCopy();
+const people = (await getPeople()) as TeamMember[];
+const historyColumns =
+	about.historyColumns && about.historyColumns.length === 2
+		? ([about.historyColumns[0], about.historyColumns[1]] as [
+				{ title: string; paragraphs: string[] },
+				{ title: string; paragraphs: string[] },
+			])
+		: undefined;
 ---
 
 <Layout
-	title="Nosotros — Hiweb Marketing"
-	description={SITE.tagline}
+	title={about.seo?.metaTitle ?? 'Nosotros — Hiweb Marketing'}
+	description={about.seo?.metaDescription ?? SITE.tagline}
+	ogImage={about.seo?.ogImage ?? about.heroImage}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Nosotros', href: '/nosotros' },
@@ -24,10 +40,10 @@ import '../components/sections/PresenceMap.css';
 >
 	<main>
 		<IndustryHero
-			title="Expertise colectivo, tecnología propia, capacidad cross-border."
-			description={SITE.tagline}
-			image="/images/team/hiweb-team.png"
-			imageAlt="Equipo Hiweb con playeras de la marca"
+			title={about.heroTitle ?? 'Expertise colectivo, tecnología propia, capacidad cross-border.'}
+			description={about.heroDescription ?? SITE.tagline}
+			image={about.heroImage ?? '/images/team/hiweb-team.png'}
+			imageAlt={about.heroImageAlt ?? 'Equipo Hiweb con playeras de la marca'}
 			imagePosition="center 28%"
 			badges={[
 				{ label: 'Nosotros', variant: 'lime' },
@@ -36,11 +52,16 @@ import '../components/sections/PresenceMap.css';
 			ctaLabel="Agenda tu auditoría"
 			ctaHref="/contacto"
 		/>
-		<AboutHistory />
+		<AboutHistory
+			eyebrow={about.historyEyebrow}
+			title={about.historyTitle}
+			description={about.historyDescription}
+			columns={historyColumns}
+		/>
 		<PillarGrid pillars={[...HOME_PILLARS]} title="Diferenciadores" />
 		<ProcessPhases
 			client:visible
-			phases={[...PROCESS_PHASES]}
+			phases={home.process ?? []}
 			eyebrow="Tecnología propia"
 			title="Nuestro portal es parte del delivery"
 			description="Tablero, assets y señal en un solo lugar. Menos PDFs huérfanos; más operación."
@@ -49,6 +70,7 @@ import '../components/sections/PresenceMap.css';
 		<TeamGrid
 			client:load
 			showFilters
+			members={people}
 			title="Un núcleo senior, no una bancada de juniors invisibles"
 			description="Dirección de cuenta, estrategia, media, contenido y producto web. Las caras que sí aparecen en la auditoría."
 			ctaLabel="Agenda tu auditoría"

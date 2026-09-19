@@ -1,6 +1,8 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCases, getIndustries } from '../../lib/content';
 import { BlogHero } from '../../components/sections/BlogHero';
 import { CasesIndex } from '../../components/sections/CasesIndex';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
@@ -10,8 +12,8 @@ import { postCoverUrl } from '../../lib/blog';
 import '../../components/sections/BlogHero.css';
 import '../../components/sections/BlogIndex.css';
 
-const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
-const cases = (await getCollection('casos')).sort((a, b) => {
+const industries = await getIndustries();
+const cases = (await getCases()).sort((a, b) => {
 	if (a.data.destacado !== b.data.destacado) return a.data.destacado ? -1 : 1;
 	return a.data.cliente.localeCompare(b.data.cliente, 'es');
 });

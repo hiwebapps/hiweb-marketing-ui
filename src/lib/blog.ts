@@ -1,5 +1,7 @@
 /** Shared blog helpers — cover URLs + heading extraction for TOC. */
 
+export const BLOG_READING_MINUTES = 5;
+
 export function postCoverUrl(id: string, width = 1200, height = 720) {
   return `https://picsum.photos/seed/${encodeURIComponent(id)}/${width}/${height}`;
 }
@@ -20,6 +22,27 @@ export type PostHeading = {
   text: string;
   id: string;
 };
+
+export function extractPortableHeadings(blocks: unknown[] | undefined): PostHeading[] {
+  if (!Array.isArray(blocks)) return [];
+  const headings: PostHeading[] = [];
+  const used = new Map<string, number>();
+
+  for (const block of blocks) {
+    if (!block || typeof block !== 'object') continue;
+    const item = block as { _type?: string; style?: string; children?: Array<{ text?: string }> };
+    if (item._type !== 'block' || (item.style !== 'h2' && item.style !== 'h3')) continue;
+    const text = (item.children ?? []).map((child) => child.text ?? '').join('').trim();
+    if (!text) continue;
+    let id = slugifyHeading(text) || 'seccion';
+    const count = used.get(id) ?? 0;
+    used.set(id, count + 1);
+    if (count > 0) id = `${id}-${count + 1}`;
+    headings.push({ depth: item.style === 'h3' ? 3 : 2, text, id });
+  }
+
+  return headings;
+}
 
 /** Pull ## / ### headings from raw markdown body for the TOC. */
 export function extractPostHeadings(body: string): PostHeading[] {

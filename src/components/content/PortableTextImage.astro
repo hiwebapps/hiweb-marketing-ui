@@ -1,0 +1,25 @@
+---
+import type { Props as ImageProps } from 'astro-portabletext/types';
+import { urlFor } from '../../sanity/image';
+
+type SanityImageValue = {
+  alt?: string | null;
+  caption?: string | null;
+  asset?: unknown;
+  [key: string]: unknown;
+};
+
+const { node } = Astro.props as ImageProps<SanityImageValue>;
+const alt = typeof node.alt === 'string' ? node.alt : '';
+const caption = typeof node.caption === 'string' ? node.caption : '';
+const src = node.asset ? urlFor(node).width(1200).auto('format').url() : null;
+---
+
+{
+  src ? (
+    <figure class="blog-figure">
+      <img src={src} alt={alt} class="blog-figure__img" loading="lazy" width="1200" height="675" />
+      {caption ? <figcaption class="blog-figure__caption">{caption}</figcaption> : null}
+    </figure>
+  ) : null
+}

@@ -1,0 +1,128 @@
+import { defineArrayMember, defineField, defineType } from 'sanity';
+import { seoFields, seoGroups } from './shared';
+
+export const caseStudy = defineType({
+  name: 'caseStudy',
+  title: 'Caso',
+  type: 'document',
+  groups: seoGroups,
+  fields: [
+    defineField({
+      name: 'cliente',
+      title: 'Cliente',
+      type: 'string',
+      group: 'content',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      group: 'content',
+      options: { source: 'cliente', maxLength: 96 },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'industria',
+      title: 'Industria',
+      type: 'reference',
+      group: 'content',
+      to: [{ type: 'industry' }],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'servicios',
+      title: 'Servicios',
+      type: 'array',
+      group: 'content',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'service' }] })],
+    }),
+    defineField({
+      name: 'resultadoFrase',
+      title: 'Resultado (frase)',
+      type: 'string',
+      group: 'content',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'titulo',
+      title: 'Título',
+      type: 'string',
+      group: 'content',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'resumen',
+      title: 'Resumen',
+      type: 'text',
+      rows: 3,
+      group: 'content',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'destacado',
+      title: 'Destacado',
+      type: 'boolean',
+      group: 'content',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'accent',
+      title: 'Acento',
+      type: 'string',
+      group: 'content',
+      options: {
+        list: [
+          { title: 'Cyan', value: 'cyan' },
+          { title: 'Orange', value: 'orange' },
+          { title: 'Purple', value: 'purple' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'cyan',
+    }),
+    defineField({
+      name: 'metricas',
+      title: 'Métricas',
+      type: 'array',
+      group: 'content',
+      of: [defineArrayMember({ type: 'metric' })],
+    }),
+    defineField({
+      name: 'reto',
+      title: 'Reto',
+      type: 'text',
+      rows: 4,
+      group: 'content',
+    }),
+    defineField({
+      name: 'estrategia',
+      title: 'Estrategia',
+      type: 'text',
+      rows: 4,
+      group: 'content',
+    }),
+    defineField({
+      name: 'fases',
+      title: 'Fases',
+      type: 'array',
+      group: 'content',
+      of: [defineArrayMember({ type: 'titledBlock' })],
+    }),
+    defineField({
+      name: 'testimonio',
+      title: 'Testimonio',
+      type: 'object',
+      group: 'content',
+      fields: [
+        defineField({ name: 'quote', title: 'Cita', type: 'text', rows: 4 }),
+        defineField({ name: 'name', title: 'Nombre', type: 'string' }),
+        defineField({ name: 'role', title: 'Cargo', type: 'string' }),
+      ],
+    }),
+    ...seoFields,
+  ],
+  preview: {
+    select: { title: 'cliente', subtitle: 'resultadoFrase' },
+  },
+});

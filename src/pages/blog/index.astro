@@ -1,64 +1,53 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getPosts, getServices } from '../../lib/content';
 import { BlogHero } from '../../components/sections/BlogHero';
-import { BlogIndex, type BlogCategory } from '../../components/sections/BlogIndex';
+import { BlogIndex } from '../../components/sections/BlogIndex';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../lib/schema';
-import { postCoverUrl } from '../../lib/blog';
+import { BLOG_READING_MINUTES, postCoverUrl } from '../../lib/blog';
 import '../../components/sections/BlogHero.css';
 import '../../components/sections/BlogIndex.css';
 
-const posts = (await getCollection('posts')).sort(
-	(a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf(),
-);
+const [posts, services] = await Promise.all([
+	getPosts(),
+	getServices(),
+]);
+const sorted = posts.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+const serviceName = Object.fromEntries(services.map((service) => [service.id, service.data.nombre]));
 
-function resolveCategory(post: (typeof posts)[number]): BlogCategory {
-	const service = post.data.categoriaServicio?.id ?? '';
-	const industry = post.data.categoriaIndustria?.id ?? '';
-	if (
-		service === 'branding' ||
-		service === 'desarrollo-web' ||
-		service === 'contenido' ||
-		service === 'community-manager'
-	) {
-		return 'creativo';
-	}
-	if (
-		service === 'google-ads' ||
-		service === 'meta-ads' ||
-		service === 'seo' ||
-		service === 'crm-automatizacion' ||
-		service === 'redes-sociales'
-	) {
-		return 'performance';
-	}
-	if (industry) return 'industrias';
-	return 'estrategia';
-}
-
-const cards = posts.map((post) => ({
-	id: post.id,
-	title: post.data.title,
-	description: post.data.description,
-	keyword: post.data.keyword,
-	autor: post.data.autor,
-	fecha: post.data.fecha.toLocaleDateString('es-MX'),
-	featured: post.data.featured,
-	category: resolveCategory(post),
-	industria: post.data.categoriaIndustria?.id,
-	servicio: post.data.categoriaServicio?.id,
-	image: postCoverUrl(post.id, 800, 520),
-	ctaLabel: 'Leer artículo',
-}));
+const cards = sorted.map((post) => {
+	const servicio = post.data.categoriaServicio?.id;
+	return {
+		id: post.id,
+		title: post.data.title,
+		description: post.data.description,
+		keyword: post.data.keyword,
+		autor: post.data.autor,
+		fecha: post.data.fecha.toLocaleDateString('es-MX'),
+		featured: post.data.featured,
+		industria: post.data.categoriaIndustria?.id,
+		servicio,
+		servicioNombre: post.data.categoriaServicio?.nombre ?? (servicio ? serviceName[servicio] : undefined),
+		readingMinutes: BLOG_READING_MINUTES,
+		image: post.coverUrl ?? postCoverUrl(post.id, 800, 520),
+		ctaLabel: 'Leer artículo',
+	};
+});
 
 const featured = cards.find((post) => post.featured) ?? cards[0];
+const serviceFilters = services
+	.slice()
+	.sort((a, b) => a.data.orden - b.data.orden)
+	.map((service) => ({ id: service.id, nombre: service.data.nombre }));
 ---
 
 <Layout
 	title="Blog — Hiweb Marketing"
-	description="Contenido organizado por industrias y servicios. Respuestas directas, sin relleno."
+	description="Contenido organizado por servicios. Respuestas directas, sin relleno."
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Blog', href: '/blog' },
@@ -71,14 +60,15 @@ const featured = cards.find((post) => post.featured) ?? cards[0];
 					id: featured.id,
 					title: featured.title,
 					description: featured.description,
-					keyword: featured.keyword,
+					servicioNombre: featured.servicioNombre,
+					readingMinutes: featured.readingMinutes,
 					image: featured.image,
 					ctaLabel: 'Descubrir más',
 				}}
 			/>
 		) : null}
 		<SectionBand tone="canvas">
-			<BlogIndex client:load posts={cards} />
+			<BlogIndex client:load posts={cards} services={serviceFilters} />
 		</SectionBand>
 		<FinalCta client:load title="¿Lo aplicamos a tu industria?" />
 	</main>

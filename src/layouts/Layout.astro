@@ -10,12 +10,13 @@ import { SiteNav } from '../components/sections/SiteNav';
 import { SiteFooter } from '../components/sections/SiteFooter';
 import { ScrollIndicator } from '../components/effects/ScrollIndicator';
 import { SITE } from '../data/site';
+import { DEFAULT_OG_IMAGE, ROBOTS_NOINDEX, absoluteUrl, shouldNoIndex } from '../lib/seo';
 
 interface Props {
 	title?: string;
 	description?: string;
 	canonical?: string;
-	/** Kept for callers; this preview is always noindex. */
+	/** Force noindex even after cutover (legal, kits). */
 	noindex?: boolean;
 	ogImage?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[] | object | object[];
@@ -25,15 +26,16 @@ const {
 	title = 'Hiweb Marketing — Partner estratégico',
 	description = SITE.tagline,
 	canonical,
-	ogImage = '/favicon.svg',
+	noindex: forceNoIndex = false,
+	ogImage = DEFAULT_OG_IMAGE,
+	jsonLd,
 } = Astro.props;
 
+const hideFromIndex = forceNoIndex || shouldNoIndex(Astro.url.hostname);
 const canonicalUrl = canonical
 	?? (Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href);
-const ogImageUrl = ogImage.startsWith('http')
-	? ogImage
-	: new URL(ogImage, Astro.site ?? Astro.url).href;
-
+const ogImageUrl = absoluteUrl(ogImage, Astro.site ?? Astro.url);
+const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
 <!doctype html>
@@ -43,8 +45,14 @@ const ogImageUrl = ogImage.startsWith('http')
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
-		<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-		<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+		{hideFromIndex ? (
+			<>
+				<meta name="robots" content={ROBOTS_NOINDEX} />
+				<meta name="googlebot" content={ROBOTS_NOINDEX} />
+			</>
+		) : (
+			<meta name="robots" content="index, follow" />
+		)}
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -53,6 +61,7 @@ const ogImageUrl = ogImage.startsWith('http')
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
 		<link
 			rel="preload"
 			href="/fonts/clash-display/ClashDisplay-Semibold.otf"
@@ -71,6 +80,9 @@ const ogImageUrl = ogImage.startsWith('http')
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		{jsonLdItems.map((item) => (
+			<script type="application/ld+json" set:html={JSON.stringify(item)} />
+		))}
 		<script is:inline>
 			document.documentElement.classList.add('motion-ready');
 			window.setTimeout(function () {

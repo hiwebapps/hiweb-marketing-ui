@@ -89,9 +89,18 @@
 }
 
 .blog-card__media {
+  position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--color-surface);
+}
+
+.blog-card__read {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  box-shadow: 0 8px 20px rgba(17, 17, 17, 0.12);
 }
 
 .blog-card__media img {

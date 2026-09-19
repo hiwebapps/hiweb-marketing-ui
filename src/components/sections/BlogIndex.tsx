@@ -2,51 +2,49 @@ import { useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
-import { postCoverUrl } from '../../lib/blog';
+import { BLOG_READING_MINUTES, postCoverUrl } from '../../lib/blog';
+import { Badge } from '../ui';
 import { SectionHeader } from './primitives/SectionHeader';
 import './BlogIndex.css';
 
 gsap.registerPlugin(useGSAP);
 
-export type BlogCategory = 'estrategia' | 'performance' | 'industrias' | 'creativo';
-
 export type BlogCard = {
   id: string;
   title: string;
   description: string;
-  keyword: string;
+  keyword?: string;
   autor: string;
   fecha: string;
   featured: boolean;
-  category: BlogCategory;
+  servicio?: string;
+  servicioNombre?: string;
+  readingMinutes?: number;
   image?: string;
   ctaLabel?: string;
   href?: string;
   industria?: string;
-  servicio?: string;
   placeholder?: boolean;
 };
 
-type FilterId = 'all' | BlogCategory;
+export type BlogServiceFilter = {
+  id: string;
+  nombre: string;
+};
 
-const FILTERS: ReadonlyArray<{ id: FilterId; label: string }> = [
-  { id: 'all', label: 'Todos' },
-  { id: 'estrategia', label: 'Estrategia' },
-  { id: 'performance', label: 'Performance' },
-  { id: 'industrias', label: 'Industrias' },
-  { id: 'creativo', label: 'Creativo' },
-];
+type FilterId = 'all' | string;
 
 const PLACEHOLDER_POSTS: BlogCard[] = [
   {
     id: 'placeholder-seo-local',
     title: 'SEO local para marcas con varias sedes',
     description: 'Cómo priorizar páginas, reviews y paid sin pelear el mismo keyword entre ciudades.',
-    keyword: 'seo local',
     autor: 'Equipo Hiweb',
     fecha: '2026-05-01',
     featured: false,
-    category: 'performance',
+    servicio: 'seo',
+    servicioNombre: 'SEO',
+    readingMinutes: BLOG_READING_MINUTES,
     image: postCoverUrl('placeholder-seo-local', 800, 520),
     ctaLabel: 'Ver playbook',
     placeholder: true,
@@ -55,11 +53,12 @@ const PLACEHOLDER_POSTS: BlogCard[] = [
     id: 'placeholder-mensaje',
     title: 'El mensaje que vende en manufactura no es el de SaaS',
     description: 'Por qué el mismo claim genérico diluye pipeline cuando el comprador es un comité.',
-    keyword: 'mensaje por industria',
     autor: 'Equipo Hiweb',
     fecha: '2026-05-08',
     featured: false,
-    category: 'industrias',
+    servicio: 'branding',
+    servicioNombre: 'Branding',
+    readingMinutes: BLOG_READING_MINUTES,
     image: 'https://picsum.photos/id/180/800/520',
     ctaLabel: 'Leer marco',
     placeholder: true,
@@ -68,11 +67,12 @@ const PLACEHOLDER_POSTS: BlogCard[] = [
     id: 'placeholder-landing',
     title: 'Landings que cierran: una oferta, una prueba, un CTA',
     description: 'Estructura mínima para dejar de mandar tráfico a un home que no decide.',
-    keyword: 'conversion web',
     autor: 'Equipo Hiweb',
     fecha: '2026-05-14',
     featured: false,
-    category: 'creativo',
+    servicio: 'desarrollo-web',
+    servicioNombre: 'Desarrollo Web',
+    readingMinutes: BLOG_READING_MINUTES,
     image: 'https://picsum.photos/id/201/800/520',
     ctaLabel: 'Ver estructura',
     placeholder: true,
@@ -81,11 +81,12 @@ const PLACEHOLDER_POSTS: BlogCard[] = [
     id: 'placeholder-auditoria',
     title: 'Qué pedimos en una auditoría (y qué no)',
     description: 'El checklist real: señal, oferta, superficie digital y paid — sin deck ornamental.',
-    keyword: 'auditoría marketing',
     autor: 'Equipo Hiweb',
     fecha: '2026-05-20',
     featured: false,
-    category: 'estrategia',
+    servicio: 'seo',
+    servicioNombre: 'SEO',
+    readingMinutes: BLOG_READING_MINUTES,
     image: 'https://picsum.photos/id/3/800/520',
     ctaLabel: 'Ver checklist',
     placeholder: true,
@@ -94,11 +95,12 @@ const PLACEHOLDER_POSTS: BlogCard[] = [
     id: 'placeholder-crm',
     title: 'CRM sin teatro: eventos que sí importan',
     description: 'Qué tracking vale la pena instrumentar cuando el KPI es pipeline, no vanity.',
-    keyword: 'crm marketing',
     autor: 'Equipo Hiweb',
     fecha: '2026-05-26',
     featured: false,
-    category: 'performance',
+    servicio: 'crm-automatizacion',
+    servicioNombre: 'CRM & Automatización',
+    readingMinutes: BLOG_READING_MINUTES,
     image: 'https://picsum.photos/id/60/800/520',
     ctaLabel: 'Leer guía',
     placeholder: true,
@@ -107,11 +109,12 @@ const PLACEHOLDER_POSTS: BlogCard[] = [
     id: 'placeholder-brand',
     title: 'Brand systems que aguantan paid y web',
     description: 'Cómo un sistema visual deja de romper en banners, landing y portal del cliente.',
-    keyword: 'brand system',
     autor: 'Equipo Hiweb',
     fecha: '2026-06-02',
     featured: false,
-    category: 'creativo',
+    servicio: 'branding',
+    servicioNombre: 'Branding',
+    readingMinutes: BLOG_READING_MINUTES,
     image: 'https://picsum.photos/id/119/800/520',
     ctaLabel: 'Ver enfoque',
     placeholder: true,
@@ -120,6 +123,7 @@ const PLACEHOLDER_POSTS: BlogCard[] = [
 
 type BlogIndexProps = {
   posts: BlogCard[];
+  services?: BlogServiceFilter[];
   title?: string;
   description?: string;
 };
@@ -133,22 +137,36 @@ function postImage(post: BlogCard) {
   return post.image ?? postCoverUrl(post.id, 800, 520);
 }
 
+function readingLabel(post: BlogCard) {
+  return `${post.readingMinutes ?? BLOG_READING_MINUTES} minutos`;
+}
+
 export function BlogIndex({
   posts,
+  services = [],
   title = 'Todos los artículos',
-  description = 'Filtra por tema. Cada pieza enlaza a un servicio, industria o caso — no a un magazine genérico.',
+  description = 'Filtra por servicio. Cada pieza enlaza a lo que sí ejecutamos — no a un magazine genérico.',
 }: BlogIndexProps) {
   const [filter, setFilter] = useState<FilterId>('all');
   const gridRef = useRef<HTMLUListElement>(null);
 
-  const catalog = useMemo(() => {
-    const ids = new Set(posts.map((post) => post.id));
-    return [...posts, ...PLACEHOLDER_POSTS.filter((post) => !ids.has(post.id))];
-  }, [posts]);
+  const catalog = useMemo(() => (posts.length ? posts : PLACEHOLDER_POSTS), [posts]);
+
+  const filters = useMemo(() => {
+    const used = new Set(catalog.map((post) => post.servicio).filter(Boolean));
+    const fromServices = services.filter((service) => used.has(service.id));
+    const extras = [...used]
+      .filter((id) => !fromServices.some((service) => service.id === id))
+      .map((id) => {
+        const post = catalog.find((item) => item.servicio === id);
+        return { id: id as string, nombre: post?.servicioNombre ?? id };
+      });
+    return [{ id: 'all', nombre: 'Todos' }, ...fromServices, ...extras];
+  }, [catalog, services]);
 
   const visible = useMemo(() => {
     if (filter === 'all') return catalog;
-    return catalog.filter((post) => post.category === filter);
+    return catalog.filter((post) => post.servicio === filter);
   }, [catalog, filter]);
 
   const visibleKey = visible.map((post) => post.id).join('|');
@@ -188,8 +206,8 @@ export function BlogIndex({
         badgeVariant="purple"
       />
 
-      <div className="blog-filters" role="radiogroup" aria-label="Filtrar por categoría">
-        {FILTERS.map((item) => {
+      <div className="blog-filters" role="radiogroup" aria-label="Filtrar por servicio">
+        {filters.map((item) => {
           const active = filter === item.id;
           return (
             <label key={item.id} className={`blog-filters__item${active ? ' is-active' : ''}`}>
@@ -201,7 +219,7 @@ export function BlogIndex({
                 onChange={() => setFilter(item.id)}
               />
               <span className="blog-filters__dot" aria-hidden="true" />
-              <span className="blog-filters__label">{item.label}</span>
+              <span className="blog-filters__label">{item.nombre}</span>
             </label>
           );
         })}
@@ -224,9 +242,12 @@ export function BlogIndex({
                   height={520}
                   loading="lazy"
                 />
+                <Badge variant="lime" className="blog-card__read">
+                  {readingLabel(post)}
+                </Badge>
               </div>
               <div className="blog-card__body">
-                <p className="blog-card__tag">{post.keyword}</p>
+                {post.servicioNombre ? <p className="blog-card__tag">{post.servicioNombre}</p> : null}
                 <h3 className="blog-card__title">{post.title}</h3>
                 <p className="blog-card__desc">{post.description}</p>
                 <span className="blog-card__cta">

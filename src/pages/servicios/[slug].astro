@@ -1,6 +1,9 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { formatCaseStat } from '../../lib/content/format';
+import { getCases, getIndustries, serviceStaticPaths } from '../../lib/content';
 import { IndustryHero } from '../../components/sections/IndustryHero';
 import { PillarGrid } from '../../components/sections/PillarGrid';
 import { IndustryGrid } from '../../components/sections/IndustryGrid';
@@ -11,19 +14,20 @@ import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
 import type { BadgeVariant } from '../../components/ui';
 import { iconForServiceOverviewCard } from '../../components/icons/PillarIcons';
+import type { ServiceRecord } from '../../lib/content/types';
 import '../../components/sections/CaseStories.css';
 
 export async function getStaticPaths() {
-	const services = await getCollection('servicios');
-	return services.map((entry) => ({
-		params: { slug: entry.id },
-		props: { entry },
-	}));
+	return serviceStaticPaths();
+}
+
+interface Props {
+	entry: ServiceRecord;
 }
 
 const { entry } = Astro.props;
-const industries = (await getCollection('industrias')).sort((a, b) => a.data.orden - b.data.orden);
-const cases = (await getCollection('casos')).filter((item) =>
+const industries = await getIndustries();
+const cases = (await getCases()).filter((item) =>
 	item.data.servicios.some((ref) => ref.id === entry.id),
 );
 const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
@@ -43,19 +47,6 @@ const serviceOverviewPillars = entry.data.cards.map((card, index) => ({
 	icon: iconForServiceOverviewCard(card.title, index),
 }));
 
-function formatCaseStat(metric: {
-	valor: number;
-	prefix?: string;
-	suffix?: string;
-	decimals?: number;
-	label: string;
-}) {
-	const value = `${metric.prefix ?? ''}${
-		metric.decimals != null ? metric.valor.toFixed(metric.decimals) : metric.valor
-	}${metric.suffix ?? ''}`;
-	return { value, label: metric.label };
-}
-
 const caseStories = cases.map((item) => ({
 	client: item.data.cliente,
 	quote: item.data.testimonio?.quote ?? item.data.resumen,
@@ -67,8 +58,9 @@ const caseStories = cases.map((item) => ({
 ---
 
 <Layout
-	title={`${entry.data.nombre} — Hiweb Marketing`}
-	description={entry.data.tagline}
+	title={entry.data.seo?.metaTitle ?? `${entry.data.nombre} — Hiweb Marketing`}
+	description={entry.data.seo?.metaDescription ?? entry.data.tagline}
+	ogImage={entry.data.seo?.ogImage ?? entry.data.heroImage}
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Inicio', href: '/' },

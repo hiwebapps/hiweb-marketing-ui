@@ -1,0 +1,37 @@
+---
+import { PortableText } from 'astro-portabletext';
+import { getEntry, render } from 'astro:content';
+import type { PostRecord } from '../../lib/content/types';
+import PortableTextImage from './PortableTextImage.astro';
+import PortableTextTable from './PortableTextTable.astro';
+
+interface Props {
+  post: PostRecord;
+}
+
+const { post } = Astro.props;
+
+const components = {
+  type: {
+    image: PortableTextImage,
+    table: PortableTextTable,
+    blogTable: PortableTextTable,
+  },
+};
+
+let Content: Awaited<ReturnType<typeof render>>['Content'] | null = null;
+if (!post.portableText) {
+  const collection = await getEntry('posts', post.id);
+  if (collection) {
+    ({ Content } = await render(collection));
+  }
+}
+---
+
+{
+  post.portableText ? (
+    <PortableText value={post.portableText} components={components} />
+  ) : Content ? (
+    <Content />
+  ) : null
+}

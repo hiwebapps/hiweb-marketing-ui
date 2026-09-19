@@ -7,22 +7,47 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "studio": "sanity dev",
+    "studio:deploy": "sanity deploy",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "deploy": "astro build && wrangler deploy",
+    "astro": "astro",
+    "sanity:typegen": "sanity schema extract --enforce-required-fields --path=./schema.json && sanity typegen generate",
+    "sanity:seed": "tsx scripts/sanity/seed-from-collections.ts",
+    "sanity:seed:write": "tsx scripts/sanity/seed-from-collections.ts --write",
+    "sanity:import-posts": "tsx scripts/sanity/import-production-posts.ts",
+    "sanity:import-posts:write": "tsx scripts/sanity/import-production-posts.ts --write",
+    "sanity:rebuild-tables": "tsx scripts/sanity/rebuild-post-tables.ts",
+    "sanity:rebuild-tables:write": "tsx scripts/sanity/rebuild-post-tables.ts --write"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.3.2",
     "@astrojs/react": "^6.0.2",
     "@gsap/react": "^2.1.2",
+    "@sanity/astro": "^3.5.1",
+    "@sanity/client": "^8.6.2",
+    "@sanity/icons": "^5.2.2",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^6.15.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "astro": "^7.2.0",
+    "astro": "^7.3.3",
+    "astro-portabletext": "^1.0.1",
     "cobe": "^2.0.1",
+    "groq": "^6.15.0",
     "gsap": "^3.15.0",
     "ogl": "^1.0.11",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "sanity": "^6.15.0",
+    "styled-components": "^6.5.3",
     "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "tsx": "^4.23.13",
+    "wrangler": "^4.135.0"
   }
 }

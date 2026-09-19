@@ -18,6 +18,8 @@ const SLIDES = [
 ] as const;
 
 const AUTO_MS = 3500;
+const DRAG_ARM = 14;
+const SWIPE_THRESHOLD = 46;
 const PROJECT_HREF = '/portafolio';
 
 type HeroStudioAProps = {
@@ -204,16 +206,120 @@ export function HeroStudioA({
       });
 
       const onResize = contextSafe(() => layout(false));
+      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-      stage.addEventListener('pointerenter', pause);
-      stage.addEventListener('pointerleave', resume);
+      const drag = {
+        pointerId: -1,
+        startX: 0,
+        delta: 0,
+        dragging: false,
+      };
+      let suppressClick = false;
+      let resumeTimer = 0;
+
+      const hold = () => {
+        pausedRef.current = true;
+        window.clearTimeout(resumeTimer);
+      };
+      const release = () => {
+        window.clearTimeout(resumeTimer);
+        resumeTimer = window.setTimeout(() => {
+          pausedRef.current = false;
+        }, AUTO_MS);
+      };
+
+      const onPointerDown = (event: PointerEvent) => {
+        if (event.button !== 0) return;
+        hold();
+        drag.pointerId = event.pointerId;
+        drag.startX = event.clientX;
+        drag.delta = 0;
+        drag.dragging = false;
+      };
+
+      const onPointerMove = (event: PointerEvent) => {
+        if (event.pointerId !== drag.pointerId) return;
+        drag.delta = event.clientX - drag.startX;
+        if (!drag.dragging && Math.abs(drag.delta) < DRAG_ARM) return;
+        if (!drag.dragging) {
+          drag.dragging = true;
+          stage.classList.add('is-dragging');
+          try {
+            stage.setPointerCapture(event.pointerId);
+          } catch {
+            /* Safari can throw if the node is gone */
+          }
+        }
+      };
+
+      const onPointerUp = contextSafe((event: PointerEvent) => {
+        if (event.pointerId !== drag.pointerId) return;
+        if (stage.hasPointerCapture(event.pointerId)) {
+          stage.releasePointerCapture(event.pointerId);
+        }
+        stage.classList.remove('is-dragging');
+        const { delta, dragging } = drag;
+        drag.pointerId = -1;
+        drag.dragging = false;
+
+        if (dragging) {
+          suppressClick = true;
+          if (delta <= -SWIPE_THRESHOLD) step(1);
+          else if (delta >= SWIPE_THRESHOLD) step(-1);
+          window.setTimeout(() => {
+            suppressClick = false;
+          }, 400);
+        }
+        release();
+      });
+
+      const onClickCapture = (event: Event) => {
+        if (!suppressClick) return;
+        event.preventDefault();
+        event.stopPropagation();
+        suppressClick = false;
+      };
+
+      const onCardClick = contextSafe((event: Event) => {
+        if (suppressClick) return;
+        const card = event.currentTarget as HTMLElement;
+        const i = cards.indexOf(card);
+        if (i < 0) return;
+        if (Math.round(shortest(i - indexRef.current, cards.length)) === 0) return;
+        event.preventDefault();
+        event.stopPropagation();
+        indexRef.current = i;
+        layout(true);
+        hold();
+        release();
+      });
+
+      if (canHover) {
+        stage.addEventListener('pointerenter', pause);
+        stage.addEventListener('pointerleave', resume);
+      }
+      stage.addEventListener('pointerdown', onPointerDown);
+      stage.addEventListener('pointermove', onPointerMove);
+      stage.addEventListener('pointerup', onPointerUp);
+      stage.addEventListener('pointercancel', onPointerUp);
+      stage.addEventListener('click', onClickCapture, true);
+      cards.forEach((card) => card.addEventListener('click', onCardClick));
       stage.addEventListener('keydown', onKey);
       window.addEventListener('resize', onResize);
 
       return () => {
         window.clearInterval(timer);
-        stage.removeEventListener('pointerenter', pause);
-        stage.removeEventListener('pointerleave', resume);
+        window.clearTimeout(resumeTimer);
+        if (canHover) {
+          stage.removeEventListener('pointerenter', pause);
+          stage.removeEventListener('pointerleave', resume);
+        }
+        stage.removeEventListener('pointerdown', onPointerDown);
+        stage.removeEventListener('pointermove', onPointerMove);
+        stage.removeEventListener('pointerup', onPointerUp);
+        stage.removeEventListener('pointercancel', onPointerUp);
+        stage.removeEventListener('click', onClickCapture, true);
+        cards.forEach((card) => card.removeEventListener('click', onCardClick));
         stage.removeEventListener('keydown', onKey);
         window.removeEventListener('resize', onResize);
       };

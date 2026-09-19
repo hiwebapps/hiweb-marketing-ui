@@ -1,0 +1,5 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <rect width="320" height="180" fill="#11110f"/>
+  <rect x="16" y="16" width="288" height="148" rx="12" fill="#1b1b18" stroke="#2a2a26"/>
+  <text x="32" y="100" fill="#f4f4f0" font-family="Arial, sans-serif" font-size="20">industryGrid</text>
+</svg>

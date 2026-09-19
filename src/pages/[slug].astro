@@ -1,0 +1,47 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Layout.astro';
+import SectionRenderer from '../components/content/SectionRenderer.astro';
+import { getIndustries, landingStaticPaths } from '../lib/content';
+import { isReservedSlug } from '../sanity/reservedSlugs';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import type { LandingPage } from '../lib/content/types';
+import '../components/sections/CaseStories.css';
+import '../components/sections/FaqSection.css';
+import '../components/sections/TeamGrid.css';
+import '../components/sections/PresenceMap.css';
+
+export async function getStaticPaths() {
+	const paths = await landingStaticPaths();
+	return paths.filter((path) => !isReservedSlug(path.params.slug));
+}
+
+interface Props {
+	entry: LandingPage;
+}
+
+const { entry } = Astro.props;
+const industries = await getIndustries();
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+const faqs = entry.sections.flatMap((section) => (section._type === 'faqSection' ? section.items : []));
+---
+
+<Layout
+	title={entry.seo?.metaTitle ?? `${entry.title} — Hiweb Marketing`}
+	description={entry.seo?.metaDescription ?? entry.title}
+	ogImage={entry.seo?.ogImage}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Inicio', href: '/' },
+			{ name: entry.title, href: `/${entry.id}` },
+		]),
+		...(faqs.length ? [faqSchema(faqs)] : []),
+	]}
+>
+	<main>
+		{entry.sections.map((section) => (
+			<SectionRenderer section={section} industryName={industryName} />
+		))}
+	</main>
+</Layout>

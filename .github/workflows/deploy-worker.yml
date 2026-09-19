@@ -1,0 +1,31 @@
+# Worker-only rebuild. Does not deploy Vercel.
+# Triggered by Sanity publish via repository_dispatch, or manually.
+name: Deploy Worker
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [sanity-rebuild]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          PUBLIC_SITE_INDEXABLE: 'false'
+          PUBLIC_SANITY_PROJECT_ID: fxardjr1
+          PUBLIC_SANITY_DATASET: web-2026
+          SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --keep-vars

@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hiweb-marketing-ui",
+  "compatibility_date": "2026-09-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "vars": {
+    "PUBLIC_SITE_INDEXABLE": "false",
+    "PUBLIC_SITE_URL": "https://hiweb-marketing-ui.hiwebapps.workers.dev",
+    "PUBLIC_SANITY_PROJECT_ID": "fxardjr1",
+    "PUBLIC_SANITY_DATASET": "web-2026"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

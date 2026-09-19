@@ -1,6 +1,8 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
-import { getCollection, getEntry } from 'astro:content';
+import { caseStaticPaths, getCases, getIndustries } from '../../lib/content';
 import { CaseTelescopeHero } from '../../components/sections/CaseTelescopeHero';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
 import { SectionHeader } from '../../components/sections/primitives/SectionHeader';
@@ -11,22 +13,25 @@ import { CasePreview } from '../../components/sections/CasePreview';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../lib/schema';
 import { postCoverUrl } from '../../lib/blog';
+import { formatCaseStat } from '../../lib/content/format';
+import type { CaseRecord } from '../../lib/content/types';
 import '../../components/sections/CaseTelescopeHero.css';
 import '../../components/sections/MetricsBand.css';
 import '../../components/sections/CaseStories.css';
 
 export async function getStaticPaths() {
-	const cases = await getCollection('casos');
-	return cases.map((entry) => ({
-		params: { slug: entry.id },
-		props: { entry },
-	}));
+	return caseStaticPaths();
+}
+
+interface Props {
+	entry: CaseRecord;
 }
 
 const { entry } = Astro.props;
-const industry = await getEntry(entry.data.industria);
-const relatedServices = await Promise.all(entry.data.servicios.map((ref) => getEntry(ref)));
-const allCases = await getCollection('casos');
+const industries = await getIndustries();
+const industry = industries.find((item) => item.id === entry.data.industria.id);
+const relatedServices = entry.data.servicios;
+const allCases = await getCases();
 const related = allCases.filter(
 	(item) => item.id !== entry.id && item.data.industria.id === entry.data.industria.id,
 );
@@ -34,9 +39,7 @@ const related = allCases.filter(
 const heroImage =
 	industry?.data.heroImage ?? postCoverUrl(`caso-${entry.id}`, 1600, 1000);
 const floatImages = [
-	...relatedServices
-		.map((service) => service?.data.heroImage)
-		.filter((src): src is string => Boolean(src)),
+	...relatedServices.map((service) => service.heroImage).filter((src): src is string => Boolean(src)),
 	industry?.data.heroImage,
 	...Array.from({ length: 10 }, (_, index) =>
 		postCoverUrl(`${entry.id}-float-${index}`, 400, 500),
@@ -47,24 +50,12 @@ const projectWords = entry.data.cliente.trim().split(/\s+/);
 const projectMid = Math.max(1, Math.ceil(projectWords.length / 2));
 const titleLeft = projectWords.slice(0, projectMid).join(' ');
 const titleRight = projectWords.slice(projectMid).join(' ');
-
-function formatCaseStat(metric: {
-	valor: number;
-	prefix?: string;
-	suffix?: string;
-	decimals?: number;
-	label: string;
-}) {
-	const value = `${metric.prefix ?? ''}${
-		metric.decimals != null ? metric.valor.toFixed(metric.decimals) : metric.valor
-	}${metric.suffix ?? ''}`;
-	return { value, label: metric.label };
-}
 ---
 
 <Layout
-	title={`${entry.data.cliente} — ${entry.data.resultadoFrase}`}
-	description={entry.data.resumen}
+	title={entry.data.seo?.metaTitle ?? `${entry.data.cliente} — ${entry.data.resultadoFrase}`}
+	description={entry.data.seo?.metaDescription ?? entry.data.resumen}
+	ogImage={entry.data.seo?.ogImage ?? heroImage}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Portafolio', href: '/portafolio' },
@@ -88,19 +79,17 @@ function formatCaseStat(metric: {
 				</div>
 				<div>
 					<SectionHeader eyebrow="Estrategia" title="Servicios aplicados" description={entry.data.estrategia} badgeVariant="cyan" />
-					<ul class="mt-6 flex flex-wrap gap-2">
-						{relatedServices.map((service) =>
-							service ? (
-								<li>
-									<a
-										href={`/servicios/${service.id}`}
-										class="rounded-full border border-border px-3 py-1 font-display text-xs font-medium text-ink no-underline"
-									>
-										{service.data.nombre}
-									</a>
-								</li>
-							) : null,
-						)}
+					<ul class="mt-6 flex-wrap gap-2 flex">
+						{relatedServices.map((service) => (
+							<li>
+								<a
+									href={`/servicios/${service.id}`}
+									class="rounded-full border border-border px-3 py-1 font-display text-xs font-medium text-ink no-underline"
+								>
+									{service.nombre ?? service.id}
+								</a>
+							</li>
+						))}
 					</ul>
 				</div>
 			</div>

@@ -1,31 +1,36 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
-import { getCollection, render } from 'astro:content';
+import BlogBody from '../../components/content/BlogBody.astro';
+import { getPosts, postStaticPaths } from '../../lib/content';
 import { BlogPostToc } from '../../components/sections/BlogPostToc';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { Button } from '../../components/ui';
 import { articleSchema, breadcrumbSchema } from '../../lib/schema';
-import { extractPostHeadings, postCoverUrl } from '../../lib/blog';
+import { extractPortableHeadings, extractPostHeadings, postCoverUrl } from '../../lib/blog';
+import type { PostRecord } from '../../lib/content/types';
 import '../../components/sections/BlogPost.css';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('posts');
-	return posts.map((entry) => ({
-		params: { slug: entry.id },
-		props: { entry },
-	}));
+	return postStaticPaths();
+}
+
+interface Props {
+	entry: PostRecord;
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
-const allPosts = await getCollection('posts');
+const allPosts = await getPosts();
 const related = allPosts
 	.filter((post) => post.id !== entry.id)
 	.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf())
 	.slice(0, 4);
 
-const headings = extractPostHeadings(entry.body);
-const cover = postCoverUrl(entry.id);
+const headings = entry.portableText
+	? extractPortableHeadings(entry.portableText)
+	: extractPostHeadings(entry.markdownBody ?? '');
+const cover = entry.coverUrl ?? postCoverUrl(entry.id);
 const dateLabel = entry.data.fecha.toLocaleDateString('es-MX', {
 	year: 'numeric',
 	month: 'long',
@@ -55,8 +60,9 @@ const schemas = [
 ---
 
 <Layout
-	title={`${entry.data.title} — Hiweb`}
-	description={entry.data.description}
+	title={entry.data.seo?.metaTitle ?? `${entry.data.title} — Hiweb`}
+	description={entry.data.seo?.metaDescription ?? entry.data.description}
+	ogImage={entry.data.seo?.ogImage ?? cover}
 	jsonLd={schemas}
 >
 	<main>
@@ -93,7 +99,7 @@ const schemas = [
 
 				<article class="blog-post__main">
 					<div class="blog-post__body" data-blog-body>
-						<Content />
+						<BlogBody post={entry} />
 					</div>
 				</article>
 
@@ -108,7 +114,7 @@ const schemas = [
 											<a class="blog-post__related-link" href={`/blog/${post.id}`}>
 												<span class="blog-post__related-media">
 													<img
-														src={postCoverUrl(post.id, 240, 240)}
+														src={post.coverUrl ?? postCoverUrl(post.id, 240, 240)}
 														alt=""
 														width={240}
 														height={240}
@@ -116,7 +122,9 @@ const schemas = [
 													/>
 												</span>
 												<span class="blog-post__related-copy">
-													<p class="blog-post__related-tag">{post.data.keyword}</p>
+													<p class="blog-post__related-tag">
+														{post.data.categoriaServicio?.nombre ?? post.data.keyword}
+													</p>
 													<p class="blog-post__related-name">{post.data.title}</p>
 												</span>
 											</a>
