@@ -1,0 +1,56 @@
+{
+  "cliente": "Zapatería La Península",
+  "servicios": [
+    "redes-sociales",
+    "meta-ads"
+  ],
+  "resultadoFrase": "+450,000 visualizaciones en tiktok",
+  "titulo": "Zapatería enfocada en moda y calzado para todas las edades, con 4 sucursales en Mérida, Yucatán",
+  "resumen": "Conoce cómo Hiweb impulsó la visibilidad y el reconocimiento de Zapatería La Península mediante redes sociales y pauta, fortaleciendo marca y aumentando el ticket promedio en retail.",
+  "destacado": false,
+  "accent": "purple",
+  "metricas": [
+    {
+      "valor": 450000,
+      "label": "Visualizaciones en TikTok",
+      "prefix": "+",
+      "despues": "Crecimiento fuerte en alcance orgánico con contenido de alto rendimiento."
+    },
+    {
+      "valor": 84.7,
+      "label": "Engagement",
+      "prefix": "+",
+      "suffix": "%",
+      "decimals": 1,
+      "despues": "Alto nivel de engagement con contenido orgánico y pautado."
+    },
+    {
+      "valor": 37300,
+      "label": "Visualizaciones en Facebook",
+      "prefix": "+",
+      "despues": "Aumento constante en consumo de contenido de marca."
+    },
+    {
+      "valor": 664,
+      "label": "Seguidores en Instagram",
+      "prefix": "+",
+      "despues": "Crecimiento constante de seguidores a lo largo del año mediante contenido orgánico y estrategias de redes sociales."
+    }
+  ],
+  "reto": "Zapatería La Península buscaba aumentar su visibilidad de marca en un mercado altamente competitivo, fortalecer el reconocimiento de su negocio y elevar su ticket promedio. Su objetivo era atraer nuevos clientes, impulsar ventas desde redes sociales y posicionarse como una zapatería referente para su público objetivo.",
+  "estrategia": "Gestión de marca: Gestión integral de redes sociales enfocada en visibilidad, posicionamiento de marca y conexión constante con clientes potenciales mediante contenido atractivo. Pauta para retail: Ejecución de campañas publicitarias orientadas a alcance, tráfico y conversión para impulsar ventas y reconocimiento de marca. Contenido audiovisual y gráfico: Creación y grabación de contenido audiovisual y gráfico enfocado en productos, tendencias y estilo de vida para fortalecer la identidad visual de la marca.",
+  "fases": [
+    {
+      "title": "Gestión de marca",
+      "description": "Gestión integral de redes sociales enfocada en visibilidad, posicionamiento de marca y conexión constante con clientes potenciales mediante contenido atractivo."
+    },
+    {
+      "title": "Pauta para retail",
+      "description": "Ejecución de campañas publicitarias orientadas a alcance, tráfico y conversión para impulsar ventas y reconocimiento de marca."
+    },
+    {
+      "title": "Contenido audiovisual y gráfico",
+      "description": "Creación y grabación de contenido audiovisual y gráfico enfocado en productos, tendencias y estilo de vida para fortalecer la identidad visual de la marca."
+    }
+  ]
+}

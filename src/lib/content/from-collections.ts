@@ -1,11 +1,9 @@
 import { getCollection } from 'astro:content';
 import { industryServiceDescription } from '../../data/industryServices';
-import {
-  HOME_FAQ_CATEGORIES,
-  PROCESS_PHASES,
-  SITE,
-  TEAM_MEMBERS,
-} from '../../data/site';
+import { SITE, TEAM_MEMBERS } from '../../data/site';
+import { WEBFLOW_HOME, WEBFLOW_SERVICE_TAGLINES } from '../../data/webflow-home';
+import { WEBFLOW_SERVICES } from '../../data/webflow-services';
+import { WEBFLOW_CASES } from '../../data/webflow-cases';
 import type {
   AboutCopy,
   CaseRecord,
@@ -40,17 +38,34 @@ export async function collectionsIndustries(): Promise<IndustryRecord[]> {
 export async function collectionsServices(): Promise<ServiceRecord[]> {
   const entries = await getCollection('servicios');
   return entries
-    .map((entry) => ({
-      id: entry.id,
-      data: {
-        ...entry.data,
-        cards: [...entry.data.cards],
-        seo: {
-          metaTitle: `${entry.data.nombre} — Hiweb Marketing`,
-          metaDescription: entry.data.tagline,
+    .map((entry) => {
+      const webflow = WEBFLOW_SERVICES[entry.id];
+      return {
+        id: entry.id,
+        data: {
+          ...entry.data,
+          ...(webflow
+            ? {
+                nombre: webflow.nombre,
+                orden: webflow.orden,
+                tagline: webflow.tagline,
+                heroTitle: webflow.heroTitle,
+                heroDescription: webflow.heroDescription,
+                heroBadge: webflow.heroBadge,
+                cards: webflow.cards.map((item) => ({ ...item })),
+                proceso: webflow.proceso.map((item) => ({ ...item })),
+                faqs: webflow.faqs.map((item) => ({ ...item })),
+                seo: {
+                  metaTitle: webflow.seo.metaTitle,
+                  metaDescription: webflow.seo.metaDescription,
+                },
+              }
+            : {
+                tagline: WEBFLOW_SERVICE_TAGLINES[entry.id] ?? entry.data.tagline,
+              }),
         },
-      },
-    }))
+      };
+    })
     .sort((a, b) => a.data.orden - b.data.orden);
 }
 
@@ -62,22 +77,47 @@ export async function collectionsCases(): Promise<CaseRecord[]> {
     services.map((item) => [item.id, item.data.heroImage]),
   );
 
-  return entries.map((entry) => ({
-    id: entry.id,
-    data: {
-      ...entry.data,
-      industria: { id: entry.data.industria.id },
-      servicios: entry.data.servicios.map((ref) => ({
-        id: ref.id,
-        nombre: serviceName[ref.id],
-        heroImage: serviceImage[ref.id],
-      })),
-      seo: {
-        metaTitle: `${entry.data.cliente} — ${entry.data.resultadoFrase}`,
-        metaDescription: entry.data.resumen,
+  return entries.map((entry) => {
+    const webflow = WEBFLOW_CASES[entry.id];
+    return {
+      id: entry.id,
+      data: {
+        ...entry.data,
+        ...(webflow
+          ? {
+              cliente: webflow.cliente,
+              industria: { id: webflow.industria.id },
+              resultadoFrase: webflow.resultadoFrase,
+              titulo: webflow.titulo,
+              resumen: webflow.resumen,
+              destacado: webflow.destacado,
+              accent: webflow.accent,
+              metricas: webflow.metricas.map((item) => ({ ...item })),
+              reto: webflow.reto,
+              estrategia: webflow.estrategia,
+              fases: webflow.fases.map((item) => ({ ...item })),
+              testimonio: webflow.testimonio ? { ...webflow.testimonio } : undefined,
+              seo: {
+                metaTitle: webflow.seo?.metaTitle,
+                metaDescription: webflow.seo?.metaDescription,
+                ogImage: webflow.cover,
+              },
+            }
+          : {
+              industria: { id: entry.data.industria?.id ?? '' },
+              seo: {
+                metaTitle: `${entry.data.cliente} — ${entry.data.resultadoFrase}`,
+                metaDescription: entry.data.resumen,
+              },
+            }),
+        servicios: (webflow?.servicios ?? entry.data.servicios).map((ref) => ({
+          id: ref.id,
+          nombre: serviceName[ref.id],
+          heroImage: serviceImage[ref.id],
+        })),
       },
-    },
-  }));
+    };
+  });
 }
 
 export async function collectionsPosts(): Promise<PostRecord[]> {
@@ -116,23 +156,7 @@ export function collectionsPeople(): PersonRecord[] {
 }
 
 export function collectionsHome(): HomeCopy {
-  return {
-    heroTitle: 'Experiencias digitales que sí mueven pipeline.',
-    heroLead:
-      'Estrategia, diseño y media como un solo sistema. Menos improvisación; más señal, oferta clara y web que cierra.',
-    primaryCta: { label: 'Agenda tu auditoría gratuita', href: '/contacto' },
-    secondaryCta: { label: 'Ver Casos de Éxito', href: '/portafolio' },
-    process: PROCESS_PHASES.map((phase) => ({ ...phase })),
-    faqCategories: HOME_FAQ_CATEGORIES.map((category) => ({
-      id: category.id,
-      label: category.label,
-      items: category.items.map((item) => ({ ...item })),
-    })),
-    seo: {
-      metaTitle: 'Hiweb Marketing — Partner estratégico',
-      metaDescription: SITE.tagline,
-    },
-  };
+  return structuredClone(WEBFLOW_HOME);
 }
 
 export function collectionsAbout(): AboutCopy {

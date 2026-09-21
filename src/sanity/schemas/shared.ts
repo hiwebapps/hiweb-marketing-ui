@@ -176,6 +176,53 @@ export const metric = defineType({
   },
 });
 
+export const sectionIntro = defineType({
+  name: 'sectionIntro',
+  title: 'Intro de sección',
+  type: 'object',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    defineField({ name: 'titleMuted', title: 'Título muted', type: 'string' }),
+    defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
+  ],
+});
+
+export const homeTestimonial = defineType({
+  name: 'homeTestimonial',
+  title: 'Testimonio',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'client',
+      title: 'Cliente',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'quote',
+      title: 'Cita',
+      type: 'text',
+      rows: 3,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'name',
+      title: 'Nombre',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'role',
+      title: 'Rol',
+      type: 'string',
+    }),
+  ],
+  preview: {
+    select: { title: 'name', subtitle: 'client' },
+  },
+});
+
 export const cta = defineType({
   name: 'cta',
   title: 'CTA',

@@ -7,20 +7,15 @@ import './HeroStudioA.css';
 
 gsap.registerPlugin(useGSAP);
 
-const SLIDES = [
-  { image: 'https://picsum.photos/id/1015/900/600', title: 'Pulse · SaaS' },
-  { image: 'https://picsum.photos/id/180/900/600', title: 'Campo · Retail' },
-  { image: 'https://picsum.photos/id/201/900/600', title: 'Vertex · Servicios' },
-  { image: 'https://picsum.photos/id/3/900/600', title: 'Orbit · Fintech' },
-  { image: 'https://picsum.photos/id/60/900/600', title: 'Northstar · EdTech' },
-  { image: 'https://picsum.photos/id/119/900/600', title: 'Marina Bay · Turismo' },
-  { image: 'https://picsum.photos/id/160/900/600', title: 'Helios · Health' },
-] as const;
+export type HeroStudioSlide = {
+  image: string;
+  title: string;
+  href: string;
+};
 
 const AUTO_MS = 3500;
 const DRAG_ARM = 14;
 const SWIPE_THRESHOLD = 46;
-const PROJECT_HREF = '/portafolio';
 
 type HeroStudioAProps = {
   title?: string;
@@ -29,6 +24,7 @@ type HeroStudioAProps = {
   primaryHref?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
+  slides?: HeroStudioSlide[];
 };
 
 function wrap(index: number, length: number) {
@@ -67,6 +63,7 @@ export function HeroStudioA({
   primaryHref = '/contacto',
   secondaryLabel = 'Ver Casos de Éxito',
   secondaryHref = '/portafolio',
+  slides = [],
 }: HeroStudioAProps) {
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -83,7 +80,7 @@ export function HeroStudioA({
       const announce = () => {
         const live = liveRef.current;
         if (!live) return;
-        live.textContent = SLIDES[indexRef.current]?.title ?? '';
+        live.textContent = slides[indexRef.current]?.title ?? '';
       };
 
       const layout = (animate: boolean) => {
@@ -324,7 +321,7 @@ export function HeroStudioA({
         window.removeEventListener('resize', onResize);
       };
     },
-    { scope: rootRef },
+    { scope: rootRef, dependencies: [slides] },
   );
 
   return (
@@ -369,15 +366,15 @@ export function HeroStudioA({
         >
           <p ref={liveRef} className="sr-only" aria-live="polite" />
           <div className="hero-studio-a__track">
-            {SLIDES.map((slide) => (
-              <div key={slide.title} className="hero-studio-a__card">
-                <a href={PROJECT_HREF} className="hero-studio-a__card-media" aria-label={slide.title}>
+            {slides.map((slide) => (
+              <div key={slide.href} className="hero-studio-a__card">
+                <a href={slide.href} className="hero-studio-a__card-media" aria-label={slide.title}>
                   <img src={slide.image} alt="" draggable={false} />
                 </a>
                 <span className="hero-studio-a__card-label">{slide.title}</span>
                 <div className="hero-studio-a__card-cta-wrap">
                   <Button
-                    href={PROJECT_HREF}
+                    href={slide.href}
                     variant="secondary"
                     size="sm"
                     className="hero-studio-a__card-cta no-underline !h-8 !px-3 !text-xs"

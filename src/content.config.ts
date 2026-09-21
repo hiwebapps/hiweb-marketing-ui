@@ -49,7 +49,7 @@ const casos = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/casos' }),
   schema: z.object({
     cliente: z.string(),
-    industria: reference('industrias'),
+    industria: reference('industrias').optional(),
     servicios: z.array(reference('servicios')),
     resultadoFrase: z.string(),
     titulo: z.string(),

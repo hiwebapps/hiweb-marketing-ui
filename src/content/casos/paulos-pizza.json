@@ -1,0 +1,67 @@
+{
+  "cliente": "Paulo’s Pizza",
+  "industria": "restaurantes",
+  "servicios": [
+    "redes-sociales",
+    "meta-ads"
+  ],
+  "resultadoFrase": "+14.6% visitas al perfil",
+  "titulo": "Pizzería artesanal en horno de piedra ubicada en Mérida, Yucatán, enfocada en ofrecer pizzas de calidad, sabor auténtico y una experiencia casual y cercana.",
+  "resumen": "Descubre cómo Hiweb impulsó la visibilidad y afluencia de Paulo’s Pizza mediante redes sociales, pauta digital y contenido audiovisual para una pizzería artesanal en Mérida.",
+  "destacado": false,
+  "accent": "cyan",
+  "metricas": [
+    {
+      "valor": 14.6,
+      "label": "Visitas al perfil",
+      "prefix": "+",
+      "suffix": "%",
+      "decimals": 1,
+      "despues": "El aumento refleja que más personas ingresan al perfil después de ver el contenido en redes."
+    },
+    {
+      "valor": 65.7,
+      "label": "Alcance",
+      "prefix": "+",
+      "suffix": "%",
+      "decimals": 1,
+      "despues": "Mayor interacción con reels, videos y publicaciones de pizzas y procesos artesanales."
+    },
+    {
+      "valor": 41,
+      "label": "Clics en enlaces",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Más usuarios dieron el paso de consultar menú, ubicación o contacto desde redes sociales."
+    },
+    {
+      "valor": 185.9,
+      "label": "Seguidores en Instagram",
+      "prefix": "+",
+      "suffix": "%",
+      "decimals": 1,
+      "despues": "Incremento acelerado de seguidores impulsado por contenido visual atractivo y presencia constante."
+    }
+  ],
+  "reto": "Paulo’s Pizza buscaba aumentar su visibilidad local, atraer más clientes al restaurante y fortalecer el reconocimiento de marca en un mercado gastronómico altamente competitivo. Su objetivo era utilizar redes sociales, pauta digital y contenido visual para generar antojo, diferenciar su propuesta artesanal y convertir la atención digital en visitas presenciales.",
+  "estrategia": "Gestión de comunidad: Gestión de redes sociales enfocada en visibilidad local, antojo visual y conexión constante con la comunidad y clientes del restaurante. Pauta local: Implementación de campañas publicitarias para alcance local, promoción de productos y atracción de nuevos clientes al restaurante. Contenido audiovisual y fotográfico: Producción de fotografía y video para mostrar pizzas, horno de piedra, procesos artesanales y ambiente real del restaurante.",
+  "fases": [
+    {
+      "title": "Gestión de comunidad",
+      "description": "Gestión de redes sociales enfocada en visibilidad local, antojo visual y conexión constante con la comunidad y clientes del restaurante."
+    },
+    {
+      "title": "Pauta local",
+      "description": "Implementación de campañas publicitarias para alcance local, promoción de productos y atracción de nuevos clientes al restaurante."
+    },
+    {
+      "title": "Contenido audiovisual y fotográfico",
+      "description": "Producción de fotografía y video para mostrar pizzas, horno de piedra, procesos artesanales y ambiente real del restaurante."
+    }
+  ],
+  "testimonio": {
+    "quote": "Desde que empezamos a trabajar con Hiweb, hemos notado un cambio muy positivo en nuestras ventas. Antes dependíamos mucho de las sucursales físicas, pero ahora, gracias a su estrategia digital, hemos logrado atraer más clientes y aumentar nuestros ingresos. El equipo es profesional, creativo y siempre está pendiente de nuestros resultados. Sin duda, una gran inversión para nuestro negocio.",
+    "name": "Julia T.",
+    "role": "Gerente de Marketing, Paulo’s Pizza"
+  }
+}

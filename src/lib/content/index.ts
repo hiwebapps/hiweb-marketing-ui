@@ -131,7 +131,24 @@ export async function getPeople(): Promise<PersonRecord[]> {
 
 export async function getHomeCopy(): Promise<HomeCopy> {
   const copy = await withFallback(sanityHome, collectionsHome, (item) => !item);
-  return copy ?? collectionsHome();
+  const fallback = collectionsHome();
+  const next = copy ?? fallback;
+  return {
+    ...fallback,
+    ...next,
+    pillarIntro: next.pillarIntro ?? fallback.pillarIntro,
+    pillars: next.pillars?.length ? next.pillars : fallback.pillars,
+    serviceIntro: next.serviceIntro ?? fallback.serviceIntro,
+    storiesIntro: next.storiesIntro ?? fallback.storiesIntro,
+    testimonials: next.testimonials?.length ? next.testimonials : fallback.testimonials,
+    processIntro: next.processIntro ?? fallback.processIntro,
+    process: next.process?.length ? next.process : fallback.process,
+    metricsIntro: next.metricsIntro ?? fallback.metricsIntro,
+    metrics: next.metrics?.length ? next.metrics : fallback.metrics,
+    faqIntro: next.faqIntro ?? fallback.faqIntro,
+    faqCategories: next.faqCategories?.length ? next.faqCategories : fallback.faqCategories,
+    seo: { ...fallback.seo, ...next.seo },
+  };
 }
 
 export async function getAboutCopy(): Promise<AboutCopy> {

@@ -183,20 +183,8 @@
 }
 
 @media (max-width: 767px) {
-  .hw-scroll-indicator {
-    top: 6.5rem;
-    right: 0.45rem;
-    bottom: 1.15rem;
-    width: 10px;
-  }
-
-  .hw-scroll-indicator__label {
+  .hw-scroll-indicator:not(.hw-scroll-indicator--contained) {
     display: none;
-  }
-
-  .hw-scroll-indicator__tip {
-    width: 4px;
-    height: 4px;
   }
 }
 

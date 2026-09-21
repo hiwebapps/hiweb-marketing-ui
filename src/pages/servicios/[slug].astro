@@ -38,7 +38,7 @@ const phases = entry.data.proceso.map((step, index) => ({
 }));
 
 const serviceHeroBadges: { label: string; variant: BadgeVariant }[] = [
-	{ label: entry.data.nombre, variant: 'lime' },
+	{ label: entry.data.heroBadge ?? entry.data.nombre, variant: 'lime' },
 ];
 
 const serviceOverviewPillars = entry.data.cards.map((card, index) => ({
@@ -77,8 +77,8 @@ const caseStories = cases.map((item) => ({
 			image={entry.data.heroImage ?? `/images/services/${entry.id}-hero.jpg`}
 			imageAlt={entry.data.heroImageAlt ?? `Imagen de ${entry.data.nombre}`}
 			badges={serviceHeroBadges}
-			ctaLabel="Ver casos de éxito"
-			ctaHref="#casos"
+			ctaLabel="Cotiza tu proyecto"
+			ctaHref="/contacto"
 		/>
 		<PillarGrid
 			id="overview"
@@ -103,7 +103,8 @@ const caseStories = cases.map((item) => ({
 			client:visible
 			phases={phases}
 			eyebrow="Cómo trabajamos"
-			title={`Proceso corto de ${entry.data.nombre}`}
+			title={`Proceso de ${entry.data.nombre}`}
+			description="De la auditoría al reporte. Un sistema medible, no un paquete suelto de tácticas."
 			tone="canvas"
 		/>
 		<CaseStories

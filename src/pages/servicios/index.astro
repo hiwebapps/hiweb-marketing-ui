@@ -10,6 +10,7 @@ import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { CasePreview } from '../../components/sections/CasePreview';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../lib/schema';
+import { WEBFLOW_SERVICES_INDEX } from '../../data/webflow-services';
 
 const services = await getServices();
 const industries = await getIndustries();
@@ -19,8 +20,8 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 ---
 
 <Layout
-	title="Servicios — Hiweb Marketing"
-	description="Marketing 360: nueve servicios conectados a un resultado de industria, no a una táctica aislada."
+	title={WEBFLOW_SERVICES_INDEX.title}
+	description={WEBFLOW_SERVICES_INDEX.description}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Servicios', href: '/servicios' },
@@ -28,9 +29,9 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 >
 	<main>
 		<PageHero
-			eyebrow="Servicios"
-			title="Catálogo 360. Un sistema, no nueve vendors."
-			description="Redes, SEO, paid, branding, CRM, community, IA y web. Cada palanca se conecta a un outcome de tu sector."
+			eyebrow={WEBFLOW_SERVICES_INDEX.eyebrow}
+			title={WEBFLOW_SERVICES_INDEX.title}
+			description={WEBFLOW_SERVICES_INDEX.description}
 		/>
 		<ServiceGrid
 			services={services.map((item) => ({
@@ -38,6 +39,9 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				nombre: item.data.nombre,
 				tagline: item.data.tagline,
 			}))}
+			eyebrow={home.serviceIntro?.eyebrow ?? WEBFLOW_SERVICES_INDEX.eyebrow}
+			title={home.serviceIntro?.title ?? WEBFLOW_SERVICES_INDEX.title}
+			description={home.serviceIntro?.description ?? WEBFLOW_SERVICES_INDEX.description}
 		/>
 		<IndustryGrid
 			client:visible

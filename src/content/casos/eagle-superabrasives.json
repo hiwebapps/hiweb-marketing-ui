@@ -1,0 +1,52 @@
+{
+  "cliente": "Eagle Superabrasives",
+  "industria": "manufactura",
+  "servicios": [
+    "desarrollo-web",
+    "seo"
+  ],
+  "resultadoFrase": "+1,600 usuarios nuevos",
+  "titulo": "Empresa americana especializada en el diseño y fabricación de discos de esmeril de alto rendimiento en diamante, CBN y CDX, con presencia internacional y enfoque en soluciones industriales personalizadas.",
+  "resumen": "Conoce cómo Hiweb rediseñó y optimizó el sitio web de Eagle Superabrasives en México, fortaleciendo su estructura, SEO y posicionamiento en buscadores para el mercado industrial.",
+  "destacado": false,
+  "accent": "cyan",
+  "metricas": [
+    {
+      "valor": 1600,
+      "label": "Usuarios nuevos",
+      "prefix": "+",
+      "despues": "Usuarios nuevos generados a partir del rediseño web y optimización SEO del sitio."
+    },
+    {
+      "valor": 1700,
+      "label": "Alcance internacional",
+      "prefix": "+",
+      "despues": "Usuarios activos provenientes de distintos países, incluyendo México, Estados Unidos y Asia."
+    },
+    {
+      "valor": 2600,
+      "label": "Vistas de página",
+      "prefix": "+",
+      "despues": "Incremento en vistas de páginas clave de productos y contenido técnico especializado."
+    },
+    {
+      "valor": 68,
+      "label": "Clics orgánicos",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento en clics provenientes de búsquedas orgánicas tras optimización SEO del sitio."
+    }
+  ],
+  "reto": "Eagle Superabrasives buscaba renovar su sitio web en México, no solo a nivel visual, sino también en estructura, funcionalidad y optimización SEO. Su objetivo era posicionarse entre los primeros resultados en buscadores en México y adaptar correctamente su contenido técnico al español para atraer leads industriales calificados.",
+  "estrategia": "Web funcional y escalable: Rediseño del sitio web con enfoque en usabilidad, claridad técnica, velocidad y experiencia de usuario para un público industrial B2B. Posicionamiento industrial: Estrategia SEO enfocada en posicionamiento en México, optimización técnica, estructura del sitio y adaptación de palabras clave industriales al mercado local.",
+  "fases": [
+    {
+      "title": "Web funcional y escalable",
+      "description": "Rediseño del sitio web con enfoque en usabilidad, claridad técnica, velocidad y experiencia de usuario para un público industrial B2B."
+    },
+    {
+      "title": "Posicionamiento industrial",
+      "description": "Estrategia SEO enfocada en posicionamiento en México, optimización técnica, estructura del sitio y adaptación de palabras clave industriales al mercado local."
+    }
+  ]
+}

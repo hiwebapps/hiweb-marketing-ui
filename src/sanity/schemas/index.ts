@@ -6,6 +6,7 @@ import { landingPage } from './landingPage';
 import { author, post } from './post';
 import { caseStudy } from './caseStudy';
 import { homePage } from './homePage';
+import { homeServiceItem } from './homeSections';
 import { industry } from './industry';
 import { person } from './person';
 import { service } from './service';
@@ -14,8 +15,10 @@ import {
   cta,
   faqCategory,
   faqItem,
+  homeTestimonial,
   metric,
   processStep,
+  sectionIntro,
   serviceBlurb,
   titledBlock,
 } from './shared';
@@ -26,12 +29,15 @@ export const schemaTypes = [
   titledBlock,
   processStep,
   metric,
+  sectionIntro,
+  homeTestimonial,
   cta,
   faqCategory,
   serviceBlurb,
   table,
   blogTable,
   ...landingSectionTypes,
+  homeServiceItem,
   siteSettings,
   homePage,
   aboutPage,

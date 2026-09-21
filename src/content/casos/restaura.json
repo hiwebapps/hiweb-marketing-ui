@@ -1,0 +1,51 @@
+{
+  "cliente": "Restaura",
+  "industria": "salud",
+  "servicios": [
+    "redes-sociales",
+    "meta-ads"
+  ],
+  "resultadoFrase": "+35% engagement",
+  "titulo": "Laboratorio dental especializado en prótesis y restauraciones de alta precisión, enfocado en apoyar a odontólogos con tecnología digital, materiales premium y resultados consistentes.",
+  "resumen": "Conoce cómo Hiweb impulsó la visibilidad y captación de Restaura Laboratorio Dental mediante redes sociales y pauta digital, conectando con odontólogos que buscan precisión y calidad.",
+  "destacado": false,
+  "accent": "purple",
+  "metricas": [
+    {
+      "valor": 35,
+      "label": "Engagement",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Mayor interacción con publicaciones sobre procesos, tecnología y casos clínicos."
+    },
+    {
+      "valor": 48,
+      "label": "Alcance en redes",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento en alcance de contenido técnico y educativo dirigido a odontólogos y clínicas."
+    },
+    {
+      "valor": 30,
+      "label": "Intención de contacto",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento en mensajes directos y consultas de odontólogos interesados en los servicios."
+    },
+    {
+      "valor": 25,
+      "label": "Posicionamiento",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Mayor recordación de marca dentro del sector odontológico local y regional."
+    }
+  ],
+  "reto": "Restaura buscaba aumentar su visibilidad y posicionarse como un laboratorio dental confiable y especializado ante odontólogos y clínicas. Su objetivo era fortalecer el reconocimiento de marca, comunicar su nivel técnico y atraer nuevos contactos profesionales a través de redes sociales y campañas de pauta digital.",
+  "estrategia": "Comunicación técnica: Gestión de redes sociales enfocada en comunicar procesos, tecnología y valor técnico del laboratorio de forma clara y profesional.",
+  "fases": [
+    {
+      "title": "Comunicación técnica",
+      "description": "Gestión de redes sociales enfocada en comunicar procesos, tecnología y valor técnico del laboratorio de forma clara y profesional."
+    }
+  ]
+}

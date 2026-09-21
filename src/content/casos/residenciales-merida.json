@@ -1,0 +1,58 @@
+{
+  "cliente": "Residenciales Mérida",
+  "industria": "inmobiliarias",
+  "servicios": [
+    "redes-sociales",
+    "meta-ads"
+  ],
+  "resultadoFrase": "+197,900 visualizaciones",
+  "titulo": "Empresa líder en asesoría inmobiliaria en Yucatán, especializada en la promoción y venta de desarrollos residenciales en un mercado altamente competitivo.",
+  "resumen": "Descubre cómo Hiweb impulsó la visibilidad y generación de leads de Residenciales Mérida mediante redes sociales y pauta digital en un mercado inmobiliario altamente competitivo.",
+  "destacado": false,
+  "accent": "purple",
+  "metricas": [
+    {
+      "valor": 197900,
+      "label": "Visualizaciones",
+      "prefix": "+",
+      "despues": "El contenido logró una alta exposición, aumentando la visibilidad de desarrollos y propiedades en un mercado altamente competitivo."
+    },
+    {
+      "valor": 315.4,
+      "label": "Alcance en redes",
+      "prefix": "+",
+      "suffix": "%",
+      "decimals": 1,
+      "despues": "Incremento significativo en el número de personas únicas que vieron el contenido de la marca."
+    },
+    {
+      "valor": 417,
+      "label": "Clics en enlaces",
+      "prefix": "+",
+      "despues": "Los usuarios mostraron mayor intención de conocer proyectos y solicitar información desde redes sociales."
+    },
+    {
+      "valor": 137,
+      "label": "Nuevos seguidores",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento sostenido de la audiencia interesada en el mercado inmobiliario de Yucatán."
+    }
+  ],
+  "reto": "Residenciales Mérida buscaba aumentar su visibilidad y generación de leads en un entorno inmobiliario altamente competitivo. Su objetivo era destacar sus marcas, impulsar nuevas ventas y captar prospectos calificados a través de redes sociales y campañas de pauta enfocadas en conversión y posicionamiento de marca.",
+  "estrategia": "Contenido estratégico: Gestión de redes sociales (Facebook, Instagram y TikTok) enfocada en visibilidad, storytelling inmobiliario y presentación clara de proyectos para atraer y conectar con compradores potenciales. Pauta orientada a leads: Implementación de campañas publicitarias enfocadas en generación de leads, aumento de alcance y posicionamiento de marcas inmobiliarias en redes sociales. Contenido audiovisual y gráfico: Grabación y creación de contenido audiovisual y gráfico para redes sociales, enfocado en mostrar propiedades, estilos de vida y proyectos de forma atractiva y comercial.",
+  "fases": [
+    {
+      "title": "Contenido estratégico",
+      "description": "Gestión de redes sociales (Facebook, Instagram y TikTok) enfocada en visibilidad, storytelling inmobiliario y presentación clara de proyectos para atraer y conectar con compradores potenciales."
+    },
+    {
+      "title": "Pauta orientada a leads",
+      "description": "Implementación de campañas publicitarias enfocadas en generación de leads, aumento de alcance y posicionamiento de marcas inmobiliarias en redes sociales."
+    },
+    {
+      "title": "Contenido audiovisual y gráfico",
+      "description": "Grabación y creación de contenido audiovisual y gráfico para redes sociales, enfocado en mostrar propiedades, estilos de vida y proyectos de forma atractiva y comercial."
+    }
+  ]
+}

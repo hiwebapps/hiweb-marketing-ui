@@ -34,7 +34,34 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
   heroLead,
   primaryCta{ label, href },
   secondaryCta{ label, href },
+  heroCases[]->{
+    "id": slug.current,
+    cliente,
+    "industriaId": industria->slug.current,
+    ogImage ${imageProjection}
+  },
+  pillarIntro{ eyebrow, title, titleMuted, description },
+  pillars[]{ title, description },
+  serviceIntro{ eyebrow, title, titleMuted, description },
+  serviceItems[]{
+    "id": service->slug.current,
+    "nombre": service->nombre,
+    "tagline": coalesce(tagline, service->tagline)
+  },
+  industryIntro{ eyebrow, title, titleMuted, description },
+  homeIndustries[]->{
+    "id": slug.current,
+    nombre,
+    tagline,
+    "puntos": porQue[].title
+  },
+  storiesIntro{ eyebrow, title, titleMuted, description },
+  testimonials[]{ client, quote, name, role },
+  processIntro{ eyebrow, title, titleMuted, description },
   process[]{ index, title, description },
+  metricsIntro{ eyebrow, title, titleMuted, description },
+  metrics[]{ valor, label, prefix, suffix, decimals },
+  faqIntro{ eyebrow, title, titleMuted, description },
   faqCategories[]{ id, label, items[]{ question, answer } },
   ${seoProjection}
 }`);

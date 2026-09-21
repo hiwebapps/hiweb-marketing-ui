@@ -1,0 +1,61 @@
+{
+  "cliente": "Happy Store",
+  "servicios": [
+    "redes-sociales",
+    "meta-ads"
+  ],
+  "resultadoFrase": "+76,300 visualizaciones",
+  "titulo": "Tienda online especializada en productos importados originales de maquillaje, cuidado personal, cuidado masculino, vitaminas y suplementos de marcas reconocidas.",
+  "resumen": "Conoce cómo Hiweb impulsó la visibilidad, el alcance y las ventas de Happy Store mediante redes sociales, pauta digital y producción de contenido audiovisual para e-commerce.",
+  "destacado": true,
+  "accent": "purple",
+  "metricas": [
+    {
+      "valor": 76300,
+      "label": "Visualizaciones",
+      "prefix": "+",
+      "despues": "Tras un periodo de estancamiento antes de Hiweb, el contenido logró duplicar las visualizaciones en menos de un mes."
+    },
+    {
+      "valor": 98,
+      "label": "Alcance en redes",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Mayor alcance del contenido, mostrando productos a nuevas audiencias interesadas en beauty y cuidado personal."
+    },
+    {
+      "valor": 738,
+      "label": "Interacciones",
+      "prefix": "+",
+      "despues": "Incremento claro en likes, comentarios y guardados gracias a contenido estratégico y videos cortos."
+    },
+    {
+      "valor": 95,
+      "label": "Clics en enlaces",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Usuarios dirigidos directamente desde redes sociales para conocer productos y realizar compras."
+    }
+  ],
+  "reto": "Happy Store buscaba aumentar su visibilidad de marca, generar mayor alcance en redes sociales y fortalecer sus ventas online en un mercado altamente competitivo. Su objetivo era destacar frente a otras tiendas digitales, atraer nuevos clientes y comunicar confianza a través de contenido visual atractivo y campañas de pauta enfocadas en conversión.",
+  "estrategia": "Gestión y crecimiento: Gestión de redes sociales enfocada en visibilidad, posicionamiento de marca y conexión con audiencias interesadas en belleza, cuidado personal y bienestar. Pauta para e-commerce: Implementación de campañas publicitarias enfocadas en alcance, tráfico y conversión para impulsar ventas online y reconocimiento de marca. Contenido audiovisual y fotográfico: Producción de contenido fotográfico y de video para mostrar productos, rutinas, beneficios y generar confianza en la experiencia de compra.",
+  "fases": [
+    {
+      "title": "Gestión y crecimiento",
+      "description": "Gestión de redes sociales enfocada en visibilidad, posicionamiento de marca y conexión con audiencias interesadas en belleza, cuidado personal y bienestar."
+    },
+    {
+      "title": "Pauta para e-commerce",
+      "description": "Implementación de campañas publicitarias enfocadas en alcance, tráfico y conversión para impulsar ventas online y reconocimiento de marca."
+    },
+    {
+      "title": "Contenido audiovisual y fotográfico",
+      "description": "Producción de contenido fotográfico y de video para mostrar productos, rutinas, beneficios y generar confianza en la experiencia de compra."
+    }
+  ],
+  "testimonio": {
+    "quote": "Con el apoyo de Hiweb logramos que la marca se viera más profesional y cercana. Hoy sentimos una conexión más real con quienes nos compran.",
+    "name": "Amanda D.",
+    "role": "Fundadora, Happy Store"
+  }
+}

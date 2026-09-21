@@ -122,12 +122,59 @@ export type PersonRecord = {
   };
 };
 
+export type SectionIntro = {
+  eyebrow?: string;
+  title?: string;
+  titleMuted?: string;
+  description?: string;
+};
+
+export type HomeTestimonial = {
+  client: string;
+  quote: string;
+  name: string;
+  role?: string;
+};
+
+export type HomeHeroCase = {
+  id: string;
+  cliente: string;
+  industriaId?: string;
+  image?: string;
+};
+
+export type HomeServiceCard = {
+  id: string;
+  nombre: string;
+  tagline: string;
+};
+
+export type HomeIndustryCard = {
+  id: string;
+  nombre: string;
+  tagline: string;
+  puntos: string[];
+};
+
 export type HomeCopy = {
   heroTitle?: string;
   heroLead?: string;
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
+  heroCases?: HomeHeroCase[];
+  pillarIntro?: SectionIntro;
+  pillars?: TitledBlock[];
+  serviceIntro?: SectionIntro;
+  serviceCards?: HomeServiceCard[];
+  industryIntro?: SectionIntro;
+  industryCards?: HomeIndustryCard[];
+  storiesIntro?: SectionIntro;
+  testimonials?: HomeTestimonial[];
+  processIntro?: SectionIntro;
   process?: ProcessPhase[];
+  metricsIntro?: SectionIntro;
+  metrics?: Metric[];
+  faqIntro?: SectionIntro;
   faqCategories?: { id: string; label: string; items: FaqItem[] }[];
   seo?: SeoFields;
 };

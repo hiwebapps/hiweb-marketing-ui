@@ -1,0 +1,60 @@
+{
+  "cliente": "Gaios",
+  "industria": "restaurantes",
+  "servicios": [
+    "redes-sociales",
+    "meta-ads"
+  ],
+  "resultadoFrase": "+71.4% visitas al perfil",
+  "titulo": "Restaurante de desayunos y almuerzos ubicado en Gran San Pedro Cholul, Mérida, con una propuesta variada, accesible y pensada para disfrutar en cualquier momento del día.",
+  "resumen": "Descubre cómo Hiweb impulsó la visibilidad y afluencia de Gaios mediante redes sociales, pauta digital y contenido audiovisual para un restaurante en Mérida.",
+  "destacado": false,
+  "accent": "orange",
+  "metricas": [
+    {
+      "valor": 71.4,
+      "label": "Visitas al perfil",
+      "prefix": "+",
+      "suffix": "%",
+      "decimals": 1,
+      "despues": "Más usuarios ingresaron al perfil para conocer menú, ubicación y concepto del restaurante."
+    },
+    {
+      "valor": 62,
+      "label": "Engagement",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento constante en likes, comentarios y compartidos, reflejando interés real en la propuesta del restaurante."
+    },
+    {
+      "valor": 85,
+      "label": "Visualizaciones",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "El contenido logró una alta exposición, especialmente en reels de platillos y experiencia en el restaurante."
+    },
+    {
+      "valor": 58,
+      "label": "Clics en enlaces",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Usuarios dirigidos desde redes sociales para consultar ubicación, contacto y más información."
+    }
+  ],
+  "reto": "Gaios buscaba aumentar su visibilidad local, atraer más comensales a su restaurante y fortalecer el reconocimiento de marca en una zona con alta competencia gastronómica. Su objetivo era utilizar redes sociales y pauta digital para mostrar su propuesta de comida, generar antojo y convertir la atención digital en visitas físicas al restaurante.",
+  "estrategia": "Gestión de comunidad: Gestión de redes sociales enfocada en visibilidad local, antojo visual y conexión constante con la comunidad del restaurante. Pauta local: Implementación de campañas publicitarias para alcance local, atracción de nuevos clientes y promoción del restaurante en su zona de influencia. Contenido audiovisual y fotográfico: Producción de fotografía y video para mostrar platillos, ambiente, experiencias y momentos reales dentro del restaurante.",
+  "fases": [
+    {
+      "title": "Gestión de comunidad",
+      "description": "Gestión de redes sociales enfocada en visibilidad local, antojo visual y conexión constante con la comunidad del restaurante."
+    },
+    {
+      "title": "Pauta local",
+      "description": "Implementación de campañas publicitarias para alcance local, atracción de nuevos clientes y promoción del restaurante en su zona de influencia."
+    },
+    {
+      "title": "Contenido audiovisual y fotográfico",
+      "description": "Producción de fotografía y video para mostrar platillos, ambiente, experiencias y momentos reales dentro del restaurante."
+    }
+  ]
+}

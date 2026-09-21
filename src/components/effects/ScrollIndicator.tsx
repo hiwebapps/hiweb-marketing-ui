@@ -117,15 +117,36 @@ function readLine(scroller: HTMLElement | Window) {
 /**
  * Gradient vertical reading meter with section checkpoints.
  */
+const MOBILE_SCROLL_QUERY = '(max-width: 767px)';
+
+function useDesktopScrollRail(enabled: boolean) {
+  const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    if (!enabled) {
+      setActive(true);
+      return;
+    }
+    const media = window.matchMedia(MOBILE_SCROLL_QUERY);
+    const sync = () => setActive(!media.matches);
+    sync();
+    media.addEventListener('change', sync);
+    return () => media.removeEventListener('change', sync);
+  }, [enabled]);
+
+  return active;
+}
+
 export function ScrollIndicator({ className = '', contained = false }: ScrollIndicatorProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [marks, setMarks] = useState<Mark[]>([]);
   const [progress, setProgress] = useState(0);
   const [readY, setReadY] = useState(0);
+  const showRail = useDesktopScrollRail(!contained);
 
   useEffect(() => {
     const root = rootRef.current;
-    if (!root) return;
+    if (!root || !showRail) return;
 
     const scroller = contained ? root.closest<HTMLElement>('[data-scroll-demo]') : null;
     const target: HTMLElement | Window = scroller ?? window;
@@ -171,7 +192,9 @@ export function ScrollIndicator({ className = '', contained = false }: ScrollInd
       window.clearTimeout(later);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [contained]);
+  }, [contained, showRail]);
+
+  if (!showRail) return null;
 
   const jump = (mark: Mark) => {
     const root = rootRef.current;

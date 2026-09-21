@@ -7,28 +7,86 @@ import { HomeAfterHero, HomeBelowFold } from '../components/sections/HomeAfterHe
 import { IndustryGrid } from '../components/sections/IndustryGrid';
 import { CaseStories } from '../components/sections/CaseStories';
 import { ProcessPhases } from '../components/sections/ProcessPhases';
+import { MetricsBand } from '../components/sections/MetricsBand';
 import { FaqSection } from '../components/sections/FaqSection';
 import { FinalCta } from '../components/sections/FinalCta';
 import '../components/sections/TeamGrid.css';
 import '../components/sections/FaqSection.css';
 import '../components/sections/CaseStories.css';
+import '../components/sections/MetricsBand.css';
 import { faqSchema } from '../lib/schema';
-import { formatCaseStat } from '../lib/content/format';
 import { getCases, getHomeCopy, getIndustries, getServices } from '../lib/content';
 import { SITE } from '../data/site';
 
 const home = await getHomeCopy();
-const industries = await getIndustries();
-const services = await getServices();
-const CASE_ORDER = ['pulse', 'norte-industrial', 'marina-bay', 'clinica-aurora'];
-const cases = (await getCases()).sort((a, b) => {
-	const left = CASE_ORDER.indexOf(a.id);
-	const right = CASE_ORDER.indexOf(b.id);
-	return (left === -1 ? 99 : left) - (right === -1 ? 99 : right);
-});
-const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+const industryCards = home.industryCards?.length
+	? home.industryCards.map((item) => ({
+			slug: item.id,
+			nombre: item.nombre,
+			tagline: item.tagline,
+			puntos: item.puntos,
+		}))
+	: (await getIndustries()).map((item) => ({
+			slug: item.id,
+			nombre: item.data.nombre,
+			tagline: item.data.tagline,
+			puntos: item.data.porQue.map((punto) => punto.title),
+		}));
+const services = home.serviceCards?.length
+	? home.serviceCards
+	: (await getServices()).map((item) => ({
+			id: item.id,
+			nombre: item.data.nombre,
+			tagline: item.data.tagline,
+		}));
+const industryLabel: Record<string, string> = {
+	'turismo-hoteleria': 'Turismo',
+	saas: 'SaaS',
+	salud: 'Salud',
+	manufactura: 'Manufactura',
+	restaurantes: 'Restaurantes',
+	inmobiliarias: 'Inmobiliarias',
+};
+const heroSlides = (home.heroCases?.length
+	? home.heroCases
+			.filter((item) => item.image)
+			.map((item) => ({
+				image: item.image as string,
+				title: item.industriaId && industryLabel[item.industriaId]
+					? `${item.cliente} · ${industryLabel[item.industriaId]}`
+					: item.cliente,
+				href: `/portafolio/${item.id}`,
+			}))
+	: (await getCases())
+			.filter((item) => item.data.seo?.ogImage)
+			.sort((a, b) => {
+				if (a.data.destacado !== b.data.destacado) return a.data.destacado ? -1 : 1;
+				return a.data.cliente.localeCompare(b.data.cliente, 'es');
+			})
+			.map((item) => {
+				const industry = industryLabel[item.data.industria.id];
+				return {
+					image: item.data.seo?.ogImage as string,
+					title: industry ? `${item.data.cliente} · ${industry}` : item.data.cliente,
+					href: `/portafolio/${item.id}`,
+				};
+			}));
 const faqCategories = home.faqCategories ?? [];
 const faqs = faqCategories.flatMap((category) => category.items);
+const stories = (home.testimonials ?? []).map((item) => ({
+	client: item.client,
+	quote: item.quote,
+	name: item.name,
+	role: item.role ?? '',
+	stats: [],
+}));
+const metrics = (home.metrics ?? []).map((item) => ({
+	valor: item.valor,
+	label: item.label,
+	prefix: item.prefix,
+	suffix: item.suffix,
+	decimals: item.decimals,
+}));
 ---
 
 <Layout
@@ -46,39 +104,63 @@ const faqs = faqCategories.flatMap((category) => category.items);
 			primaryHref={home.primaryCta?.href}
 			secondaryLabel={home.secondaryCta?.label}
 			secondaryHref={home.secondaryCta?.href}
+			slides={heroSlides}
 		/>
 		<HomeAfterHero
 			services={services.map((item) => ({
 				slug: item.id,
-				nombre: item.data.nombre,
-				tagline: item.data.tagline,
+				nombre: item.nombre,
+				tagline: item.tagline,
 			}))}
+			pillars={home.pillars}
+			pillarIntro={home.pillarIntro}
+			serviceIntro={home.serviceIntro}
 		/>
 		<IndustryGrid
 			client:visible
 			tone="canvas"
-			industries={industries.map((item) => ({
-				slug: item.id,
-				nombre: item.data.nombre,
-				tagline: item.data.tagline,
-				puntos: item.data.porQue.map((punto) => punto.title),
-			}))}
+			eyebrow={home.industryIntro?.eyebrow}
+			title={home.industryIntro?.title}
+			description={home.industryIntro?.description}
+			industries={industryCards}
 		/>
 		<CaseStories
 			client:visible
-			stories={cases.map((item) => ({
-				client: item.data.cliente,
-				quote: item.data.testimonio?.quote ?? item.data.resumen,
-				name: item.data.testimonio?.name ?? item.data.cliente,
-				role: item.data.testimonio?.role
-					?? industryName[item.data.industria.id]
-					?? item.data.industria.id,
-				stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
-			}))}
+			stories={stories}
+			eyebrow={home.storiesIntro?.eyebrow}
+			title={home.storiesIntro?.title}
+			description={home.storiesIntro?.description}
 		/>
-		<ProcessPhases client:visible phases={home.process ?? []} tone="canvas" />
+		<ProcessPhases
+			client:visible
+			phases={home.process ?? []}
+			tone="canvas"
+			eyebrow={home.processIntro?.eyebrow}
+			title={home.processIntro?.title}
+			description={home.processIntro?.description}
+		/>
+		{metrics.length ? (
+			<MetricsBand
+				client:visible
+				metrics={metrics}
+				eyebrow={home.metricsIntro?.eyebrow}
+				title={home.metricsIntro?.title}
+				titleMuted={home.metricsIntro?.titleMuted}
+				description={home.metricsIntro?.description}
+				primaryLabel={home.primaryCta?.label}
+				primaryHref={home.primaryCta?.href}
+				secondaryLabel={home.secondaryCta?.label}
+				secondaryHref={home.secondaryCta?.href}
+			/>
+		) : null}
 		<HomeBelowFold />
-		<FaqSection client:visible categories={faqCategories} />
+		<FaqSection
+			client:visible
+			categories={faqCategories}
+			eyebrow={home.faqIntro?.eyebrow}
+			title={home.faqIntro?.title}
+			description={home.faqIntro?.description}
+		/>
 		<FinalCta client:load />
 	</main>
 </Layout>

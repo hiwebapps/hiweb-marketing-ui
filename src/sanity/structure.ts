@@ -39,6 +39,7 @@ const HIDDEN_FROM_FALLBACK = [
   'teamGrid',
   'metricsBand',
   'presenceMap',
+  'homeServiceItem',
 ];
 
 export const structure: StructureResolver = (S) =>

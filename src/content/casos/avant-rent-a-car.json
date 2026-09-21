@@ -1,0 +1,61 @@
+{
+  "cliente": "Avant Rent a Car",
+  "industria": "turismo-hoteleria",
+  "servicios": [
+    "seo",
+    "google-ads",
+    "desarrollo-web"
+  ],
+  "resultadoFrase": "+37,000 nuevos usuarios orgánicos",
+  "titulo": "Empresa de renta de autos en Cancún con enfoque turístico, especializada en ofrecer soluciones confiables de movilidad a clientes nacionales e internacionales.",
+  "resumen": "Descubre cómo Hiweb optimizó SEO, Google Ads y el sitio web de Avant Rent a Car para mejorar visibilidad, rendimiento y captación de clientes en Cancún y el extranjero.",
+  "destacado": true,
+  "accent": "cyan",
+  "metricas": [
+    {
+      "valor": 37000,
+      "label": "Nuevos usuarios orgánicos",
+      "prefix": "+",
+      "despues": "Incremento de usuarios desde búsquedas orgánicas gracias a estrategia SEO bilingüe."
+    },
+    {
+      "valor": 10,
+      "label": "Keywords en Top 10",
+      "prefix": "+",
+      "despues": "Palabras clave estratégicas posicionadas en Top 10 de Google durante el periodo del proyecto."
+    },
+    {
+      "valor": 4525,
+      "label": "Conversiones generadas",
+      "prefix": "+",
+      "despues": "Aumento significativo de conversiones mediante campañas de búsqueda y Performance Max."
+    },
+    {
+      "valor": 123000,
+      "label": "Vistas de página",
+      "prefix": "+",
+      "despues": "Interacciones y consumo de contenido registradas el primer año del proyecto"
+    }
+  ],
+  "reto": "Avant Rent a Car llegó a Hiweb con tres necesidades principales: Mejorar su posicionamiento orgánico en Google, optimizar el retorno de inversión de sus campañas de Google Ads y resolver fallas técnicas del sitio web que afectaban su rendimiento, seguridad, experiencia de usuario y capacidad de conversión.",
+  "estrategia": "Optimización y contenidos: Reestructuración de contenidos, optimización de metadatos, estrategia de blogs y mejoras técnicas a partir de una auditoría SEO para fortalecer visibilidad orgánica. Publicidad estratégica en buscadores: Implementación de campañas de Google Ads en búsqueda y Display, enfocadas en intención de compra y alineadas a servicios de renta de autos. UX y conversión: Rediseño y reestructuración del sitio con enfoque en experiencia de usuario, CTAs claros, navegación intuitiva y funcionamiento óptimo en móvil y desktop.",
+  "fases": [
+    {
+      "title": "Optimización y contenidos",
+      "description": "Reestructuración de contenidos, optimización de metadatos, estrategia de blogs y mejoras técnicas a partir de una auditoría SEO para fortalecer visibilidad orgánica."
+    },
+    {
+      "title": "Publicidad estratégica en buscadores",
+      "description": "Implementación de campañas de Google Ads en búsqueda y Display, enfocadas en intención de compra y alineadas a servicios de renta de autos."
+    },
+    {
+      "title": "UX y conversión",
+      "description": "Rediseño y reestructuración del sitio con enfoque en experiencia de usuario, CTAs claros, navegación intuitiva y funcionamiento óptimo en móvil y desktop."
+    }
+  ],
+  "testimonio": {
+    "quote": "Las campañas de Google Ads fueron claras, estratégicas y enfocadas en generar clientes con intención real de renta.",
+    "name": "Sebastian S.",
+    "role": "Área de Marketing, Avant Rent a Car"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "cliente": "Industrial Basanlo",
+  "industria": "manufactura",
+  "servicios": [
+    "seo",
+    "desarrollo-web"
+  ],
+  "resultadoFrase": "+5,300 usuarios nuevos",
+  "titulo": "Empresa especializada en soluciones logísticas y en la renta y venta de maquinaria pesada para proyectos industriales, ubicada en Monterrey, Nuevo León.",
+  "resumen": "Descubre cómo Hiweb impulsó el crecimiento orgánico y el posicionamiento SEO de Industrial Basanlo, aumentando visibilidad, tráfico calificado y rendimiento del sitio web.",
+  "destacado": false,
+  "accent": "orange",
+  "metricas": [
+    {
+      "valor": 5300,
+      "label": "Usuarios nuevos",
+      "prefix": "+",
+      "despues": "Generados principalmente desde búsquedas orgánicas en Google."
+    },
+    {
+      "valor": 79,
+      "label": "Crecimiento de tráfico orgánico",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Aumento del tráfico desde Google gracias a la estrategia SEO implementada."
+    },
+    {
+      "valor": 20,
+      "label": "Keywords en el Top 10",
+      "prefix": "+",
+      "despues": "Palabras clave del sector industrial posicionadas en los primeros 10 lugares de Google."
+    },
+    {
+      "valor": 312,
+      "label": "Visitas mensuales al sitio",
+      "prefix": "+",
+      "despues": "Promedio mensual de visitas orgánicas sostenidas durante el periodo del proyecto."
+    }
+  ],
+  "reto": "Industrial Basanlo buscaba construir un sitio web visualmente atractivo que transmitiera solidez industrial y, al mismo tiempo, lograra un buen posicionamiento orgánico en Google. Llegaron a Hiweb de forma completamente orgánica, con el objetivo de aumentar su visibilidad digital, atraer tráfico calificado y sentar bases sólidas de crecimiento SEO desde el inicio del proyecto.",
+  "estrategia": "Código optimizado y funcional.: Desarrollamos la página web pensando en la optimización del sitio desde el día 1. Posicionamiento clave para la página.: Desarrollo e implementación de una estrategia SEO integral enfocada en estructura, contenidos y posicionamiento orgánico para generar visibilidad sostenida en buscadores.",
+  "fases": [
+    {
+      "title": "Código optimizado y funcional.",
+      "description": "Desarrollamos la página web pensando en la optimización del sitio desde el día 1."
+    },
+    {
+      "title": "Posicionamiento clave para la página.",
+      "description": "Desarrollo e implementación de una estrategia SEO integral enfocada en estructura, contenidos y posicionamiento orgánico para generar visibilidad sostenida en buscadores."
+    }
+  ]
+}

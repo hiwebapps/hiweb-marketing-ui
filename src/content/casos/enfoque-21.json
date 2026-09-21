@@ -1,0 +1,56 @@
+{
+  "cliente": "Enfoque 21",
+  "servicios": [
+    "seo",
+    "redes-sociales"
+  ],
+  "resultadoFrase": "+236 usuarios nuevos",
+  "titulo": "Estudio de fotografía de bodas de destino en Mérida, Yucatán, enfocado en capturar historias auténticas y emocionales para parejas que buscan experiencias únicas.",
+  "resumen": "Descubre cómo Hiweb ayudó a Enfoque 21 a posicionarse como fotógrafo de bodas en Mérida mediante SEO y redes sociales, aumentando visibilidad local y tráfico calificado.",
+  "destacado": false,
+  "accent": "cyan",
+  "metricas": [
+    {
+      "valor": 236,
+      "label": "Usuarios nuevos",
+      "prefix": "+",
+      "despues": "Usuarios nuevos generados durante los primeros meses de trabajo SEO."
+    },
+    {
+      "valor": 576,
+      "label": "Visitas en el sitio",
+      "prefix": "+",
+      "despues": "Incremento en visitas mensuales a páginas clave como home, portafolio y precios."
+    },
+    {
+      "valor": 35,
+      "label": "Alcance en redes",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento en el alcance del contenido entre parejas interesadas en fotografía de bodas en Mérida."
+    },
+    {
+      "valor": 28,
+      "label": "Engagement",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Mayor interacción con contenido del portafolio, historias y publicaciones de bodas reales."
+    }
+  ],
+  "reto": "Enfoque 21 buscaba posicionarse en Mérida como un fotógrafo de bodas reconocido, aumentar su visibilidad digital y fortalecer su presencia de marca. Llegaron a Hiweb de forma orgánica desde Google, con el objetivo de atraer parejas interesadas en fotografía de bodas de destino y diferenciarse en un mercado altamente competitivo.",
+  "estrategia": "Posicionamiento local: Optimización SEO enfocada en visibilidad local, estructura del sitio y palabras clave relacionadas con fotografía de bodas en Mérida y bodas de destino. Presencia de marca: Estrategia de contenido para redes sociales enfocada en mostrar el portafolio, reforzar la identidad de marca y aumentar el alcance entre parejas interesadas en bodas de destino. Impulso de visibilidad: Implementación de campañas publicitarias para aumentar la visibilidad del estudio, dirigir tráfico al sitio web y reforzar el posicionamiento de marca en un mercado competitivo.",
+  "fases": [
+    {
+      "title": "Posicionamiento local",
+      "description": "Optimización SEO enfocada en visibilidad local, estructura del sitio y palabras clave relacionadas con fotografía de bodas en Mérida y bodas de destino."
+    },
+    {
+      "title": "Presencia de marca",
+      "description": "Estrategia de contenido para redes sociales enfocada en mostrar el portafolio, reforzar la identidad de marca y aumentar el alcance entre parejas interesadas en bodas de destino."
+    },
+    {
+      "title": "Impulso de visibilidad",
+      "description": "Implementación de campañas publicitarias para aumentar la visibilidad del estudio, dirigir tráfico al sitio web y reforzar el posicionamiento de marca en un mercado competitivo."
+    }
+  ]
+}

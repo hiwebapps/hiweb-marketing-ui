@@ -1,0 +1,64 @@
+{
+  "cliente": "Diazar",
+  "industria": "saas",
+  "servicios": [
+    "seo",
+    "desarrollo-web",
+    "redes-sociales",
+    "google-ads"
+  ],
+  "resultadoFrase": "+2,100 usuarios únicos nuevos",
+  "titulo": "Software ERP especializado en proyectos de construcción en México, enfocado en optimizar procesos, control y toma de decisiones para constructoras y desarrolladores.",
+  "resumen": "Conoce cómo Hiweb impulsó el posicionamiento digital de Diazar mediante SEO, web, redes sociales y Ads, construyendo visibilidad nacional y generando intención comercial para su ERP de construcción.",
+  "destacado": true,
+  "accent": "orange",
+  "metricas": [
+    {
+      "valor": 2100,
+      "label": "Usuarios únicos nuevos",
+      "prefix": "+",
+      "despues": "Activación de tráfico real desde una presencia digital inicial sin tracción durante los primeros 3 meses."
+    },
+    {
+      "valor": 2600,
+      "label": "Sesiones en el sitio",
+      "prefix": "+",
+      "despues": "Generación sostenida de sesiones tras optimización SEO y web. en el primer trimestre."
+    },
+    {
+      "valor": 42,
+      "label": "Alcance en redes",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento en alcance del contenido entre constructoras y profesionales del sector construcción."
+    },
+    {
+      "valor": 31,
+      "label": "Engagement",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Mayor interacción en publicaciones educativas sobre control, gestión y tecnología para obra."
+    }
+  ],
+  "reto": "Diazar buscaba posicionarse en buscadores a nivel nacional, renovar su sitio web y fortalecer su presencia de marca en canales digitales. Llegaron a Hiweb de forma orgánica desde Google, con el objetivo de generar visibilidad, construir autoridad en su industria y aumentar la captación de leads calificados a través del sitio web y redes sociales.",
+  "estrategia": "Presencia de marca: Estrategia de contenido para redes sociales orientada a posicionar la marca, comunicar beneficios del ERP y otros productos, así como reforzar autoridad en el sector de la construcción. Posicionamiento nacional: Estrategia SEO enfocada en posicionamiento a nivel nacional, estructura del sitio, metadatos, contenido (blogs) y palabras clave relacionadas con software y gestión de proyectos de construcción. Web estratégica: Renovación del sitio web con enfoque en claridad, propuesta de valor, experiencia de usuario y captación de leads.",
+  "fases": [
+    {
+      "title": "Presencia de marca",
+      "description": "Estrategia de contenido para redes sociales orientada a posicionar la marca, comunicar beneficios del ERP y otros productos, así como reforzar autoridad en el sector de la construcción."
+    },
+    {
+      "title": "Posicionamiento nacional",
+      "description": "Estrategia SEO enfocada en posicionamiento a nivel nacional, estructura del sitio, metadatos, contenido (blogs) y palabras clave relacionadas con software y gestión de proyectos de construcción."
+    },
+    {
+      "title": "Web estratégica",
+      "description": "Renovación del sitio web con enfoque en claridad, propuesta de valor, experiencia de usuario y captación de leads."
+    }
+  ],
+  "testimonio": {
+    "quote": "El nuevo sitio y la estrategia digital nos han ayudado a recibir prospectos más interesados en conocer la plataforma.",
+    "name": "Carolina M.",
+    "role": "Área Comercial, Diazar"
+  }
+}

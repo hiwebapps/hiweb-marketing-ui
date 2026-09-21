@@ -28,7 +28,6 @@ export const caseStudy = defineType({
       type: 'reference',
       group: 'content',
       to: [{ type: 'industry' }],
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'servicios',

@@ -19,7 +19,7 @@ export type CaseStory = {
   quote: string;
   name: string;
   role: string;
-  stats: CaseStoryStat[];
+  stats?: CaseStoryStat[];
   photo?: string;
   href?: string;
 };
@@ -360,7 +360,7 @@ export function CaseStories({
                       <span className="case-story__mark">{story.client}</span>
                       <p className="case-story__quote">“{story.quote}”</p>
                     </div>
-                    {story.stats.length ? (
+                    {story.stats?.length ? (
                       <dl className="case-story__stats">
                         {story.stats.slice(0, 2).map((stat) => (
                           <div key={`${stat.value}-${stat.label}`} className="case-story__stat">

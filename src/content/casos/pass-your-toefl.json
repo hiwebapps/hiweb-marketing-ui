@@ -1,0 +1,63 @@
+{
+  "cliente": "Pass Your TOEFL",
+  "servicios": [
+    "seo",
+    "desarrollo-web",
+    "google-ads"
+  ],
+  "resultadoFrase": "+2,300 usuarios nuevos",
+  "titulo": "Asesoría y entrenamiento TOEFL diseñado para hispanohablantes que buscan obtener puntajes altos.",
+  "resumen": "Conoce cómo Hiweb impulsó el crecimiento digital de Pass Your TOEFL mediante SEO, web y Ads, aumentando visibilidad, tráfico orgánico y generación de leads para programas TOEFL de alto ticket.",
+  "destacado": false,
+  "accent": "orange",
+  "metricas": [
+    {
+      "valor": 2300,
+      "label": "Usuarios nuevos",
+      "prefix": "+",
+      "despues": "Usuarios nuevos generados durante el primer semestre del proyecto mediante estrategia digital."
+    },
+    {
+      "valor": 1000,
+      "label": "Vistas mensuales del sitio",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento en el consumo de contenido y navegación del sitio web, pasando de 60 a 700 visitas en solo 8 meses."
+    },
+    {
+      "valor": 78,
+      "label": "Tráfico orgánico",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Aumento del tráfico calificado proveniente de búsquedas orgánicas en Google."
+    },
+    {
+      "valor": 65,
+      "label": "Intención de conversión",
+      "prefix": "+",
+      "suffix": "%",
+      "despues": "Incremento en formularios, clics y acciones clave orientadas a venta."
+    }
+  ],
+  "reto": "Pass Your buscaba un sitio web más profesional y enfocado en conversión, aumentar su visibilidad orgánica y generar ventas de programas de alto ticket. Llegaron a Hiweb de forma completamente orgánica desde Google, con el objetivo de escalar su presencia digital y atraer prospectos calificados mediante una estrategia integral.",
+  "estrategia": "Estrategia orgánica: Implementación de una estrategia SEO enfocada en posicionamiento, contenidos educativos y visibilidad internacional para atraer tráfico calificado interesado en certificaciones TOEFL. UX y conversión: Rediseño del sitio web con enfoque en claridad, jerarquía de información y conversión, alineado a la venta de programas de alto ticket. Escalamiento de resultados: Apoyo con campañas digitales y contenidos en redes sociales para reforzar visibilidad, captación de leads y posicionamiento de marca.",
+  "fases": [
+    {
+      "title": "Estrategia orgánica",
+      "description": "Implementación de una estrategia SEO enfocada en posicionamiento, contenidos educativos y visibilidad internacional para atraer tráfico calificado interesado en certificaciones TOEFL."
+    },
+    {
+      "title": "UX y conversión",
+      "description": "Rediseño del sitio web con enfoque en claridad, jerarquía de información y conversión, alineado a la venta de programas de alto ticket."
+    },
+    {
+      "title": "Escalamiento de resultados",
+      "description": "Apoyo con campañas digitales y contenidos en redes sociales para reforzar visibilidad, captación de leads y posicionamiento de marca."
+    }
+  ],
+  "testimonio": {
+    "quote": "Contratamos a Hiweb para que nos ayudara a tener más alumnos, y realmente ha funcionado muy bien. Desde que empezamos a trabajar con ellos, hemos notado un aumento claro en las inscripciones. El equipo es profesional, atento y siempre está pendiente de lo que necesitamos. Nos sienten como parte de su equipo y eso se nota en los resultados.",
+    "name": "Gaby M.",
+    "role": "Coordinadora de Marketing, Pass your TOEFL"
+  }
+}

@@ -9,6 +9,7 @@ import { SectionBand } from '../../components/sections/primitives/SectionBand';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../lib/schema';
 import { postCoverUrl } from '../../lib/blog';
+import { WEBFLOW_CASES_INDEX } from '../../data/webflow-cases';
 import '../../components/sections/BlogHero.css';
 import '../../components/sections/BlogIndex.css';
 
@@ -25,17 +26,17 @@ const cards = cases.map((item) => ({
 	description: item.data.resumen,
 	client: item.data.cliente,
 	outcome: item.data.resultadoFrase,
-	industry: industryName[item.data.industria.id] ?? item.data.industria.id,
+	industry: industryName[item.data.industria.id] || item.data.cliente,
 	industrySlug: item.data.industria.id,
-	image: postCoverUrl(`caso-${item.id}`, 800, 520),
+	image: item.data.seo?.ogImage ?? postCoverUrl(`caso-${item.id}`, 800, 520),
 	href: `/portafolio/${item.id}`,
 	featured: item.data.destacado,
 }));
 ---
 
 <Layout
-	title="Casos de Éxito — Hiweb Marketing"
-	description="Resultados propios y verificables. Solo empresas consolidadas, filtrables por industria."
+	title={WEBFLOW_CASES_INDEX.seo.metaTitle ?? WEBFLOW_CASES_INDEX.title}
+	description={WEBFLOW_CASES_INDEX.seo.metaDescription ?? WEBFLOW_CASES_INDEX.description}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Portafolio', href: '/portafolio' },
@@ -44,9 +45,9 @@ const cards = cases.map((item) => ({
 	<main>
 		<BlogHero
 			label="Casos de éxito"
-			eyebrow="Portafolio / Casos"
-			title="Resultados propios, solo con empresas consolidadas"
-			description="Cliente, industria y un outcome que se puede leer en una línea. Sin portfolio ornamental."
+			eyebrow={WEBFLOW_CASES_INDEX.eyebrow}
+			title={WEBFLOW_CASES_INDEX.title}
+			description={WEBFLOW_CASES_INDEX.description}
 		/>
 		<SectionBand tone="canvas">
 			<CasesIndex

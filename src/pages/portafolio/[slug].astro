@@ -37,8 +37,9 @@ const related = allCases.filter(
 );
 
 const heroImage =
-	industry?.data.heroImage ?? postCoverUrl(`caso-${entry.id}`, 1600, 1000);
+	entry.data.seo?.ogImage ?? industry?.data.heroImage ?? postCoverUrl(`caso-${entry.id}`, 1600, 1000);
 const floatImages = [
+	heroImage,
 	...relatedServices.map((service) => service.heroImage).filter((src): src is string => Boolean(src)),
 	industry?.data.heroImage,
 	...Array.from({ length: 10 }, (_, index) =>

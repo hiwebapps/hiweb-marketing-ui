@@ -1,0 +1,58 @@
+{
+  "cliente": "Península Project",
+  "industria": "turismo-hoteleria",
+  "servicios": [
+    "redes-sociales",
+    "meta-ads"
+  ],
+  "resultadoFrase": "+315.4% alcance en redes",
+  "titulo": "Empresa especializada en diseñar viajes por carretera que conectan con la esencia auténtica de Yucatán, a través de experiencias personalizadas y un enfoque artesanal.",
+  "resumen": "Descubre cómo Hiweb impulsó la visibilidad y el reconocimiento de Península Project mediante redes sociales y pauta digital, posicionando experiencias de viaje auténticas en Yucatán.",
+  "destacado": true,
+  "accent": "cyan",
+  "metricas": [
+    {
+      "valor": 315.4,
+      "label": "Alcance en redes",
+      "prefix": "+",
+      "suffix": "%",
+      "decimals": 1,
+      "despues": "Incremento significativo en personas únicas alcanzadas, fortaleciendo el reconocimiento del proyecto."
+    },
+    {
+      "valor": 197900,
+      "label": "Visualizaciones en Instagram",
+      "prefix": "+",
+      "despues": "El contenido logró una expansión acelerada, exponiendo la marca a nuevas audiencias interesadas en experiencias de viaje."
+    },
+    {
+      "valor": 3500,
+      "label": "Clics en enlaces",
+      "prefix": "+",
+      "despues": "Los usuarios mostraron una intención clara de conocer rutas, recorridos y detalles del proyecto."
+    },
+    {
+      "valor": 61000,
+      "label": "Visualizaciones en TikTok",
+      "prefix": "+",
+      "despues": "Un video orgánico logró alto alcance y generó más de 1,000 nuevos seguidores en poco tiempo."
+    }
+  ],
+  "reto": "Península Project buscaba aumentar su visibilidad y reconocimiento de marca en un mercado turístico competitivo, destacando su propuesta de valor basada en experiencias auténticas y personalizadas. Su objetivo era atraer nuevos viajeros, generar interés real en sus rutas y posicionarse como una alternativa al turismo convencional mediante redes sociales y pauta digital.",
+  "estrategia": "Storytelling de marca: Gestión de redes sociales enfocada en storytelling visual, construcción de comunidad y posicionamiento de experiencias auténticas de viaje en Yucatán. Pauta de descubrimiento: Implementación de campañas publicitarias enfocadas en alcance, reconocimiento de marca y atracción de viajeros interesados en experiencias personalizadas.",
+  "fases": [
+    {
+      "title": "Storytelling de marca",
+      "description": "Gestión de redes sociales enfocada en storytelling visual, construcción de comunidad y posicionamiento de experiencias auténticas de viaje en Yucatán."
+    },
+    {
+      "title": "Pauta de descubrimiento",
+      "description": "Implementación de campañas publicitarias enfocadas en alcance, reconocimiento de marca y atracción de viajeros interesados en experiencias personalizadas."
+    }
+  ],
+  "testimonio": {
+    "quote": "Ahora las personas entienden mejor lo que hacemos. Las redes nos ayudaron a contar la experiencia de viajar con Península Project, no solo a mostrar destinos.",
+    "name": "Lydia R.",
+    "role": "Área de Experiencias, Península Project"
+  }
+}

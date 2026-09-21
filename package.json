@@ -19,7 +19,15 @@
     "sanity:import-posts": "tsx scripts/sanity/import-production-posts.ts",
     "sanity:import-posts:write": "tsx scripts/sanity/import-production-posts.ts --write",
     "sanity:rebuild-tables": "tsx scripts/sanity/rebuild-post-tables.ts",
-    "sanity:rebuild-tables:write": "tsx scripts/sanity/rebuild-post-tables.ts --write"
+    "sanity:rebuild-tables:write": "tsx scripts/sanity/rebuild-post-tables.ts --write",
+    "sanity:write-home": "tsx scripts/sanity/write-webflow-home.ts",
+    "sanity:write-home:write": "tsx scripts/sanity/write-webflow-home.ts --write",
+    "sanity:write-services": "tsx scripts/sanity/write-webflow-services.ts",
+    "sanity:write-services:write": "tsx scripts/sanity/write-webflow-services.ts --write",
+    "sanity:write-cases": "tsx scripts/sanity/write-webflow-cases.ts",
+    "sanity:write-cases:write": "tsx scripts/sanity/write-webflow-cases.ts --write",
+    "sanity:migrate-home-sections": "tsx scripts/sanity/migrate-home-sections.ts",
+    "sanity:migrate-home-sections:write": "tsx scripts/sanity/migrate-home-sections.ts --write"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.2",

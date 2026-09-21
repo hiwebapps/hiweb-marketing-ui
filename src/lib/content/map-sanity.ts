@@ -184,12 +184,70 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
         }),
       )
     : undefined;
+  const intro = (value: unknown): HomeCopy['pillarIntro'] => {
+    if (!value || typeof value !== 'object') return undefined;
+    const item = value as Record<string, unknown>;
+    return {
+      eyebrow: item.eyebrow ? String(item.eyebrow) : undefined,
+      title: item.title ? String(item.title) : undefined,
+      titleMuted: item.titleMuted ? String(item.titleMuted) : undefined,
+      description: item.description ? String(item.description) : undefined,
+    };
+  };
+
+  const heroCases = Array.isArray(doc.heroCases)
+    ? (doc.heroCases as Array<Record<string, unknown>>)
+        .filter((item) => item?.id)
+        .map((item) => ({
+          id: String(item.id),
+          cliente: String(item.cliente ?? ''),
+          industriaId: item.industriaId ? String(item.industriaId) : undefined,
+          image: urlForWidth(item.ogImage as CmsImage | undefined, 1200),
+        }))
+    : undefined;
+
+  const serviceCards = Array.isArray(doc.serviceItems)
+    ? (doc.serviceItems as Array<Record<string, unknown>>)
+        .filter((item) => item?.id)
+        .map((item) => ({
+          id: String(item.id),
+          nombre: String(item.nombre ?? ''),
+          tagline: String(item.tagline ?? ''),
+        }))
+    : undefined;
+
+  const industryCards = Array.isArray(doc.homeIndustries)
+    ? (doc.homeIndustries as Array<Record<string, unknown>>)
+        .filter((item) => item?.id)
+        .map((item) => ({
+          id: String(item.id),
+          nombre: String(item.nombre ?? ''),
+          tagline: String(item.tagline ?? ''),
+          puntos: Array.isArray(item.puntos) ? item.puntos.map((punto) => String(punto)) : [],
+        }))
+    : undefined;
+
   return {
     heroTitle: doc.heroTitle ? String(doc.heroTitle) : undefined,
     heroLead: doc.heroLead ? String(doc.heroLead) : undefined,
     primaryCta: doc.primaryCta as HomeCopy['primaryCta'],
     secondaryCta: doc.secondaryCta as HomeCopy['secondaryCta'],
+    heroCases,
+    pillarIntro: intro(doc.pillarIntro),
+    pillars: Array.isArray(doc.pillars) ? (doc.pillars as HomeCopy['pillars']) : undefined,
+    serviceIntro: intro(doc.serviceIntro),
+    serviceCards,
+    industryIntro: intro(doc.industryIntro),
+    industryCards,
+    storiesIntro: intro(doc.storiesIntro),
+    testimonials: Array.isArray(doc.testimonials)
+      ? (doc.testimonials as HomeCopy['testimonials'])
+      : undefined,
+    processIntro: intro(doc.processIntro),
     process,
+    metricsIntro: intro(doc.metricsIntro),
+    metrics: Array.isArray(doc.metrics) ? (doc.metrics as HomeCopy['metrics']) : undefined,
+    faqIntro: intro(doc.faqIntro),
     faqCategories: Array.isArray(doc.faqCategories)
       ? (doc.faqCategories as HomeCopy['faqCategories'])
       : undefined,

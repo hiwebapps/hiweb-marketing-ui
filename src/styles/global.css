@@ -122,14 +122,6 @@
     @apply antialiased;
     overflow-x: clip;
     color-scheme: light;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  html::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
   }
 
   body {
@@ -137,14 +129,31 @@
     min-height: 100dvh;
     overflow-x: clip;
     max-width: 100%;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
 
-  body::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
+  /* Custom gradient indicator replaces the native bar on desktop. */
+  @media (min-width: 768px) {
+    html {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    html::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    body {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
   }
 
   h1,
