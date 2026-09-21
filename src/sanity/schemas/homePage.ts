@@ -1,4 +1,5 @@
-import { defineArrayMember, defineField, defineType } from 'sanity';
+import { defineField, defineType } from 'sanity';
+import { homeSectionMembers } from './homeSections';
 import { seoFields } from './shared';
 
 export const homePage = defineType({
@@ -6,145 +7,26 @@ export const homePage = defineType({
   title: 'Home',
   type: 'document',
   groups: [
-    { name: 'hero', title: 'Hero', default: true },
-    { name: 'pillars', title: 'Pilares' },
-    { name: 'services', title: 'Servicios' },
-    { name: 'industries', title: 'Industrias' },
-    { name: 'stories', title: 'Testimonios' },
-    { name: 'process', title: 'Proceso' },
-    { name: 'metrics', title: 'Métricas' },
-    { name: 'faq', title: 'FAQ' },
+    { name: 'content', title: 'Secciones', default: true },
     { name: 'seo', title: 'SEO' },
   ],
   fields: [
     defineField({
-      name: 'heroTitle',
-      title: 'Título',
-      type: 'string',
-      group: 'hero',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'heroLead',
-      title: 'Lead',
-      type: 'text',
-      rows: 3,
-      group: 'hero',
-    }),
-    defineField({
-      name: 'primaryCta',
-      title: 'CTA principal',
-      type: 'cta',
-      group: 'hero',
-    }),
-    defineField({
-      name: 'secondaryCta',
-      title: 'CTA secundario',
-      type: 'cta',
-      group: 'hero',
-    }),
-    defineField({
-      name: 'heroCases',
-      title: 'Proyectos del carrusel',
+      name: 'sections',
+      title: 'Secciones',
       type: 'array',
-      group: 'hero',
-      description: 'Elige cuáles casos aparecen y arrástralos para cambiar el orden. Si dejas la lista vacía, el front usa todos los casos con cover.',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'caseStudy' }] })],
-      validation: (rule) => rule.unique(),
-    }),
-    defineField({
-      name: 'pillarIntro',
-      title: 'Intro',
-      type: 'sectionIntro',
-      group: 'pillars',
-    }),
-    defineField({
-      name: 'pillars',
-      title: 'Cards',
-      type: 'array',
-      group: 'pillars',
-      of: [defineArrayMember({ type: 'titledBlock' })],
-    }),
-    defineField({
-      name: 'serviceIntro',
-      title: 'Intro',
-      type: 'sectionIntro',
-      group: 'services',
-    }),
-    defineField({
-      name: 'serviceItems',
-      title: 'Servicios',
-      type: 'array',
-      group: 'services',
-      description: 'Elige cuáles aparecen, edita el tagline y arrástralos para el orden. Si dejas la lista vacía, el front usa todos los servicios.',
-      of: [defineArrayMember({ type: 'homeServiceItem' })],
-    }),
-    defineField({
-      name: 'industryIntro',
-      title: 'Intro',
-      type: 'sectionIntro',
-      group: 'industries',
-    }),
-    defineField({
-      name: 'homeIndustries',
-      title: 'Industrias',
-      type: 'array',
-      group: 'industries',
-      description: 'Elige cuáles aparecen y arrástralos para cambiar el orden. Si dejas la lista vacía, el front usa todas.',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'industry' }] })],
-      validation: (rule) => rule.unique(),
-    }),
-    defineField({
-      name: 'storiesIntro',
-      title: 'Intro',
-      type: 'sectionIntro',
-      group: 'stories',
-    }),
-    defineField({
-      name: 'testimonials',
-      title: 'Testimonios',
-      type: 'array',
-      group: 'stories',
-      of: [defineArrayMember({ type: 'homeTestimonial' })],
-    }),
-    defineField({
-      name: 'processIntro',
-      title: 'Intro',
-      type: 'sectionIntro',
-      group: 'process',
-    }),
-    defineField({
-      name: 'process',
-      title: 'Fases',
-      type: 'array',
-      group: 'process',
-      of: [defineArrayMember({ type: 'processStep' })],
-    }),
-    defineField({
-      name: 'metricsIntro',
-      title: 'Intro',
-      type: 'sectionIntro',
-      group: 'metrics',
-    }),
-    defineField({
-      name: 'metrics',
-      title: 'Métricas',
-      type: 'array',
-      group: 'metrics',
-      of: [defineArrayMember({ type: 'metric' })],
-    }),
-    defineField({
-      name: 'faqIntro',
-      title: 'Intro',
-      type: 'sectionIntro',
-      group: 'faq',
-    }),
-    defineField({
-      name: 'faqCategories',
-      title: 'Categorías',
-      type: 'array',
-      group: 'faq',
-      of: [defineArrayMember({ type: 'faqCategory' })],
+      group: 'content',
+      description: 'Mini page builder: añade, reordena o quita componentes de la home.',
+      of: homeSectionMembers,
+      options: {
+        insertMenu: { filter: true, views: [{ name: 'list' }] },
+      },
+      validation: (rule) =>
+        rule.custom((sections) => {
+          const types = (sections ?? []).map((section) => section._type);
+          const duplicate = types.find((type, index) => types.indexOf(type) !== index);
+          return duplicate ? 'Cada sección solo puede aparecer una vez.' : true;
+        }),
     }),
     ...seoFields,
   ],

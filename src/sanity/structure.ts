@@ -40,6 +40,16 @@ const HIDDEN_FROM_FALLBACK = [
   'metricsBand',
   'presenceMap',
   'homeServiceItem',
+  'homeHero',
+  'homePillars',
+  'homeServices',
+  'homeIndustries',
+  'homeStories',
+  'homeProcess',
+  'homeMetrics',
+  'homeTeam',
+  'homeFaq',
+  'homeCta',
 ];
 
 export const structure: StructureResolver = (S) =>

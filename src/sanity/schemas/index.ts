@@ -6,7 +6,7 @@ import { landingPage } from './landingPage';
 import { author, post } from './post';
 import { caseStudy } from './caseStudy';
 import { homePage } from './homePage';
-import { homeServiceItem } from './homeSections';
+import { homeSectionTypes, homeServiceItem } from './homeSections';
 import { industry } from './industry';
 import { person } from './person';
 import { service } from './service';
@@ -38,6 +38,7 @@ export const schemaTypes = [
   blogTable,
   ...landingSectionTypes,
   homeServiceItem,
+  ...homeSectionTypes,
   siteSettings,
   homePage,
   aboutPage,

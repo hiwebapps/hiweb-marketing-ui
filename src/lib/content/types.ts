@@ -176,6 +176,20 @@ export type HomeCopy = {
   metrics?: Metric[];
   faqIntro?: SectionIntro;
   faqCategories?: { id: string; label: string; items: FaqItem[] }[];
+  team?: {
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+    ctaLabel?: string;
+    ctaHref?: string;
+  };
+  closing?: {
+    badge?: string;
+    title?: string;
+    description?: string;
+    primaryCta?: { label: string; href: string };
+  };
+  sectionOrder?: string[];
   seo?: SeoFields;
 };
 

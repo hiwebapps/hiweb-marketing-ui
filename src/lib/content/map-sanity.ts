@@ -173,86 +173,119 @@ export function mapPerson(doc: Record<string, unknown>): PersonRecord {
   };
 }
 
+function asIntro(value: unknown): HomeCopy['pillarIntro'] {
+  if (!value || typeof value !== 'object') return undefined;
+  const item = value as Record<string, unknown>;
+  return {
+    eyebrow: item.eyebrow ? String(item.eyebrow) : undefined,
+    title: item.title ? String(item.title) : undefined,
+    titleMuted: item.titleMuted ? String(item.titleMuted) : undefined,
+    description: item.description ? String(item.description) : undefined,
+  };
+}
+
+function asProcess(value: unknown): HomeCopy['process'] {
+  if (!Array.isArray(value)) return undefined;
+  return (value as Array<{ index?: string; title: string; description: string }>).map((step, index) => ({
+    index: step.index || String(index + 1).padStart(2, '0'),
+    title: step.title,
+    description: step.description,
+  }));
+}
+
+function asHeroCases(value: unknown): HomeCopy['heroCases'] {
+  if (!Array.isArray(value)) return undefined;
+  return (value as Array<Record<string, unknown>>)
+    .filter((item) => item?.id)
+    .map((item) => ({
+      id: String(item.id),
+      cliente: String(item.cliente ?? ''),
+      industriaId: item.industriaId ? String(item.industriaId) : undefined,
+      image: urlForWidth(item.ogImage as CmsImage | undefined, 1200),
+    }));
+}
+
+function asServiceCards(value: unknown): HomeCopy['serviceCards'] {
+  if (!Array.isArray(value)) return undefined;
+  return (value as Array<Record<string, unknown>>)
+    .filter((item) => item?.id)
+    .map((item) => ({
+      id: String(item.id),
+      nombre: String(item.nombre ?? ''),
+      tagline: String(item.tagline ?? ''),
+    }));
+}
+
+function asIndustryCards(value: unknown): HomeCopy['industryCards'] {
+  if (!Array.isArray(value)) return undefined;
+  return (value as Array<Record<string, unknown>>)
+    .filter((item) => item?.id)
+    .map((item) => ({
+      id: String(item.id),
+      nombre: String(item.nombre ?? ''),
+      tagline: String(item.tagline ?? ''),
+      puntos: Array.isArray(item.puntos) ? item.puntos.map((punto) => String(punto)) : [],
+    }));
+}
+
 export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
   if (!doc) return null;
-  const process = Array.isArray(doc.process)
-    ? (doc.process as Array<{ index?: string; title: string; description: string }>).map(
-        (step, index) => ({
-          index: step.index || String(index + 1).padStart(2, '0'),
-          title: step.title,
-          description: step.description,
-        }),
-      )
-    : undefined;
-  const intro = (value: unknown): HomeCopy['pillarIntro'] => {
-    if (!value || typeof value !== 'object') return undefined;
-    const item = value as Record<string, unknown>;
-    return {
-      eyebrow: item.eyebrow ? String(item.eyebrow) : undefined,
-      title: item.title ? String(item.title) : undefined,
-      titleMuted: item.titleMuted ? String(item.titleMuted) : undefined,
-      description: item.description ? String(item.description) : undefined,
-    };
-  };
+  const copy: HomeCopy = { seo: seoOf(doc) };
+  const sections = Array.isArray(doc.sections) ? (doc.sections as Array<Record<string, unknown>>) : [];
 
-  const heroCases = Array.isArray(doc.heroCases)
-    ? (doc.heroCases as Array<Record<string, unknown>>)
-        .filter((item) => item?.id)
-        .map((item) => ({
-          id: String(item.id),
-          cliente: String(item.cliente ?? ''),
-          industriaId: item.industriaId ? String(item.industriaId) : undefined,
-          image: urlForWidth(item.ogImage as CmsImage | undefined, 1200),
-        }))
-    : undefined;
+  for (const section of sections) {
+    const type = String(section._type ?? '');
+    if (type === 'homeHero') {
+      copy.heroTitle = section.title ? String(section.title) : undefined;
+      copy.heroLead = section.lead ? String(section.lead) : undefined;
+      copy.primaryCta = section.primaryCta as HomeCopy['primaryCta'];
+      copy.secondaryCta = section.secondaryCta as HomeCopy['secondaryCta'];
+      copy.heroCases = asHeroCases(section.cases);
+    } else if (type === 'homePillars') {
+      copy.pillarIntro = asIntro(section.intro);
+      copy.pillars = Array.isArray(section.items) ? (section.items as HomeCopy['pillars']) : undefined;
+    } else if (type === 'homeServices') {
+      copy.serviceIntro = asIntro(section.intro);
+      copy.serviceCards = asServiceCards(section.items);
+    } else if (type === 'homeIndustries') {
+      copy.industryIntro = asIntro(section.intro);
+      copy.industryCards = asIndustryCards(section.items);
+    } else if (type === 'homeStories') {
+      copy.storiesIntro = asIntro(section.intro);
+      copy.testimonials = Array.isArray(section.items)
+        ? (section.items as HomeCopy['testimonials'])
+        : undefined;
+    } else if (type === 'homeProcess') {
+      copy.processIntro = asIntro(section.intro);
+      copy.process = asProcess(section.items);
+    } else if (type === 'homeMetrics') {
+      copy.metricsIntro = asIntro(section.intro);
+      copy.metrics = Array.isArray(section.items) ? (section.items as HomeCopy['metrics']) : undefined;
+    } else if (type === 'homeTeam') {
+      copy.team = {
+        eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
+        title: section.title ? String(section.title) : undefined,
+        description: section.description ? String(section.description) : undefined,
+        ctaLabel: section.ctaLabel ? String(section.ctaLabel) : undefined,
+        ctaHref: section.ctaHref ? String(section.ctaHref) : undefined,
+      };
+    } else if (type === 'homeFaq') {
+      copy.faqIntro = asIntro(section.intro);
+      copy.faqCategories = Array.isArray(section.categories)
+        ? (section.categories as HomeCopy['faqCategories'])
+        : undefined;
+    } else if (type === 'homeCta') {
+      copy.closing = {
+        badge: section.badge ? String(section.badge) : undefined,
+        title: section.title ? String(section.title) : undefined,
+        description: section.description ? String(section.description) : undefined,
+        primaryCta: section.primaryCta as HomeCopy['primaryCta'],
+      };
+    }
+  }
 
-  const serviceCards = Array.isArray(doc.serviceItems)
-    ? (doc.serviceItems as Array<Record<string, unknown>>)
-        .filter((item) => item?.id)
-        .map((item) => ({
-          id: String(item.id),
-          nombre: String(item.nombre ?? ''),
-          tagline: String(item.tagline ?? ''),
-        }))
-    : undefined;
-
-  const industryCards = Array.isArray(doc.homeIndustries)
-    ? (doc.homeIndustries as Array<Record<string, unknown>>)
-        .filter((item) => item?.id)
-        .map((item) => ({
-          id: String(item.id),
-          nombre: String(item.nombre ?? ''),
-          tagline: String(item.tagline ?? ''),
-          puntos: Array.isArray(item.puntos) ? item.puntos.map((punto) => String(punto)) : [],
-        }))
-    : undefined;
-
-  return {
-    heroTitle: doc.heroTitle ? String(doc.heroTitle) : undefined,
-    heroLead: doc.heroLead ? String(doc.heroLead) : undefined,
-    primaryCta: doc.primaryCta as HomeCopy['primaryCta'],
-    secondaryCta: doc.secondaryCta as HomeCopy['secondaryCta'],
-    heroCases,
-    pillarIntro: intro(doc.pillarIntro),
-    pillars: Array.isArray(doc.pillars) ? (doc.pillars as HomeCopy['pillars']) : undefined,
-    serviceIntro: intro(doc.serviceIntro),
-    serviceCards,
-    industryIntro: intro(doc.industryIntro),
-    industryCards,
-    storiesIntro: intro(doc.storiesIntro),
-    testimonials: Array.isArray(doc.testimonials)
-      ? (doc.testimonials as HomeCopy['testimonials'])
-      : undefined,
-    processIntro: intro(doc.processIntro),
-    process,
-    metricsIntro: intro(doc.metricsIntro),
-    metrics: Array.isArray(doc.metrics) ? (doc.metrics as HomeCopy['metrics']) : undefined,
-    faqIntro: intro(doc.faqIntro),
-    faqCategories: Array.isArray(doc.faqCategories)
-      ? (doc.faqCategories as HomeCopy['faqCategories'])
-      : undefined,
-    seo: seoOf(doc),
-  };
+  if (sections.length) copy.sectionOrder = sections.map((section) => String(section._type));
+  return copy;
 }
 
 export function mapAbout(doc: Record<string, unknown> | null): AboutCopy | null {

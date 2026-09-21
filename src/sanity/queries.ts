@@ -29,40 +29,74 @@ export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id =
   ${seoProjection}
 }`);
 
+const introProjection = /* groq */ `{ eyebrow, title, titleMuted, description }`;
+
 export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homePage"][0]{
-  heroTitle,
-  heroLead,
-  primaryCta{ label, href },
-  secondaryCta{ label, href },
-  heroCases[]->{
-    "id": slug.current,
-    cliente,
-    "industriaId": industria->slug.current,
-    ogImage ${imageProjection}
+  sections[]{
+    _type,
+    _type == "homeHero" => {
+      title,
+      lead,
+      primaryCta{ label, href },
+      secondaryCta{ label, href },
+      cases[]->{
+        "id": slug.current,
+        cliente,
+        "industriaId": industria->slug.current,
+        ogImage ${imageProjection}
+      }
+    },
+    _type == "homePillars" => {
+      intro ${introProjection},
+      items[]{ title, description }
+    },
+    _type == "homeServices" => {
+      intro ${introProjection},
+      items[]{
+        "id": service->slug.current,
+        "nombre": service->nombre,
+        "tagline": coalesce(tagline, service->tagline)
+      }
+    },
+    _type == "homeIndustries" => {
+      intro ${introProjection},
+      items[]->{
+        "id": slug.current,
+        nombre,
+        tagline,
+        "puntos": porQue[].title
+      }
+    },
+    _type == "homeStories" => {
+      intro ${introProjection},
+      items[]{ client, quote, name, role }
+    },
+    _type == "homeProcess" => {
+      intro ${introProjection},
+      items[]{ index, title, description }
+    },
+    _type == "homeMetrics" => {
+      intro ${introProjection},
+      items[]{ valor, label, prefix, suffix, decimals }
+    },
+    _type == "homeTeam" => {
+      eyebrow,
+      title,
+      description,
+      ctaLabel,
+      ctaHref
+    },
+    _type == "homeFaq" => {
+      intro ${introProjection},
+      categories[]{ id, label, items[]{ question, answer } }
+    },
+    _type == "homeCta" => {
+      badge,
+      title,
+      description,
+      primaryCta{ label, href }
+    }
   },
-  pillarIntro{ eyebrow, title, titleMuted, description },
-  pillars[]{ title, description },
-  serviceIntro{ eyebrow, title, titleMuted, description },
-  serviceItems[]{
-    "id": service->slug.current,
-    "nombre": service->nombre,
-    "tagline": coalesce(tagline, service->tagline)
-  },
-  industryIntro{ eyebrow, title, titleMuted, description },
-  homeIndustries[]->{
-    "id": slug.current,
-    nombre,
-    tagline,
-    "puntos": porQue[].title
-  },
-  storiesIntro{ eyebrow, title, titleMuted, description },
-  testimonials[]{ client, quote, name, role },
-  processIntro{ eyebrow, title, titleMuted, description },
-  process[]{ index, title, description },
-  metricsIntro{ eyebrow, title, titleMuted, description },
-  metrics[]{ valor, label, prefix, suffix, decimals },
-  faqIntro{ eyebrow, title, titleMuted, description },
-  faqCategories[]{ id, label, items[]{ question, answer } },
   ${seoProjection}
 }`);
 

@@ -1,6 +1,8 @@
 import { Badge, Button } from '../ui';
 import { BackgroundMesh } from '../BackgroundMesh';
+import { homePillarsWithIcons, WEBFLOW_HOME, WEBFLOW_SERVICE_TAGLINES } from '../../data/webflow-home';
 import {
+  CasePreview,
   CaseStories,
   Eyebrow,
   FaqSection,
@@ -10,17 +12,32 @@ import {
   HeroStudioA,
   HeroStudioB,
   HowItWorks,
+  IndustryGrid,
+  MetricsBand,
+  PageHero,
+  PillarGrid,
   ProblemPov,
+  ProcessPhases,
   ProductFrame,
   SectionBand,
   SectionHeader,
+  ServiceGrid,
   SocialProof,
+  TeamGrid,
   TrustStrip,
   ValueChapter,
   MockMessagePanel,
 } from './index';
 
 const KIT = [
+  { id: 'page-hero', name: 'Page hero', source: 'Interiores', role: 'Hero claro: eyebrow, H1 y lead' },
+  { id: 'pillars', name: 'Pilares', source: 'Home', role: 'Grid de razones con icono y acento' },
+  { id: 'services', name: 'Servicios', source: 'Home', role: 'Cards con foto, orden y tagline' },
+  { id: 'industries', name: 'Industrias', source: 'Home', role: 'Grid arrastrable por sector' },
+  { id: 'process', name: 'Proceso', source: 'Home', role: 'Fases 01–04 sobre una línea' },
+  { id: 'metrics', name: 'Métricas', source: 'Home', role: 'Banda ink, numeral y dos CTAs' },
+  { id: 'team', name: 'Equipo', source: 'Home', role: 'Cuatro caras y enlace a /nosotros' },
+  { id: 'cases-real', name: 'Cards de caso', source: 'Portafolio', role: 'Cliente, industria y outcome real' },
   { id: 'hero-studio-a', name: 'Hero Studio A', source: 'Coverflow 3D', role: 'Carrusel infinito, saturación y autoplay 3.5s' },
   { id: 'hero-studio-b', name: 'Hero Studio B', source: 'Split / mockups', role: 'Copy + browser/phones apilados con GSAP' },
   { id: 'hero', name: 'HeroSection', source: 'Laravel / Arcade', role: 'Shader + ICP + marquee 3D' },
@@ -34,6 +51,56 @@ const KIT = [
   { id: 'faq', name: 'FaqSection', source: 'Cal', role: 'Objeciones ICP' },
   { id: 'cta', name: 'FinalCta', source: 'Cal + Linear', role: 'Cierre ink, una decisión' },
 ] as const;
+
+const DEMO_SERVICES = ['seo', 'google-ads', 'meta-ads', 'desarrollo-web'].map((slug) => ({
+  slug,
+  nombre:
+    slug === 'seo'
+      ? 'SEO'
+      : slug === 'google-ads'
+        ? 'Google Ads'
+        : slug === 'meta-ads'
+          ? 'Meta Ads'
+          : 'Desarrollo web',
+  tagline: WEBFLOW_SERVICE_TAGLINES[slug],
+}));
+
+const DEMO_INDUSTRIES = [
+  { slug: 'inmobiliarias', nombre: 'Inmobiliarias', tagline: 'Leads de inventario real, no de formularios vacíos.', puntos: ['Inventario', 'Leads'] },
+  { slug: 'salud', nombre: 'Sector Salud', tagline: 'Demanda ética para clínicas y grupos médicos que cuidan reputación.', puntos: ['Reputación', 'Demanda'] },
+  { slug: 'saas', nombre: 'Software (SaaS)', tagline: 'Demos calificadas para productos que ya no pueden improvisar el pipeline.', puntos: ['Demos', 'Pipeline'] },
+  { slug: 'manufactura', nombre: 'Manufactura', tagline: 'Demanda calificada para plantas que ya no pueden depender del referido.', puntos: ['RFQs', 'Specs'] },
+];
+
+const DEMO_CASES = [
+  {
+    client: 'Avant Rent a Car',
+    industry: 'Turismo',
+    outcome: '+37,000 nuevos usuarios orgánicos',
+    title: 'Más demanda orgánica sin depender solo de OTAs',
+    summary: 'SEO y una web que convierte búsqueda en reserva.',
+    href: '/portafolio/avant-rent-a-car',
+    accent: 'cyan' as const,
+  },
+  {
+    client: 'Diazar',
+    industry: 'SaaS',
+    outcome: '+2,100 usuarios únicos nuevos',
+    title: 'Pipeline para un producto que ya no improvisa adquisición',
+    summary: 'Mensaje, canales y medición alineados al mismo resultado.',
+    href: '/portafolio/diazar',
+    accent: 'purple' as const,
+  },
+  {
+    client: 'Happy Store',
+    industry: 'Retail',
+    outcome: '+76,300 visualizaciones',
+    title: 'Visibilidad que llega a tienda, no solo a alcance',
+    summary: 'Contenido y pauta con un destino de conversión claro.',
+    href: '/portafolio/happy-store',
+    accent: 'orange' as const,
+  },
+];
 
 /**
  * Catálogo del kit — primitives + secciones ensambladas.
@@ -50,11 +117,11 @@ export function SectionsKitPage() {
           </div>
           <Eyebrow index="00">Kit de secciones</Eyebrow>
           <h1 data-split className="mt-3 !text-4xl md:!text-6xl">
-            Funnel de agencia, UI de producto
+            Lo que ya arma el sitio
           </h1>
           <p className="mt-4 max-w-2xl !text-lg">
-            Primitives + bloques listos. Una sección = un trabajo mental. Evidencia =
-            UI y cases con outcome — no ornamento.
+            Primero las secciones en producción: pilares, servicios, industrias, proceso,
+            métricas y equipo. Debajo queda el kit anterior de funnel.
           </p>
 
           <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -91,6 +158,82 @@ export function SectionsKitPage() {
             </ProductFrame>
           </div>
         </SectionBand>
+
+        <div id="demo-page-hero" className="scroll-mt-28">
+          <PageHero
+            eyebrow="Página interior"
+            title="Hero claro para servicios, industrias y legal."
+            description="Eyebrow, H1 y un lead. El hero oscuro con carrusel se queda en Home."
+          />
+        </div>
+
+        <div id="demo-pillars" className="scroll-mt-28">
+          <PillarGrid
+            pillars={homePillarsWithIcons()}
+            eyebrow={WEBFLOW_HOME.pillarIntro?.eyebrow}
+            title={WEBFLOW_HOME.pillarIntro?.title}
+            description={WEBFLOW_HOME.pillarIntro?.description}
+          />
+        </div>
+
+        <div id="demo-services" className="scroll-mt-28">
+          <ServiceGrid
+            services={DEMO_SERVICES}
+            eyebrow={WEBFLOW_HOME.serviceIntro?.eyebrow}
+            title={WEBFLOW_HOME.serviceIntro?.title}
+            description={WEBFLOW_HOME.serviceIntro?.description}
+            tone="surface"
+          />
+        </div>
+
+        <div id="demo-industries" className="scroll-mt-28">
+          <IndustryGrid
+            industries={DEMO_INDUSTRIES}
+            eyebrow="Industrias"
+            title="Hablamos el idioma de tu sector"
+            description="Casos, retos y métricas propias de tu industria — no un playbook genérico."
+          />
+        </div>
+
+        <div id="demo-process" className="scroll-mt-28">
+          <ProcessPhases
+            phases={WEBFLOW_HOME.process ?? []}
+            eyebrow={WEBFLOW_HOME.processIntro?.eyebrow}
+            title={WEBFLOW_HOME.processIntro?.title}
+            description={WEBFLOW_HOME.processIntro?.description}
+            tone="surface"
+          />
+        </div>
+
+        <div id="demo-metrics" className="scroll-mt-28">
+          <MetricsBand
+            metrics={(WEBFLOW_HOME.metrics ?? []).map((item) => ({
+              valor: item.valor,
+              label: item.label,
+              prefix: item.prefix,
+              suffix: item.suffix,
+              decimals: item.decimals,
+            }))}
+            eyebrow={WEBFLOW_HOME.metricsIntro?.eyebrow}
+            title={WEBFLOW_HOME.metricsIntro?.title}
+            titleMuted={WEBFLOW_HOME.metricsIntro?.titleMuted}
+            description={WEBFLOW_HOME.metricsIntro?.description}
+          />
+        </div>
+
+        <div id="demo-team" className="scroll-mt-28">
+          <TeamGrid limit={4} ctaHref="/nosotros#nosotros" />
+        </div>
+
+        <div id="demo-cases-real" className="scroll-mt-28">
+          <CasePreview
+            cases={DEMO_CASES}
+            eyebrow="Portafolio"
+            title="Casos reales, con outcome"
+            description="Las cards de índice apuntan a Avant, Diazar y Happy Store."
+            tone="surface"
+          />
+        </div>
 
         <div id="demo-hero-studio-a" className="scroll-mt-28">
           <div className="border-y border-border bg-surface px-6 py-3">

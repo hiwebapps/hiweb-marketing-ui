@@ -3,13 +3,16 @@ export const prerender = true;
 
 import Layout from '../layouts/Layout.astro';
 import { HeroStudioA } from '../components/sections/HeroStudioA';
-import { HomeAfterHero, HomeBelowFold } from '../components/sections/HomeAfterHero';
 import { IndustryGrid } from '../components/sections/IndustryGrid';
 import { CaseStories } from '../components/sections/CaseStories';
 import { ProcessPhases } from '../components/sections/ProcessPhases';
 import { MetricsBand } from '../components/sections/MetricsBand';
 import { FaqSection } from '../components/sections/FaqSection';
 import { FinalCta } from '../components/sections/FinalCta';
+import { PillarGrid } from '../components/sections/PillarGrid';
+import { ServiceGrid } from '../components/sections/ServiceGrid';
+import { TeamGrid } from '../components/sections/TeamGrid';
+import { homePillarsWithIcons } from '../data/webflow-home';
 import '../components/sections/TeamGrid.css';
 import '../components/sections/FaqSection.css';
 import '../components/sections/CaseStories.css';
@@ -87,6 +90,20 @@ const metrics = (home.metrics ?? []).map((item) => ({
 	suffix: item.suffix,
 	decimals: item.decimals,
 }));
+const sectionOrder = home.sectionOrder?.length
+	? home.sectionOrder
+	: [
+			'homeHero',
+			'homePillars',
+			'homeServices',
+			'homeIndustries',
+			'homeStories',
+			'homeProcess',
+			'homeMetrics',
+			'homeTeam',
+			'homeFaq',
+			'homeCta',
+		];
 ---
 
 <Layout
@@ -96,71 +113,144 @@ const metrics = (home.metrics ?? []).map((item) => ({
 	jsonLd={faqSchema(faqs)}
 >
 	<main>
-		<HeroStudioA
-			client:load
-			title={home.heroTitle}
-			description={home.heroLead}
-			primaryLabel={home.primaryCta?.label}
-			primaryHref={home.primaryCta?.href}
-			secondaryLabel={home.secondaryCta?.label}
-			secondaryHref={home.secondaryCta?.href}
-			slides={heroSlides}
-		/>
-		<HomeAfterHero
-			services={services.map((item) => ({
-				slug: item.id,
-				nombre: item.nombre,
-				tagline: item.tagline,
-			}))}
-			pillars={home.pillars}
-			pillarIntro={home.pillarIntro}
-			serviceIntro={home.serviceIntro}
-		/>
-		<IndustryGrid
-			client:visible
-			tone="canvas"
-			eyebrow={home.industryIntro?.eyebrow}
-			title={home.industryIntro?.title}
-			description={home.industryIntro?.description}
-			industries={industryCards}
-		/>
-		<CaseStories
-			client:visible
-			stories={stories}
-			eyebrow={home.storiesIntro?.eyebrow}
-			title={home.storiesIntro?.title}
-			description={home.storiesIntro?.description}
-		/>
-		<ProcessPhases
-			client:visible
-			phases={home.process ?? []}
-			tone="canvas"
-			eyebrow={home.processIntro?.eyebrow}
-			title={home.processIntro?.title}
-			description={home.processIntro?.description}
-		/>
-		{metrics.length ? (
-			<MetricsBand
-				client:visible
-				metrics={metrics}
-				eyebrow={home.metricsIntro?.eyebrow}
-				title={home.metricsIntro?.title}
-				titleMuted={home.metricsIntro?.titleMuted}
-				description={home.metricsIntro?.description}
-				primaryLabel={home.primaryCta?.label}
-				primaryHref={home.primaryCta?.href}
-				secondaryLabel={home.secondaryCta?.label}
-				secondaryHref={home.secondaryCta?.href}
-			/>
-		) : null}
-		<HomeBelowFold />
-		<FaqSection
-			client:visible
-			categories={faqCategories}
-			eyebrow={home.faqIntro?.eyebrow}
-			title={home.faqIntro?.title}
-			description={home.faqIntro?.description}
-		/>
-		<FinalCta client:load />
+		{sectionOrder.map((type) => {
+			if (type === 'homeHero') {
+				return (
+					<HeroStudioA
+						key={type}
+						client:load
+						title={home.heroTitle}
+						description={home.heroLead}
+						primaryLabel={home.primaryCta?.label}
+						primaryHref={home.primaryCta?.href}
+						secondaryLabel={home.secondaryCta?.label}
+						secondaryHref={home.secondaryCta?.href}
+						slides={heroSlides}
+					/>
+				);
+			}
+			if (type === 'homePillars') {
+				return (
+					<PillarGrid
+						key={type}
+						pillars={homePillarsWithIcons(home.pillars)}
+						tone="canvas"
+						eyebrow={home.pillarIntro?.eyebrow}
+						title={home.pillarIntro?.title}
+						description={home.pillarIntro?.description}
+					/>
+				);
+			}
+			if (type === 'homeServices') {
+				return (
+					<ServiceGrid
+						key={type}
+						services={services.map((item) => ({
+							slug: item.id,
+							nombre: item.nombre,
+							tagline: item.tagline,
+						}))}
+						eyebrow={home.serviceIntro?.eyebrow}
+						title={home.serviceIntro?.title}
+						description={home.serviceIntro?.description}
+					/>
+				);
+			}
+			if (type === 'homeIndustries') {
+				return (
+					<IndustryGrid
+						key={type}
+						client:visible
+						tone="canvas"
+						eyebrow={home.industryIntro?.eyebrow}
+						title={home.industryIntro?.title}
+						description={home.industryIntro?.description}
+						industries={industryCards}
+					/>
+				);
+			}
+			if (type === 'homeStories') {
+				return (
+					<CaseStories
+						key={type}
+						client:visible
+						stories={stories}
+						eyebrow={home.storiesIntro?.eyebrow}
+						title={home.storiesIntro?.title}
+						description={home.storiesIntro?.description}
+					/>
+				);
+			}
+			if (type === 'homeProcess') {
+				return (
+					<ProcessPhases
+						key={type}
+						client:visible
+						phases={home.process ?? []}
+						tone="canvas"
+						eyebrow={home.processIntro?.eyebrow}
+						title={home.processIntro?.title}
+						description={home.processIntro?.description}
+					/>
+				);
+			}
+			if (type === 'homeMetrics' && metrics.length) {
+				return (
+					<MetricsBand
+						key={type}
+						client:visible
+						metrics={metrics}
+						eyebrow={home.metricsIntro?.eyebrow}
+						title={home.metricsIntro?.title}
+						titleMuted={home.metricsIntro?.titleMuted}
+						description={home.metricsIntro?.description}
+						primaryLabel={home.primaryCta?.label}
+						primaryHref={home.primaryCta?.href}
+						secondaryLabel={home.secondaryCta?.label}
+						secondaryHref={home.secondaryCta?.href}
+					/>
+				);
+			}
+			if (type === 'homeTeam') {
+				return (
+					<TeamGrid
+						key={type}
+						client:visible
+						limit={4}
+						eyebrow={home.team?.eyebrow}
+						title={home.team?.title}
+						description={home.team?.description}
+						ctaLabel={home.team?.ctaLabel ?? 'Conoce a todo el equipo'}
+						ctaHref={home.team?.ctaHref ?? '/nosotros#nosotros'}
+					/>
+				);
+			}
+			if (type === 'homeFaq') {
+				return (
+					<FaqSection
+						key={type}
+						client:visible
+						categories={faqCategories}
+						eyebrow={home.faqIntro?.eyebrow}
+						title={home.faqIntro?.title}
+						description={home.faqIntro?.description}
+					/>
+				);
+			}
+			if (type === 'homeCta') {
+				return (
+					<FinalCta
+						key={type}
+						client:load
+						badge={home.closing?.badge}
+						title={home.closing?.title}
+						description={home.closing?.description}
+						primaryLabel={home.closing?.primaryCta?.label}
+						primaryHref={home.closing?.primaryCta?.href}
+					/>
+				);
+			}
+			return null;
+		})}
 	</main>
 </Layout>

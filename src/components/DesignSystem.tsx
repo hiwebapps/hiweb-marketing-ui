@@ -1,6 +1,7 @@
 import { BackgroundMesh } from './BackgroundMesh';
 import { CardGlass } from './CardGlass';
 import { ScrollIndicatorDemo } from './effects/ScrollIndicator';
+import { SectionHeader } from './sections/primitives/SectionHeader';
 import {
   Badge,
   Button,
@@ -27,13 +28,34 @@ const COLORS = [
   { name: 'accent-green', hex: '#74c465', className: 'bg-accent-green' },
 ] as const;
 
+const PRODUCTION = [
+  { name: 'Hero Studio A', where: 'Home', href: '/sections#demo-hero-studio-a' },
+  { name: 'Page hero', where: 'Interiores', href: '/sections#demo-page-hero' },
+  { name: 'Pilares', where: 'Home, servicios, industrias', href: '/sections#demo-pillars' },
+  { name: 'Servicios', where: 'Home y /servicios', href: '/sections#demo-services' },
+  { name: 'Industrias', where: 'Home y /industrias', href: '/sections#demo-industries' },
+  { name: 'Testimonios', where: 'Home', href: '/sections#demo-cases' },
+  { name: 'Proceso', where: 'Home, servicios, casos', href: '/sections#demo-process' },
+  { name: 'Métricas', where: 'Home y casos', href: '/sections#demo-metrics' },
+  { name: 'Equipo', where: 'Home y /nosotros', href: '/sections#demo-team' },
+  { name: 'FAQ', where: 'Home y contacto', href: '/sections#demo-faq' },
+  { name: 'Cierre', where: 'Cierre de página', href: '/sections#demo-cta' },
+  { name: 'Hero de industria', where: 'Servicio, industria, nosotros', href: '/servicios/seo' },
+  { name: 'Mapa de presencia', where: '/nosotros', href: '/nosotros' },
+  { name: 'Telescopio de caso', where: '/portafolio/[slug]', href: '/portafolio/avant-rent-a-car' },
+  { name: 'Índice de blog', where: '/blog', href: '/blog' },
+] as const;
+
 const SECTIONS = [
   { id: 'colores', label: 'Colores' },
   { id: 'tipografia', label: 'Tipografía' },
+  { id: 'gramatica', label: 'Gramática' },
   { id: 'botones', label: 'Botones' },
   { id: 'formularios', label: 'Formularios' },
   { id: 'badges', label: 'Badges' },
   { id: 'surfaces', label: 'Surfaces' },
+  { id: 'metricas', label: 'Métricas' },
+  { id: 'secciones', label: 'Secciones' },
   { id: 'enlaces', label: 'Enlaces' },
   { id: 'scroll', label: 'Scroll' },
 ] as const;
@@ -177,8 +199,52 @@ export function DesignSystem() {
 
           <section>
             <SectionTitle
+              id="gramatica"
+              eyebrow="03 · Composition"
+              title="Gramática de sección"
+              description="Cada bloque del sitio abre con badge, un H2 y un lead. El fondo alterna canvas, surface e ink. El título muted baja el contraste de la segunda línea."
+            />
+            <div className="grid gap-4">
+              <CardGlass className="bg-canvas p-6 sm:p-10">
+                <SectionHeader
+                  split={false}
+                  eyebrow="Canvas"
+                  badgeVariant="purple"
+                  title="Un resultado por sección"
+                  description="Fondo blanco. El badge lleva el acento; el cuerpo se queda en muted."
+                />
+              </CardGlass>
+              <CardGlass className="bg-surface p-6 sm:p-10">
+                <SectionHeader
+                  split={false}
+                  eyebrow="Surface"
+                  badgeVariant="cyan"
+                  title="La banda #f5f5f5 separa sin línea"
+                  description="Mismo header. El cambio de superficie es el divisor."
+                />
+              </CardGlass>
+              <div className="rounded-2xl bg-ink p-6 sm:p-10">
+                <SectionHeader
+                  split={false}
+                  tone="on-ink"
+                  eyebrow="Ink"
+                  badgeVariant="lime"
+                  title={
+                    <>
+                      Cifras y cierres
+                      <span className="mt-1 block font-medium text-canvas/45">en la segunda línea</span>
+                    </>
+                  }
+                  description="Sobre ink el badge usa tone on-ink y el lead baja a canvas al 65%."
+                />
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <SectionTitle
               id="botones"
-              eyebrow="03 · Actions"
+              eyebrow="04 · Actions"
               title="Botones"
               description="Primary ink en pastilla (50px) con mesh glow continuo en el borde. En hover el orbit se acelera, el halo se abre y la pastilla se eleva. Secondary/outline con hairline."
             />
@@ -231,7 +297,7 @@ export function DesignSystem() {
           <section>
             <SectionTitle
               id="formularios"
-              eyebrow="04 · Forms"
+              eyebrow="05 · Forms"
               title="Inputs y controles"
               description="Campos blancos, borde hairline, focus ring ink. Labels Clash Display uppercase."
             />
@@ -293,27 +359,43 @@ export function DesignSystem() {
           <section>
             <SectionTitle
               id="badges"
-              eyebrow="05 · Status"
+              eyebrow="06 · Status"
               title="Badges"
-              description="Pastilla circular sólida con los acentos del sistema: purple, cyan, orange y lime."
+              description="Pastilla sólida. Sobre canvas usa el acento tal cual. Sobre ink se mantiene el mismo color con tone on-ink — métricas, cierre y héroes oscuros."
             />
-            <CardGlass className="p-6 sm:p-10">
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="neutral">Neutral</Badge>
-                <Badge variant="cyan">Cyan</Badge>
-                <Badge variant="orange">Orange</Badge>
-                <Badge variant="purple">Purple</Badge>
-                <Badge variant="lime">Lime</Badge>
-                <Badge variant="success">Success</Badge>
-                <Badge variant="danger">Danger</Badge>
+            <div className="grid gap-4 md:grid-cols-2">
+              <CardGlass className="p-6 sm:p-10">
+                <p className="mb-4 font-display text-xs tracking-[0.16em] text-muted uppercase">
+                  Sobre claro
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="neutral">Neutral</Badge>
+                  <Badge variant="cyan">Cyan</Badge>
+                  <Badge variant="orange">Orange</Badge>
+                  <Badge variant="purple">Purple</Badge>
+                  <Badge variant="lime">Lime</Badge>
+                  <Badge variant="success">Success</Badge>
+                  <Badge variant="danger">Danger</Badge>
+                </div>
+              </CardGlass>
+              <div className="rounded-2xl bg-ink p-6 sm:p-10">
+                <p className="mb-4 font-display text-xs tracking-[0.16em] text-canvas/45 uppercase">
+                  Sobre ink
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="cyan" tone="on-ink">Cifras</Badge>
+                  <Badge variant="lime" tone="on-ink">Siguiente paso</Badge>
+                  <Badge variant="orange" tone="on-ink">FAQ</Badge>
+                  <Badge variant="purple" tone="on-ink">Proceso</Badge>
+                </div>
               </div>
-            </CardGlass>
+            </div>
           </section>
 
           <section>
             <SectionTitle
               id="surfaces"
-              eyebrow="06 · Surfaces"
+              eyebrow="07 · Surfaces"
               title="Cards"
               description="Superficie blanca o surface #f5f5f5, borde hairline, sombra mínima — sin glass oscuro."
             />
@@ -346,8 +428,59 @@ export function DesignSystem() {
 
           <section>
             <SectionTitle
+              id="metricas"
+              eyebrow="08 · Data"
+              title="Numerales"
+              description="Clash Display, tracking negativo, prefijo y sufijo pegados al valor. La etiqueta va arriba, en muted o canvas al 55% cuando la banda es ink."
+            />
+            <div className="overflow-hidden rounded-2xl bg-ink">
+              <div className="grid gap-px bg-canvas/10 sm:grid-cols-2">
+                <div className="bg-ink px-6 py-8 sm:px-10">
+                  <p className="font-display text-xs font-medium tracking-[0.16em] text-canvas/55 uppercase">
+                    de experiencia
+                  </p>
+                  <p className="mt-3 font-display text-5xl font-semibold tracking-[-0.04em] text-canvas md:text-6xl">
+                    +10 años
+                  </p>
+                </div>
+                <div className="bg-ink px-6 py-8 sm:px-10">
+                  <p className="font-display text-xs font-medium tracking-[0.16em] text-canvas/55 uppercase">
+                    invertidos en ads
+                  </p>
+                  <p className="mt-3 font-display text-5xl font-semibold tracking-[-0.04em] text-canvas md:text-6xl">
+                    +$1M USD
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <SectionTitle
+              id="secciones"
+              eyebrow="09 · Kit"
+              title="Secciones en producción"
+              description="Lo que ya arma el sitio. El kit monta cada bloque; las piezas de página abren la ruta real."
+            />
+            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {PRODUCTION.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className="block h-full rounded-2xl border border-border bg-canvas p-4 no-underline transition-colors hover:bg-surface"
+                  >
+                    <p className="font-display text-sm font-semibold text-ink">{item.name}</p>
+                    <p className="mt-1 !text-sm text-muted">{item.where}</p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section>
+            <SectionTitle
               id="enlaces"
-              eyebrow="07 · Inline"
+              eyebrow="10 · Inline"
               title="Enlaces y énfasis"
               description="Links en ink. Keywords con peso, no con glow."
             />
@@ -374,9 +507,9 @@ export function DesignSystem() {
           <section>
             <SectionTitle
               id="scroll"
-              eyebrow="08 · Motion"
+              eyebrow="11 · Motion"
               title="Scroll indicator"
-              description="Riel a la derecha con checkpoints de cada section. Gradiente purple → cyan → orange. El script de la página vive en Layout; esta caja prueba la variante contenida."
+              description="En desktop, riel a la derecha con checkpoints de cada section. Gradiente purple → cyan → orange. En mobile el sitio usa la scrollbar del navegador. Esta caja prueba la variante contenida."
             />
             <CardGlass className="space-y-6 bg-surface p-6 sm:p-10">
               <p className="!text-sm text-ink-soft">
