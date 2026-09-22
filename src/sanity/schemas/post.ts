@@ -8,9 +8,29 @@ export const author = defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Nombre',
+      title: 'Nombre y apellido',
       type: 'string',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'role',
+      title: 'Puesto',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'company',
+      title: 'Empresa',
+      type: 'string',
+      initialValue: 'Hiweb',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'linkedin',
+      title: 'LinkedIn',
+      type: 'url',
+      validation: (rule) =>
+        rule.required().uri({ scheme: ['http', 'https'] }),
     }),
     defineField({
       name: 'slug',
@@ -20,7 +40,11 @@ export const author = defineType({
     }),
   ],
   preview: {
-    select: { title: 'name' },
+    select: { title: 'name', role: 'role', company: 'company' },
+    prepare: ({ title, role, company }) => ({
+      title,
+      subtitle: [role, company].filter(Boolean).join(' · '),
+    }),
   },
 });
 
@@ -60,17 +84,19 @@ export const post = defineType({
       group: 'content',
     }),
     defineField({
-      name: 'autor',
-      title: 'Autor (texto)',
-      type: 'string',
-      group: 'content',
-    }),
-    defineField({
       name: 'author',
       title: 'Autor',
       type: 'reference',
       group: 'content',
       to: [{ type: 'author' }],
+      description: 'Ficha con nombre, puesto, empresa y LinkedIn.',
+    }),
+    defineField({
+      name: 'autor',
+      title: 'Autor (texto)',
+      type: 'string',
+      group: 'content',
+      description: 'Respaldo si el artículo no tiene ficha de autor.',
     }),
     defineField({
       name: 'fecha',
@@ -157,6 +183,11 @@ export const post = defineType({
     },
   ],
   preview: {
-    select: { title: 'title', subtitle: 'autor', media: 'cover' },
+    select: { title: 'title', authorName: 'author.name', autor: 'autor', media: 'cover' },
+    prepare: ({ title, authorName, autor, media }) => ({
+      title,
+      subtitle: authorName || autor,
+      media,
+    }),
   },
 });

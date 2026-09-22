@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
 import { BLOG_READING_MINUTES, postCoverUrl } from '../../lib/blog';
-import { Badge } from '../ui';
+import { Badge, Button } from '../ui';
 import { SectionHeader } from './primitives/SectionHeader';
 import './BlogIndex.css';
 
@@ -226,15 +226,20 @@ export function BlogIndex({
       </div>
 
       <ul ref={gridRef} className="blog-grid">
-        {visible.map((post) => (
+        {visible.map((post) => {
+          const href = postHref(post);
+          const stopPlaceholder = post.placeholder
+            ? (event: { preventDefault: () => void }) => event.preventDefault()
+            : undefined;
+          return (
           <li key={post.id} className="blog-card">
-            <a
-              href={postHref(post)}
-              className="blog-card__link"
-              aria-disabled={post.placeholder || undefined}
-              onClick={post.placeholder ? (event) => event.preventDefault() : undefined}
-            >
-              <div className="blog-card__media">
+            <article className="blog-card__link">
+              <a
+                href={href}
+                className="blog-card__media"
+                aria-label={post.title}
+                onClick={stopPlaceholder}
+              >
                 <img
                   src={postImage(post)}
                   alt=""
@@ -242,22 +247,40 @@ export function BlogIndex({
                   height={520}
                   loading="lazy"
                 />
-                <Badge variant="lime" className="blog-card__read">
-                  {readingLabel(post)}
-                </Badge>
-              </div>
+                {post.servicioNombre ? (
+                  <Badge variant="lime" className="blog-card__read">
+                    {post.servicioNombre}
+                  </Badge>
+                ) : null}
+              </a>
               <div className="blog-card__body">
-                {post.servicioNombre ? <p className="blog-card__tag">{post.servicioNombre}</p> : null}
-                <h3 className="blog-card__title">{post.title}</h3>
+                <h3 className="blog-card__title">
+                  <a href={href} className="blog-card__title-link" onClick={stopPlaceholder}>
+                    {post.title}
+                  </a>
+                </h3>
                 <p className="blog-card__desc">{post.description}</p>
-                <span className="blog-card__cta">
+                <p className="blog-card__meta">
+                  <span>{readingLabel(post)}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{post.autor}</span>
+                  <span aria-hidden="true">·</span>
+                  <time>{post.fecha}</time>
+                </p>
+                <Button
+                  href={href}
+                  variant="secondary"
+                  size="sm"
+                  className="blog-card__action no-underline"
+                  onClick={stopPlaceholder}
+                >
                   {post.ctaLabel ?? 'Leer artículo'}
-                  <span aria-hidden="true"> →</span>
-                </span>
+                </Button>
               </div>
-            </a>
+            </article>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
   );

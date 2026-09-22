@@ -90,6 +90,7 @@
 
 .blog-card__media {
   position: relative;
+  display: block;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--color-surface);
@@ -143,6 +144,37 @@
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.25;
+}
+
+.blog-index .blog-card__title {
+  font-weight: 500;
+  letter-spacing: 0.012em;
+  line-height: 1.4;
+}
+
+.blog-index .blog-card__title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.blog-index .blog-card__desc {
+  line-height: 1.6;
+}
+
+.blog-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+  margin: 0.2rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.blog-index .blog-card__action {
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 .blog-card__desc {

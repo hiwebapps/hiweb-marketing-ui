@@ -36,7 +36,9 @@ const dateLabel = entry.data.fecha.toLocaleDateString('es-MX', {
 	month: 'long',
 	day: 'numeric',
 });
-const initials = entry.data.autor
+const author = entry.data.author;
+const authorName = author?.name || entry.data.autor;
+const initials = authorName
 	.split(/\s+/)
 	.filter(Boolean)
 	.slice(0, 2)
@@ -53,7 +55,10 @@ const schemas = [
 		title: entry.data.title,
 		description: entry.data.description,
 		href: `/blog/${entry.id}`,
-		author: entry.data.autor,
+		author: authorName,
+		authorProfile: author
+			? { role: author.role, company: author.company, linkedin: author.linkedin }
+			: undefined,
 		date: entry.data.fecha,
 	}),
 ];
@@ -81,7 +86,15 @@ const schemas = [
 					<h1 data-split class="blog-post__title">{entry.data.title}</h1>
 					<div class="blog-post__meta">
 						<span class="blog-post__avatar" aria-hidden="true">{initials || 'HW'}</span>
-						<span>por {entry.data.autor}</span>
+						{
+							author?.linkedin ? (
+								<a class="blog-post__byline" href={author.linkedin} target="_blank" rel="noreferrer">
+									por {authorName}
+								</a>
+							) : (
+								<span>por {authorName}</span>
+							)
+						}
 						<span class="blog-post__meta-sep" aria-hidden="true">|</span>
 						<span>Actualizado: {dateLabel}</span>
 					</div>
@@ -101,6 +114,37 @@ const schemas = [
 					<div class="blog-post__body" data-blog-body>
 						<BlogBody post={entry} />
 					</div>
+					{
+						author ? (
+							<aside class="blog-post__author" aria-label="Autor">
+								<span class="blog-post__avatar blog-post__avatar--lg" aria-hidden="true">
+									{initials || 'HW'}
+								</span>
+								<div class="blog-post__author-copy">
+									<p class="blog-post__author-name">{author.name}</p>
+									{
+										author.role || author.company ? (
+											<p class="blog-post__author-role">
+												{[author.role, author.company].filter(Boolean).join(' · ')}
+											</p>
+										) : null
+									}
+									{
+										author.linkedin ? (
+											<a
+												class="blog-post__author-link"
+												href={author.linkedin}
+												target="_blank"
+												rel="noreferrer"
+											>
+												LinkedIn
+											</a>
+										) : null
+									}
+								</div>
+							</aside>
+						) : null
+					}
 				</article>
 
 				<aside class="blog-post__related" aria-label="Artículos relacionados">

@@ -131,13 +131,25 @@ export function mapPost(doc: Record<string, unknown>): PostRecord {
       ? fechaRaw
       : new Date(typeof fechaRaw === 'string' ? fechaRaw : Date.now());
 
+  const card = doc.authorCard as { name?: string; role?: string; company?: string; linkedin?: string } | null;
+  const author =
+    card?.name && (card.role || card.linkedin)
+      ? {
+          name: String(card.name),
+          role: card.role ? String(card.role) : undefined,
+          company: card.company ? String(card.company) : undefined,
+          linkedin: card.linkedin ? String(card.linkedin) : undefined,
+        }
+      : undefined;
+
   return {
     id: String(doc.id),
     data: {
       title: String(doc.title ?? ''),
       description: String(doc.description ?? ''),
       keyword: String(doc.keyword ?? ''),
-      autor: String(doc.authorName ?? doc.autor ?? 'Hiweb'),
+      autor: String(doc.authorName ?? doc.autor ?? author?.name ?? 'Hiweb'),
+      author,
       fecha,
       featured: Boolean(doc.featured),
       categoriaServicio: (doc.categoriaServicio as { id?: string; nombre?: string } | undefined)?.id

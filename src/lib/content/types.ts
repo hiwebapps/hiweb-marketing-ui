@@ -96,6 +96,12 @@ export type PostRecord = {
     description: string;
     keyword: string;
     autor: string;
+    author?: {
+      name: string;
+      role?: string;
+      company?: string;
+      linkedin?: string;
+    };
     fecha: Date;
     featured: boolean;
     categoriaServicio?: { id: string; nombre?: string };

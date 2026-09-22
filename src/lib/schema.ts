@@ -42,8 +42,26 @@ export function articleSchema(input: {
   description: string;
   href: string;
   author: string;
+  authorProfile?: {
+    role?: string;
+    company?: string;
+    linkedin?: string;
+  };
   date: Date;
 }) {
+  const person: Record<string, unknown> = {
+    '@type': 'Person',
+    name: input.author,
+  };
+  if (input.authorProfile?.role) person.jobTitle = input.authorProfile.role;
+  if (input.authorProfile?.company) {
+    person.worksFor = { '@type': 'Organization', name: input.authorProfile.company };
+  }
+  if (input.authorProfile?.linkedin) {
+    person.url = input.authorProfile.linkedin;
+    person.sameAs = [input.authorProfile.linkedin];
+  }
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -51,7 +69,7 @@ export function articleSchema(input: {
     description: input.description,
     url: new URL(input.href, SITE.url).href,
     datePublished: input.date.toISOString(),
-    author: { '@type': 'Person', name: input.author },
+    author: person,
     publisher: { '@type': 'Organization', name: SITE.legalName },
   };
 }

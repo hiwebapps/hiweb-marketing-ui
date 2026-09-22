@@ -27,7 +27,11 @@ const cards = sorted.map((post) => {
 		description: post.data.description,
 		keyword: post.data.keyword,
 		autor: post.data.autor,
-		fecha: post.data.fecha.toLocaleDateString('es-MX'),
+		fecha: post.data.fecha.toLocaleDateString('es-MX', {
+			day: 'numeric',
+			month: 'short',
+			year: 'numeric',
+		}),
 		featured: post.data.featured,
 		industria: post.data.categoriaIndustria?.id,
 		servicio,
