@@ -25,6 +25,7 @@ type HeroStudioAProps = {
   secondaryLabel?: string;
   secondaryHref?: string;
   slides?: HeroStudioSlide[];
+  cardCta?: string;
 };
 
 function wrap(index: number, length: number) {
@@ -64,6 +65,7 @@ export function HeroStudioA({
   secondaryLabel = 'Ver Casos de Éxito',
   secondaryHref = '/portafolio',
   slides = [],
+  cardCta = 'ver proyecto',
 }: HeroStudioAProps) {
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -379,7 +381,7 @@ export function HeroStudioA({
                     size="sm"
                     className="hero-studio-a__card-cta no-underline !h-8 !px-3 !text-xs"
                   >
-                    ver proyecto
+                    {cardCta}
                   </Button>
                 </div>
               </div>

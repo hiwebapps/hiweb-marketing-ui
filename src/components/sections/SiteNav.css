@@ -340,6 +340,134 @@
   gap: 10px;
 }
 
+.hw-nav__lang-slot {
+  display: none;
+}
+
+.hw-nav-sheet__footer-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.hw-nav-sheet__footer-row .hw-nav-sheet__ds-cta {
+  flex: 1;
+  min-width: 0;
+}
+
+.hw-nav__lang {
+  position: relative;
+}
+
+.hw-nav__lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.65rem;
+  padding: 0 0.8rem 0 0.7rem;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(#101018, #101018) padding-box,
+    linear-gradient(90deg, #7b6cff 0%, #4d7dff 48%, #3ad7ff 100%) border-box;
+  color: #fff;
+  font-family: var(--font-sans), Inter, system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(90, 140, 255, 0.12), 0 8px 22px rgba(40, 80, 180, 0.18);
+}
+
+.hw-nav__lang-btn:hover,
+.hw-nav__lang.is-open .hw-nav__lang-btn {
+  box-shadow: 0 0 0 1px rgba(90, 140, 255, 0.2), 0 0 18px rgba(80, 140, 255, 0.35);
+}
+
+.hw-nav__lang-globe,
+.hw-nav__lang-chevron {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hw-nav__lang-globe {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.hw-nav__lang-chevron {
+  width: 0.75rem;
+  height: 0.75rem;
+  opacity: 0.85;
+}
+
+.hw-nav__lang.is-open .hw-nav__lang-chevron {
+  transform: rotate(180deg);
+}
+
+.hw-nav__lang--up .hw-nav__lang-menu {
+  top: auto;
+  bottom: calc(100% + 0.65rem);
+}
+
+.hw-nav__lang--up .hw-nav__lang-menu::before {
+  bottom: auto;
+  top: 100%;
+}
+
+.hw-nav__lang-menu {
+  position: absolute;
+  top: calc(100% + 0.65rem);
+  right: 0;
+  z-index: 5;
+  min-width: 11.5rem;
+  margin: 0;
+  padding: 0.45rem;
+  list-style: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: #0a0a0c;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+  will-change: opacity, transform;
+}
+
+.hw-nav__lang-menu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 0.75rem;
+}
+
+.hw-nav__lang-option {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem 0.75rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+.hw-nav__lang-option:hover,
+.hw-nav__lang-option.is-current {
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .hw-nav__btn {
   display: flex;
   align-items: center;
@@ -720,6 +848,10 @@
   }
 
   .hw-nav__burger {
+    display: flex;
+  }
+
+  .hw-nav__lang-slot {
     display: flex;
   }
 

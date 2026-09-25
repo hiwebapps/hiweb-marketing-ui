@@ -7,6 +7,7 @@ import {
   NAV_SERVICE_GROUPS,
 } from '../../data/site';
 import { MOTION } from '../../lib/motion';
+import { CHROME, EN_NAV_SERVICES, localePath, type Locale } from '../../lib/locale';
 import { Button } from '../ui';
 import './SiteNav.css';
 
@@ -21,8 +22,11 @@ type IconName =
 /**
  * Nav global — pastilla glass oscura flotante, mega-menú de Servicios e Industrias.
  */
-export function SiteNav() {
+export function SiteNav({ locale = 'es' }: { locale?: Locale }) {
+  const copy = CHROME[locale];
   const [open, setOpen] = useState<MenuKey>(null);
+  const [langOpen, setLangOpen] = useState(false);
+  const [sheetLangOpen, setSheetLangOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -70,11 +74,17 @@ export function SiteNav() {
 
   useEffect(() => {
     const onPointer = (event: MouseEvent) => {
-      if (!navRef.current?.contains(event.target as Node)) setOpen(null);
+      if (!navRef.current?.contains(event.target as Node)) {
+        setOpen(null);
+        setLangOpen(false);
+        if (!(event.target as Element | null)?.closest?.('.hw-nav__lang')) setSheetLangOpen(false);
+      }
     };
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setOpen(null);
+        setLangOpen(false);
+        setSheetLangOpen(false);
         setMobileOpen(false);
       }
     };
@@ -173,15 +183,15 @@ export function SiteNav() {
           <div className="hw-nav__highlight" />
 
           <nav className="hw-nav__bar" aria-label="Principal">
-            <a href="/" className="hw-nav__brand" aria-label="Hiweb inicio">
+            <a href={localePath('/', locale)} className="hw-nav__brand" aria-label="Hiweb inicio">
               <img src="/images/isotipo-hiweb.png" width="27" height="27" alt="" className="hw-nav__logo" />
               <span className="hw-nav__brand-text">Hiweb</span>
             </a>
 
             <ul className="hw-nav__links">
               <li className="hw-nav__item">
-                <a href="/nosotros" className="hw-nav__link">
-                  Nosotros
+                <a href={localePath('/nosotros', locale)} className="hw-nav__link">
+                  {copy.about}
                 </a>
               </li>
 
@@ -197,7 +207,7 @@ export function SiteNav() {
                   aria-controls={industriasId}
                   onClick={() => openMenu('industrias')}
                 >
-                  Industrias
+                  {copy.industries}
                   <Chevron open={open === 'industrias'} />
                 </button>
                 {open === 'industrias' ? (
@@ -248,7 +258,7 @@ export function SiteNav() {
                   aria-controls={serviciosId}
                   onClick={() => openMenu('servicios')}
                 >
-                  Servicios
+                  {copy.services}
                   <Chevron open={open === 'servicios'} />
                 </button>
                 {open === 'servicios' ? (
@@ -257,10 +267,12 @@ export function SiteNav() {
                       <div key={group.heading} className="hw-nav__dropdown-col">
                         <p className="hw-nav__dropdown-heading">{group.heading}</p>
                         <ul className="hw-nav__dropdown-list">
-                          {group.items.map((item) => (
+                          {group.items.map((item) => {
+                            const translated = locale === 'en' ? EN_NAV_SERVICES[item.slug] : undefined;
+                            return (
                             <li key={item.slug}>
                               <a
-                                href={`/servicios/${item.slug}`}
+                                href={localePath(`/servicios/${item.slug}`, locale)}
                                 className="hw-nav__dropdown-link"
                                 onClick={() => setOpen(null)}
                               >
@@ -268,12 +280,13 @@ export function SiteNav() {
                                   <NavIcon name={item.icon} />
                                 </span>
                                 <span className="hw-nav__dropdown-copy">
-                                  <span className="hw-nav__dropdown-title">{item.nombre}</span>
-                                  <span className="hw-nav__dropdown-desc">{item.desc}</span>
+                                  <span className="hw-nav__dropdown-title">{translated?.nombre ?? item.nombre}</span>
+                                  <span className="hw-nav__dropdown-desc">{translated?.desc ?? item.desc}</span>
                                 </span>
                               </a>
                             </li>
-                          ))}
+                            );
+                          })}
                         </ul>
                       </div>
                     ))}
@@ -300,18 +313,21 @@ export function SiteNav() {
               </li>
 
               <li className="hw-nav__item">
-                <a href="/portafolio" className="hw-nav__link">
-                  Casos de Éxito
+                <a href={localePath('/portafolio', locale)} className="hw-nav__link">
+                  {copy.cases}
                 </a>
               </li>
               <li className="hw-nav__item">
-                <a href="/blog" className="hw-nav__link">
-                  Blog
+                <a href={localePath('/blog', locale)} className="hw-nav__link">
+                  {copy.blog}
                 </a>
               </li>
             </ul>
 
             <div className="hw-nav__end">
+              <div className="hw-nav__lang-slot">
+                <LangSwitch locale={locale} open={langOpen} onToggle={() => setLangOpen((value) => !value)} onClose={() => setLangOpen(false)} />
+              </div>
               <button
                 type="button"
                 className="hw-nav__burger"
@@ -326,8 +342,9 @@ export function SiteNav() {
               </button>
 
               <div className="hw-nav__ctas">
-                <Button href="/contacto" size="md" variant="primary" className="hw-nav__ds-cta no-underline">
-                  Agenda tu auditoría
+                <LangSwitch locale={locale} open={langOpen} onToggle={() => setLangOpen((value) => !value)} onClose={() => setLangOpen(false)} />
+                <Button href={localePath('/contacto', locale)} size="md" variant="primary" className="hw-nav__ds-cta no-underline">
+                  {copy.audit}
                 </Button>
               </div>
             </div>
@@ -360,11 +377,11 @@ export function SiteNav() {
           </div>
 
           <div className="hw-nav-sheet__scroll">
-            <SheetNavLink href="/nosotros" onNavigate={() => setMobileOpen(false)}>
-              Nosotros
+            <SheetNavLink href={localePath('/nosotros', locale)} onNavigate={() => setMobileOpen(false)}>
+              {copy.about}
             </SheetNavLink>
 
-            <SheetSection title="Industrias">
+            <SheetSection title={copy.industries}>
               <li>
                 <a
                   href="/industrias"
@@ -393,54 +410,162 @@ export function SiteNav() {
               ))}
             </SheetSection>
 
-            <SheetSection title="Servicios">
+            <SheetSection title={copy.services}>
               <li>
                 <a
-                  href="/servicios"
+                  href={localePath('/servicios', locale)}
                   className="hw-nav-sheet__link"
                   onClick={() => setMobileOpen(false)}
                 >
                   <span className="hw-nav-sheet__icon" aria-hidden="true">
                     <NavIcon name="grid" />
                   </span>
-                  <span className="hw-nav-sheet__label">Todos los servicios</span>
+                  <span className="hw-nav-sheet__label">{locale === 'en' ? 'Services' : 'Todos los servicios'}</span>
                 </a>
               </li>
               {NAV_SERVICE_GROUPS.flatMap((group) =>
                 group.items.map((item) => (
                   <li key={item.slug}>
                     <a
-                      href={`/servicios/${item.slug}`}
+                      href={localePath(`/servicios/${item.slug}`, locale)}
                       className="hw-nav-sheet__link"
                       onClick={() => setMobileOpen(false)}
                     >
                       <span className="hw-nav-sheet__icon" aria-hidden="true">
                         <NavIcon name={item.icon} />
                       </span>
-                      <span className="hw-nav-sheet__label">{item.nombre}</span>
+                      <span className="hw-nav-sheet__label">{locale === 'en' ? EN_NAV_SERVICES[item.slug]?.nombre ?? item.nombre : item.nombre}</span>
                     </a>
                   </li>
                 )),
               )}
             </SheetSection>
 
-            <SheetNavLink href="/portafolio" onNavigate={() => setMobileOpen(false)}>
-              Casos de Éxito
+            <SheetNavLink href={localePath('/portafolio', locale)} onNavigate={() => setMobileOpen(false)}>
+              {copy.cases}
             </SheetNavLink>
 
-            <SheetNavLink href="/blog" onNavigate={() => setMobileOpen(false)}>
-              Blog
+            <SheetNavLink href={localePath('/blog', locale)} onNavigate={() => setMobileOpen(false)}>
+              {copy.blog}
             </SheetNavLink>
           </div>
 
           <div className="hw-nav-sheet__footer">
-            <Button href="/contacto" size="md" variant="primary" className="hw-nav-sheet__ds-cta no-underline">
-              Agenda tu auditoría
-            </Button>
+            <div className="hw-nav-sheet__footer-row">
+              <LangSwitch
+                locale={locale}
+                open={sheetLangOpen}
+                menuPlacement="up"
+                onToggle={() => setSheetLangOpen((value) => !value)}
+                onClose={() => setSheetLangOpen(false)}
+              />
+              <Button href={localePath('/contacto', locale)} size="md" variant="primary" className="hw-nav-sheet__ds-cta no-underline">
+                {copy.audit}
+              </Button>
+            </div>
           </div>
         </div>
       ) : null}
     </>
+  );
+}
+
+function LangSwitch({
+  locale,
+  open,
+  onToggle,
+  onClose,
+  menuPlacement = 'down',
+}: {
+  locale: Locale;
+  open: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+  menuPlacement?: 'down' | 'up';
+}) {
+  const menuRef = useRef<HTMLUListElement>(null);
+  const closeTimer = useRef(0);
+
+  useGSAP(
+    () => {
+      if (!menuRef.current || !open) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      gsap.fromTo(
+        menuRef.current,
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.28, ease: 'power3.out' },
+      );
+    },
+    { dependencies: [open] },
+  );
+
+  const hoverCapable = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  return (
+    <div
+      className={`hw-nav__lang${open ? ' is-open' : ''}${menuPlacement === 'up' ? ' hw-nav__lang--up' : ''}`}
+      onMouseEnter={() => {
+        if (!hoverCapable()) return;
+        window.clearTimeout(closeTimer.current);
+        if (!open) onToggle();
+      }}
+      onMouseLeave={() => {
+        if (!hoverCapable()) return;
+        window.clearTimeout(closeTimer.current);
+        closeTimer.current = window.setTimeout(onClose, 140);
+      }}
+    >
+      <button
+        type="button"
+        className="hw-nav__lang-btn"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={CHROME[locale].languageCurrent}
+        onClick={onToggle}
+      >
+        <svg className="hw-nav__lang-globe" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18" />
+          <path d="M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z" />
+        </svg>
+        <span>{locale === 'en' ? 'EN' : 'ES'}</span>
+        <svg className="hw-nav__lang-chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M4 6.2 8 10l4-3.8" />
+        </svg>
+      </button>
+      {open ? (
+        <ul ref={menuRef} className="hw-nav__lang-menu" role="listbox" aria-label={CHROME[locale].language}>
+          <li>
+            <button
+              type="button"
+              className={`hw-nav__lang-option${locale === 'es' ? ' is-current' : ''}`}
+              role="option"
+              aria-selected={locale === 'es'}
+              onClick={() => {
+                onClose();
+                window.location.assign(localePath(window.location.pathname, 'es'));
+              }}
+            >
+              ES · Español
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              className={`hw-nav__lang-option${locale === 'en' ? ' is-current' : ''}`}
+              role="option"
+              aria-selected={locale === 'en'}
+              onClick={() => {
+                onClose();
+                window.location.assign(localePath(window.location.pathname, 'en'));
+              }}
+            >
+              EN · English
+            </button>
+          </li>
+        </ul>
+      ) : null}
+    </div>
   );
 }
 

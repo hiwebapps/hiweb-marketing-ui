@@ -129,8 +129,8 @@ export async function getPeople(): Promise<PersonRecord[]> {
   return withFallback(sanityPeople, collectionsPeople, (items) => items.length === 0);
 }
 
-export async function getHomeCopy(): Promise<HomeCopy> {
-  const copy = await withFallback(sanityHome, collectionsHome, (item) => !item);
+export async function getHomeCopy(locale: 'es' | 'en' = 'es'): Promise<HomeCopy> {
+  const copy = await withFallback(() => sanityHome(locale), collectionsHome, (item) => !item);
   const fallback = collectionsHome();
   const next = copy ?? fallback;
   return {

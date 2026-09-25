@@ -19,7 +19,8 @@ interface Props {
 	/** Force noindex even after cutover (legal, kits). */
 	noindex?: boolean;
 	ogImage?: string;
-  jsonLd?: Record<string, unknown> | Record<string, unknown>[] | object | object[];
+	jsonLd?: Record<string, unknown> | Record<string, unknown>[] | object | object[];
+	lang?: 'es' | 'en';
 }
 
 const {
@@ -29,6 +30,7 @@ const {
 	noindex: forceNoIndex = false,
 	ogImage = DEFAULT_OG_IMAGE,
 	jsonLd,
+	lang = 'es',
 } = Astro.props;
 
 const hideFromIndex = forceNoIndex || shouldNoIndex(Astro.url.hostname);
@@ -39,7 +41,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -93,10 +95,10 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 		</script>
 	</head>
 	<body id="top">
-		<SiteNav client:load />
+		<SiteNav client:load locale={lang} />
 		<ScrollIndicator client:load />
 		<slot />
-		<SiteFooter client:idle />
+		<SiteFooter client:idle locale={lang} />
 		<script src="../scripts/motion.ts"></script>
 	</body>
 </html>

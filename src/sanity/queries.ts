@@ -124,6 +124,76 @@ export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id =
 
 const introProjection = /* groq */ `{ eyebrow, title, titleMuted, description }`;
 
+export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "homePage-en"][0]{
+  sections[]{
+    _type,
+    _type == "homeHero" => {
+      title,
+      lead,
+      primaryCta{ label, href },
+      secondaryCta{ label, href },
+      cases[]->{
+        "id": slug.current,
+        cliente,
+        "industriaId": industria->slug.current,
+        ogImage ${imageProjection}
+      }
+    },
+    _type == "homePillars" => {
+      intro ${introProjection},
+      ctaLabel,
+      items[]{ title, description }
+    },
+    _type == "homeServices" => {
+      intro ${introProjection},
+      items[]{
+        "id": service->slug.current,
+        "nombre": coalesce(nombre, service->nombre),
+        "tagline": coalesce(tagline, service->tagline)
+      }
+    },
+    _type == "homeIndustries" => {
+      intro ${introProjection},
+      items[]->{
+        "id": slug.current,
+        nombre,
+        tagline,
+        "puntos": porQue[].title
+      }
+    },
+    _type == "homeStories" => {
+      intro ${introProjection},
+      items[]{ client, quote, name, role }
+    },
+    _type == "homeProcess" => {
+      intro ${introProjection},
+      items[]{ index, title, description }
+    },
+    _type == "homeMetrics" => {
+      intro ${introProjection},
+      items[]{ valor, label, prefix, suffix, decimals }
+    },
+    _type == "homeTeam" => {
+      eyebrow,
+      title,
+      description,
+      ctaLabel,
+      ctaHref
+    },
+    _type == "homeFaq" => {
+      intro ${introProjection},
+      categories[]{ id, label, items[]{ question, answer } }
+    },
+    _type == "homeCta" => {
+      badge,
+      title,
+      description,
+      primaryCta{ label, href }
+    }
+  },
+  ${seoProjection}
+}`);
+
 export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homePage"][0]{
   sections[]{
     _type,
@@ -141,13 +211,14 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
     },
     _type == "homePillars" => {
       intro ${introProjection},
+      ctaLabel,
       items[]{ title, description }
     },
     _type == "homeServices" => {
       intro ${introProjection},
       items[]{
         "id": service->slug.current,
-        "nombre": service->nombre,
+        "nombre": coalesce(nombre, service->nombre),
         "tagline": coalesce(tagline, service->tagline)
       }
     },

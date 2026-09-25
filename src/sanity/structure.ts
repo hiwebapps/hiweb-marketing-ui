@@ -82,6 +82,11 @@ export const structure: StructureResolver = (S) =>
         .icon(HomeIcon)
         .child(S.document().schemaType('homePage').documentId('homePage').title('Home')),
       S.listItem()
+        .title('Home (EN)')
+        .id('home-en')
+        .icon(HomeIcon)
+        .child(S.document().schemaType('homePage').documentId('homePage-en').title('Home (EN)')),
+      S.listItem()
         .title('Nosotros')
         .id('nosotros')
         .icon(UsersIcon)

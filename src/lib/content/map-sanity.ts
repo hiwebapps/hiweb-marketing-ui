@@ -502,6 +502,7 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
       copy.heroCases = asHeroCases(section.cases);
     } else if (type === 'homePillars') {
       copy.pillarIntro = asIntro(section.intro);
+      copy.pillarCtaLabel = section.ctaLabel ? String(section.ctaLabel) : undefined;
       copy.pillars = Array.isArray(section.items) ? (section.items as HomeCopy['pillars']) : undefined;
     } else if (type === 'homeServices') {
       copy.serviceIntro = asIntro(section.intro);

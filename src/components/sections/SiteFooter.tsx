@@ -4,18 +4,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import { LEGAL_LINKS, NAV_LINKS, SITE } from '../../data/site';
+import { CHROME, localePath, type Locale } from '../../lib/locale';
 import { MOTION } from '../../lib/motion';
 import './SiteFooter.css';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
-
-const MENU = [
-  { href: '/nosotros', label: 'Nosotros' },
-  { href: '/industrias', label: 'Industrias' },
-  { href: '/servicios', label: 'Servicios' },
-  ...NAV_LINKS.filter((item) => item.href !== '/nosotros'),
-  { href: '/contacto', label: 'Contacto' },
-];
 
 const CONTACT = [
   { href: SITE.phoneHref, label: SITE.phone },
@@ -51,9 +44,20 @@ function prefersReducedMotion() {
 /**
  * Footer — panel dark + wordmark gigante, SplitText y ScrollTrigger.
  */
-export function SiteFooter() {
+export function SiteFooter({ locale = 'es' }: { locale?: Locale }) {
   const rootRef = useRef<HTMLElement>(null);
   const year = new Date().getFullYear();
+  const copy = CHROME[locale];
+  const menu = [
+    { href: localePath('/nosotros', locale), label: copy.about },
+    { href: localePath('/industrias', locale), label: copy.industries },
+    { href: localePath('/servicios', locale), label: copy.services },
+    ...NAV_LINKS.filter((item) => item.href !== '/nosotros').map((item) => ({
+      href: localePath(item.href, locale),
+      label: item.href === '/portafolio' ? copy.cases : item.href === '/blog' ? copy.blog : item.label,
+    })),
+    { href: localePath('/contacto', locale), label: copy.contact },
+  ];
 
   useGSAP(
     () => {
@@ -166,10 +170,10 @@ export function SiteFooter() {
           <div className="site-footer__top">
             <div className="site-footer__intro">
               <p className="site-footer__brand">{SITE.name}</p>
-              <h2 className="site-footer__title">Agenda una auditoría. Llegamos con mapa, no con deck.</h2>
-              <form className="site-footer__form" action="/contacto" method="get">
+              <h2 className="site-footer__title">{copy.footerTitle}</h2>
+              <form className="site-footer__form" action={localePath('/contacto', locale)} method="get">
                 <label className="sr-only" htmlFor="footer-email">
-                  Email de trabajo
+                  {copy.workEmail}
                 </label>
                 <input
                   id="footer-email"
@@ -177,10 +181,10 @@ export function SiteFooter() {
                   type="email"
                   name="email"
                   autoComplete="email"
-                  placeholder="Email de trabajo"
+                  placeholder={copy.workEmail}
                   required
                 />
-                <button className="site-footer__submit" type="submit" aria-label="Ir a contacto">
+                <button className="site-footer__submit" type="submit" aria-label={copy.toContact}>
                   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path
                       d="M3 8h10M9 4l4 4-4 4"
@@ -194,10 +198,10 @@ export function SiteFooter() {
               </form>
             </div>
 
-            <nav className="site-footer__col" aria-label="Menú">
-              <p className="site-footer__heading">Menú</p>
+            <nav className="site-footer__col" aria-label={copy.menu}>
+              <p className="site-footer__heading">{copy.menu}</p>
               <ul>
-                {MENU.map((item) => (
+                {menu.map((item) => (
                   <li key={item.href}>
                     <a href={item.href}>{item.label}</a>
                   </li>
@@ -205,8 +209,8 @@ export function SiteFooter() {
               </ul>
             </nav>
 
-            <nav className="site-footer__col" aria-label="Contacto">
-              <p className="site-footer__heading">Contacto</p>
+            <nav className="site-footer__col" aria-label={copy.contact}>
+              <p className="site-footer__heading">{copy.contact}</p>
               <ul>
                 {CONTACT.map((item) => (
                   <li key={item.href}>
@@ -247,7 +251,7 @@ export function SiteFooter() {
               ))}
             </nav>
             <a href="#top" className="site-footer__totop">
-              Volver arriba ↑
+              {copy.backToTop}
             </a>
           </div>
         </div>

@@ -3,6 +3,7 @@ import {
   aboutPageQuery,
   caseBySlugQuery,
   casesQuery,
+  homePageEnQuery,
   homePageQuery,
   industriesQuery,
   industryBySlugQuery,
@@ -87,8 +88,10 @@ export async function sanityPeople(): Promise<PersonRecord[]> {
   return fetchList(peopleQuery, mapPerson);
 }
 
-export async function sanityHome(): Promise<HomeCopy | null> {
-  const { data } = await loadQuery<Record<string, unknown> | null>({ query: homePageQuery });
+export async function sanityHome(locale: 'es' | 'en' = 'es'): Promise<HomeCopy | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: locale === 'en' ? homePageEnQuery : homePageQuery,
+  });
   return mapHome(data);
 }
 

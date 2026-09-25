@@ -35,6 +35,12 @@ export const homeServiceItem = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'nombre',
+      title: 'Nombre en esta sección',
+      type: 'string',
+      description: 'Si lo dejas vacío, se usa el nombre del servicio.',
+    }),
+    defineField({
       name: 'tagline',
       title: 'Tagline en esta sección',
       type: 'text',
@@ -90,6 +96,13 @@ export const homePillars = defineType({
       title: 'Cards',
       type: 'array',
       of: [defineArrayMember({ type: 'titledBlock' })],
+    }),
+    defineField({
+      name: 'ctaLabel',
+      title: 'Texto del botón en cada card',
+      type: 'string',
+      description: 'Vacío = “Ver más”.',
+      initialValue: 'Ver más',
     }),
   ],
   preview: {

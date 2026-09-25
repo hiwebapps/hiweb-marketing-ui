@@ -1,27 +1,27 @@
 ---
 export const prerender = true;
 
-import Layout from '../layouts/Layout.astro';
-import { HeroStudioA } from '../components/sections/HeroStudioA';
-import { IndustryGrid } from '../components/sections/IndustryGrid';
-import { CaseStories } from '../components/sections/CaseStories';
-import { ProcessPhases } from '../components/sections/ProcessPhases';
-import { MetricsBand } from '../components/sections/MetricsBand';
-import { FaqSection } from '../components/sections/FaqSection';
-import { FinalCta } from '../components/sections/FinalCta';
-import { PillarGrid } from '../components/sections/PillarGrid';
-import { ServiceGrid } from '../components/sections/ServiceGrid';
-import { TeamGrid } from '../components/sections/TeamGrid';
-import { homePillarsWithIcons } from '../data/webflow-home';
-import '../components/sections/TeamGrid.css';
-import '../components/sections/FaqSection.css';
-import '../components/sections/CaseStories.css';
-import '../components/sections/MetricsBand.css';
-import { faqSchema } from '../lib/schema';
-import { getCases, getHomeCopy, getIndustries, getServices } from '../lib/content';
-import { SITE } from '../data/site';
+import Layout from '../../layouts/Layout.astro';
+import { HeroStudioA } from '../../components/sections/HeroStudioA';
+import { IndustryGrid } from '../../components/sections/IndustryGrid';
+import { CaseStories } from '../../components/sections/CaseStories';
+import { ProcessPhases } from '../../components/sections/ProcessPhases';
+import { MetricsBand } from '../../components/sections/MetricsBand';
+import { FaqSection } from '../../components/sections/FaqSection';
+import { FinalCta } from '../../components/sections/FinalCta';
+import { PillarGrid } from '../../components/sections/PillarGrid';
+import { ServiceGrid } from '../../components/sections/ServiceGrid';
+import { TeamGrid } from '../../components/sections/TeamGrid';
+import { homePillarsWithIcons } from '../../data/webflow-home';
+import '../../components/sections/TeamGrid.css';
+import '../../components/sections/FaqSection.css';
+import '../../components/sections/CaseStories.css';
+import '../../components/sections/MetricsBand.css';
+import { faqSchema } from '../../lib/schema';
+import { getCases, getHomeCopy, getIndustries, getServices } from '../../lib/content';
+import { SITE } from '../../data/site';
 
-const home = await getHomeCopy();
+const home = await getHomeCopy('en');
 const industryCards = home.industryCards?.length
 	? home.industryCards.map((item) => ({
 			slug: item.id,
@@ -111,6 +111,7 @@ const sectionOrder = home.sectionOrder?.length
 	description={home.seo?.metaDescription ?? SITE.tagline}
 	ogImage={home.seo?.ogImage}
 	jsonLd={faqSchema(faqs)}
+	lang="en"
 >
 	<main>
 		{sectionOrder.map((type) => {
@@ -125,6 +126,7 @@ const sectionOrder = home.sectionOrder?.length
 						primaryHref={home.primaryCta?.href}
 						secondaryLabel={home.secondaryCta?.label}
 						secondaryHref={home.secondaryCta?.href}
+						cardCta="see project"
 						slides={heroSlides}
 					/>
 				);

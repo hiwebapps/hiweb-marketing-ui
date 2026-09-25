@@ -286,6 +286,7 @@ export type HomeCopy = {
   secondaryCta?: { label: string; href: string };
   heroCases?: HomeHeroCase[];
   pillarIntro?: SectionIntro;
+  pillarCtaLabel?: string;
   pillars?: TitledBlock[];
   serviceIntro?: SectionIntro;
   serviceCards?: HomeServiceCard[];
