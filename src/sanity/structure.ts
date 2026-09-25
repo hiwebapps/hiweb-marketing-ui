@@ -50,6 +50,21 @@ const HIDDEN_FROM_FALLBACK = [
   'homeTeam',
   'homeFaq',
   'homeCta',
+  'serviceHero',
+  'serviceOverview',
+  'serviceFocus',
+  'servicePitch',
+  'serviceWhy',
+  'servicePlans',
+  'serviceIndustries',
+  'serviceProcess',
+  'serviceCases',
+  'serviceFaq',
+  'serviceCta',
+  'serviceFocusItem',
+  'serviceWhyCard',
+  'serviceIndustryItem',
+  'serviceProcessStep',
 ];
 
 export const structure: StructureResolver = (S) =>

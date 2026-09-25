@@ -1,6 +1,9 @@
 import { Badge, Button } from '../ui';
 import { BackgroundMesh } from '../BackgroundMesh';
 import { homePillarsWithIcons, WEBFLOW_HOME, WEBFLOW_SERVICE_TAGLINES } from '../../data/webflow-home';
+import { serviceFocusItems } from '../../data/service-focus';
+import { servicePitch } from '../../data/service-pitch';
+import { servicePlans } from '../../data/service-plans';
 import {
   CasePreview,
   CaseStories,
@@ -22,6 +25,10 @@ import {
   SectionBand,
   SectionHeader,
   ServiceGrid,
+  ServiceFocus,
+  ServicePitch,
+  ServiceWhy,
+  ServicePlans,
   SocialProof,
   TeamGrid,
   TrustStrip,
@@ -33,6 +40,10 @@ const KIT = [
   { id: 'page-hero', name: 'Page hero', source: 'Interiores', role: 'Hero claro: eyebrow, H1 y lead' },
   { id: 'pillars', name: 'Pilares', source: 'Home', role: 'Grid de razones con icono y acento' },
   { id: 'services', name: 'Servicios', source: 'Home', role: 'Cards con foto, orden y tagline' },
+  { id: 'service-focus', name: 'Frentes de servicio', source: 'Servicios', role: 'Tabs en escritorio y acordeón en móvil' },
+  { id: 'service-pitch', name: 'Propuesta de servicio', source: 'Servicios', role: 'Imagen, badge, título, párrafo y CTA' },
+  { id: 'service-why', name: 'Por qué Hiweb', source: 'SEO', role: 'Título, CTA, contadores y cards en loop' },
+  { id: 'service-plans', name: 'Planes de servicio', source: 'SEO', role: 'Tres planes, precio y lista de incluye' },
   { id: 'industries', name: 'Industrias', source: 'Home', role: 'Grid arrastrable por sector' },
   { id: 'process', name: 'Proceso', source: 'Home', role: 'Fases 01–04 sobre una línea' },
   { id: 'metrics', name: 'Métricas', source: 'Home', role: 'Banda ink, numeral y dos CTAs' },
@@ -184,6 +195,22 @@ export function SectionsKitPage() {
             description={WEBFLOW_HOME.serviceIntro?.description}
             tone="surface"
           />
+        </div>
+
+        <div id="demo-service-focus" className="scroll-mt-28">
+          <ServiceFocus items={serviceFocusItems('seo')} tone="surface" />
+        </div>
+
+        <div id="demo-service-pitch" className="scroll-mt-28">
+          {servicePitch('seo') ? <ServicePitch {...servicePitch('seo')!} tone="canvas" /> : null}
+        </div>
+
+        <div id="demo-service-why" className="scroll-mt-28">
+          <ServiceWhy client:visible tone="canvas" />
+        </div>
+
+        <div id="demo-service-plans" className="scroll-mt-28">
+          {servicePlans('seo') ? <ServicePlans {...servicePlans('seo')!} tone="canvas" /> : null}
         </div>
 
         <div id="demo-industries" className="scroll-mt-28">

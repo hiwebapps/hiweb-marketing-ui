@@ -38,6 +38,10 @@
   --step-accent: var(--color-accent-lime);
 }
 
+.proceso__step--green {
+  --step-accent: var(--color-accent-green);
+}
+
 .proceso__node {
   position: relative;
   z-index: 1;
@@ -58,7 +62,8 @@
 }
 
 .proceso__step--cyan .proceso__icon,
-.proceso__step--lime .proceso__icon {
+.proceso__step--lime .proceso__icon,
+.proceso__step--green .proceso__icon {
   color: var(--color-ink);
 }
 

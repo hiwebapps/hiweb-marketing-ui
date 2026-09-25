@@ -9,13 +9,16 @@ import './ProcessPhases.css';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
+export type ProcessIconName = 'search' | 'spark' | 'play' | 'trend';
+export type ProcessAccent = 'purple' | 'cyan' | 'orange' | 'lime' | 'green';
+
 export type ProcessPhase = {
   index: string;
   title: string;
   description: string;
+  icon?: ProcessIconName;
+  accent?: ProcessAccent;
 };
-
-type ProcessAccent = 'purple' | 'cyan' | 'orange' | 'lime';
 
 type ProcessPhasesProps = {
   phases: ProcessPhase[];
@@ -32,6 +35,14 @@ const ACCENT_HEX: Record<ProcessAccent, string> = {
   cyan: '#01e7ff',
   orange: '#fe621c',
   lime: '#dbe64c',
+  green: '#74c465',
+};
+
+const ICON_MAP = {
+  search: IconSearch,
+  spark: IconSpark,
+  play: IconPlay,
+  trend: IconTrend,
 };
 
 function IconSearch() {
@@ -157,9 +168,9 @@ export function ProcessPhases({
 
         <ol className="proceso__steps">
           {phases.map((phase, index) => {
-            const accent = ACCENTS[index % ACCENTS.length];
+            const accent = phase.accent && phase.accent in ACCENT_HEX ? phase.accent : ACCENTS[index % ACCENTS.length];
             const nextAccent = ACCENTS[(index + 1) % ACCENTS.length];
-            const Icon = ICONS[index % ICONS.length];
+            const Icon = (phase.icon && ICON_MAP[phase.icon]) || ICONS[index % ICONS.length];
             const isLast = index === phases.length - 1;
 
             return (

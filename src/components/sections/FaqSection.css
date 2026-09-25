@@ -66,6 +66,13 @@
   opacity: 0.8;
 }
 
+.faq__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0 3rem;
+  align-items: start;
+}
+
 .faq__list {
   min-width: 0;
 }
@@ -142,9 +149,18 @@
 }
 
 @media (max-width: 860px) {
-  .faq--split {
+  .faq--split,
+  .faq__columns {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .faq__columns {
+    gap: 0;
+  }
+
+  .faq__columns .faq__list + .faq__list .faq__item:first-child {
+    border-top: 0;
   }
 
   .faq__nav {

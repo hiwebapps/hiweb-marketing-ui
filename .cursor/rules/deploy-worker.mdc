@@ -1,0 +1,20 @@
+---
+description: Publish site changes to the Cloudflare Worker after each change
+alwaysApply: true
+---
+
+# Deploy to Cloudflare Workers
+
+Until the user says to stop, publish every completed site change to the Worker `hiweb-marketing-ui`.
+
+From the repo root, in PowerShell:
+
+```
+npx astro build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; npx wrangler deploy --keep-vars
+```
+
+- Always pass `--keep-vars` so existing Worker secrets stay in place.
+- Do not deploy Studio unless the change is a Sanity schema the editors need.
+- Do not commit or push unless the user asks.
+- After deploy, confirm the affected public URL returns the new markup. The site is https://hiweb-marketing-ui.hiwebapps.workers.dev
+- If the browser still shows the previous version, tell the user to reload with Ctrl+F5.

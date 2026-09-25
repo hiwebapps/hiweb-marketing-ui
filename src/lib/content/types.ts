@@ -51,6 +51,105 @@ export type IndustryRecord = {
   };
 };
 
+export type ServiceSection =
+  | {
+      _type: 'serviceHero';
+      title?: string;
+      description?: string;
+      badge?: string;
+      image?: string;
+      imageAlt?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+    }
+  | {
+      _type: 'serviceOverview';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      cards?: TitledBlock[];
+    }
+  | {
+      _type: 'serviceFocus';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      items?: {
+        title: string;
+        summary: string;
+        detailTitle: string;
+        detail: string;
+        icon: string;
+        image: string;
+        imageAlt: string;
+      }[];
+    }
+  | {
+      _type: 'servicePitch';
+      badge?: string;
+      title?: string;
+      description?: string;
+      image?: string;
+      imageAlt?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+    }
+  | {
+      _type: 'serviceWhy';
+      title?: string;
+      description?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+      cards?: { title: string; description: string; icon: string; accent: string }[];
+    }
+  | {
+      _type: 'servicePlans';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      note?: string;
+      noteLabel?: string;
+      noteHref?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+      plans?: { name: string; price: string; period?: string; featured?: boolean; includes: string[] }[];
+    }
+  | {
+      _type: 'serviceIndustries';
+      title?: string;
+      description?: string;
+      items?: { slug: string; nombre: string; tagline: string; icon?: string; puntos?: string[] }[];
+    }
+  | {
+      _type: 'serviceProcess';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      steps?: { title: string; description: string; icon?: string; accent?: string }[];
+    }
+  | {
+      _type: 'serviceCases';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      items?: {
+        id: string;
+        cliente: string;
+        resumen: string;
+        industria?: string;
+        testimonio?: { quote?: string; name?: string; role?: string };
+        metricas?: { valor: number; label: string; prefix?: string; suffix?: string; decimals?: number }[];
+      }[];
+    }
+  | {
+      _type: 'serviceFaq';
+      eyebrow?: string;
+      title?: string;
+      columns?: number;
+      items?: FaqItem[];
+    }
+  | { _type: 'serviceCta'; badge?: string; title?: string; description?: string };
+
 export type ServiceRecord = {
   id: string;
   data: {
@@ -65,6 +164,24 @@ export type ServiceRecord = {
     cards: TitledBlock[];
     proceso: TitledBlock[];
     faqs: FaqItem[];
+    sections?: ServiceSection[];
+    planes?: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      note: string;
+      noteHref?: string;
+      noteLabel?: string;
+      ctaLabel: string;
+      ctaHref: string;
+      plans: {
+        name: string;
+        price: string;
+        period?: string;
+        featured?: boolean;
+        includes: string[];
+      }[];
+    };
     seo?: SeoFields;
   };
 };

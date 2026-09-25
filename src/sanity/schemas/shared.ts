@@ -94,6 +94,50 @@ export const faqItem = defineType({
   },
 });
 
+export const servicePlan = defineType({
+  name: 'servicePlan',
+  title: 'Plan de servicio',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'name',
+      title: 'Nombre',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'price',
+      title: 'Precio',
+      type: 'string',
+      description: 'Ejemplo: $8,000 o A cotizar.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'period',
+      title: 'Periodo',
+      type: 'string',
+      description: 'Opcional. Ejemplo: /mes.',
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Destacado',
+      type: 'boolean',
+      description: 'Marca una sola card. Se muestra con el badge Recomendado.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'includes',
+      title: 'Incluye',
+      type: 'array',
+      of: [defineArrayMember({ type: 'string' })],
+      validation: (rule) => rule.min(1),
+    }),
+  ],
+  preview: {
+    select: { title: 'name', subtitle: 'price' },
+  },
+});
+
 export const titledBlock = defineType({
   name: 'titledBlock',
   title: 'Bloque con título',

@@ -27,6 +27,8 @@ type FaqSectionProps = {
   description?: string;
   tone?: 'canvas' | 'surface';
   withSchema?: boolean;
+  /** Dos columnas solo en escritorio. En móvil vuelve a una. */
+  columns?: 1 | 2;
 };
 
 function IconChevron({ className = '' }: { className?: string }) {
@@ -95,13 +97,15 @@ function openItem(root: HTMLElement, index: number) {
 function FaqAccordion({
   items,
   name,
+  initialOpen = 0,
 }: {
   items: readonly FaqItem[];
   name: string;
+  initialOpen?: number;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const openRef = useRef(0);
-  const [openIndex, setOpenIndex] = useState(0);
+  const openRef = useRef(initialOpen);
+  const [openIndex, setOpenIndex] = useState(initialOpen);
   const [ready, setReady] = useState(false);
 
   const { contextSafe } = useGSAP(
@@ -114,7 +118,7 @@ function FaqAccordion({
         const answer = el.querySelector<HTMLElement>('.faq__answer');
         const chevron = el.querySelector<HTMLElement>('.faq__chevron');
         if (!panel || !answer || !chevron) return;
-        const isOpen = index === 0;
+        const isOpen = index === initialOpen;
         gsap.set(panel, { height: isOpen ? 'auto' : 0, overflow: 'hidden' });
         gsap.set(answer, { opacity: isOpen ? 1 : 0, y: isOpen ? 0 : 10, visibility: 'visible' });
         gsap.set(chevron, { rotation: isOpen ? -90 : 90, transformOrigin: '50% 50%' });
@@ -122,7 +126,7 @@ function FaqAccordion({
 
       setReady(true);
     },
-    { scope: rootRef, dependencies: [items] },
+    { scope: rootRef, dependencies: [items, initialOpen] },
   );
 
   const toggle = contextSafe((index: number) => {
@@ -184,6 +188,7 @@ export function FaqSection({
   description,
   tone = 'canvas',
   withSchema = false,
+  columns = 1,
 }: FaqSectionProps) {
   const groups: readonly FaqCategory[] =
     categories ??
@@ -245,7 +250,23 @@ export function FaqSection({
           </nav>
         ) : null}
 
-        <FaqAccordion key={active.id} items={active.items} name={`faq-${active.id}`} />
+        {columns === 2 && !showNav && active.items.length > 1 ? (
+          <div className="faq__columns">
+            <FaqAccordion
+              key={`${active.id}-a`}
+              items={active.items.slice(0, Math.ceil(active.items.length / 2))}
+              name={`faq-${active.id}-a`}
+            />
+            <FaqAccordion
+              key={`${active.id}-b`}
+              items={active.items.slice(Math.ceil(active.items.length / 2))}
+              name={`faq-${active.id}-b`}
+              initialOpen={-1}
+            />
+          </div>
+        ) : (
+          <FaqAccordion key={active.id} items={active.items} name={`faq-${active.id}`} />
+        )}
       </div>
     </SectionBand>
   );

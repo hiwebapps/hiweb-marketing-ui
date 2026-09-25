@@ -7,6 +7,8 @@ type SectionHeaderProps = {
   title: ReactNode;
   description?: ReactNode;
   align?: 'left' | 'center';
+  /** false quita el tope de 48rem para que el bloque use el ancho de la sección */
+  constrained?: boolean;
   tone?: 'default' | 'on-ink';
   badgeVariant?: BadgeVariant;
   className?: string;
@@ -25,6 +27,7 @@ export function SectionHeader({
   title,
   description,
   align = 'left',
+  constrained = true,
   tone = 'default',
   badgeVariant = 'purple',
   className = '',
@@ -37,7 +40,8 @@ export function SectionHeader({
   return (
     <div
       className={[
-        align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl',
+        align === 'center' ? 'mx-auto text-center' : '',
+        constrained ? 'max-w-3xl' : 'w-full max-w-none',
         className,
       ]
         .filter(Boolean)

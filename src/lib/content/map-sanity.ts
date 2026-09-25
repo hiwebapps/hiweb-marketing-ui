@@ -14,6 +14,8 @@ import type {
   ProcessPhase,
   SeoFields,
   ServiceRecord,
+  ServiceSection,
+  TitledBlock,
 } from './types';
 
 function seoOf(doc: {
@@ -67,22 +69,267 @@ export function mapIndustry(doc: Record<string, unknown>): IndustryRecord {
   };
 }
 
+function mapServicePlans(doc: Record<string, unknown>): ServiceRecord['data']['planes'] {
+  const raw = Array.isArray(doc.planes) ? doc.planes : [];
+  const plans = raw
+    .map((item) => {
+      const plan = item as { name?: string; price?: string; period?: string; featured?: boolean; includes?: string[] };
+      const includes = Array.isArray(plan.includes) ? plan.includes.map(String).filter(Boolean) : [];
+      if (!plan.name || !plan.price || !includes.length) return null;
+      return {
+        name: String(plan.name),
+        price: String(plan.price),
+        period: plan.period ? String(plan.period) : undefined,
+        featured: Boolean(plan.featured),
+        includes,
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null)
+    .slice(0, 3);
+
+  if (!plans.length || !doc.planesTitle) return undefined;
+
+  return {
+    eyebrow: String(doc.planesEyebrow ?? 'Planes'),
+    title: String(doc.planesTitle),
+    description: String(doc.planesDescription ?? ''),
+    note: String(doc.planesNote ?? ''),
+    noteHref: doc.planesNoteHref ? String(doc.planesNoteHref) : undefined,
+    noteLabel: doc.planesNoteLabel ? String(doc.planesNoteLabel) : undefined,
+    ctaLabel: String(doc.planesCtaLabel ?? 'Cotiza ahora con nosotros'),
+    ctaHref: String(doc.planesCtaHref ?? '/contacto'),
+    plans,
+  };
+}
+
+function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']['sections'] {
+  if (!Array.isArray(doc.sections)) return undefined;
+  const sections = doc.sections
+    .map((item) => {
+      const section = item as Record<string, unknown>;
+      const type = String(section._type ?? '');
+      if (type === 'serviceHero') {
+        const image = section.image as CmsImage | undefined;
+        return {
+          _type: 'serviceHero' as const,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          badge: section.badge ? String(section.badge) : undefined,
+          image: imageUrl(image) ?? undefined,
+          imageAlt: imageAlt(image),
+          ctaLabel: section.ctaLabel ? String(section.ctaLabel) : undefined,
+          ctaHref: section.ctaHref ? String(section.ctaHref) : undefined,
+        };
+      }
+      if (type === 'servicePlans') {
+        const plans = mapServicePlans({
+          planesTitle: section.title,
+          planesEyebrow: section.eyebrow,
+          planesDescription: section.description,
+          planesNote: section.note,
+          planesNoteLabel: section.noteLabel,
+          planesNoteHref: section.noteHref,
+          planesCtaLabel: section.ctaLabel,
+          planesCtaHref: section.ctaHref,
+          planes: section.plans,
+        });
+        return {
+          _type: 'servicePlans' as const,
+          eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          note: section.note ? String(section.note) : undefined,
+          noteLabel: section.noteLabel ? String(section.noteLabel) : undefined,
+          noteHref: section.noteHref ? String(section.noteHref) : undefined,
+          ctaLabel: section.ctaLabel ? String(section.ctaLabel) : undefined,
+          ctaHref: section.ctaHref ? String(section.ctaHref) : undefined,
+          plans: plans?.plans,
+        };
+      }
+      if (type === 'serviceOverview') {
+        const list = Array.isArray(section.cards) ? (section.cards as TitledBlock[]) : [];
+        return {
+          _type: 'serviceOverview' as const,
+          eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          cards: list,
+        };
+      }
+      if (type === 'serviceProcess') {
+        const steps = Array.isArray(section.steps)
+          ? (section.steps as { title?: string; description?: string; icon?: string; accent?: string }[])
+              .filter((step) => step.title)
+              .map((step) => ({
+                title: String(step.title),
+                description: String(step.description ?? ''),
+                icon: step.icon ? String(step.icon) : undefined,
+                accent: step.accent ? String(step.accent) : undefined,
+              }))
+          : [];
+        return {
+          _type: 'serviceProcess' as const,
+          eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          steps,
+        };
+      }
+      if (type === 'serviceFocus') {
+        const items = Array.isArray(section.items)
+          ? (section.items as { title?: string; summary?: string; detailTitle?: string; detail?: string; icon?: string; image?: string; imageAlt?: string }[])
+              .filter((item) => item.title && item.image)
+              .map((item) => ({
+                title: String(item.title),
+                summary: String(item.summary ?? ''),
+                detailTitle: String(item.detailTitle ?? item.title),
+                detail: String(item.detail ?? ''),
+                icon: String(item.icon ?? 'layers'),
+                image: String(item.image),
+                imageAlt: String(item.imageAlt ?? item.title),
+              }))
+          : [];
+        return {
+          _type: 'serviceFocus' as const,
+          eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          items,
+        };
+      }
+      if (type === 'serviceWhy') {
+        const cards = Array.isArray(section.cards)
+          ? (section.cards as { title?: string; description?: string; icon?: string; accent?: string }[])
+              .filter((card) => card.title)
+              .map((card) => ({
+                title: String(card.title),
+                description: String(card.description ?? ''),
+                icon: String(card.icon ?? 'spark'),
+                accent: String(card.accent ?? 'purple'),
+              }))
+          : [];
+        return {
+          _type: 'serviceWhy' as const,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          ctaLabel: section.ctaLabel ? String(section.ctaLabel) : undefined,
+          ctaHref: section.ctaHref ? String(section.ctaHref) : undefined,
+          cards,
+        };
+      }
+      if (type === 'serviceIndustries') {
+        const items = Array.isArray(section.items)
+          ? (section.items as { slug?: string; nombre?: string; taglineResolved?: string; tagline?: string; icon?: string; puntos?: string[] }[])
+              .filter((item) => item.slug)
+              .map((item) => ({
+                slug: String(item.slug),
+                nombre: String(item.nombre ?? item.slug),
+                tagline: String(item.taglineResolved ?? item.tagline ?? ''),
+                icon: item.icon ? String(item.icon) : undefined,
+                puntos: Array.isArray(item.puntos) ? item.puntos.map(String) : [],
+              }))
+          : [];
+        return {
+          _type: 'serviceIndustries' as const,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          items,
+        };
+      }
+      if (type === 'serviceCases') {
+        const items = Array.isArray(section.items)
+          ? (section.items as { id?: string; cliente?: string; resumen?: string; industria?: string; testimonio?: { quote?: string; name?: string; role?: string }; metricas?: { valor: number; label: string; prefix?: string; suffix?: string; decimals?: number }[] }[])
+              .filter((item) => item?.id)
+              .map((item) => ({
+                id: String(item.id),
+                cliente: String(item.cliente ?? ''),
+                resumen: String(item.resumen ?? ''),
+                industria: item.industria ? String(item.industria) : undefined,
+                testimonio: item.testimonio,
+                metricas: item.metricas,
+              }))
+          : [];
+        return {
+          _type: 'serviceCases' as const,
+          eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          items,
+        };
+      }
+      if (type === 'serviceCta') {
+        return {
+          _type: 'serviceCta' as const,
+          badge: section.badge ? String(section.badge) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+        };
+      }
+      if (type === 'serviceFaq') {
+        return {
+          _type: 'serviceFaq' as const,
+          eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          columns: section.columns === 1 ? 1 : 2,
+          items: Array.isArray(section.items) ? (section.items as FaqItem[]) : [],
+        };
+      }
+      if (type === 'servicePitch') {
+        return section as ServiceSection;
+      }
+      return null;
+    })
+    .filter((item): item is ServiceSection => item !== null);
+
+  return sections.length ? sections : undefined;
+}
+
 export function mapService(doc: Record<string, unknown>): ServiceRecord {
   const image = doc.heroImage as CmsImage | undefined;
+  const sections = mapServiceSections(doc);
+  const hero = sections?.find((section) => section._type === 'serviceHero');
+  const overview = sections?.find((section) => section._type === 'serviceOverview');
+  const process = sections?.find((section) => section._type === 'serviceProcess');
+  const faq = sections?.find((section) => section._type === 'serviceFaq');
+  const plansSection = sections?.find((section) => section._type === 'servicePlans');
+  const cards = Array.isArray(doc.cards) ? (doc.cards as ServiceRecord['data']['cards']) : [];
+  const proceso = Array.isArray(doc.proceso) ? (doc.proceso as ServiceRecord['data']['proceso']) : [];
+  const faqs = Array.isArray(doc.faqs) ? (doc.faqs as ServiceRecord['data']['faqs']) : [];
+  const planesFromSection =
+    plansSection?._type === 'servicePlans' && plansSection.title && plansSection.plans?.length
+      ? {
+          eyebrow: plansSection.eyebrow || 'Planes',
+          title: plansSection.title,
+          description: plansSection.description || '',
+          note: plansSection.note || '',
+          noteHref: plansSection.noteHref,
+          noteLabel: plansSection.noteLabel,
+          ctaLabel: plansSection.ctaLabel || 'Cotiza ahora con nosotros',
+          ctaHref: plansSection.ctaHref || '/contacto',
+          plans: plansSection.plans,
+        }
+      : undefined;
+
   return {
     id: String(doc.id),
     data: {
       nombre: String(doc.nombre ?? ''),
       orden: Number(doc.orden ?? 0),
       tagline: String(doc.tagline ?? ''),
-      heroTitle: String(doc.heroTitle ?? ''),
-      heroDescription: doc.heroDescription ? String(doc.heroDescription) : undefined,
-      heroImage: imageUrl(image) ?? undefined,
-      heroImageAlt: imageAlt(image),
-      heroBadge: doc.heroBadge ? String(doc.heroBadge) : undefined,
-      cards: Array.isArray(doc.cards) ? (doc.cards as ServiceRecord['data']['cards']) : [],
-      proceso: Array.isArray(doc.proceso) ? (doc.proceso as ServiceRecord['data']['proceso']) : [],
-      faqs: Array.isArray(doc.faqs) ? (doc.faqs as ServiceRecord['data']['faqs']) : [],
+      heroTitle: String(doc.heroTitle || (hero?._type === 'serviceHero' ? hero.title : '') || ''),
+      heroDescription:
+        (doc.heroDescription ? String(doc.heroDescription) : undefined) ||
+        (hero?._type === 'serviceHero' ? hero.description : undefined),
+      heroImage: imageUrl(image) ?? (hero?._type === 'serviceHero' ? hero.image : undefined),
+      heroImageAlt: imageAlt(image) || (hero?._type === 'serviceHero' ? hero.imageAlt : undefined),
+      heroBadge:
+        (doc.heroBadge ? String(doc.heroBadge) : undefined) ||
+        (hero?._type === 'serviceHero' ? hero.badge : undefined),
+      cards: cards.length ? cards : overview?._type === 'serviceOverview' ? overview.cards ?? [] : [],
+      proceso: proceso.length ? proceso : process?._type === 'serviceProcess' ? process.steps ?? [] : [],
+      faqs: faqs.length ? faqs : faq?._type === 'serviceFaq' ? faq.items ?? [] : [],
+      sections,
+      planes: mapServicePlans(doc) ?? planesFromSection,
       seo: seoOf(doc),
     },
   };

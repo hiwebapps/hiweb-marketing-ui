@@ -6,7 +6,7 @@ import {
   INDUSTRY_ICON_NAMES,
   type IndustryIconName,
 } from '../icons/IndustryIcons';
-import { Badge } from '../ui';
+import { Badge, Button } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
 import './IndustryGrid.css';
 
@@ -17,6 +17,7 @@ export type IndustryCard = {
   nombre: string;
   tagline: string;
   puntos?: string[];
+  icon?: IndustryIconName;
 };
 
 type IndustryAccent = 'purple' | 'cyan' | 'orange' | 'green';
@@ -262,11 +263,12 @@ export function IndustryGrid({
               >
                 {industries.map((item, index) => {
                   const icon =
+                    item.icon ??
                     INDUSTRY_VISUALS[item.slug]?.icon ??
                     INDUSTRY_ICON_NAMES[index % INDUSTRY_ICON_NAMES.length];
                   const accent = ACCENTS[index % ACCENTS.length];
                   const current = index === activeIndex;
-                  const puntos = (item.puntos ?? []).slice(0, 4);
+                  const puntos = item.puntos ?? [];
 
                   return (
                     <li
@@ -315,18 +317,14 @@ export function IndustryGrid({
                                     ))}
                                   </ol>
                                 ) : null}
-                                <a href={`/industrias/${item.slug}`} className="industry-slide__cta no-underline">
-                                  Ver playbook
-                                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                    <path
-                                      d="M3 8h10M9 4l4 4-4 4"
-                                      stroke="currentColor"
-                                      strokeWidth="1.5"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
-                                </a>
+                                <Button
+                                  href={`/industrias/${item.slug}`}
+                                  variant="secondary"
+                                  size="sm"
+                                  className="industry-slide__cta no-underline"
+                                >
+                                  Ver el sector
+                                </Button>
                               </div>
                             </div>
                           </div>

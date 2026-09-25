@@ -1,0 +1,235 @@
+---
+import { IndustryHero } from './IndustryHero';
+import { PillarGrid } from './PillarGrid';
+import { ServiceFocus } from './ServiceFocus';
+import { ServicePitch } from './ServicePitch';
+import { ServiceWhy } from './ServiceWhy';
+import { ServicePlans } from './ServicePlans';
+import { IndustryGrid } from './IndustryGrid';
+import { ProcessPhases } from './ProcessPhases';
+import { CaseStories } from './CaseStories';
+import { FaqSection } from './FaqSection';
+import { FinalCta } from './FinalCta';
+import { iconForServiceOverviewCard, type PillarIconName } from '../icons/PillarIcons';
+import { serviceFocusItems } from '../../data/service-focus';
+import type { ServicePitch as Pitch } from '../../data/service-pitch';
+import type { IndustryIconName } from '../icons/IndustryIcons';
+import type { ServiceIconName } from '../icons/ServiceIcons';
+import { formatCaseStat } from '../../lib/content/format';
+import type { CaseStory } from './CaseStories';
+import type { ProcessAccent, ProcessIconName } from './ProcessPhases';
+import type { ServiceRecord, ServiceSection } from '../../lib/content/types';
+
+interface Props {
+	section: ServiceSection;
+	entry: ServiceRecord;
+	pitch?: Pitch;
+	industries: { slug: string; nombre: string; tagline: string; puntos: string[] }[];
+	phases: { index: string; title: string; description: string }[];
+	stories: CaseStory[];
+	hasCases: boolean;
+}
+
+const { section, entry, pitch, industries, phases, stories, hasCases } = Astro.props;
+const nombre = entry.data.nombre;
+---
+
+{
+	section._type === 'serviceHero' && (
+		<IndustryHero
+			title={section.title || entry.data.heroTitle}
+			description={section.description || entry.data.heroDescription || entry.data.tagline}
+			image={section.image || entry.data.heroImage || `/images/services/${entry.id}-hero.jpg`}
+			imageAlt={section.imageAlt || entry.data.heroImageAlt || `Imagen de ${nombre}`}
+			badges={[{ label: section.badge || entry.data.heroBadge || nombre, variant: 'lime' }]}
+			ctaLabel={section.ctaLabel || 'Cotiza tu proyecto'}
+			ctaHref={section.ctaHref || '/contacto'}
+		/>
+	)
+}
+{
+	section._type === 'serviceOverview' && (
+		<PillarGrid
+			id="overview"
+			eyebrow={section.eyebrow || 'El servicio'}
+			title={section.title || `Cómo se entiende ${nombre}`}
+			description={section.description || entry.data.tagline}
+			pillars={(section.cards?.length ? section.cards : entry.data.cards).map((card, index) => ({
+				title: card.title,
+				description: card.description,
+				icon: iconForServiceOverviewCard(card.title, index),
+			}))}
+			tone="canvas"
+		/>
+	)
+}
+{
+	section._type === 'serviceFocus' && (
+		<ServiceFocus
+			client:visible
+			items={
+				section.items?.length
+					? section.items.map((item, index) => ({
+							id: `${entry.id}-${index}`,
+							icon: item.icon as PillarIconName,
+							title: item.title,
+							summary: item.summary,
+							detailTitle: item.detailTitle,
+							detail: item.detail,
+							image: item.image,
+							imageAlt: item.imageAlt,
+						}))
+					: serviceFocusItems(entry.id)
+			}
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			tone="canvas"
+		/>
+	)
+}
+{
+	section._type === 'servicePitch' &&
+		(section.title && section.image ? (
+			<ServicePitch
+				badge={section.badge || nombre}
+				title={section.title}
+				description={section.description || ''}
+				image={section.image}
+				imageAlt={section.imageAlt || nombre}
+				ctaLabel={section.ctaLabel || 'Agenda un diagnóstico'}
+				ctaHref={section.ctaHref || '/contacto'}
+				tone="canvas"
+			/>
+		) : pitch ? (
+			<ServicePitch {...pitch} tone="canvas" />
+		) : null)
+}
+{
+	section._type === 'serviceWhy' && (
+		<ServiceWhy
+			client:visible
+			tone="canvas"
+			title={section.title}
+			description={section.description}
+			ctaLabel={section.ctaLabel}
+			ctaHref={section.ctaHref}
+			cards={section.cards?.map((card) => ({
+				title: card.title,
+				description: card.description,
+				icon: card.icon as ServiceIconName,
+				accent: card.accent,
+			}))}
+		/>
+	)
+}
+{
+	section._type === 'servicePlans' && section.title && section.plans?.length ? (
+		<ServicePlans
+			eyebrow={section.eyebrow || 'Planes'}
+			title={section.title}
+			description={section.description || ''}
+			note={section.note || ''}
+			noteHref={section.noteHref}
+			noteLabel={section.noteLabel}
+			ctaLabel={section.ctaLabel || 'Cotiza ahora con nosotros'}
+			ctaHref={section.ctaHref || '/contacto'}
+			plans={section.plans}
+			tone="canvas"
+		/>
+	) : null
+}
+{
+	section._type === 'serviceIndustries' && (
+		<IndustryGrid
+			client:visible
+			industries={
+				section.items?.length
+					? section.items.map((item) => ({
+							slug: item.slug,
+							nombre: item.nombre,
+							tagline: item.tagline,
+							puntos: item.puntos,
+							icon: item.icon as IndustryIconName | undefined,
+						}))
+					: industries
+			}
+			title={section.title || 'Cómo se lee este servicio en cada industria'}
+			description={section.description}
+			tone="canvas"
+		/>
+	)
+}
+{
+	section._type === 'serviceProcess' && (
+		<ProcessPhases
+			client:visible
+			phases={
+				section.steps?.length
+					? section.steps.map((step, index) => ({
+							index: String(index + 1).padStart(2, '0'),
+							title: step.title,
+							description: step.description,
+							icon: step.icon as ProcessIconName | undefined,
+							accent: step.accent as ProcessAccent | undefined,
+						}))
+					: phases
+			}
+			eyebrow={section.eyebrow || 'Cómo trabajamos'}
+			title={section.title || `Proceso de ${nombre}`}
+			description={section.description || 'De la auditoría al reporte. Un sistema medible, no un paquete suelto de tácticas.'}
+			tone="canvas"
+		/>
+	)
+}
+{
+	section._type === 'serviceCases' && (
+		<CaseStories
+			client:visible
+			eyebrow={section.eyebrow || 'Casos'}
+			title={section.title || `Casos de ${nombre}`}
+			description={
+				section.description ||
+				(hasCases
+					? 'Resultados de empresas consolidadas donde este servicio fue palanca.'
+					: 'Estamos documentando más casos de este servicio. El diagnóstico sigue abierto.')
+			}
+			stories={
+				section.items?.length
+					? section.items.map(
+							(item): CaseStory => ({
+								client: item.cliente,
+								quote: item.testimonio?.quote ?? item.resumen,
+								name: item.testimonio?.name ?? item.cliente,
+								role: item.testimonio?.role ?? item.industria ?? nombre,
+								stats: (item.metricas ?? []).slice(0, 2).map(formatCaseStat),
+								href: `/portafolio/${item.id}`,
+							}),
+						)
+					: stories
+			}
+		/>
+	)
+}
+{
+	section._type === 'serviceFaq' && (
+		<FaqSection
+			client:visible
+			items={section.items?.length ? section.items : entry.data.faqs}
+			eyebrow={section.eyebrow}
+			title={section.title}
+			withSchema={false}
+			columns={section.columns === 1 ? 1 : 2}
+		/>
+	)
+}
+{
+	section._type === 'serviceCta' && (
+		<FinalCta
+			client:load
+			badge={section.badge}
+			title={section.title || `Agenda un diagnóstico de ${nombre}`}
+			description={section.description}
+		/>
+	)
+}

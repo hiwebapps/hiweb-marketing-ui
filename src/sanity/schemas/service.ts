@@ -1,11 +1,15 @@
-import { defineArrayMember, defineField, defineType } from 'sanity';
-import { imageWithAlt, seoFields, seoGroups } from './shared';
+import { defineField, defineType } from 'sanity';
+import { serviceSectionMembers } from './serviceSections';
+import { seoFields } from './shared';
 
 export const service = defineType({
   name: 'service',
   title: 'Servicio',
   type: 'document',
-  groups: seoGroups,
+  groups: [
+    { name: 'content', title: 'Secciones', default: true },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'nombre',
@@ -38,47 +42,21 @@ export const service = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'heroTitle',
-      title: 'Título hero',
-      type: 'string',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'heroDescription',
-      title: 'Descripción hero',
-      type: 'text',
-      rows: 4,
-      group: 'content',
-    }),
-    imageWithAlt({ name: 'heroImage', title: 'Imagen hero', group: 'content' }),
-    defineField({
-      name: 'heroBadge',
-      title: 'Badge hero',
-      type: 'string',
-      group: 'content',
-    }),
-    defineField({
-      name: 'cards',
-      title: 'Cards de overview',
+      name: 'sections',
+      title: 'Secciones',
       type: 'array',
       group: 'content',
-      of: [defineArrayMember({ type: 'titledBlock' })],
-      validation: (rule) => rule.min(3).max(3),
-    }),
-    defineField({
-      name: 'proceso',
-      title: 'Proceso',
-      type: 'array',
-      group: 'content',
-      of: [defineArrayMember({ type: 'titledBlock' })],
-    }),
-    defineField({
-      name: 'faqs',
-      title: 'FAQs',
-      type: 'array',
-      group: 'content',
-      of: [defineArrayMember({ type: 'faqItem' })],
+      description: 'Mini page builder: añade, reordena o quita componentes de la página.',
+      of: serviceSectionMembers,
+      options: {
+        insertMenu: { filter: true, views: [{ name: 'list' }] },
+      },
+      validation: (rule) =>
+        rule.custom((sections) => {
+          const types = (sections ?? []).map((section) => section._type);
+          const duplicate = types.find((type, index) => types.indexOf(type) !== index);
+          return duplicate ? 'Cada sección solo puede aparecer una vez.' : true;
+        }),
     }),
     ...seoFields,
   ],
@@ -90,6 +68,6 @@ export const service = defineType({
     },
   ],
   preview: {
-    select: { title: 'nombre', subtitle: 'tagline', media: 'heroImage' },
+    select: { title: 'nombre', subtitle: 'tagline', media: 'sections.0.image' },
   },
 });

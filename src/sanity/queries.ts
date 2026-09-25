@@ -16,6 +16,99 @@ const seoProjection = /* groq */ `
   ogImage ${imageProjection}
 `;
 
+const serviceSectionsProjection = /* groq */ `
+  sections[]{
+    _type,
+    _key,
+    _type == "serviceHero" => {
+      title,
+      description,
+      badge,
+      image ${imageProjection},
+      ctaLabel,
+      ctaHref
+    },
+    _type == "serviceOverview" => {
+      eyebrow,
+      title,
+      description,
+      cards[]{ title, description }
+    },
+    _type == "serviceFocus" => {
+      eyebrow,
+      title,
+      description,
+      items[]{ title, summary, detailTitle, detail, icon, image, imageAlt }
+    },
+    _type == "servicePitch" => {
+      badge,
+      title,
+      description,
+      image,
+      imageAlt,
+      ctaLabel,
+      ctaHref
+    },
+    _type == "serviceWhy" => {
+      title,
+      description,
+      ctaLabel,
+      ctaHref,
+      cards[]{ title, description, icon, accent }
+    },
+    _type == "servicePlans" => {
+      eyebrow,
+      title,
+      description,
+      note,
+      noteLabel,
+      noteHref,
+      ctaLabel,
+      ctaHref,
+      plans[]{ name, price, period, featured, includes }
+    },
+    _type == "serviceIndustries" => {
+      title,
+      description,
+      items[]{
+        title,
+        tagline,
+        icon,
+        "slug": industry->slug.current,
+        "nombre": coalesce(title, industry->nombre),
+        "taglineResolved": coalesce(tagline, industry->tagline),
+        "puntos": coalesce(puntos, industry->porQue[].title)
+      }
+    },
+    _type == "serviceProcess" => {
+      eyebrow,
+      title,
+      description,
+      steps[]{ title, description, icon, accent }
+    },
+    _type == "serviceCases" => {
+      eyebrow,
+      title,
+      description,
+      items[]->{
+        "id": slug.current,
+        cliente,
+        resumen,
+        "industria": industria->nombre,
+        testimonio{ quote, name, role },
+        metricas[]{ valor, label, prefix, suffix, decimals }
+      }
+    },
+    _type == "serviceFaq" => {
+      eyebrow,
+      title,
+      columns,
+      items[]{ question, answer }
+    },
+    _type == "serviceCta" => { badge, title, description }
+  }
+`;
+
 export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
   name,
   legalName,
@@ -167,6 +260,16 @@ export const servicesQuery = defineQuery(`*[
   cards[]{ title, description },
   proceso[]{ title, description },
   faqs[]{ question, answer },
+  planesEyebrow,
+  planesTitle,
+  planesDescription,
+  planesNote,
+  planesNoteLabel,
+  planesNoteHref,
+  planesCtaLabel,
+  planesCtaHref,
+  planes[]{ name, price, period, featured, includes },
+  ${serviceSectionsProjection},
   ${seoProjection}
 }`);
 
@@ -184,6 +287,16 @@ export const serviceBySlugQuery = defineQuery(`*[
   cards[]{ title, description },
   proceso[]{ title, description },
   faqs[]{ question, answer },
+  planesEyebrow,
+  planesTitle,
+  planesDescription,
+  planesNote,
+  planesNoteLabel,
+  planesNoteHref,
+  planesCtaLabel,
+  planesCtaHref,
+  planes[]{ name, price, period, featured, includes },
+  ${serviceSectionsProjection},
   ${seoProjection}
 }`);
 
@@ -193,7 +306,7 @@ export const casesQuery = defineQuery(`*[
   "id": slug.current,
   cliente,
   "industria": { "id": industria->slug.current },
-  "servicios": servicios[]->{ "id": slug.current, nombre, heroImage ${imageProjection} },
+  "servicios": servicios[]->{ "id": slug.current, nombre, "heroImage": coalesce(heroImage, sections[_type == "serviceHero"][0].image) ${imageProjection} },
   resultadoFrase,
   titulo,
   resumen,
@@ -213,7 +326,7 @@ export const caseBySlugQuery = defineQuery(`*[
   "id": slug.current,
   cliente,
   "industria": { "id": industria->slug.current },
-  "servicios": servicios[]->{ "id": slug.current, nombre, heroImage ${imageProjection} },
+  "servicios": servicios[]->{ "id": slug.current, nombre, "heroImage": coalesce(heroImage, sections[_type == "serviceHero"][0].image) ${imageProjection} },
   resultadoFrase,
   titulo,
   resumen,
