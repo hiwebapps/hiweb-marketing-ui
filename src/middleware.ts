@@ -4,7 +4,12 @@ import { ROBOTS_NOINDEX, shouldNoIndex } from './lib/seo';
 /** Belt-and-suspenders: X-Robots-Tag while PUBLIC_SITE_INDEXABLE is off (and always on non-live hosts). */
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
-  if (pathname.startsWith('/en/') && pathname !== '/en/') {
+  const englishSection =
+    pathname === '/en/servicios' ||
+    pathname.startsWith('/en/servicios/') ||
+    pathname === '/en/industrias' ||
+    pathname.startsWith('/en/industrias/');
+  if (pathname.startsWith('/en/') && pathname !== '/en/' && !englishSection) {
     return context.redirect('/en');
   }
 

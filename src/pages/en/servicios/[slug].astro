@@ -1,0 +1,167 @@
+---
+export const prerender = true;
+
+import Layout from '../../../layouts/Layout.astro';
+import { formatCaseStat } from '../../../lib/content/format';
+import { getCases, getIndustries, serviceStaticPaths } from '../../../lib/content';
+import { IndustryHero } from '../../../components/sections/IndustryHero';
+import { PillarGrid } from '../../../components/sections/PillarGrid';
+import { ServiceFocus } from '../../../components/sections/ServiceFocus';
+import { ServicePitch } from '../../../components/sections/ServicePitch';
+import { ServiceWhy } from '../../../components/sections/ServiceWhy';
+import { ServicePlans } from '../../../components/sections/ServicePlans';
+import { IndustryGrid } from '../../../components/sections/IndustryGrid';
+import { ProcessPhases } from '../../../components/sections/ProcessPhases';
+import { CaseStories } from '../../../components/sections/CaseStories';
+import { FaqSection } from '../../../components/sections/FaqSection';
+import { FinalCta } from '../../../components/sections/FinalCta';
+import ServicePageSection from '../../../components/sections/ServicePageSection.astro';
+import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
+import type { BadgeVariant } from '../../../components/ui';
+import { iconForServiceOverviewCard } from '../../../components/icons/PillarIcons';
+import { serviceFocusItems } from '../../../data/service-focus';
+import { servicePitch } from '../../../data/service-pitch';
+import { servicePlans } from '../../../data/service-plans';
+import type { ServiceRecord, ServiceSection } from '../../../lib/content/types';
+import '../../../components/sections/CaseStories.css';
+
+export async function getStaticPaths() {
+	return serviceStaticPaths('en');
+}
+
+interface Props {
+	entry: ServiceRecord;
+}
+
+const { entry } = Astro.props;
+const industries = await getIndustries();
+const cases = (await getCases()).filter((item) =>
+	item.data.servicios.some((ref) => ref.id === entry.id),
+);
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+const phases = entry.data.proceso.map((step, index) => ({
+	index: String(index + 1).padStart(2, '0'),
+	title: step.title,
+	description: step.description,
+}));
+
+const serviceHeroBadges: { label: string; variant: BadgeVariant }[] = [
+	{ label: entry.data.heroBadge ?? entry.data.nombre, variant: 'lime' },
+];
+
+const serviceOverviewPillars = entry.data.cards.map((card, index) => ({
+	title: card.title,
+	description: card.description,
+	icon: iconForServiceOverviewCard(card.title, index),
+}));
+
+const pitch = servicePitch(entry.id);
+const plans = entry.data.planes ?? servicePlans(entry.id);
+const sections = entry.data.sections ?? [];
+const faqFromSections = sections.find((section) => section._type === 'serviceFaq');
+const pageFaqs = faqFromSections?._type === 'serviceFaq' && faqFromSections.items?.length
+  ? faqFromSections.items
+  : entry.data.faqs;
+
+const caseStories = cases.map((item) => ({
+	client: item.data.cliente,
+	quote: item.data.testimonio?.quote ?? item.data.resumen,
+	name: item.data.testimonio?.name ?? item.data.cliente,
+	role: item.data.testimonio?.role ?? industryName[item.data.industria.id] ?? entry.data.nombre,
+	stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
+	href: `/portafolio/${item.id}`,
+}));
+---
+
+<Layout
+	lang="en"
+	title={entry.data.seo?.metaTitle ?? `${entry.data.nombre} — Hiweb Marketing`}
+	description={entry.data.seo?.metaDescription ?? entry.data.tagline}
+	ogImage={entry.data.seo?.ogImage ?? entry.data.heroImage}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Home', href: '/en' },
+			{ name: 'Services', href: '/en/servicios' },
+			{ name: entry.data.nombre, href: `/en/servicios/${entry.id}` },
+		]),
+		faqSchema(pageFaqs),
+	]}
+>
+	<main>
+		{sections.length ? (
+			sections.map((section) => (
+				<ServicePageSection
+					key={section._type}
+					section={section}
+					entry={entry}
+					pitch={pitch}
+					industries={industries.map((item) => ({
+						slug: item.id,
+						nombre: item.data.nombre,
+						tagline: item.data.tagline,
+						puntos: item.data.porQue.map((punto) => punto.title),
+					}))}
+					phases={phases}
+					stories={caseStories}
+					hasCases={cases.length > 0}
+				/>
+			))
+		) : (
+			<>
+				<IndustryHero
+					title={entry.data.heroTitle}
+					description={entry.data.heroDescription ?? entry.data.tagline}
+					image={entry.data.heroImage ?? `/images/services/${entry.id}-hero.jpg`}
+					imageAlt={entry.data.heroImageAlt ?? `Imagen de ${entry.data.nombre}`}
+					badges={serviceHeroBadges}
+					ctaLabel="Cotiza tu proyecto"
+					ctaHref="/contacto"
+				/>
+				<PillarGrid
+					id="overview"
+					eyebrow="El servicio"
+					title={`Cómo se entiende ${entry.data.nombre}`}
+					description={entry.data.tagline}
+					pillars={serviceOverviewPillars}
+					tone="canvas"
+				/>
+				<ServiceFocus client:visible items={serviceFocusItems(entry.id)} tone="canvas" />
+				{pitch ? <ServicePitch {...pitch} tone="canvas" /> : null}
+				{entry.id === 'seo' ? <ServiceWhy client:visible tone="canvas" /> : null}
+				{plans ? <ServicePlans {...plans} tone="canvas" /> : null}
+				<IndustryGrid
+					client:visible
+					industries={industries.map((item) => ({
+						slug: item.id,
+						nombre: item.data.nombre,
+						tagline: item.data.tagline,
+						puntos: item.data.porQue.map((punto) => punto.title),
+					}))}
+					title="Cómo se lee este servicio en cada industria"
+					tone="canvas"
+				/>
+				<ProcessPhases
+					client:visible
+					phases={phases}
+					eyebrow="Cómo trabajamos"
+					title={`Proceso de ${entry.data.nombre}`}
+					description="De la auditoría al reporte. Un sistema medible, no un paquete suelto de tácticas."
+					tone="canvas"
+				/>
+				<CaseStories
+					client:visible
+					eyebrow="Casos"
+					title={`Casos de ${entry.data.nombre}`}
+					description={
+						cases.length
+							? 'Resultados de empresas consolidadas donde este servicio fue palanca.'
+							: 'Estamos documentando más casos de este servicio. El diagnóstico sigue abierto.'
+					}
+					stories={caseStories}
+				/>
+				<FaqSection client:visible items={entry.data.faqs} withSchema={false} columns={2} />
+				<FinalCta client:load title={`Agenda un diagnóstico de ${entry.data.nombre}`} />
+			</>
+		)}
+	</main>
+</Layout>

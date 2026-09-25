@@ -276,7 +276,7 @@ export const aboutPageQuery = defineQuery(`*[_type == "aboutPage" && _id == "abo
 }`);
 
 export const industriesQuery = defineQuery(`*[
-  _type == "industry" && defined(slug.current)
+  _type == "industry" && defined(slug.current) && coalesce(locale, "es") == $locale
 ] | order(orden asc) {
   "id": slug.current,
   nombre,
@@ -289,6 +289,19 @@ export const industriesQuery = defineQuery(`*[
   retos,
   porQue[]{ title, description },
   faqs[]{ question, answer },
+  heroCtaLabel,
+  whyEyebrow,
+  whyTitle,
+  servicesTitle,
+  servicesDescription,
+  servicesCtaLabel,
+  servicesTag,
+  casesEyebrow,
+  casesTitle,
+  casesDescription,
+  casesEmpty,
+  faqTitle,
+  closingTitle,
   serviceBlurbs[]{
     "serviceSlug": service->slug.current,
     description
@@ -297,7 +310,7 @@ export const industriesQuery = defineQuery(`*[
 }`);
 
 export const industryBySlugQuery = defineQuery(`*[
-  _type == "industry" && slug.current == $slug
+  _type == "industry" && slug.current == $slug && coalesce(locale, "es") == $locale
 ][0]{
   "id": slug.current,
   nombre,
@@ -310,6 +323,19 @@ export const industryBySlugQuery = defineQuery(`*[
   retos,
   porQue[]{ title, description },
   faqs[]{ question, answer },
+  heroCtaLabel,
+  whyEyebrow,
+  whyTitle,
+  servicesTitle,
+  servicesDescription,
+  servicesCtaLabel,
+  servicesTag,
+  casesEyebrow,
+  casesTitle,
+  casesDescription,
+  casesEmpty,
+  faqTitle,
+  closingTitle,
   serviceBlurbs[]{
     "serviceSlug": service->slug.current,
     description
@@ -317,8 +343,22 @@ export const industryBySlugQuery = defineQuery(`*[
   ${seoProjection}
 }`);
 
+export const industriesIndexQuery = defineQuery(`*[
+  _type == "industriesIndex" && _id == $id
+][0]{
+  eyebrow,
+  title,
+  description,
+  whyEyebrow,
+  whyTitle,
+  closingTitle,
+  cardCtaLabel,
+  pillars[]{ title, description },
+  ${seoProjection}
+}`);
+
 export const servicesQuery = defineQuery(`*[
-  _type == "service" && defined(slug.current)
+  _type == "service" && defined(slug.current) && coalesce(locale, "es") == $locale
 ] | order(orden asc) {
   "id": slug.current,
   nombre,
@@ -345,7 +385,7 @@ export const servicesQuery = defineQuery(`*[
 }`);
 
 export const serviceBySlugQuery = defineQuery(`*[
-  _type == "service" && slug.current == $slug
+  _type == "service" && slug.current == $slug && coalesce(locale, "es") == $locale
 ][0]{
   "id": slug.current,
   nombre,

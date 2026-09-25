@@ -1,0 +1,236 @@
+{
+  "manufactura": {
+    "nombre": "Manufacturing",
+    "lower": "manufacturing",
+    "tagline": "Qualified demand for plants that can no longer rely on referrals.",
+    "heroBadge": "B2B pipeline",
+    "heroTitle": "Marketing for manufacturing: a B2B pipeline with industrial judgment.",
+    "heroDescription": "We speak the language of the plant, long cycles, and buying committees. Paid, SEO, and web in service of quotes that sales can actually close.",
+    "metaTitle": "Manufacturing — Hiweb Marketing",
+    "metaDescription": "We speak the language of the plant, long cycles, and buying committees. Paid, SEO, and web in service of quotes that sales can actually close.",
+    "retos": [
+      "Long sales cycles with multiple decision makers.",
+      "A technical offer that does not make sense outside the plant.",
+      "Dependence on trade shows, referrals, and one heroic salesperson."
+    ],
+    "porQue": [
+      { "title": "A message for the committee, not for likes", "description": "We translate specs into an offer that purchasing, operations, and leadership can say yes to." },
+      { "title": "Channels with an industrial signal", "description": "LinkedIn, Google, and web as one system. Fewer empty MQLs; more RFQs." },
+      { "title": "Verifiable proof", "description": "Cases from established plants, not weekend workshops." }
+    ],
+    "faqs": [
+      { "question": "What kind of plant is Hiweb for?", "answer": "Plants and industrial groups that already invest in marketing and need qualified demand: a message for the committee, paid, web, and CRM as a system — not a trade-show calendar." },
+      { "question": "What does the working process look like?", "answer": "An audit of the offer and channels, a map of levers, and short cycles. The order comes from the diagnosis, not a generic manufacturing package." },
+      { "question": "How long until we see results in a B2B cycle?", "answer": "A map in days, first experiments in 2–4 weeks, and a reading of RFQs and pipeline in 60–90 day cycles. Industrial demand is not measured in likes." },
+      { "question": "Does Meta Ads work for manufacturing?", "answer": "As brand support, sometimes. The core is usually Google, LinkedIn, and a website that qualifies. The diagnosis decides it account by account." },
+      { "question": "Do you work with exporters?", "answer": "Yes. We operate cross-border and adapt message and tracking to markets, not just to one country." },
+      { "question": "Is there a minimum investment?", "answer": "Yes. The minimum is shared in the audit to protect focus and quality, without pricing theater on the page." }
+    ],
+    "blurbs": {
+      "branding": "A message and visual system that survive a technical pitch. The brand stops sounding like a generic trade show.",
+      "community-manager": "An operating presence in the channels where your buyer shows up — with plant judgment, not an empty calendar.",
+      "crm-automatizacion": "RFQ events, account scoring, and a clean handoff to sales. Tracking a B2B cycle actually needs.",
+      "desarrollo-web": "A site that translates specs into a clear offer: landing pages, catalog, and quote paths the committee understands.",
+      "google-ads": "Campaigns anchored to quotes and industrial intent. Less CPC theater; more leads the committee can close.",
+      "ia-marketing": "AI to speed up technical briefs, variants, and reports — always with a senior human validating the claim.",
+      "meta-ads": "Brand support when it fits. Manufacturing’s core is usually search and LinkedIn; Meta does not improvise the pipeline.",
+      "redes-sociales": "Content that talks about the plant, specs, and proof — not empty engagement. LinkedIn and web as a system toward RFQs.",
+      "seo": "Capture searches from buyers and engineers when they are already looking for a supplier. Technical hubs that qualify before sales."
+    }
+  },
+  "salud": {
+    "nombre": "Healthcare",
+    "lower": "healthcare",
+    "tagline": "Ethical demand for clinics and medical groups that protect their reputation.",
+    "heroBadge": "Qualified appointments",
+    "heroTitle": "Healthcare marketing: qualified patients, without discount theater.",
+    "heroDescription": "Campaigns, SEO, and web with compliance and a clinical tone. More high-value appointments; less noise that damages the medical brand.",
+    "metaTitle": "Healthcare — Hiweb Marketing",
+    "metaDescription": "Campaigns, SEO, and web with compliance and a clinical tone. More high-value appointments; less noise that damages the medical brand.",
+    "retos": [
+      "Regulation and claims that cannot be improvised.",
+      "Competition by specialty in the same city.",
+      "Schedules full of visits that never convert to treatment."
+    ],
+    "porQue": [
+      { "title": "A clinical tone, not a marketplace tone", "description": "Copy, creatives, and landing pages aligned with the ethics of the practice." },
+      { "title": "Acquisition with a filter", "description": "SEO + paid + CRM to book the right patient, not just anyone." },
+      { "title": "Reputation as an asset", "description": "Reviews, content, and community that hold the brand between campaigns." }
+    ],
+    "faqs": [
+      { "question": "What kind of clinic or group is Hiweb for?", "answer": "Established practices and groups that already invest in acquisition and need high-value patients, with a clinical tone and a protected reputation." },
+      { "question": "What does the working process look like?", "answer": "An audit of the offer, channels, and compliance, a map of levers, and short cycles. The order comes from the diagnosis, not a generic healthcare package." },
+      { "question": "How long until we see results?", "answer": "A map in days, first experiments in 2–4 weeks, and a reading of qualified appointments in 60–90 day cycles." },
+      { "question": "Can you work with several locations?", "answer": "Yes. We structure campaigns and analytics by location / specialty so the signal does not get mixed." },
+      { "question": "Do you produce medical content?", "answer": "We produce the architecture and the message. Clinical claims are validated by the client’s medical team." },
+      { "question": "Is there a minimum investment?", "answer": "Yes. The minimum is shared in the audit to protect focus and quality, without pricing theater on the page." }
+    ],
+    "blurbs": {
+      "branding": "An identity that conveys care and authority. One language across the office, ads, and front desk.",
+      "community-manager": "Community and replies with a protocol: education, referrals, and a tone that protects the clinical brand.",
+      "crm-automatizacion": "Reminders, lead scoring, and a CRM aligned to the schedule — fewer no-shows, more patients who arrive.",
+      "desarrollo-web": "A site with clear paths to booking: specialties, physicians, and social proof that reduces friction.",
+      "google-ads": "Search for specialties and real urgencies. Landing page + tracking toward a confirmed appointment.",
+      "ia-marketing": "AI for scripts, FAQs, and variants — reviewed with medical-marketing judgment before publishing.",
+      "meta-ads": "Local reach and remarketing with creatives that respect a clinical tone. The goal is appointments, not vanity.",
+      "redes-sociales": "Credentialed clinical content that builds trust and bookings — without claims that put compliance at risk.",
+      "seo": "Patient and referrer intent: symptoms, treatments, and location. Pages that fill a qualified schedule."
+    }
+  },
+  "inmobiliarias": {
+    "nombre": "Real Estate",
+    "lower": "real estate",
+    "tagline": "Leads for real inventory, not empty forms.",
+    "heroBadge": "Real visits",
+    "heroTitle": "Real estate marketing: traffic that visits, not traffic that only likes.",
+    "heroDescription": "Paid, SEO, and CRM for established developments and brokers. We qualify purchase intent and speed the close with the right inventory.",
+    "metaTitle": "Real Estate — Hiweb Marketing",
+    "metaDescription": "Paid, SEO, and CRM for established developments and brokers. We qualify purchase intent and speed the close with the right inventory.",
+    "retos": [
+      "High cost per lead and low visits to the sales gallery.",
+      "Inventory that cannot be explained in a 15-second ad.",
+      "Slow follow-up between marketing and advisors."
+    ],
+    "porQue": [
+      { "title": "An offer by unit type, not by a generic area", "description": "Each campaign points at one inventory and one buyer, not at “real estate in the city.”" },
+      { "title": "A CRM that does not let the lead go cold", "description": "Automation and a handoff to the advisor with context, not a spreadsheet." },
+      { "title": "Proof on live developments", "description": "Cases of real inventory, with visits and reservations — not vanity metrics." }
+    ],
+    "faqs": [
+      { "question": "What kind of real estate company is Hiweb for?", "answer": "Established developers and brokers that already invest in acquisition and need visits to real inventory, not empty forms." },
+      { "question": "What does the working process look like?", "answer": "An audit of the offer, channels, and CRM, a map of levers, and short cycles. The order comes from the diagnosis, not a generic real estate package." },
+      { "question": "How long until we see results?", "answer": "A map in days, first experiments in 2–4 weeks, and a reading of visits and reservations in 60–90 day cycles." },
+      { "question": "Does this work for brokers and for developers?", "answer": "Yes. The system changes: the broker sells relationship and mixed inventory; the developer sells a master plan. The diagnosis separates them." },
+      { "question": "Do you integrate portals and CRM?", "answer": "We prioritize the stack they already use. The goal is one signal, not another tool nobody opens." },
+      { "question": "Is there a minimum investment?", "answer": "Yes. The minimum is shared in the audit to protect focus and quality, without pricing theater on the page." }
+    ],
+    "blurbs": {
+      "branding": "A development brand that stays coherent across render, sales gallery, and digital. The claim survives the tour.",
+      "community-manager": "A presence that answers leads and shows construction progress — at a launch pace, not filler.",
+      "crm-automatizacion": "A prospect pipeline, visit follow-up, and automations the closer actually uses.",
+      "desarrollo-web": "A project site with unit sheets, amenities, and a CTA to visit. Speed and clarity to close the tour.",
+      "google-ads": "Search + Performance Max anchored to units and locations. Fewer cold leads; more scheduled tours.",
+      "ia-marketing": "AI for unit sheets, ad variants, and copy by typology — with a human validating price and offer.",
+      "meta-ads": "Prospecting and retargeting for developments with product creatives. KPI: visits and qualified leads.",
+      "redes-sociales": "Inventory and lifestyle with a project narrative. Content that pushes real visits, not just saves.",
+      "seo": "SEO for developments, areas, and typologies. Capture demand when the buyer is already searching in your market."
+    }
+  },
+  "turismo-hoteleria": {
+    "nombre": "Tourism / Hospitality",
+    "lower": "tourism and hospitality",
+    "tagline": "Occupancy and rate with a brand, not only with OTAs.",
+    "heroBadge": "Direct booking",
+    "heroTitle": "Hotel marketing: direct demand with the discipline of a revenue meeting.",
+    "heroDescription": "SEO, Meta, Google, and web for groups and properties that want to reduce dependence on OTAs without losing occupancy.",
+    "metaTitle": "Tourism / Hospitality — Hiweb Marketing",
+    "metaDescription": "SEO, Meta, Google, and web for groups and properties that want to reduce dependence on OTAs without losing occupancy.",
+    "retos": [
+      "OTA commission that eats the margin.",
+      "Seasonality read poorly, and generic creatives.",
+      "A slow site that does not close the booking the ad promised."
+    ],
+    "porQue": [
+      { "title": "Direct as a channel, not as a wish", "description": "Paid + SEO + a measurable booking path. Less abstract “hotel branding.”" },
+      { "title": "An offer by season and segment", "description": "Families, MICE, luxury, or leisure — each with a message and a landing page." },
+      { "title": "Operation in the destination", "description": "Presence in Cancún and the southeast. We understand the inventory, not only the ad." }
+    ],
+    "faqs": [
+      { "question": "What kind of hotel or group is Hiweb for?", "answer": "Established properties and groups that already invest in occupancy and want measurable direct demand, without turning off the channel that fills rooms today." },
+      { "question": "What does the working process look like?", "answer": "An audit of the offer, OTAs, and booking path, a map of levers, and short cycles. The order comes from the diagnosis, not a generic hotel package." },
+      { "question": "How long until we see results?", "answer": "A map in days, first experiments in 2–4 weeks, and a reading of direct bookings and rate in 60–90 day cycles." },
+      { "question": "Do you replace OTAs?", "answer": "Not overnight. We reduce dependence with measurable direct demand, without turning off the channel that fills rooms today." },
+      { "question": "Do you work with one hotel or with groups?", "answer": "Both. For groups we structure an umbrella brand and performance by property." },
+      { "question": "Is there a minimum investment?", "answer": "Yes. The minimum is shared in the audit to protect focus and quality, without pricing theater on the page." }
+    ],
+    "blurbs": {
+      "branding": "A hotel brand that stays coherent across the property, paid, and web. A promise the front desk can keep.",
+      "community-manager": "Community and UGC at a seasonal pace. Replies that protect review score and brand.",
+      "crm-automatizacion": "Guest CRM, upsell, and post-stay remarketing. A signal that feeds repeat occupancy.",
+      "desarrollo-web": "A fast booking path: rooms, packages, and checkout without friction that eats conversion.",
+      "google-ads": "Hotel Ads / search toward the property’s own booking. Message and landing page aligned to occupancy and ADR.",
+      "ia-marketing": "AI for campaign variants and copy by segment — with revenue validating the offer and dates.",
+      "meta-ads": "Prospecting and retargeting of stays with property creatives. The goal: direct nights.",
+      "redes-sociales": "Experience and availability content that pushes direct booking — less dependence on OTAs.",
+      "seo": "SEO for destination, room types, and seasons. Pages that capture travel intent before the OTA."
+    }
+  },
+  "restaurantes": {
+    "nombre": "Restaurants",
+    "lower": "restaurants",
+    "tagline": "Reservations and average ticket, not just reach on Reels.",
+    "heroBadge": "Tables and ticket",
+    "heroTitle": "Restaurant marketing: full tables with a brand that holds.",
+    "heroDescription": "Content, paid, and reputation for established groups and concepts. Less vanity; more covers and repeat visits.",
+    "metaTitle": "Restaurants — Hiweb Marketing",
+    "metaDescription": "Content, paid, and reputation for established groups and concepts. Less vanity; more covers and repeat visits.",
+    "retos": [
+      "Constant content with no system and no clear offer.",
+      "Paid that brings coupon hunters, not high-ticket guests.",
+      "Reviews and Google Business neglected while media is being paid for."
+    ],
+    "porQue": [
+      { "title": "An offer by service, not by a single dish", "description": "Business lunch, dinner, events — each with a CTA and tracking." },
+      { "title": "Local + paid on the same map", "description": "Local SEO, Meta, and reputation as one system, not three vendors." },
+      { "title": "Groups, not pop-ups", "description": "We work with established operations that can absorb the demand." }
+    ],
+    "faqs": [
+      { "question": "What kind of restaurant is Hiweb for?", "answer": "Established groups and concepts that already invest in marketing and need covers and ticket, not just reach on Reels." },
+      { "question": "What does the working process look like?", "answer": "An audit of the offer, reputation, and channels, a map of levers, and short cycles. The order comes from the diagnosis, not a generic calendar." },
+      { "question": "How long until we see results?", "answer": "A map in days, first experiments in 2–4 weeks, and a reading of reservations and repeat visits in 60–90 day cycles." },
+      { "question": "Do you do community every day?", "answer": "Yes, when the diagnosis asks for it. Community is tied to reservations and reputation, not a decorative calendar." },
+      { "question": "Does this work for a single location?", "answer": "If the operation is established, yes. If they are still validating the concept, we wait." },
+      { "question": "Is there a minimum investment?", "answer": "Yes. The minimum is shared in the audit to protect focus and quality, without pricing theater on the page." }
+    ],
+    "blurbs": {
+      "branding": "A brand identity you can feel in the dining room, packaging, and ads. One tone of experience.",
+      "community-manager": "Community at the pace of the menu and events. Replies that turn DMs into tables.",
+      "crm-automatizacion": "Guest CRM, reservations, and recurrence campaigns. Fewer no-shows; more repeat ticket.",
+      "desarrollo-web": "A web / digital menu with reservation and order. Fast on mobile, clear on hours and location.",
+      "google-ads": "Search + Local that captures hunger with intent. A landing page to reserve or order, without detours.",
+      "ia-marketing": "AI for dish creatives and daily variants — with the chef / marketing validating the claim.",
+      "meta-ads": "Local campaigns toward reservation and owned delivery. Offer creatives with a tables / ticket KPI.",
+      "redes-sociales": "Dish, atmosphere, and social-proof content that moves tables — not just food-porn likes.",
+      "seo": "Local and menu SEO: “near me,” specialties, and events. Demand that fills the service."
+    }
+  },
+  "saas": {
+    "nombre": "Software (SaaS)",
+    "lower": "software",
+    "tagline": "Qualified demos for products that can no longer improvise the pipeline.",
+    "heroBadge": "Qualified demos",
+    "heroTitle": "SaaS marketing: message, paid, and web as one demo system.",
+    "heroDescription": "Positioning, performance, and web product for B2B teams that need a predictable pipeline — not theater MQLs.",
+    "metaTitle": "Software (SaaS) — Hiweb Marketing",
+    "metaDescription": "Positioning, performance, and web product for B2B teams that need a predictable pipeline — not theater MQLs.",
+    "retos": [
+      "A complex offer that sales cannot repeat.",
+      "Paid that fills the CRM with accounts that will never buy.",
+      "A feature website with no clear reason to book."
+    ],
+    "porQue": [
+      { "title": "An offer that is understood in seconds", "description": "Positioning and social proof aligned. Fewer slides; more decisions." },
+      { "title": "Paid with product judgment", "description": "Hypotheses in creatives, a hard ICP, and a reading of the signal — not a blind budget." },
+      { "title": "The website closes the same promise", "description": "Landing pages and app marketing as an extension of the message, not a brochure." }
+    ],
+    "faqs": [
+      { "question": "What kind of SaaS is Hiweb for?", "answer": "Established B2B products that already invest in pipeline and need qualified demos: message, paid, and web as one system." },
+      { "question": "What does the working process look like?", "answer": "An audit of the offer, paid, and web, a map of levers, and short cycles. The order comes from the diagnosis, not a generic growth package." },
+      { "question": "How long until we see results?", "answer": "A map in days, first experiments in 2–4 weeks, and a reading of demos and pipeline in 60–90 day cycles." },
+      { "question": "Do you work PLG and sales-led?", "answer": "Sales-led and hybrid. If the product still has no clear ICP, the diagnosis says so quickly." },
+      { "question": "Do you integrate HubSpot or another CRM?", "answer": "Yes. The criterion is one source of truth for marketing and sales, not another cosmetic integration." },
+      { "question": "Is there a minimum investment?", "answer": "Yes. The minimum is shared in the audit to protect focus and quality, without pricing theater on the page." }
+    ],
+    "blurbs": {
+      "branding": "Positioning and a visual system that survive an enterprise sales deck. Claim + proof aligned.",
+      "community-manager": "A community of users and advocates at the pace of the release — brand support, not spam.",
+      "crm-automatizacion": "Lifecycle, MQL→SQL scoring, and handoff to the AE. Events the SaaS pipeline actually reads.",
+      "desarrollo-web": "A web / product marketing site: use cases, clear pricing, and a path to demo without friction.",
+      "google-ads": "Search and remarketing toward demo / trial. A message anchored to the outcome, not loose features.",
+      "ia-marketing": "AI for landing, ad, and nurture copy — with PMM validating the claim and compliance.",
+      "meta-ads": "Selective retargeting and awareness. The SaaS core is usually search + LinkedIn; Meta supports, it does not improvise.",
+      "redes-sociales": "Product narrative and proof that feed demos — LinkedIn / X with an ICP, not startup vanity.",
+      "seo": "SEO for categories, use cases, and comparisons. Capture intent when the buyer is evaluating the stack."
+    }
+  }
+}

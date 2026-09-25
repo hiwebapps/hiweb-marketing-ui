@@ -5,6 +5,7 @@ import {
   casesQuery,
   homePageEnQuery,
   homePageQuery,
+  industriesIndexQuery,
   industriesQuery,
   industryBySlugQuery,
   landingBySlugQuery,
@@ -52,20 +53,62 @@ async function fetchOne<T>(
   return map(data);
 }
 
-export async function sanityIndustries(): Promise<IndustryRecord[]> {
-  return fetchList(industriesQuery, mapIndustry);
+export async function sanityIndustries(locale: 'es' | 'en' = 'es'): Promise<IndustryRecord[]> {
+  const { data } = await loadQuery<Record<string, unknown>[]>({ query: industriesQuery, params: { locale } });
+  if (!Array.isArray(data) || data.length === 0) return [];
+  return data.filter((item) => item?.id).map(mapIndustry);
 }
 
-export async function sanityIndustry(slug: string): Promise<IndustryRecord | null> {
-  return fetchOne(industryBySlugQuery, { slug }, mapIndustry);
+export async function sanityIndustry(slug: string, locale: 'es' | 'en' = 'es'): Promise<IndustryRecord | null> {
+  return fetchOne(industryBySlugQuery, { slug, locale }, mapIndustry);
 }
 
-export async function sanityServices(): Promise<ServiceRecord[]> {
-  return fetchList(servicesQuery, mapService);
+export type IndustriesIndexCopy = {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  whyEyebrow?: string;
+  whyTitle?: string;
+  closingTitle?: string;
+  cardCtaLabel?: string;
+  pillars?: { title: string; description: string }[];
+  seo?: { metaTitle?: string; metaDescription?: string };
+};
+
+export async function sanityIndustriesIndex(id = 'industriesIndex-en'): Promise<IndustriesIndexCopy | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: industriesIndexQuery,
+    params: { id },
+  });
+  if (!data) return null;
+  return {
+    eyebrow: data.eyebrow ? String(data.eyebrow) : undefined,
+    title: data.title ? String(data.title) : undefined,
+    description: data.description ? String(data.description) : undefined,
+    whyEyebrow: data.whyEyebrow ? String(data.whyEyebrow) : undefined,
+    whyTitle: data.whyTitle ? String(data.whyTitle) : undefined,
+    closingTitle: data.closingTitle ? String(data.closingTitle) : undefined,
+    cardCtaLabel: data.cardCtaLabel ? String(data.cardCtaLabel) : undefined,
+    pillars: Array.isArray(data.pillars)
+      ? (data.pillars as { title?: string; description?: string }[])
+          .filter((item) => item.title)
+          .map((item) => ({ title: String(item.title), description: String(item.description ?? '') }))
+      : [],
+    seo: {
+      metaTitle: data.metaTitle ? String(data.metaTitle) : undefined,
+      metaDescription: data.metaDescription ? String(data.metaDescription) : undefined,
+    },
+  };
 }
 
-export async function sanityService(slug: string): Promise<ServiceRecord | null> {
-  return fetchOne(serviceBySlugQuery, { slug }, mapService);
+export async function sanityServices(locale: 'es' | 'en' = 'es'): Promise<ServiceRecord[]> {
+  const { data } = await loadQuery<Record<string, unknown>[]>({ query: servicesQuery, params: { locale } });
+  if (!Array.isArray(data) || data.length === 0) return [];
+  return data.filter((item) => item?.id).map(mapService);
+}
+
+export async function sanityService(slug: string, locale: 'es' | 'en' = 'es'): Promise<ServiceRecord | null> {
+  return fetchOne(serviceBySlugQuery, { slug, locale }, mapService);
 }
 
 export async function sanityCases(): Promise<CaseRecord[]> {

@@ -20,6 +20,9 @@ type IndustryServicesProps = {
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
+  hrefPrefix?: string;
+  ctaLabel?: string;
+  tagLabel?: string;
 };
 
 const ACCENT_HEX: Record<ServiceAccent, string> = {
@@ -54,6 +57,9 @@ export function IndustryServices({
   title = `Servicios leídos como ${industryName}`,
   description = 'Cada palanca adaptada a tu sector. El diagnóstico define el orden.',
   tone = 'canvas',
+  hrefPrefix = '/servicios',
+  ctaLabel = 'Ver más',
+  tagLabel = 'Servicio',
 }: IndustryServicesProps) {
   return (
     <SectionBand id="servicios" tone={tone}>
@@ -85,19 +91,19 @@ export function IndustryServices({
                 >
                   <div className="industry-service-card__top">
                     <h3 className="industry-service-card__title">{item.nombre}</h3>
-                    <span className="industry-service-card__tag">Servicio</span>
+                    <span className="industry-service-card__tag">{tagLabel}</span>
                   </div>
 
                   <p className="industry-service-card__desc">{item.description}</p>
 
                   <div className="industry-service-card__foot">
                     <Button
-                      href={`/servicios/${item.slug}`}
+                      href={`${hrefPrefix}/${item.slug}`}
                       variant="primary"
                       size="sm"
                       className="no-underline"
                     >
-                      Ver más
+                      {ctaLabel}
                     </Button>
                     <span className="industry-service-card__orb" aria-hidden="true">
                       <ServiceIcon name={icon} />

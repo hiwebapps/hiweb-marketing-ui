@@ -1,0 +1,113 @@
+---
+export const prerender = true;
+
+import Layout from '../../../layouts/Layout.astro';
+import { getCases, getServices, industryStaticPaths } from '../../../lib/content';
+import { IndustryHero } from '../../../components/sections/IndustryHero';
+import { IndustryServices } from '../../../components/sections/IndustryServices';
+import { PillarGrid } from '../../../components/sections/PillarGrid';
+import { CaseStories } from '../../../components/sections/CaseStories';
+import { FaqSection } from '../../../components/sections/FaqSection';
+import { FinalCta } from '../../../components/sections/FinalCta';
+import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
+import { industryServiceDescription } from '../../../data/industryServices';
+import type { BadgeVariant } from '../../../components/ui';
+import { formatCaseStat } from '../../../lib/content/format';
+import type { IndustryRecord } from '../../../lib/content/types';
+import '../../../components/sections/CaseStories.css';
+import '../../../components/sections/FaqSection.css';
+import '../../../components/sections/IndustryServices.css';
+
+export async function getStaticPaths() {
+	return industryStaticPaths('en');
+}
+
+interface Props {
+	entry: IndustryRecord;
+}
+
+const { entry } = Astro.props;
+const services = await getServices('en');
+const cases = (await getCases()).filter((item) => item.data.industria.id === entry.id);
+const heroImage = entry.data.heroImage ?? `/images/industries/${entry.id}.jpg`;
+const industryHeroBadges: { label: string; variant: BadgeVariant }[] = [
+	{ label: entry.data.nombre, variant: 'lime' },
+];
+const blurbByService = Object.fromEntries(
+	entry.data.serviceBlurbs.map((item) => [item.serviceSlug, item.description]),
+);
+
+const industryServices = services.map((item) => ({
+	slug: item.id,
+	nombre: item.data.nombre,
+	description:
+		blurbByService[item.id] ??
+		industryServiceDescription(entry.id, item.id, entry.data.nombre),
+}));
+
+const caseStories = cases.map((item) => ({
+	client: item.data.cliente,
+	quote: item.data.testimonio?.quote ?? item.data.resumen,
+	name: item.data.testimonio?.name ?? item.data.cliente,
+	role: item.data.testimonio?.role ?? entry.data.nombre,
+	stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
+	href: `/portafolio/${item.id}`,
+}));
+---
+
+<Layout
+	lang="en"
+	title={entry.data.seo?.metaTitle ?? `${entry.data.nombre} — Hiweb Marketing`}
+	description={entry.data.seo?.metaDescription ?? entry.data.heroDescription}
+	ogImage={entry.data.seo?.ogImage ?? heroImage}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Home', href: '/en' },
+			{ name: 'Industries', href: '/en/industrias' },
+			{ name: entry.data.nombre, href: `/en/industrias/${entry.id}` },
+		]),
+		faqSchema(entry.data.faqs),
+	]}
+>
+	<main>
+		<IndustryHero
+			title={entry.data.heroTitle}
+			description={entry.data.heroDescription}
+			image={heroImage}
+			imageAlt={entry.data.heroImageAlt}
+			badges={industryHeroBadges}
+			ctaLabel={entry.data.heroCtaLabel}
+			ctaHref="#casos"
+		/>
+		<PillarGrid
+			eyebrow={entry.data.whyEyebrow}
+			title={entry.data.whyTitle}
+			pillars={entry.data.porQue}
+			tone="canvas"
+		/>
+		<IndustryServices
+			industryName={entry.data.nombre}
+			services={industryServices}
+			title={entry.data.servicesTitle}
+			description={entry.data.servicesDescription}
+			hrefPrefix="/en/servicios"
+			ctaLabel={entry.data.servicesCtaLabel}
+			tagLabel={entry.data.servicesTag}
+			tone="canvas"
+		/>
+		<CaseStories
+			client:visible
+			eyebrow={entry.data.casesEyebrow}
+			title={entry.data.casesTitle}
+			description={cases.length ? entry.data.casesDescription : entry.data.casesEmpty}
+			stories={caseStories}
+		/>
+		<FaqSection
+			client:visible
+			items={entry.data.faqs}
+			title={entry.data.faqTitle}
+			withSchema={false}
+		/>
+		<FinalCta client:load title={entry.data.closingTitle} />
+	</main>
+</Layout>

@@ -18,10 +18,11 @@ import '../../components/sections/FaqSection.css';
 import '../../components/sections/CaseStories.css';
 import '../../components/sections/MetricsBand.css';
 import { faqSchema } from '../../lib/schema';
-import { getCases, getHomeCopy, getIndustries, getServices } from '../../lib/content';
+import { getCases, getHomeCopy, getIndustries, getIndustriesIndex, getServices } from '../../lib/content';
 import { SITE } from '../../data/site';
 
 const home = await getHomeCopy('en');
+const industriesIndex = await getIndustriesIndex();
 const industryCards = home.industryCards?.length
 	? home.industryCards.map((item) => ({
 			slug: item.id,
@@ -156,6 +157,7 @@ const sectionOrder = home.sectionOrder?.length
 						eyebrow={home.serviceIntro?.eyebrow}
 						title={home.serviceIntro?.title}
 						description={home.serviceIntro?.description}
+						hrefPrefix="/en/servicios"
 					/>
 				);
 			}
@@ -169,6 +171,8 @@ const sectionOrder = home.sectionOrder?.length
 						title={home.industryIntro?.title}
 						description={home.industryIntro?.description}
 						industries={industryCards}
+						hrefPrefix="/en/industrias"
+						ctaLabel={industriesIndex?.cardCtaLabel}
 					/>
 				);
 			}

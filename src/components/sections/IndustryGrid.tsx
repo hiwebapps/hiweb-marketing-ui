@@ -28,6 +28,8 @@ type IndustryGridProps = {
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
+  hrefPrefix?: string;
+  ctaLabel?: string;
 };
 
 const ACCENT_HEX: Record<IndustryAccent, string> = {
@@ -77,6 +79,8 @@ export function IndustryGrid({
   title = 'Hablamos el idioma de tu sector',
   description = 'Casos, retos y métricas propias de tu industria — no un playbook genérico.',
   tone = 'canvas',
+  hrefPrefix = '/industrias',
+  ctaLabel = 'Ver el sector',
 }: IndustryGridProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -318,12 +322,12 @@ export function IndustryGrid({
                                   </ol>
                                 ) : null}
                                 <Button
-                                  href={`/industrias/${item.slug}`}
+                                  href={`${hrefPrefix}/${item.slug}`}
                                   variant="secondary"
                                   size="sm"
                                   className="industry-slide__cta no-underline"
                                 >
-                                  Ver el sector
+                                  {ctaLabel}
                                 </Button>
                               </div>
                             </div>

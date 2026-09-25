@@ -13,6 +13,7 @@ const HIDDEN_FROM_FALLBACK = [
   'homePage',
   'aboutPage',
   'industry',
+  'industriesIndex',
   'service',
   'caseStudy',
   'post',
@@ -96,12 +97,60 @@ export const structure: StructureResolver = (S) =>
         .title('Industrias')
         .id('industrias')
         .icon(CaseIcon)
-        .child(S.documentTypeList('industry').title('Industrias').defaultOrdering([{ field: 'orden', direction: 'asc' }])),
+        .child(
+          S.documentTypeList('industry')
+            .title('Industrias')
+            .filter('_type == "industry" && coalesce(locale, "es") == "es"')
+            .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
+        ),
+      S.listItem()
+        .title('Industrias (EN)')
+        .id('industrias-en')
+        .icon(CaseIcon)
+        .child(
+          S.list()
+            .title('Industrias (EN)')
+            .items([
+              S.listItem()
+                .title('Índice')
+                .id('industries-index-en')
+                .child(
+                  S.document()
+                    .schemaType('industriesIndex')
+                    .documentId('industriesIndex-en')
+                    .title('Índice (EN)'),
+                ),
+              S.listItem()
+                .title('Páginas')
+                .id('industry-pages-en')
+                .child(
+                  S.documentTypeList('industry')
+                    .title('Industrias (EN)')
+                    .filter('_type == "industry" && locale == "en"')
+                    .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
+                ),
+            ]),
+        ),
       S.listItem()
         .title('Servicios')
         .id('servicios')
         .icon(CaseIcon)
-        .child(S.documentTypeList('service').title('Servicios').defaultOrdering([{ field: 'orden', direction: 'asc' }])),
+        .child(
+          S.documentTypeList('service')
+            .title('Servicios')
+            .filter('_type == "service" && coalesce(locale, "es") == "es"')
+            .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
+        ),
+      S.listItem()
+        .title('Servicios (EN)')
+        .id('servicios-en')
+        .icon(CaseIcon)
+        .child(
+          S.documentTypeList('service')
+            .title('Servicios (EN)')
+            .filter('_type == "service" && locale == "en"')
+            .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
+        ),
       S.listItem()
         .title('Casos')
         .id('casos')

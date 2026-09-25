@@ -14,6 +14,7 @@ import {
   sanityCases,
   sanityHome,
   sanityIndustries,
+  sanityIndustriesIndex,
   sanityIndustry,
   sanityLanding,
   sanityLandings,
@@ -61,13 +62,23 @@ function warnSanityFallback(error: unknown) {
   console.warn(`[cms] Sanity unavailable (${message}). Using src/content fallback.`);
 }
 
-export async function getIndustries(): Promise<IndustryRecord[]> {
-  return withFallback(sanityIndustries, collectionsIndustries, (items) => items.length === 0);
+export async function getIndustries(locale: 'es' | 'en' = 'es'): Promise<IndustryRecord[]> {
+  if (locale === 'en') return sanityIndustries('en');
+  return withFallback(
+    () => sanityIndustries(locale),
+    collectionsIndustries,
+    (items) => items.length === 0,
+  );
 }
 
-export async function getIndustry(slug: string): Promise<IndustryRecord | undefined> {
+export async function getIndustriesIndex() {
+  return sanityIndustriesIndex('industriesIndex-en');
+}
+
+export async function getIndustry(slug: string, locale: 'es' | 'en' = 'es'): Promise<IndustryRecord | undefined> {
+  if (locale === 'en') return (await sanityIndustry(slug, 'en')) ?? undefined;
   const fromSanity = await withFallback(
-    () => sanityIndustry(slug),
+    () => sanityIndustry(slug, locale),
     async () => {
       const items = await collectionsIndustries();
       return items.find((item) => item.id === slug) ?? null;
@@ -77,13 +88,19 @@ export async function getIndustry(slug: string): Promise<IndustryRecord | undefi
   return fromSanity ?? undefined;
 }
 
-export async function getServices(): Promise<ServiceRecord[]> {
-  return withFallback(sanityServices, collectionsServices, (items) => items.length === 0);
+export async function getServices(locale: 'es' | 'en' = 'es'): Promise<ServiceRecord[]> {
+  if (locale === 'en') return sanityServices('en');
+  return withFallback(
+    () => sanityServices(locale),
+    collectionsServices,
+    (items) => items.length === 0,
+  );
 }
 
-export async function getService(slug: string): Promise<ServiceRecord | undefined> {
+export async function getService(slug: string, locale: 'es' | 'en' = 'es'): Promise<ServiceRecord | undefined> {
+  if (locale === 'en') return (await sanityService(slug, 'en')) ?? undefined;
   const fromSanity = await withFallback(
-    () => sanityService(slug),
+    () => sanityService(slug, locale),
     async () => {
       const items = await collectionsServices();
       return items.find((item) => item.id === slug) ?? null;
@@ -156,16 +173,16 @@ export async function getAboutCopy(): Promise<AboutCopy> {
   return copy ?? collectionsAbout();
 }
 
-export async function industryStaticPaths() {
-  const industries = await getIndustries();
+export async function industryStaticPaths(locale: 'es' | 'en' = 'es') {
+  const industries = await getIndustries(locale);
   return industries.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
 }
 
-export async function serviceStaticPaths() {
-  const services = await getServices();
+export async function serviceStaticPaths(locale: 'es' | 'en' = 'es') {
+  const services = await getServices(locale);
   return services.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },

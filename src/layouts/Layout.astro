@@ -9,7 +9,8 @@ import '../components/sections/FaqSection.css';
 import { SiteNav } from '../components/sections/SiteNav';
 import { SiteFooter } from '../components/sections/SiteFooter';
 import { ScrollIndicator } from '../components/effects/ScrollIndicator';
-import { SITE } from '../data/site';
+import { NAV_INDUSTRY_ITEMS, SITE } from '../data/site';
+import { getIndustries } from '../lib/content';
 import { DEFAULT_OG_IMAGE, ROBOTS_NOINDEX, absoluteUrl, shouldNoIndex } from '../lib/seo';
 
 interface Props {
@@ -33,6 +34,13 @@ const {
 	lang = 'es',
 } = Astro.props;
 
+const industryIcons = Object.fromEntries(NAV_INDUSTRY_ITEMS.map((item) => [item.slug, item.icon]));
+const navIndustries = (await getIndustries(lang)).map((item) => ({
+	slug: item.id,
+	nombre: item.data.nombre,
+	desc: item.data.tagline,
+	icon: industryIcons[item.id] ?? 'grid',
+}));
 const hideFromIndex = forceNoIndex || shouldNoIndex(Astro.url.hostname);
 const canonicalUrl = canonical
 	?? (Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href);
@@ -95,7 +103,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 		</script>
 	</head>
 	<body id="top">
-		<SiteNav client:load locale={lang} />
+		<SiteNav client:load locale={lang} industries={navIndustries} />
 		<ScrollIndicator client:load />
 		<slot />
 		<SiteFooter client:idle locale={lang} />

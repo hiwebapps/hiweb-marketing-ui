@@ -22,8 +22,15 @@ type IconName =
 /**
  * Nav global — pastilla glass oscura flotante, mega-menú de Servicios e Industrias.
  */
-export function SiteNav({ locale = 'es' }: { locale?: Locale }) {
+export function SiteNav({
+  locale = 'es',
+  industries = [],
+}: {
+  locale?: Locale;
+  industries?: { slug: string; nombre: string; desc: string; icon: (typeof NAV_INDUSTRY_ITEMS)[number]['icon'] }[];
+}) {
   const copy = CHROME[locale];
+  const industryItems = industries.length ? industries : NAV_INDUSTRY_ITEMS;
   const [open, setOpen] = useState<MenuKey>(null);
   const [langOpen, setLangOpen] = useState(false);
   const [sheetLangOpen, setSheetLangOpen] = useState(false);
@@ -216,16 +223,16 @@ export function SiteNav({ locale = 'es' }: { locale?: Locale }) {
                     id={industriasId}
                     className="hw-nav__dropdown hw-nav__dropdown--industries"
                   >
-                    {chunk(NAV_INDUSTRY_ITEMS, 2).map((column, index) => (
+                    {chunk(industryItems, 2).map((column, index) => (
                       <div key={index} className="hw-nav__dropdown-col">
                         <p className={index === 0 ? 'hw-nav__dropdown-heading' : 'hw-nav__dropdown-heading hw-nav__dropdown-heading--ghost'}>
-                          Industrias
+                          {copy.industries}
                         </p>
                         <ul className="hw-nav__dropdown-list">
                           {column.map((item) => (
                             <li key={item.slug}>
                               <a
-                                href={`/industrias/${item.slug}`}
+                                href={localePath(`/industrias/${item.slug}`, locale)}
                                 className="hw-nav__dropdown-link"
                                 onClick={() => setOpen(null)}
                               >
@@ -384,20 +391,20 @@ export function SiteNav({ locale = 'es' }: { locale?: Locale }) {
             <SheetSection title={copy.industries}>
               <li>
                 <a
-                  href="/industrias"
+                  href={localePath('/industrias', locale)}
                   className="hw-nav-sheet__link"
                   onClick={() => setMobileOpen(false)}
                 >
                   <span className="hw-nav-sheet__icon" aria-hidden="true">
                     <NavIcon name="grid" />
                   </span>
-                  <span className="hw-nav-sheet__label">Todas las industrias</span>
+                  <span className="hw-nav-sheet__label">{copy.allIndustries}</span>
                 </a>
               </li>
-              {NAV_INDUSTRY_ITEMS.map((item) => (
+              {industryItems.map((item) => (
                 <li key={item.slug}>
                   <a
-                    href={`/industrias/${item.slug}`}
+                    href={localePath(`/industrias/${item.slug}`, locale)}
                     className="hw-nav-sheet__link"
                     onClick={() => setMobileOpen(false)}
                   >

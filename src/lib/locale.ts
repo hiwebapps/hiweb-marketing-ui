@@ -15,6 +15,7 @@ export const CHROME = {
   es: {
     about: 'Nosotros',
     industries: 'Industrias',
+    allIndustries: 'Todas las industrias',
     services: 'Servicios',
     cases: 'Casos de Éxito',
     blog: 'Blog',
@@ -30,7 +31,8 @@ export const CHROME = {
   },
   en: {
     about: 'Nosotros',
-    industries: 'Industrias',
+    industries: 'Industries',
+    allIndustries: 'All industries',
     services: 'Services',
     cases: 'Success Stories',
     blog: 'Blog',

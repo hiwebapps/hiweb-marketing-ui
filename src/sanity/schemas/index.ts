@@ -7,7 +7,7 @@ import { author, post } from './post';
 import { caseStudy } from './caseStudy';
 import { homePage } from './homePage';
 import { homeSectionTypes, homeServiceItem } from './homeSections';
-import { industry } from './industry';
+import { industriesIndex, industry } from './industry';
 import { person } from './person';
 import { service } from './service';
 import { serviceSectionTypes } from './serviceSections';
@@ -47,6 +47,7 @@ export const schemaTypes = [
   homePage,
   aboutPage,
   industry,
+  industriesIndex,
   service,
   caseStudy,
   author,

@@ -1,0 +1,75 @@
+---
+export const prerender = true;
+
+import Layout from '../../../layouts/Layout.astro';
+import { getCases, getIndustries, getIndustriesIndex } from '../../../lib/content';
+import { PageHero } from '../../../components/sections/PageHero';
+import { IndustryGrid } from '../../../components/sections/IndustryGrid';
+import { PillarGrid } from '../../../components/sections/PillarGrid';
+import { CasePreview } from '../../../components/sections/CasePreview';
+import { FinalCta } from '../../../components/sections/FinalCta';
+import { HOME_PILLARS } from '../../../data/site';
+import { localePath } from '../../../lib/locale';
+import { breadcrumbSchema } from '../../../lib/schema';
+
+const industries = await getIndustries('en');
+const page = await getIndustriesIndex();
+const cases = await getCases();
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+const pillars = (page?.pillars ?? []).map((pillar, index) => {
+	const visual = HOME_PILLARS[index];
+	return {
+		title: pillar.title,
+		description: pillar.description,
+		icon: visual?.icon,
+		accent: visual?.accent,
+		href: visual?.href ? localePath(visual.href, 'en') : undefined,
+	};
+});
+---
+
+<Layout
+	lang="en"
+	title={page?.seo?.metaTitle ?? page?.title}
+	description={page?.seo?.metaDescription ?? page?.description}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: 'Industries', href: '/en/industrias' },
+	])}
+>
+	<main>
+		<PageHero eyebrow={page?.eyebrow} title={page?.title} description={page?.description} />
+		<IndustryGrid
+			client:visible
+			eyebrow={page?.eyebrow}
+			title={page?.title}
+			description={page?.description}
+			hrefPrefix="/en/industrias"
+			ctaLabel={page?.cardCtaLabel}
+			industries={industries.map((item) => ({
+				slug: item.id,
+				nombre: item.data.nombre,
+				tagline: item.data.tagline,
+				puntos: item.data.porQue.map((punto) => punto.title),
+			}))}
+		/>
+		<PillarGrid
+			eyebrow={page?.whyEyebrow}
+			title={page?.whyTitle}
+			pillars={pillars}
+			tone="surface"
+		/>
+		<CasePreview
+			cases={cases.slice(0, 3).map((item) => ({
+				client: item.data.cliente,
+				industry: industryName[item.data.industria.id] ?? item.data.industria.id,
+				outcome: item.data.resultadoFrase,
+				title: item.data.titulo,
+				summary: item.data.resumen,
+				href: `/portafolio/${item.id}`,
+				accent: item.data.accent,
+			}))}
+		/>
+		<FinalCta client:load title={page?.closingTitle} />
+	</main>
+</Layout>

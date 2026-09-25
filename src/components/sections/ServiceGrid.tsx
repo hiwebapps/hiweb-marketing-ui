@@ -19,6 +19,7 @@ type ServiceGridProps = {
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
+  hrefPrefix?: string;
 };
 
 const ACCENT_HEX: Record<ServiceAccent, string> = {
@@ -61,6 +62,7 @@ export function ServiceGrid({
   title = 'Nueve palancas, un solo sistema',
   description = 'Cada servicio se conecta a un resultado de negocio — no a una táctica aislada.',
   tone = 'canvas',
+  hrefPrefix = '/servicios',
 }: ServiceGridProps) {
   return (
     <SectionBand id="servicios" tone={tone}>
@@ -82,7 +84,7 @@ export function ServiceGrid({
                 className="service-card group"
                 style={{ '--service-accent': ACCENT_HEX[accent] } as CSSProperties}
               >
-                <a href={`/servicios/${item.slug}`} className="service-card__link no-underline">
+                <a href={`${hrefPrefix}/${item.slug}`} className="service-card__link no-underline">
                   <img
                     src={image}
                     alt=""

@@ -23,7 +23,37 @@ export const service = defineType({
       title: 'Slug',
       type: 'slug',
       group: 'content',
-      options: { source: 'nombre', maxLength: 96 },
+      options: {
+        source: 'nombre',
+        maxLength: 96,
+        isUnique: async (slug, context) => {
+          const { document, getClient } = context;
+          if (!document || !slug) return true;
+          const id = document._id.replace(/^drafts\./, '');
+          const locale = document.locale ?? 'es';
+          const client = getClient({ apiVersion: '2024-01-01' });
+          const count = await client.fetch(
+            `count(*[_type == "service" && slug.current == $slug && coalesce(locale, "es") == $locale && !(_id in [$id, $draftId])])`,
+            { slug, locale, id, draftId: `drafts.${id}` },
+          );
+          return count === 0;
+        },
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'locale',
+      title: 'Idioma',
+      type: 'string',
+      group: 'content',
+      options: {
+        list: [
+          { title: 'Español', value: 'es' },
+          { title: 'English', value: 'en' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'es',
       validation: (rule) => rule.required(),
     }),
     defineField({
