@@ -1,0 +1,160 @@
+---
+import { IndustryHero } from './IndustryHero';
+import { AboutHistory } from './AboutHistory';
+import { PillarGrid, type Pillar } from './PillarGrid';
+import { PresenceMap } from './PresenceMap';
+import { ProcessPhases, type ProcessPhase } from './ProcessPhases';
+import { TeamGrid, type TeamMember } from './TeamGrid';
+import { FinalCta } from './FinalCta';
+import { localePath } from '../../lib/locale';
+import type { AboutSection } from '../../lib/content/types';
+import type { BadgeVariant } from '../ui';
+
+interface Props {
+	section: AboutSection;
+	locale?: 'es' | 'en';
+	people: TeamMember[];
+	homePhases: ProcessPhase[];
+	heroFallback: string;
+	heroAltFallback: string;
+}
+
+const {
+	section,
+	locale = 'es',
+	people,
+	homePhases,
+	heroFallback,
+	heroAltFallback,
+} = Astro.props;
+
+function href(path?: string) {
+	const target = path || '/contacto';
+	return locale === 'en' ? localePath(target, 'en') : target;
+}
+
+const historyColumns =
+	section._type === 'aboutHistory' && section.columns && section.columns.length === 2
+		? ([section.columns[0], section.columns[1]] as [
+				{ title: string; paragraphs: string[] },
+				{ title: string; paragraphs: string[] },
+			])
+		: undefined;
+
+const pillars: Pillar[] =
+	section._type === 'aboutPillars'
+		? (section.pillars ?? []).map((item) => ({
+				title: item.title,
+				description: item.description,
+				icon: item.icon as Pillar['icon'],
+				accent: item.accent as Pillar['accent'],
+				href: item.href ? href(item.href) : undefined,
+			}))
+		: [];
+
+const teamFilters =
+	section._type === 'aboutTeam'
+		? (section.filters ?? []).flatMap((item) =>
+				item.id === 'all' || item.id === 'web' || item.id === 'redes' || item.id === 'diseno'
+					? [{ id: item.id, label: item.label }]
+					: [],
+			)
+		: [];
+
+const phases =
+	section._type === 'aboutProcess' && section.phases && section.phases.length
+		? section.phases
+		: homePhases;
+---
+
+{
+	section._type === 'aboutHero' && (
+		<IndustryHero
+			title={section.title || ''}
+			description={section.description || ''}
+			image={section.image || heroFallback}
+			imageAlt={section.imageAlt || heroAltFallback}
+			imagePosition={section.imagePosition || 'center 28%'}
+			badges={(section.badges ?? []).map((badge) => ({
+				label: badge.label,
+				variant: (badge.variant || 'lime') as BadgeVariant,
+			}))}
+			ctaLabel={section.ctaLabel}
+			ctaHref={href(section.ctaHref)}
+		/>
+	)
+}
+{
+	section._type === 'aboutHistory' && (
+		<AboutHistory
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			columns={historyColumns}
+		/>
+	)
+}
+{
+	section._type === 'aboutPillars' && (
+		<PillarGrid
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			pillars={pillars}
+		/>
+	)
+}
+{
+	section._type === 'aboutProcess' && (
+		<ProcessPhases
+			client:visible
+			phases={phases}
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			tone="canvas"
+		/>
+	)
+}
+{
+	section._type === 'aboutTeam' && (
+		<TeamGrid
+			client:load
+			showFilters
+			members={people}
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			ctaLabel={section.ctaLabel}
+			ctaHref={href(section.ctaHref)}
+			filters={teamFilters.length ? teamFilters : undefined}
+			filterLabel={section.filterLabel}
+		/>
+	)
+}
+{
+	section._type === 'aboutMap' && (
+		<PresenceMap
+			client:visible
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			sectionLabel={section.sectionLabel}
+			globeLabel={section.globeLabel}
+			ctaLabel={section.ctaLabel}
+			ctaHref={section.ctaHref}
+		/>
+	)
+}
+{
+	section._type === 'aboutCta' && (
+		<FinalCta
+			client:load
+			badge={section.badge}
+			title={section.title}
+			description={section.description}
+			primaryLabel={section.ctaLabel}
+			primaryHref={href(section.ctaHref)}
+		/>
+	)
+}

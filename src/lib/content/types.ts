@@ -469,8 +469,71 @@ export type AboutCopy = {
   closingTitle?: string;
   closingDescription?: string;
   closingCtaLabel?: string;
+  sections?: AboutSection[];
   seo?: SeoFields;
 };
+
+export type AboutSection =
+  | {
+      _type: 'aboutHero';
+      badges?: { label: string; variant?: string }[];
+      title?: string;
+      description?: string;
+      image?: string;
+      imageAlt?: string;
+      imagePosition?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+    }
+  | {
+      _type: 'aboutHistory';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      columns?: { title: string; paragraphs: string[] }[];
+    }
+  | {
+      _type: 'aboutPillars';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      pillars?: { title: string; description: string; icon?: string; accent?: string; href?: string }[];
+    }
+  | {
+      _type: 'aboutProcess';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      phases?: { index: string; title: string; description: string }[];
+    }
+  | {
+      _type: 'aboutTeam';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+      filterLabel?: string;
+      filters?: { id: string; label: string }[];
+    }
+  | {
+      _type: 'aboutMap';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      sectionLabel?: string;
+      globeLabel?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+    }
+  | {
+      _type: 'aboutCta';
+      badge?: string;
+      title?: string;
+      description?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+    };
 
 export type CmsImage = SanityImageSource & { alt?: string };
 

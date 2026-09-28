@@ -9,6 +9,7 @@ import { PresenceMap } from '../components/sections/PresenceMap';
 import { ProcessPhases } from '../components/sections/ProcessPhases';
 import { TeamGrid } from '../components/sections/TeamGrid';
 import { FinalCta } from '../components/sections/FinalCta';
+import AboutPageSection from '../components/sections/AboutPageSection.astro';
 import { HOME_PILLARS, SITE } from '../data/site';
 import { breadcrumbSchema } from '../lib/schema';
 import { getAboutCopy, getHomeCopy, getPeople } from '../lib/content';
@@ -20,6 +21,7 @@ import '../components/sections/PresenceMap.css';
 const about = await getAboutCopy();
 const home = await getHomeCopy();
 const people = (await getPeople()) as TeamMember[];
+const pageSections = about.sections ?? [];
 const historyColumns =
 	about.historyColumns && about.historyColumns.length === 2
 		? ([about.historyColumns[0], about.historyColumns[1]] as [
@@ -39,6 +41,19 @@ const historyColumns =
 	])}
 >
 	<main>
+		{pageSections.length ? (
+			pageSections.map((section) => (
+				<AboutPageSection
+					key={section._type}
+					section={section}
+					people={people}
+					homePhases={home.process ?? []}
+					heroFallback="/images/team/hiweb-team.png"
+					heroAltFallback="Equipo Hiweb con playeras de la marca"
+				/>
+			))
+		) : (
+		<>
 		<IndustryHero
 			title={about.heroTitle ?? 'Expertise colectivo, tecnología propia, capacidad cross-border.'}
 			description={about.heroDescription ?? SITE.tagline}
@@ -83,5 +98,7 @@ const historyColumns =
 			description={`Bases en ${SITE.locales.join(', ')}. Clientes en México, Estados Unidos y Canadá — la auditoría puede ser remota.`}
 		/>
 		<FinalCta client:load title="Hablemos de tu industria" />
+		</>
+		)}
 	</main>
 </Layout>

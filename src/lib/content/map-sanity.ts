@@ -809,8 +809,115 @@ export function mapAbout(doc: Record<string, unknown> | null): AboutCopy | null 
     closingTitle: text(doc.closingTitle),
     closingDescription: text(doc.closingDescription),
     closingCtaLabel: text(doc.closingCtaLabel),
+    sections: mapAboutSections(doc),
     seo: seoOf(doc),
   };
+}
+
+function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
+  if (!Array.isArray(doc.sections)) return undefined;
+  const sections = doc.sections.flatMap((item) => {
+    const section = item as Record<string, unknown>;
+    const type = String(section._type ?? '');
+    if (type === 'aboutHero') {
+      const image = section.image as CmsImage | undefined;
+      const badges = Array.isArray(section.badges)
+        ? (section.badges as { label?: string; variant?: string }[])
+            .filter((badge) => badge.label)
+            .map((badge) => ({ label: String(badge.label), variant: badge.variant ? String(badge.variant) : undefined }))
+        : [];
+      return [{
+        _type: 'aboutHero' as const,
+        badges,
+        title: text(section.title),
+        description: text(section.description),
+        image: imageUrl(image) ?? undefined,
+        imageAlt: imageAlt(image),
+        imagePosition: text(section.imagePosition),
+        ctaLabel: text(section.ctaLabel),
+        ctaHref: text(section.ctaHref),
+      }];
+    }
+    if (type === 'aboutHistory') {
+      return [{
+        _type: 'aboutHistory' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        description: text(section.description),
+        columns: Array.isArray(section.columns)
+          ? (section.columns as { title?: string; paragraphs?: string[] }[])
+              .filter((column) => column.title)
+              .map((column) => ({
+                title: String(column.title),
+                paragraphs: Array.isArray(column.paragraphs) ? column.paragraphs.map(String) : [],
+              }))
+          : undefined,
+      }];
+    }
+    if (type === 'aboutPillars') {
+      return [{
+        _type: 'aboutPillars' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        description: text(section.description),
+        pillars: Array.isArray(section.pillars) ? (section.pillars as AboutCopy['pillars']) : [],
+      }];
+    }
+    if (type === 'aboutProcess') {
+      const phases = Array.isArray(section.phases)
+        ? (section.phases as { index?: string; title?: string; description?: string }[])
+            .filter((phase) => phase.title)
+            .map((phase, index) => ({
+              index: phase.index || String(index + 1).padStart(2, '0'),
+              title: String(phase.title),
+              description: String(phase.description ?? ''),
+            }))
+        : [];
+      return [{
+        _type: 'aboutProcess' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        description: text(section.description),
+        phases,
+      }];
+    }
+    if (type === 'aboutTeam') {
+      return [{
+        _type: 'aboutTeam' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        description: text(section.description),
+        ctaLabel: text(section.ctaLabel),
+        ctaHref: text(section.ctaHref),
+        filterLabel: text(section.filterLabel),
+        filters: Array.isArray(section.filters) ? (section.filters as AboutCopy['teamFilters']) : [],
+      }];
+    }
+    if (type === 'aboutMap') {
+      return [{
+        _type: 'aboutMap' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        description: text(section.description),
+        sectionLabel: text(section.sectionLabel),
+        globeLabel: text(section.globeLabel),
+        ctaLabel: text(section.ctaLabel),
+        ctaHref: text(section.ctaHref),
+      }];
+    }
+    if (type === 'aboutCta') {
+      return [{
+        _type: 'aboutCta' as const,
+        badge: text(section.badge),
+        title: text(section.title),
+        description: text(section.description),
+        ctaLabel: text(section.ctaLabel),
+        ctaHref: text(section.ctaHref),
+      }];
+    }
+    return [];
+  });
+  return sections.length ? sections : undefined;
 }
 
 function text(value: unknown) {

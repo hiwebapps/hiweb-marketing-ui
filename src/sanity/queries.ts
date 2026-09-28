@@ -300,36 +300,96 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
   ${seoProjection}
 }`);
 
+const aboutSectionsProjection = /* groq */ `
+  sections[]{
+    _type,
+    _key,
+    _type == "aboutHero" => {
+      badges[]{ label, variant },
+      title,
+      description,
+      image ${imageProjection},
+      imagePosition,
+      ctaLabel,
+      ctaHref
+    },
+    _type == "aboutHistory" => {
+      eyebrow,
+      title,
+      description,
+      columns[]{ title, paragraphs }
+    },
+    _type == "aboutPillars" => {
+      eyebrow,
+      title,
+      description,
+      pillars[]{ title, description, icon, accent, href }
+    },
+    _type == "aboutProcess" => {
+      eyebrow,
+      title,
+      description,
+      phases[]{ index, title, description }
+    },
+    _type == "aboutTeam" => {
+      eyebrow,
+      title,
+      description,
+      ctaLabel,
+      ctaHref,
+      filterLabel,
+      filters[]{ id, label }
+    },
+    _type == "aboutMap" => {
+      eyebrow,
+      title,
+      description,
+      sectionLabel,
+      globeLabel,
+      ctaLabel,
+      ctaHref
+    },
+    _type == "aboutCta" => {
+      badge,
+      title,
+      description,
+      ctaLabel,
+      ctaHref
+    }
+  }
+`;
+
 export const aboutPageQuery = defineQuery(`*[_type == "aboutPage" && _id == $id][0]{
-  heroTitle,
-  heroDescription,
-  heroBadge,
-  heroCtaLabel,
-  heroCtaHref,
-  heroImage ${imageProjection},
-  historyEyebrow,
-  historyTitle,
-  historyDescription,
-  historyColumns[]{ title, paragraphs },
-  pillarsEyebrow,
-  pillarsTitle,
-  pillars[]{ title, description, icon, accent, href },
-  processEyebrow,
-  processTitle,
-  processDescription,
-  teamEyebrow,
-  teamTitle,
-  teamDescription,
-  teamCtaLabel,
-  teamCtaHref,
-  teamFilters[]{ id, label },
-  mapEyebrow,
-  mapTitle,
-  mapDescription,
-  closingBadge,
-  closingTitle,
-  closingDescription,
-  closingCtaLabel,
+  "heroTitle": coalesce(sections[_type == "aboutHero"][0].title, heroTitle),
+  "heroDescription": coalesce(sections[_type == "aboutHero"][0].description, heroDescription),
+  "heroBadge": coalesce(sections[_type == "aboutHero"][0].badges[0].label, heroBadge),
+  "heroCtaLabel": coalesce(sections[_type == "aboutHero"][0].ctaLabel, heroCtaLabel),
+  "heroCtaHref": coalesce(sections[_type == "aboutHero"][0].ctaHref, heroCtaHref),
+  "heroImage": coalesce(sections[_type == "aboutHero"][0].image ${imageProjection}, heroImage ${imageProjection}),
+  "historyEyebrow": coalesce(sections[_type == "aboutHistory"][0].eyebrow, historyEyebrow),
+  "historyTitle": coalesce(sections[_type == "aboutHistory"][0].title, historyTitle),
+  "historyDescription": coalesce(sections[_type == "aboutHistory"][0].description, historyDescription),
+  "historyColumns": coalesce(sections[_type == "aboutHistory"][0].columns[]{ title, paragraphs }, historyColumns[]{ title, paragraphs }),
+  "pillarsEyebrow": coalesce(sections[_type == "aboutPillars"][0].eyebrow, pillarsEyebrow),
+  "pillarsTitle": coalesce(sections[_type == "aboutPillars"][0].title, pillarsTitle),
+  "pillars": coalesce(sections[_type == "aboutPillars"][0].pillars[]{ title, description, icon, accent, href }, pillars[]{ title, description, icon, accent, href }),
+  "processEyebrow": coalesce(sections[_type == "aboutProcess"][0].eyebrow, processEyebrow),
+  "processTitle": coalesce(sections[_type == "aboutProcess"][0].title, processTitle),
+  "processDescription": coalesce(sections[_type == "aboutProcess"][0].description, processDescription),
+  "teamEyebrow": coalesce(sections[_type == "aboutTeam"][0].eyebrow, teamEyebrow),
+  "teamTitle": coalesce(sections[_type == "aboutTeam"][0].title, teamTitle),
+  "teamDescription": coalesce(sections[_type == "aboutTeam"][0].description, teamDescription),
+  "teamCtaLabel": coalesce(sections[_type == "aboutTeam"][0].ctaLabel, teamCtaLabel),
+  "teamCtaHref": coalesce(sections[_type == "aboutTeam"][0].ctaHref, teamCtaHref),
+  "teamFilters": coalesce(sections[_type == "aboutTeam"][0].filters[]{ id, label }, teamFilters[]{ id, label }),
+  "mapEyebrow": coalesce(sections[_type == "aboutMap"][0].eyebrow, mapEyebrow),
+  "mapTitle": coalesce(sections[_type == "aboutMap"][0].title, mapTitle),
+  "mapDescription": coalesce(sections[_type == "aboutMap"][0].description, mapDescription),
+  "closingBadge": coalesce(sections[_type == "aboutCta"][0].badge, closingBadge),
+  "closingTitle": coalesce(sections[_type == "aboutCta"][0].title, closingTitle),
+  "closingDescription": coalesce(sections[_type == "aboutCta"][0].description, closingDescription),
+  "closingCtaLabel": coalesce(sections[_type == "aboutCta"][0].ctaLabel, closingCtaLabel),
+  ${aboutSectionsProjection},
   ${seoProjection}
 }`);
 

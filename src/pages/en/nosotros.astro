@@ -9,6 +9,7 @@ import { PresenceMap } from '../../components/sections/PresenceMap';
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { TeamGrid } from '../../components/sections/TeamGrid';
 import { FinalCta } from '../../components/sections/FinalCta';
+import AboutPageSection from '../../components/sections/AboutPageSection.astro';
 import { SITE } from '../../data/site';
 import { breadcrumbSchema } from '../../lib/schema';
 import { getAboutCopy, getHomeCopy, getPeople } from '../../lib/content';
@@ -22,6 +23,7 @@ import '../../components/sections/PresenceMap.css';
 const about = await getAboutCopy('en');
 const home = await getHomeCopy('en');
 const people = (await getPeople()) as TeamMember[];
+const pageSections = about.sections ?? [];
 const historyColumns =
 	about.historyColumns && about.historyColumns.length === 2
 		? ([about.historyColumns[0], about.historyColumns[1]] as [
@@ -54,6 +56,20 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 	])}
 >
 	<main>
+		{pageSections.length ? (
+			pageSections.map((section) => (
+				<AboutPageSection
+					key={section._type}
+					section={section}
+					locale="en"
+					people={people}
+					homePhases={home.process ?? []}
+					heroFallback="/images/team/hiweb-team.png"
+					heroAltFallback="Hiweb team in brand shirts"
+				/>
+			))
+		) : (
+		<>
 		<IndustryHero
 			title={about.heroTitle ?? 'Collective expertise, our own technology, cross-border reach.'}
 			description={about.heroDescription ?? ''}
@@ -114,5 +130,7 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 			primaryLabel={about.closingCtaLabel}
 			primaryHref={localePath('/contacto', 'en')}
 		/>
+		</>
+		)}
 	</main>
 </Layout>

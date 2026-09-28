@@ -1,4 +1,5 @@
 import { aboutPage } from './aboutPage';
+import { aboutSectionTypes } from './aboutSections';
 import { contactPage } from './contactPage';
 import { landingSectionTypes } from './blocks/pageSections';
 import { blogTable } from './blogTable';
@@ -49,6 +50,7 @@ export const schemaTypes = [
   ...serviceSectionTypes,
   ...caseSectionTypes,
   ...industrySectionTypes,
+  ...aboutSectionTypes,
   navLink,
   navGroup,
   navBarItem,
