@@ -11,6 +11,7 @@ import { CaseStories } from './CaseStories';
 import { FaqSection } from './FaqSection';
 import { FinalCta } from './FinalCta';
 import { iconForServiceOverviewCard, type PillarIconName } from '../icons/PillarIcons';
+import { serviceContentKey } from '../../lib/en-slugs';
 import { serviceFocusItems } from '../../data/service-focus';
 import type { ServicePitch as Pitch } from '../../data/service-pitch';
 import type { IndustryIconName } from '../icons/IndustryIcons';
@@ -31,6 +32,7 @@ interface Props {
 }
 
 const { section, entry, pitch, industries, phases, stories, hasCases } = Astro.props;
+const contentKey = serviceContentKey(entry.id);
 const nombre = entry.data.nombre;
 ---
 
@@ -39,7 +41,7 @@ const nombre = entry.data.nombre;
 		<IndustryHero
 			title={section.title || entry.data.heroTitle}
 			description={section.description || entry.data.heroDescription || entry.data.tagline}
-			image={section.image || entry.data.heroImage || `/images/services/${entry.id}-hero.jpg`}
+			image={section.image || entry.data.heroImage || `/images/services/${contentKey}-hero.jpg`}
 			imageAlt={section.imageAlt || entry.data.heroImageAlt || `Imagen de ${nombre}`}
 			badges={[{ label: section.badge || entry.data.heroBadge || nombre, variant: 'lime' }]}
 			ctaLabel={section.ctaLabel || 'Cotiza tu proyecto'}
@@ -79,7 +81,7 @@ const nombre = entry.data.nombre;
 							image: item.image,
 							imageAlt: item.imageAlt,
 						}))
-					: serviceFocusItems(entry.id)
+					: serviceFocusItems(contentKey)
 			}
 			eyebrow={section.eyebrow}
 			title={section.title}

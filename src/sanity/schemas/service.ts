@@ -98,6 +98,10 @@ export const service = defineType({
     },
   ],
   preview: {
-    select: { title: 'nombre', subtitle: 'tagline', media: 'sections.0.image' },
+    select: { title: 'nombre', locale: 'locale', media: 'sections.0.image' },
+    prepare: ({ title, locale }) => ({
+      title: title || 'Servicio',
+      subtitle: locale === 'en' ? 'English' : 'Español',
+    }),
   },
 });

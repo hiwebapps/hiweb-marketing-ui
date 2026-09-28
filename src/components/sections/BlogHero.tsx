@@ -20,6 +20,7 @@ type BlogHeroProps = {
   title?: ReactNode;
   description?: string;
   label?: string;
+  readingSuffix?: string;
   featured?: BlogFeaturedPost;
 };
 
@@ -31,6 +32,7 @@ export function BlogHero({
   title = 'Artículos para decidir, no para rellenar',
   description = 'Contenido por industria y servicio: respuestas directas, keywords reales y enlaces a lo que sí ejecutamos.',
   label = 'Blog',
+  readingSuffix = 'minutos',
   featured,
 }: BlogHeroProps) {
   const image = featured
@@ -72,7 +74,7 @@ export function BlogHero({
             <div className="blog-hero__feature-media">
               <img src={image} alt="" width={720} height={480} loading="eager" />
               <Badge variant="lime" className="blog-hero__feature-read">
-                {`${featured.readingMinutes ?? BLOG_READING_MINUTES} minutos`}
+                {`${featured.readingMinutes ?? BLOG_READING_MINUTES} ${readingSuffix}`}
               </Badge>
             </div>
             <div className="blog-hero__feature-body">

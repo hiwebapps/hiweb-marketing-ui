@@ -1,37 +1,26 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import {
-  NAV_EXPLORE,
-  NAV_INDUSTRY_ITEMS,
-  NAV_SERVICE_GROUPS,
-} from '../../data/site';
 import { MOTION } from '../../lib/motion';
-import { CHROME, EN_NAV_SERVICES, localePath, type Locale } from '../../lib/locale';
+import { fallbackNav, type SiteNavContent } from '../../lib/nav';
+import { CHROME, localePath, type Locale } from '../../lib/locale';
 import { Button } from '../ui';
 import './SiteNav.css';
 
 gsap.registerPlugin(useGSAP);
-
-type MenuKey = 'industrias' | 'servicios' | null;
-type IconName =
-  | (typeof NAV_INDUSTRY_ITEMS)[number]['icon']
-  | (typeof NAV_SERVICE_GROUPS)[number]['items'][number]['icon']
-  | (typeof NAV_EXPLORE)[number]['icon'];
 
 /**
  * Nav global — pastilla glass oscura flotante, mega-menú de Servicios e Industrias.
  */
 export function SiteNav({
   locale = 'es',
-  industries = [],
+  nav = null,
 }: {
   locale?: Locale;
-  industries?: { slug: string; nombre: string; desc: string; icon: (typeof NAV_INDUSTRY_ITEMS)[number]['icon'] }[];
+  nav?: SiteNavContent | null;
 }) {
-  const copy = CHROME[locale];
-  const industryItems = industries.length ? industries : NAV_INDUSTRY_ITEMS;
-  const [open, setOpen] = useState<MenuKey>(null);
+  const model = nav ?? fallbackNav(locale);
+  const [open, setOpen] = useState<number | null>(null);
   const [langOpen, setLangOpen] = useState(false);
   const [sheetLangOpen, setSheetLangOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -40,8 +29,7 @@ export function SiteNav({
   const navRef = useRef<HTMLElement>(null);
   const lastY = useRef(0);
   const closeTimer = useRef(0);
-  const industriasId = useId();
-  const serviciosId = useId();
+  const menuId = useId();
 
   useGSAP(
     () => {
@@ -135,9 +123,9 @@ export function SiteNav({
     return () => window.removeEventListener('scroll', onScroll);
   }, [mobileOpen, open]);
 
-  const openMenu = (key: Exclude<MenuKey, null>) => {
+  const openMenu = (index: number) => {
     window.clearTimeout(closeTimer.current);
-    setOpen(key);
+    setOpen(index);
   };
 
   const scheduleClose = () => {
@@ -196,139 +184,69 @@ export function SiteNav({
             </a>
 
             <ul className="hw-nav__links">
-              <li className="hw-nav__item">
-                <a href={localePath('/nosotros', locale)} className="hw-nav__link">
-                  {copy.about}
-                </a>
-              </li>
-
-              <li
-                className="hw-nav__item hw-nav__item--dropdown"
-                onMouseEnter={() => openMenu('industrias')}
-                onMouseLeave={scheduleClose}
-              >
-                <button
-                  type="button"
-                  className={['hw-nav__link', open === 'industrias' ? 'is-open' : ''].filter(Boolean).join(' ')}
-                  aria-expanded={open === 'industrias'}
-                  aria-controls={industriasId}
-                  onClick={() => openMenu('industrias')}
-                >
-                  {copy.industries}
-                  <Chevron open={open === 'industrias'} />
-                </button>
-                {open === 'industrias' ? (
-                  <div
-                    ref={panelRef}
-                    id={industriasId}
-                    className="hw-nav__dropdown hw-nav__dropdown--industries"
-                  >
-                    {chunk(industryItems, 2).map((column, index) => (
-                      <div key={index} className="hw-nav__dropdown-col">
-                        <p className={index === 0 ? 'hw-nav__dropdown-heading' : 'hw-nav__dropdown-heading hw-nav__dropdown-heading--ghost'}>
-                          {copy.industries}
-                        </p>
-                        <ul className="hw-nav__dropdown-list">
-                          {column.map((item) => (
-                            <li key={item.slug}>
-                              <a
-                                href={localePath(`/industrias/${item.slug}`, locale)}
-                                className="hw-nav__dropdown-link"
-                                onClick={() => setOpen(null)}
-                              >
-                                <span className="hw-nav__dropdown-icon" aria-hidden="true">
-                                  <NavIcon name={item.icon} />
-                                </span>
-                                <span className="hw-nav__dropdown-copy">
-                                  <span className="hw-nav__dropdown-title">{item.nombre}</span>
-                                  <span className="hw-nav__dropdown-desc">{item.desc}</span>
-                                </span>
-                              </a>
-                            </li>
+              {model.bar.map((item, index) => {
+                if (item.kind === 'dropdown') {
+                  const panelId = `${menuId}-${index}`;
+                  return (
+                    <li
+                      key={`dropdown-${index}`}
+                      className="hw-nav__item hw-nav__item--dropdown"
+                      onMouseEnter={() => openMenu(index)}
+                      onMouseLeave={scheduleClose}
+                    >
+                      <button
+                        type="button"
+                        className={['hw-nav__link', open === index ? 'is-open' : ''].filter(Boolean).join(' ')}
+                        aria-expanded={open === index}
+                        aria-controls={panelId}
+                        onClick={() => openMenu(index)}
+                      >
+                        {item.label}
+                        <Chevron open={open === index} />
+                      </button>
+                      {open === index ? (
+                        <div
+                          ref={panelRef}
+                          id={panelId}
+                          className="hw-nav__dropdown"
+                          style={{ gridTemplateColumns: `repeat(${Math.max(item.columns.length, 1)}, minmax(0, 1fr))` }}
+                        >
+                          {item.columns.map((column, columnIndex) => (
+                            <div key={`${column.heading}-${columnIndex}`} className="hw-nav__dropdown-col">
+                              <p className={column.heading ? 'hw-nav__dropdown-heading' : 'hw-nav__dropdown-heading hw-nav__dropdown-heading--ghost'}>
+                                {column.heading || '\u00a0'}
+                              </p>
+                              <ul className="hw-nav__dropdown-list">
+                                {column.links.map((link) => (
+                                  <li key={link.href}>
+                                    <a href={link.href} className="hw-nav__dropdown-link" onClick={() => setOpen(null)}>
+                                      <span className="hw-nav__dropdown-icon" aria-hidden="true">
+                                        <NavIcon name={link.icon} />
+                                      </span>
+                                      <span className="hw-nav__dropdown-copy">
+                                        <span className="hw-nav__dropdown-title">{link.title}</span>
+                                        <span className="hw-nav__dropdown-desc">{link.description}</span>
+                                      </span>
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </li>
+                        </div>
+                      ) : null}
+                    </li>
+                  );
+                }
 
-              <li
-                className="hw-nav__item hw-nav__item--dropdown"
-                onMouseEnter={() => openMenu('servicios')}
-                onMouseLeave={scheduleClose}
-              >
-                <button
-                  type="button"
-                  className={['hw-nav__link', open === 'servicios' ? 'is-open' : ''].filter(Boolean).join(' ')}
-                  aria-expanded={open === 'servicios'}
-                  aria-controls={serviciosId}
-                  onClick={() => openMenu('servicios')}
-                >
-                  {copy.services}
-                  <Chevron open={open === 'servicios'} />
-                </button>
-                {open === 'servicios' ? (
-                  <div ref={panelRef} id={serviciosId} className="hw-nav__dropdown">
-                    {NAV_SERVICE_GROUPS.map((group) => (
-                      <div key={group.heading} className="hw-nav__dropdown-col">
-                        <p className="hw-nav__dropdown-heading">{group.heading}</p>
-                        <ul className="hw-nav__dropdown-list">
-                          {group.items.map((item) => {
-                            const translated = locale === 'en' ? EN_NAV_SERVICES[item.slug] : undefined;
-                            return (
-                            <li key={item.slug}>
-                              <a
-                                href={localePath(`/servicios/${item.slug}`, locale)}
-                                className="hw-nav__dropdown-link"
-                                onClick={() => setOpen(null)}
-                              >
-                                <span className="hw-nav__dropdown-icon" aria-hidden="true">
-                                  <NavIcon name={item.icon} />
-                                </span>
-                                <span className="hw-nav__dropdown-copy">
-                                  <span className="hw-nav__dropdown-title">{translated?.nombre ?? item.nombre}</span>
-                                  <span className="hw-nav__dropdown-desc">{translated?.desc ?? item.desc}</span>
-                                </span>
-                              </a>
-                            </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    ))}
-                    <div className="hw-nav__dropdown-col">
-                      <p className="hw-nav__dropdown-heading">Explorar</p>
-                      <ul className="hw-nav__dropdown-list">
-                        {NAV_EXPLORE.map((item) => (
-                          <li key={item.href}>
-                            <a href={item.href} className="hw-nav__dropdown-link" onClick={() => setOpen(null)}>
-                              <span className="hw-nav__dropdown-icon" aria-hidden="true">
-                                <NavIcon name={item.icon} />
-                              </span>
-                              <span className="hw-nav__dropdown-copy">
-                                <span className="hw-nav__dropdown-title">{item.nombre}</span>
-                                <span className="hw-nav__dropdown-desc">{item.desc}</span>
-                              </span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ) : null}
-              </li>
-
-              <li className="hw-nav__item">
-                <a href={localePath('/portafolio', locale)} className="hw-nav__link">
-                  {copy.cases}
-                </a>
-              </li>
-              <li className="hw-nav__item">
-                <a href={localePath('/blog', locale)} className="hw-nav__link">
-                  {copy.blog}
-                </a>
-              </li>
+                return (
+                  <li key={`${item.href}-${index}`} className="hw-nav__item">
+                    <a href={item.href} className="hw-nav__link">
+                      {item.label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
 
             <div className="hw-nav__end">
@@ -350,8 +268,8 @@ export function SiteNav({
 
               <div className="hw-nav__ctas">
                 <LangSwitch locale={locale} open={langOpen} onToggle={() => setLangOpen((value) => !value)} onClose={() => setLangOpen(false)} />
-                <Button href={localePath('/contacto', locale)} size="md" variant="primary" className="hw-nav__ds-cta no-underline">
-                  {copy.audit}
+                <Button href={model.ctaHref} size="md" variant="primary" className="hw-nav__ds-cta no-underline">
+                  {model.ctaLabel}
                 </Button>
               </div>
             </div>
@@ -384,77 +302,41 @@ export function SiteNav({
           </div>
 
           <div className="hw-nav-sheet__scroll">
-            <SheetNavLink href={localePath('/nosotros', locale)} onNavigate={() => setMobileOpen(false)}>
-              {copy.about}
-            </SheetNavLink>
-
-            <SheetSection title={copy.industries}>
-              <li>
-                <a
-                  href={localePath('/industrias', locale)}
-                  className="hw-nav-sheet__link"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <span className="hw-nav-sheet__icon" aria-hidden="true">
-                    <NavIcon name="grid" />
-                  </span>
-                  <span className="hw-nav-sheet__label">{copy.allIndustries}</span>
-                </a>
-              </li>
-              {industryItems.map((item) => (
-                <li key={item.slug}>
-                  <a
-                    href={localePath(`/industrias/${item.slug}`, locale)}
-                    className="hw-nav-sheet__link"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <span className="hw-nav-sheet__icon" aria-hidden="true">
-                      <NavIcon name={item.icon} />
-                    </span>
-                    <span className="hw-nav-sheet__label">{item.nombre}</span>
-                  </a>
-                </li>
-              ))}
-            </SheetSection>
-
-            <SheetSection title={copy.services}>
-              <li>
-                <a
-                  href={localePath('/servicios', locale)}
-                  className="hw-nav-sheet__link"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <span className="hw-nav-sheet__icon" aria-hidden="true">
-                    <NavIcon name="grid" />
-                  </span>
-                  <span className="hw-nav-sheet__label">{locale === 'en' ? 'Services' : 'Todos los servicios'}</span>
-                </a>
-              </li>
-              {NAV_SERVICE_GROUPS.flatMap((group) =>
-                group.items.map((item) => (
-                  <li key={item.slug}>
-                    <a
-                      href={localePath(`/servicios/${item.slug}`, locale)}
-                      className="hw-nav-sheet__link"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      <span className="hw-nav-sheet__icon" aria-hidden="true">
-                        <NavIcon name={item.icon} />
-                      </span>
-                      <span className="hw-nav-sheet__label">{locale === 'en' ? EN_NAV_SERVICES[item.slug]?.nombre ?? item.nombre : item.nombre}</span>
-                    </a>
-                  </li>
-                )),
-              )}
-            </SheetSection>
-
-            <SheetNavLink href={localePath('/portafolio', locale)} onNavigate={() => setMobileOpen(false)}>
-              {copy.cases}
-            </SheetNavLink>
-
-            <SheetNavLink href={localePath('/blog', locale)} onNavigate={() => setMobileOpen(false)}>
-              {copy.blog}
-            </SheetNavLink>
+            {model.bar.map((item, index) => {
+              if (item.kind === 'dropdown') {
+                return (
+                  <SheetSection key={`dropdown-${index}`} title={item.label}>
+                    {item.indexLabel ? (
+                      <li>
+                        <a href={item.indexHref} className="hw-nav-sheet__link" onClick={() => setMobileOpen(false)}>
+                          <span className="hw-nav-sheet__icon" aria-hidden="true">
+                            <NavIcon name="grid" />
+                          </span>
+                          <span className="hw-nav-sheet__label">{item.indexLabel}</span>
+                        </a>
+                      </li>
+                    ) : null}
+                    {item.columns.flatMap((column) =>
+                      column.links.map((link) => (
+                        <li key={link.href}>
+                          <a href={link.href} className="hw-nav-sheet__link" onClick={() => setMobileOpen(false)}>
+                            <span className="hw-nav-sheet__icon" aria-hidden="true">
+                              <NavIcon name={link.icon} />
+                            </span>
+                            <span className="hw-nav-sheet__label">{link.title}</span>
+                          </a>
+                        </li>
+                      )),
+                    )}
+                  </SheetSection>
+                );
+              }
+              return (
+                <SheetNavLink key={`${item.href}-${index}`} href={item.href} onNavigate={() => setMobileOpen(false)}>
+                  {item.label}
+                </SheetNavLink>
+              );
+            })}
           </div>
 
           <div className="hw-nav-sheet__footer">
@@ -466,8 +348,8 @@ export function SiteNav({
                 onToggle={() => setSheetLangOpen((value) => !value)}
                 onClose={() => setSheetLangOpen(false)}
               />
-              <Button href={localePath('/contacto', locale)} size="md" variant="primary" className="hw-nav-sheet__ds-cta no-underline">
-                {copy.audit}
+              <Button href={model.ctaHref} size="md" variant="primary" className="hw-nav-sheet__ds-cta no-underline">
+                {model.ctaLabel}
               </Button>
             </div>
           </div>
@@ -640,15 +522,7 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-function chunk<T>(items: readonly T[], size: number): T[][] {
-  const groups: T[][] = [];
-  for (let i = 0; i < items.length; i += size) {
-    groups.push([...items.slice(i, i + size)]);
-  }
-  return groups;
-}
-
-function NavIcon({ name }: { name: IconName }) {
+function NavIcon({ name }: { name: string }) {
   switch (name) {
     case 'activity':
       return (

@@ -575,8 +575,34 @@ export function mapAbout(doc: Record<string, unknown> | null): AboutCopy | null 
     historyColumns: Array.isArray(doc.historyColumns)
       ? (doc.historyColumns as AboutCopy['historyColumns'])
       : undefined,
+    heroBadge: text(doc.heroBadge),
+    heroCtaLabel: text(doc.heroCtaLabel),
+    heroCtaHref: text(doc.heroCtaHref),
+    pillarsEyebrow: text(doc.pillarsEyebrow),
+    pillarsTitle: text(doc.pillarsTitle),
+    pillars: Array.isArray(doc.pillars) ? (doc.pillars as AboutCopy['pillars']) : undefined,
+    processEyebrow: text(doc.processEyebrow),
+    processTitle: text(doc.processTitle),
+    processDescription: text(doc.processDescription),
+    teamEyebrow: text(doc.teamEyebrow),
+    teamTitle: text(doc.teamTitle),
+    teamDescription: text(doc.teamDescription),
+    teamCtaLabel: text(doc.teamCtaLabel),
+    teamCtaHref: text(doc.teamCtaHref),
+    teamFilters: Array.isArray(doc.teamFilters) ? (doc.teamFilters as AboutCopy['teamFilters']) : undefined,
+    mapEyebrow: text(doc.mapEyebrow),
+    mapTitle: text(doc.mapTitle),
+    mapDescription: text(doc.mapDescription),
+    closingBadge: text(doc.closingBadge),
+    closingTitle: text(doc.closingTitle),
+    closingDescription: text(doc.closingDescription),
+    closingCtaLabel: text(doc.closingCtaLabel),
     seo: seoOf(doc),
   };
+}
+
+function text(value: unknown) {
+  return typeof value === 'string' && value ? value : undefined;
 }
 
 function asCta(value: unknown): LandingCta | undefined {

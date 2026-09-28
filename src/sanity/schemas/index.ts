@@ -1,4 +1,5 @@
 import { aboutPage } from './aboutPage';
+import { contactPage } from './contactPage';
 import { landingSectionTypes } from './blocks/pageSections';
 import { blogTable } from './blogTable';
 import { faq } from './faq';
@@ -24,6 +25,7 @@ import {
   servicePlan,
   titledBlock,
 } from './shared';
+import { navBarItem, navGroup, navLink, navigation } from './navigation';
 import { siteSettings } from './siteSettings';
 
 export const schemaTypes = [
@@ -43,9 +45,14 @@ export const schemaTypes = [
   homeServiceItem,
   ...homeSectionTypes,
   ...serviceSectionTypes,
+  navLink,
+  navGroup,
+  navBarItem,
+  navigation,
   siteSettings,
   homePage,
   aboutPage,
+  contactPage,
   industry,
   industriesIndex,
   service,

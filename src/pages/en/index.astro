@@ -23,26 +23,17 @@ import { SITE } from '../../data/site';
 
 const home = await getHomeCopy('en');
 const industriesIndex = await getIndustriesIndex();
-const industryCards = home.industryCards?.length
-	? home.industryCards.map((item) => ({
-			slug: item.id,
-			nombre: item.nombre,
-			tagline: item.tagline,
-			puntos: item.puntos,
-		}))
-	: (await getIndustries()).map((item) => ({
-			slug: item.id,
-			nombre: item.data.nombre,
-			tagline: item.data.tagline,
-			puntos: item.data.porQue.map((punto) => punto.title),
-		}));
-const services = home.serviceCards?.length
-	? home.serviceCards
-	: (await getServices()).map((item) => ({
-			id: item.id,
-			nombre: item.data.nombre,
-			tagline: item.data.tagline,
-		}));
+const industryCards = (await getIndustries('en')).map((item) => ({
+	slug: item.id,
+	nombre: item.data.nombre,
+	tagline: item.data.tagline,
+	puntos: item.data.porQue.map((punto) => punto.title),
+}));
+const services = (await getServices('en')).map((item) => ({
+	id: item.id,
+	nombre: item.data.nombre,
+	tagline: item.data.tagline,
+}));
 const industryLabel: Record<string, string> = {
 	'turismo-hoteleria': 'Turismo',
 	saas: 'SaaS',

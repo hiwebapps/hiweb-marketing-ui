@@ -62,11 +62,49 @@ export const post = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'locale',
+      title: 'Idioma',
+      type: 'string',
+      group: 'content',
+      options: {
+        list: [
+          { title: 'Español', value: 'es' },
+          { title: 'English', value: 'en' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'es',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'esSlug',
+      title: 'Slug en español',
+      type: 'string',
+      group: 'content',
+      description: 'Empareja este artículo con su versión en español.',
+      hidden: ({ document }) => document?.locale !== 'en',
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       group: 'content',
-      options: { source: 'title', maxLength: 96 },
+      options: {
+        source: 'title',
+        maxLength: 96,
+        isUnique: async (slug, context) => {
+          const { document, getClient } = context;
+          if (!document || !slug) return true;
+          const id = document._id.replace(/^drafts\./, '');
+          const locale = document.locale ?? 'es';
+          const client = getClient({ apiVersion: '2024-01-01' });
+          const count = await client.fetch(
+            `count(*[_type == "post" && slug.current == $slug && coalesce(locale, "es") == $locale && !(_id in [$id, $draftId])])`,
+            { slug, locale, id, draftId: `drafts.${id}` },
+          );
+          return count === 0;
+        },
+      },
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -183,10 +221,10 @@ export const post = defineType({
     },
   ],
   preview: {
-    select: { title: 'title', authorName: 'author.name', autor: 'autor', media: 'cover' },
-    prepare: ({ title, authorName, autor, media }) => ({
+    select: { title: 'title', authorName: 'author.name', autor: 'autor', media: 'cover', locale: 'locale' },
+    prepare: ({ title, authorName, autor, media, locale }) => ({
       title,
-      subtitle: authorName || autor,
+      subtitle: [locale === 'en' ? 'English' : 'Español', authorName || autor].filter(Boolean).join(' · '),
       media,
     }),
   },

@@ -10,6 +10,7 @@ import {
 } from './from-collections';
 import {
   sanityAbout,
+  sanityContactPage,
   sanityCase,
   sanityCases,
   sanityHome,
@@ -18,6 +19,7 @@ import {
   sanityIndustry,
   sanityLanding,
   sanityLandings,
+  sanityNavigation,
   sanityPeople,
   sanityPost,
   sanityPosts,
@@ -25,6 +27,7 @@ import {
   sanityServices,
 } from './from-sanity';
 import { hydrateLanding, landingNeedsCatalogs } from './hydrate-landing';
+import { DEFAULT_CONTACT, type ContactPageCopy } from './contact';
 import type {
   AboutCopy,
   CaseRecord,
@@ -68,6 +71,14 @@ export async function getIndustries(locale: 'es' | 'en' = 'es'): Promise<Industr
     () => sanityIndustries(locale),
     collectionsIndustries,
     (items) => items.length === 0,
+  );
+}
+
+export async function getNavigation(locale: 'es' | 'en' = 'es') {
+  return withFallback(
+    () => sanityNavigation(locale),
+    () => null,
+    (value) => !value,
   );
 }
 
@@ -126,11 +137,13 @@ export async function getCase(slug: string): Promise<CaseRecord | undefined> {
   return fromSanity ?? undefined;
 }
 
-export async function getPosts(): Promise<PostRecord[]> {
+export async function getPosts(locale: 'es' | 'en' = 'es'): Promise<PostRecord[]> {
+  if (locale === 'en') return sanityPosts('en');
   return withFallback(sanityPosts, collectionsPosts, (items) => items.length === 0);
 }
 
-export async function getPost(slug: string): Promise<PostRecord | undefined> {
+export async function getPost(slug: string, locale: 'es' | 'en' = 'es'): Promise<PostRecord | undefined> {
+  if (locale === 'en') return (await sanityPost(slug, 'en')) ?? undefined;
   const fromSanity = await withFallback(
     () => sanityPost(slug),
     async () => {
@@ -168,8 +181,18 @@ export async function getHomeCopy(locale: 'es' | 'en' = 'es'): Promise<HomeCopy>
   };
 }
 
-export async function getAboutCopy(): Promise<AboutCopy> {
-  const copy = await withFallback(sanityAbout, collectionsAbout, (item) => !item);
+export async function getContactPage(): Promise<ContactPageCopy> {
+  if (!isSanityConfigured()) return DEFAULT_CONTACT;
+  try {
+    return (await sanityContactPage()) ?? DEFAULT_CONTACT;
+  } catch {
+    return DEFAULT_CONTACT;
+  }
+}
+
+export async function getAboutCopy(locale: 'es' | 'en' = 'es'): Promise<AboutCopy> {
+  if (locale === 'en') return (await sanityAbout('en')) ?? {};
+  const copy = await withFallback(() => sanityAbout('es'), collectionsAbout, (item) => !item);
   return copy ?? collectionsAbout();
 }
 
@@ -197,9 +220,9 @@ export async function caseStaticPaths() {
   }));
 }
 
-export async function postStaticPaths() {
-  const posts = await getPosts();
-  const full = await Promise.all(posts.map((post) => getPost(post.id)));
+export async function postStaticPaths(locale: 'es' | 'en' = 'es') {
+  const posts = await getPosts(locale);
+  const full = await Promise.all(posts.map((post) => getPost(post.id, locale)));
   return full
     .filter((entry): entry is PostRecord => Boolean(entry))
     .map((entry) => ({

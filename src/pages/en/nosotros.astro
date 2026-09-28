@@ -1,0 +1,118 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { IndustryHero } from '../../components/sections/IndustryHero';
+import { AboutHistory } from '../../components/sections/AboutHistory';
+import { PillarGrid } from '../../components/sections/PillarGrid';
+import { PresenceMap } from '../../components/sections/PresenceMap';
+import { ProcessPhases } from '../../components/sections/ProcessPhases';
+import { TeamGrid } from '../../components/sections/TeamGrid';
+import { FinalCta } from '../../components/sections/FinalCta';
+import { SITE } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/schema';
+import { getAboutCopy, getHomeCopy, getPeople } from '../../lib/content';
+import { localePath } from '../../lib/locale';
+import type { TeamMember } from '../../components/sections/TeamGrid';
+import type { Pillar } from '../../components/sections/PillarGrid';
+import '../../components/sections/AboutHistory.css';
+import '../../components/sections/TeamGrid.css';
+import '../../components/sections/PresenceMap.css';
+
+const about = await getAboutCopy('en');
+const home = await getHomeCopy('en');
+const people = (await getPeople()) as TeamMember[];
+const historyColumns =
+	about.historyColumns && about.historyColumns.length === 2
+		? ([about.historyColumns[0], about.historyColumns[1]] as [
+				{ title: string; paragraphs: string[] },
+				{ title: string; paragraphs: string[] },
+			])
+		: undefined;
+const pillars: Pillar[] = (about.pillars ?? []).map((item) => ({
+	title: item.title,
+	description: item.description,
+	icon: item.icon as Pillar['icon'],
+	accent: item.accent as Pillar['accent'],
+	href: item.href ? localePath(item.href, 'en') : undefined,
+}));
+const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
+	item.id === 'all' || item.id === 'web' || item.id === 'redes' || item.id === 'diseno'
+		? [{ id: item.id, label: item.label }]
+		: [],
+);
+---
+
+<Layout
+	lang="en"
+	title={about.seo?.metaTitle ?? 'About — Hiweb Marketing'}
+	description={about.seo?.metaDescription ?? about.heroDescription ?? SITE.tagline}
+	ogImage={about.seo?.ogImage ?? about.heroImage}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: about.heroBadge ?? 'About', href: '/en/nosotros' },
+	])}
+>
+	<main>
+		<IndustryHero
+			title={about.heroTitle ?? 'Collective expertise, our own technology, cross-border reach.'}
+			description={about.heroDescription ?? ''}
+			image={about.heroImage ?? '/images/team/hiweb-team.png'}
+			imageAlt={about.heroImageAlt ?? 'Hiweb team in brand shirts'}
+			imagePosition="center 28%"
+			badges={[
+				{ label: about.heroBadge ?? 'About', variant: 'lime' },
+				{ label: SITE.locales.join(' · '), variant: 'cyan' },
+			]}
+			ctaLabel={about.heroCtaLabel ?? 'Schedule your audit'}
+			ctaHref={localePath(about.heroCtaHref ?? '/contacto', 'en')}
+		/>
+		<AboutHistory
+			eyebrow={about.historyEyebrow}
+			title={about.historyTitle}
+			description={about.historyDescription}
+			columns={historyColumns}
+		/>
+		<PillarGrid
+			pillars={pillars}
+			eyebrow={about.pillarsEyebrow ?? 'Differentiators'}
+			title={about.pillarsTitle ?? 'Differentiators'}
+		/>
+		<ProcessPhases
+			client:visible
+			phases={home.process ?? []}
+			eyebrow={about.processEyebrow}
+			title={about.processTitle}
+			description={about.processDescription}
+			tone="canvas"
+		/>
+		<TeamGrid
+			client:load
+			showFilters
+			members={people}
+			eyebrow={about.teamEyebrow}
+			title={about.teamTitle}
+			description={about.teamDescription}
+			ctaLabel={about.teamCtaLabel}
+			ctaHref={localePath(about.teamCtaHref ?? '/contacto', 'en')}
+			filters={teamFilters.length ? teamFilters : undefined}
+			filterLabel="Filter by category"
+		/>
+		<PresenceMap
+			client:visible
+			eyebrow={about.mapEyebrow}
+			title={about.mapTitle}
+			description={about.mapDescription}
+			sectionLabel="Global presence"
+			globeLabel="Interactive globe with Mexico, the United States, and Canada"
+		/>
+		<FinalCta
+			client:load
+			badge={about.closingBadge}
+			title={about.closingTitle}
+			description={about.closingDescription}
+			primaryLabel={about.closingCtaLabel}
+			primaryHref={localePath('/contacto', 'en')}
+		/>
+	</main>
+</Layout>

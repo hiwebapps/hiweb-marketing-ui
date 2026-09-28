@@ -1,0 +1,207 @@
+---
+export const prerender = true;
+
+import Layout from '../../../layouts/Layout.astro';
+import BlogBody from '../../../components/content/BlogBody.astro';
+import { getPosts, postStaticPaths } from '../../../lib/content';
+import { BlogPostToc } from '../../../components/sections/BlogPostToc';
+import { FinalCta } from '../../../components/sections/FinalCta';
+import { Button } from '../../../components/ui';
+import { articleSchema, breadcrumbSchema } from '../../../lib/schema';
+import { extractPortableHeadings, extractPostHeadings, postCoverUrl } from '../../../lib/blog';
+import type { PostRecord } from '../../../lib/content/types';
+import '../../../components/sections/BlogPost.css';
+
+export async function getStaticPaths() {
+	return postStaticPaths('en');
+}
+
+interface Props {
+	entry: PostRecord;
+}
+
+const { entry } = Astro.props;
+const allPosts = await getPosts('en');
+const related = allPosts
+	.filter((post) => post.id !== entry.id)
+	.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf())
+	.slice(0, 4);
+
+const headings = entry.portableText
+	? extractPortableHeadings(entry.portableText)
+	: extractPostHeadings(entry.markdownBody ?? '');
+const cover = entry.coverUrl ?? postCoverUrl(entry.id);
+const dateLabel = entry.data.fecha.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+const author = entry.data.author;
+const authorName = author?.name || entry.data.autor;
+const initials = authorName
+	.split(/\s+/)
+	.filter(Boolean)
+	.slice(0, 2)
+	.map((part) => part[0]?.toUpperCase() ?? '')
+	.join('');
+
+const schemas = [
+	breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: 'Blog', href: '/en/blogs' },
+		{ name: entry.data.title, href: `/en/blogs/${entry.id}` },
+	]),
+	articleSchema({
+		title: entry.data.title,
+		description: entry.data.description,
+		href: `/en/blogs/${entry.id}`,
+		author: authorName,
+		authorProfile: author
+			? { role: author.role, company: author.company, linkedin: author.linkedin }
+			: undefined,
+		date: entry.data.fecha,
+	}),
+];
+---
+
+<Layout
+	lang="en"
+	title={entry.data.seo?.metaTitle ?? `${entry.data.title} — Hiweb`}
+	description={entry.data.seo?.metaDescription ?? entry.data.description}
+	ogImage={entry.data.seo?.ogImage ?? cover}
+	jsonLd={schemas}
+>
+	<main>
+		<section class="blog-post">
+			<div class="blog-post__shell">
+				<div class="blog-post__toc-wrap">
+					<BlogPostToc client:load headings={headings} />
+				</div>
+
+				<header class="blog-post__header">
+					<nav class="blog-post__crumb" aria-label="Breadcrumb">
+						<a href="/en">Home</a>
+						<span aria-hidden="true"> / </span>
+						<a href="/en/blogs">Blog</a>
+					</nav>
+					<h1 data-split class="blog-post__title">{entry.data.title}</h1>
+					<div class="blog-post__meta">
+						<span class="blog-post__avatar" aria-hidden="true">{initials || 'HW'}</span>
+						{
+							author?.linkedin ? (
+								<a class="blog-post__byline" href={author.linkedin} target="_blank" rel="noreferrer">
+									by {authorName}
+								</a>
+							) : (
+								<span>by {authorName}</span>
+							)
+						}
+						<span class="blog-post__meta-sep" aria-hidden="true">|</span>
+						<span>Updated: {dateLabel}</span>
+					</div>
+
+					<figure class="blog-post__cover">
+						<img
+							src={cover}
+							alt=""
+							width={1200}
+							height={720}
+							loading="eager"
+						/>
+					</figure>
+				</header>
+
+				<article class="blog-post__main">
+					<div class="blog-post__body" data-blog-body>
+						<BlogBody post={entry} />
+					</div>
+					{
+						author ? (
+							<aside class="blog-post__author" aria-label="Author">
+								<span class="blog-post__avatar blog-post__avatar--lg" aria-hidden="true">
+									{initials || 'HW'}
+								</span>
+								<div class="blog-post__author-copy">
+									<p class="blog-post__author-name">{author.name}</p>
+									{
+										author.role || author.company ? (
+											<p class="blog-post__author-role">
+												{[author.role, author.company].filter(Boolean).join(' · ')}
+											</p>
+										) : null
+									}
+									{
+										author.linkedin ? (
+											<a
+												class="blog-post__author-link"
+												href={author.linkedin}
+												target="_blank"
+												rel="noreferrer"
+											>
+												LinkedIn
+											</a>
+										) : null
+									}
+								</div>
+							</aside>
+						) : null
+					}
+				</article>
+
+				<aside class="blog-post__related" aria-label="Related articles">
+					<div class="blog-post__related-card">
+						<p class="blog-post__related-title">Related</p>
+						{
+							related.length ? (
+								<ul class="blog-post__related-list">
+									{related.map((post) => (
+										<li>
+											<a class="blog-post__related-link" href={`/en/blogs/${post.id}`}>
+												<span class="blog-post__related-media">
+													<img
+														src={post.coverUrl ?? postCoverUrl(post.id, 240, 240)}
+														alt=""
+														width={240}
+														height={240}
+														loading="lazy"
+													/>
+												</span>
+												<span class="blog-post__related-copy">
+													<p class="blog-post__related-tag">
+														{post.data.categoriaServicio?.nombre ?? post.data.keyword}
+													</p>
+													<p class="blog-post__related-name">{post.data.title}</p>
+												</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							) : (
+								<p class="mt-3 !text-sm text-muted">More articles soon.</p>
+							)
+						}
+						<div class="blog-post__related-cta">
+							<Button href="/en/blogs" variant="secondary" size="sm" className="w-full no-underline">
+								All articles
+							</Button>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</section>
+
+		<FinalCta client:load title="Want to apply this to your business?" />
+	</main>
+</Layout>
+
+<script define:vars={{ headings }}>
+	const body = document.querySelector('[data-blog-body]');
+	if (body && Array.isArray(headings)) {
+		const nodes = body.querySelectorAll('h2, h3');
+		nodes.forEach((node, index) => {
+			const heading = headings[index];
+			if (!heading) return;
+			node.id = heading.id;
+		});
+	}
+</script>

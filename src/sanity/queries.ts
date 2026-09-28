@@ -109,6 +109,42 @@ const serviceSectionsProjection = /* groq */ `
   }
 `;
 
+const navLinkProjection = /* groq */ `{ title, description, href, icon }`;
+
+export const navigationQuery = defineQuery(`*[_type == "navigation" && _id == $id][0]{
+  ctaLabel,
+  ctaHref,
+  allIndustriesLabel,
+  industriesIndexHref,
+  allServicesLabel,
+  servicesIndexHref,
+  exploreHeading,
+  bar[]{
+    label,
+    kind,
+    href,
+    indexLabel,
+    indexHref,
+    exploreHeading,
+    links[] ${navLinkProjection},
+    columns[]{
+      heading,
+      links[] ${navLinkProjection}
+    },
+    groups[]{
+      heading,
+      links[] ${navLinkProjection}
+    },
+    exploreLinks[] ${navLinkProjection}
+  },
+  industryLinks[] ${navLinkProjection},
+  serviceGroups[]{
+    heading,
+    links[] ${navLinkProjection}
+  },
+  exploreLinks[] ${navLinkProjection}
+}`);
+
 export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
   name,
   legalName,
@@ -264,14 +300,36 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
   ${seoProjection}
 }`);
 
-export const aboutPageQuery = defineQuery(`*[_type == "aboutPage" && _id == "aboutPage"][0]{
+export const aboutPageQuery = defineQuery(`*[_type == "aboutPage" && _id == $id][0]{
   heroTitle,
   heroDescription,
+  heroBadge,
+  heroCtaLabel,
+  heroCtaHref,
   heroImage ${imageProjection},
   historyEyebrow,
   historyTitle,
   historyDescription,
   historyColumns[]{ title, paragraphs },
+  pillarsEyebrow,
+  pillarsTitle,
+  pillars[]{ title, description, icon, accent, href },
+  processEyebrow,
+  processTitle,
+  processDescription,
+  teamEyebrow,
+  teamTitle,
+  teamDescription,
+  teamCtaLabel,
+  teamCtaHref,
+  teamFilters[]{ id, label },
+  mapEyebrow,
+  mapTitle,
+  mapDescription,
+  closingBadge,
+  closingTitle,
+  closingDescription,
+  closingCtaLabel,
   ${seoProjection}
 }`);
 
@@ -452,7 +510,7 @@ export const caseBySlugQuery = defineQuery(`*[
 }`);
 
 export const postsQuery = defineQuery(`*[
-  _type == "post" && defined(slug.current)
+  _type == "post" && defined(slug.current) && coalesce(locale, "es") == $locale
 ] | order(fecha desc) {
   "id": slug.current,
   title,
@@ -471,7 +529,7 @@ export const postsQuery = defineQuery(`*[
 }`);
 
 export const postBySlugQuery = defineQuery(`*[
-  _type == "post" && slug.current == $slug
+  _type == "post" && slug.current == $slug && coalesce(locale, "es") == $locale
 ][0]{
   "id": slug.current,
   title,
@@ -565,6 +623,31 @@ export const landingBySlugQuery = defineQuery(`*[
     "faqFromLibrary": faqRefs[]->{ question, answer }
   },
   ${seoProjection}
+}`);
+
+export const contactPageQuery = defineQuery(`*[_type == "contactPage" && _id == "contactPage"][0]{
+  title,
+  bannerTitle,
+  bannerSubtitle,
+  submitLabel,
+  servicesError,
+  amountLabel,
+  amountPlaceholder,
+  budgetError,
+  customBudgetError,
+  fields[]{
+    _key,
+    kind,
+    label,
+    placeholder,
+    hint,
+    required,
+    width
+  },
+  services[]{ _key, label },
+  budgets[]{ _key, label, custom },
+  metaTitle,
+  metaDescription
 }`);
 
 export const sitemapEntriesQuery = defineQuery(`{

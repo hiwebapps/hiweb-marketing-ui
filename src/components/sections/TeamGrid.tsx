@@ -45,6 +45,8 @@ type TeamGridProps = {
   limit?: number;
   /** Category filter row — use on /nosotros */
   showFilters?: boolean;
+  filters?: ReadonlyArray<{ id: FilterId; label: string }>;
+  filterLabel?: string;
 };
 
 const ACCENTS: TeamAccent[] = ['cyan', 'purple', 'orange', 'lime'];
@@ -117,6 +119,8 @@ export function TeamGrid({
   members = [...TEAM_MEMBERS],
   limit,
   showFilters = false,
+  filters = FILTERS,
+  filterLabel = 'Filtrar por categoría',
 }: TeamGridProps) {
   const [filter, setFilter] = useState<FilterId>('all');
   const gridRef = useRef<HTMLUListElement>(null);
@@ -174,8 +178,8 @@ export function TeamGrid({
         </div>
 
         {showFilters ? (
-          <div className="team__filters" role="group" aria-label="Filtrar por categoría">
-            {FILTERS.map((item) => {
+          <div className="team__filters" role="group" aria-label={filterLabel}>
+            {filters.map((item) => {
               const active = filter === item.id;
               return (
                 <Button

@@ -333,12 +333,34 @@ export type HomeCopy = {
 export type AboutCopy = {
   heroTitle?: string;
   heroDescription?: string;
+  heroBadge?: string;
+  heroCtaLabel?: string;
+  heroCtaHref?: string;
   heroImage?: string;
   heroImageAlt?: string;
   historyEyebrow?: string;
   historyTitle?: string;
   historyDescription?: string;
   historyColumns?: { title: string; paragraphs: string[] }[];
+  pillarsEyebrow?: string;
+  pillarsTitle?: string;
+  pillars?: { title: string; description: string; icon?: string; accent?: string; href?: string }[];
+  processEyebrow?: string;
+  processTitle?: string;
+  processDescription?: string;
+  teamEyebrow?: string;
+  teamTitle?: string;
+  teamDescription?: string;
+  teamCtaLabel?: string;
+  teamCtaHref?: string;
+  teamFilters?: { id: string; label: string }[];
+  mapEyebrow?: string;
+  mapTitle?: string;
+  mapDescription?: string;
+  closingBadge?: string;
+  closingTitle?: string;
+  closingDescription?: string;
+  closingCtaLabel?: string;
   seo?: SeoFields;
 };
 

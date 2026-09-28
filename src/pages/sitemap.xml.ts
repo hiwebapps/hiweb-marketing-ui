@@ -19,11 +19,12 @@ function urlXml(href: string): string {
 
 export const GET: APIRoute = async ({ url, site }) => {
   const origin = site?.origin ?? import.meta.env.PUBLIC_SITE_URL ?? url.origin;
-  const [industries, services, cases, posts, landings] = await Promise.all([
+  const [industries, services, cases, posts, englishPosts, landings] = await Promise.all([
     getIndustries(),
     getServices(),
     getCases(),
     getPosts(),
+    getPosts('en'),
     getLandings(),
   ]);
 
@@ -34,11 +35,14 @@ export const GET: APIRoute = async ({ url, site }) => {
     '/portafolio',
     '/blog',
     '/nosotros',
+    '/en/nosotros',
+    '/en/blogs',
     '/contacto',
     ...services.map((item) => `/servicios/${item.id}`),
     ...industries.map((item) => `/industrias/${item.id}`),
     ...cases.map((item) => `/portafolio/${item.id}`),
     ...posts.map((item) => `/blog/${item.id}`),
+    ...englishPosts.map((item) => `/en/blogs/${item.id}`),
     ...landings.filter((item) => !isReservedSlug(item.id)).map((item) => `/${item.id}`),
   ].map((path) => urlXml(loc(origin, path)));
 

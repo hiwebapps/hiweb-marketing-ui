@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { serviceContentKey } from '../../lib/en-slugs';
 import { ServiceIcon, SERVICE_ICON_NAMES, type ServiceIconName } from '../icons/ServiceIcons';
 import { Badge } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
@@ -73,7 +74,7 @@ export function ServiceGrid({
 
       <ul className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((item, index) => {
-          const visual = SERVICE_VISUALS[item.slug];
+          const visual = SERVICE_VISUALS[serviceContentKey(item.slug)];
           const icon = visual?.icon ?? SERVICE_ICON_NAMES[index % SERVICE_ICON_NAMES.length];
           const image = visual?.image ?? '/images/services/desarrollo-web.jpg';
           const accent = ACCENTS[index % ACCENTS.length];

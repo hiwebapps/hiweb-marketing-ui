@@ -1,12 +1,33 @@
+import { EN_BLOG_SLUG, ES_BLOG_SLUG } from './blog-pairs';
+import { englishServiceSlug, serviceContentKey } from './en-slugs';
+
 export type Locale = 'es' | 'en';
 
 export function localeFromPath(pathname: string): Locale {
   return pathname === '/en' || pathname.startsWith('/en/') ? 'en' : 'es';
 }
 
+function translateServicePath(bare: string, locale: Locale) {
+  const match = bare.match(/^\/servicios\/([^/]+)\/?$/);
+  if (!match) return bare;
+  const slug = locale === 'en' ? englishServiceSlug(match[1]) : serviceContentKey(match[1]);
+  return `/servicios/${slug}`;
+}
+
+function translateBlogPath(bare: string, locale: Locale) {
+  if (bare === '/blog' || bare === '/blog/') return locale === 'en' ? '/blogs' : '/blog';
+  if (bare === '/blogs' || bare === '/blogs/') return locale === 'es' ? '/blog' : '/blogs';
+  const english = bare.match(/^\/blogs\/([^/]+)\/?$/);
+  if (english) return locale === 'es' ? `/blog/${ES_BLOG_SLUG[english[1]] ?? english[1]}` : `/blogs/${english[1]}`;
+  const spanish = bare.match(/^\/blog\/([^/]+)\/?$/);
+  if (spanish) return locale === 'en' ? `/blogs/${EN_BLOG_SLUG[spanish[1]] ?? spanish[1]}` : `/blog/${spanish[1]}`;
+  return bare;
+}
+
 /** English pages that exist. Anything else under /en redirects to /en. */
 export function localePath(pathname: string, locale: Locale): string {
-  const bare = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  const stripped = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  const bare = translateBlogPath(translateServicePath(stripped, locale), locale);
   if (locale === 'es') return bare;
   return bare === '/' ? '/en' : `/en${bare}`;
 }
@@ -30,7 +51,7 @@ export const CHROME = {
     languageCurrent: 'Idioma: español',
   },
   en: {
-    about: 'Nosotros',
+    about: 'About',
     industries: 'Industries',
     allIndustries: 'All industries',
     services: 'Services',

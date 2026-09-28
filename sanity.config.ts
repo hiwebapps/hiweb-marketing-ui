@@ -4,6 +4,7 @@ import { visionTool } from '@sanity/vision';
 import { completeLandingTemplate } from './src/sanity/actions/completeLandingTemplate';
 import { landingTemplateSections, type LandingTemplateKind } from './src/sanity/landingTemplate';
 import { schemaTypes } from './src/sanity/schemas';
+import { industryStarter, serviceStarter } from './src/sanity/starters';
 import { structure } from './src/sanity/structure';
 
 const projectId =
@@ -32,7 +33,36 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
     templates: (prev) => [
-      ...prev.filter((template) => template.schemaType !== 'landingPage'),
+      ...prev.filter(
+        (template) =>
+          template.schemaType !== 'landingPage' &&
+          template.schemaType !== 'service' &&
+          template.schemaType !== 'industry',
+      ),
+      {
+        id: 'service-es',
+        title: 'Servicio en español',
+        schemaType: 'service',
+        value: serviceStarter('es'),
+      },
+      {
+        id: 'service-en',
+        title: 'Servicio en inglés',
+        schemaType: 'service',
+        value: serviceStarter('en'),
+      },
+      {
+        id: 'industry-es',
+        title: 'Industria en español',
+        schemaType: 'industry',
+        value: industryStarter('es'),
+      },
+      {
+        id: 'industry-en',
+        title: 'Industria en inglés',
+        schemaType: 'industry',
+        value: industryStarter('en'),
+      },
       ...(['serviceLite', 'industryLite', 'campaign'] as const).map((kind: LandingTemplateKind) => ({
         id: `landing-${kind}`,
         title:

@@ -43,6 +43,12 @@ export default defineConfig({
   redirects: {
     '/work': '/portafolio',
     '/contact': '/contacto',
+    '/en/servicios/google-ads': '/en/servicios/google-ads-management-services',
+    '/en/servicios/redes-sociales': '/en/servicios/social-media',
+    '/en/servicios/desarrollo-web': '/en/servicios/web-development',
+    '/en/servicios/crm-automatizacion': '/en/servicios/crm-automation',
+    '/en/servicios/ia-marketing': '/en/servicios/ai-tools-for-marketing',
+    '/en/blog': '/en/blogs',
   },
   vite: {
     plugins: [tailwindcss()],

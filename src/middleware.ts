@@ -8,7 +8,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     pathname === '/en/servicios' ||
     pathname.startsWith('/en/servicios/') ||
     pathname === '/en/industrias' ||
-    pathname.startsWith('/en/industrias/');
+    pathname.startsWith('/en/industrias/') ||
+    pathname === '/en/nosotros' ||
+    pathname.startsWith('/en/nosotros/') ||
+    pathname === '/en/blogs' ||
+    pathname.startsWith('/en/blogs/');
   if (pathname.startsWith('/en/') && pathname !== '/en/' && !englishSection) {
     return context.redirect('/en');
   }

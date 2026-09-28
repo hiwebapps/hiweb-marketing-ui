@@ -10,6 +10,10 @@ import type { StructureResolver } from 'sanity/structure';
 
 const HIDDEN_FROM_FALLBACK = [
   'siteSettings',
+  'navigation',
+  'navLink',
+  'navGroup',
+  'navBarItem',
   'homePage',
   'aboutPage',
   'industry',
@@ -21,6 +25,7 @@ const HIDDEN_FROM_FALLBACK = [
   'person',
   'faq',
   'landingPage',
+  'contactPage',
   'faqItem',
   'titledBlock',
   'processStep',
@@ -68,8 +73,84 @@ const HIDDEN_FROM_FALLBACK = [
   'serviceProcessStep',
 ];
 
-export const structure: StructureResolver = (S) =>
-  S.list()
+type LocaleDoc = {
+  _id: string;
+  nombre: string;
+  slug: string;
+  orden: number;
+  locale: string;
+};
+
+function createMenu(
+  S: Parameters<StructureResolver>[0],
+  schemaType: 'service' | 'industry',
+) {
+  const esTitle = schemaType === 'service' ? 'Nuevo servicio en español' : 'Nueva industria en español';
+  const enTitle = schemaType === 'service' ? 'Nuevo servicio en inglés' : 'Nueva industria en inglés';
+  return [
+    S.menuItem()
+      .title(esTitle)
+      .intent({ type: 'create', params: { type: schemaType, template: `${schemaType}-es` } }),
+    S.menuItem()
+      .title(enTitle)
+      .intent({ type: 'create', params: { type: schemaType, template: `${schemaType}-en` } }),
+  ];
+}
+
+function languageItems(
+  S: Parameters<StructureResolver>[0],
+  schemaType: string,
+  esId?: string,
+  enId?: string,
+) {
+  return [
+    esId
+      ? S.listItem()
+          .title('Español')
+          .id(`${schemaType}-${esId}-es`)
+          .child(S.document().schemaType(schemaType).documentId(esId).title('Español'))
+      : null,
+    enId
+      ? S.listItem()
+          .title('English')
+          .id(`${schemaType}-${enId}-en`)
+          .child(S.document().schemaType(schemaType).documentId(enId).title('English'))
+      : null,
+  ].filter((item) => item !== null);
+}
+
+export const structure: StructureResolver = (S, context) => {
+  const client = context.getClient({ apiVersion: '2024-01-01' });
+
+  async function pairs(type: 'service' | 'industry') {
+    const rows = await client.fetch<LocaleDoc[]>(
+      `*[_type == $type]{
+        _id,
+        nombre,
+        "slug": coalesce(slug.current, _id),
+        orden,
+        "locale": coalesce(locale, "es")
+      }`,
+      { type },
+    );
+    const bySlug = new Map<string, { slug: string; nombre: string; orden: number; esId?: string; enId?: string }>();
+    for (const row of rows) {
+      const id = row._id.replace(/^drafts\./, '');
+      const key = row.locale === 'en' && id.endsWith('-en') ? id.slice(0, -3) : id;
+      const current = bySlug.get(key) ?? { slug: row.slug, nombre: row.nombre, orden: row.orden ?? 0 };
+      if (row.locale === 'en') current.enId = id;
+      else {
+        current.esId = id;
+        current.nombre = row.nombre;
+        current.orden = row.orden ?? 0;
+        current.slug = row.slug;
+      }
+      bySlug.set(key, current);
+    }
+    return [...bySlug.values()].sort((a, b) => a.orden - b.orden || a.nombre.localeCompare(b.nombre));
+  }
+
+  return S.list()
     .title('Contenido')
     .items([
       S.listItem()
@@ -78,79 +159,113 @@ export const structure: StructureResolver = (S) =>
         .icon(CogIcon)
         .child(S.document().schemaType('siteSettings').documentId('siteSettings').title('Ajustes del sitio')),
       S.listItem()
+        .title('Navbar')
+        .id('navbar')
+        .icon(CogIcon)
+        .child(
+          S.list()
+            .title('Navbar')
+            .items([
+              S.listItem()
+                .title('Español')
+                .id('navbar-es')
+                .child(S.document().schemaType('navigation').documentId('navigation').title('Español')),
+              S.listItem()
+                .title('English')
+                .id('navbar-en')
+                .child(S.document().schemaType('navigation').documentId('navigation-en').title('English')),
+            ]),
+        ),
+      S.listItem()
         .title('Home')
         .id('home')
         .icon(HomeIcon)
-        .child(S.document().schemaType('homePage').documentId('homePage').title('Home')),
-      S.listItem()
-        .title('Home (EN)')
-        .id('home-en')
-        .icon(HomeIcon)
-        .child(S.document().schemaType('homePage').documentId('homePage-en').title('Home (EN)')),
+        .child(
+          S.list()
+            .title('Home')
+            .items([
+              S.listItem()
+                .title('Español')
+                .id('home-es')
+                .child(S.document().schemaType('homePage').documentId('homePage').title('Español')),
+              S.listItem()
+                .title('English')
+                .id('home-en')
+                .child(S.document().schemaType('homePage').documentId('homePage-en').title('English')),
+            ]),
+        ),
       S.listItem()
         .title('Nosotros')
         .id('nosotros')
         .icon(UsersIcon)
-        .child(S.document().schemaType('aboutPage').documentId('aboutPage').title('Nosotros')),
+        .child(
+          S.list()
+            .title('Nosotros')
+            .items([
+              S.listItem()
+                .title('Español')
+                .id('nosotros-es')
+                .child(S.document().schemaType('aboutPage').documentId('aboutPage').title('Español')),
+              S.listItem()
+                .title('English')
+                .id('nosotros-en')
+                .child(S.document().schemaType('aboutPage').documentId('aboutPage-en').title('English')),
+            ]),
+        ),
       S.divider(),
       S.listItem()
         .title('Industrias')
         .id('industrias')
         .icon(CaseIcon)
-        .child(
-          S.documentTypeList('industry')
+        .child(async () => {
+          const pages = await pairs('industry');
+          return S.list()
             .title('Industrias')
-            .filter('_type == "industry" && coalesce(locale, "es") == "es"')
-            .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
-        ),
-      S.listItem()
-        .title('Industrias (EN)')
-        .id('industrias-en')
-        .icon(CaseIcon)
-        .child(
-          S.list()
-            .title('Industrias (EN)')
+            .menuItems(createMenu(S, 'industry'))
             .items([
               S.listItem()
                 .title('Índice')
-                .id('industries-index-en')
+                .id('industries-index')
                 .child(
                   S.document()
                     .schemaType('industriesIndex')
                     .documentId('industriesIndex-en')
-                    .title('Índice (EN)'),
+                    .title('Índice · English'),
                 ),
-              S.listItem()
-                .title('Páginas')
-                .id('industry-pages-en')
-                .child(
-                  S.documentTypeList('industry')
-                    .title('Industrias (EN)')
-                    .filter('_type == "industry" && locale == "en"')
-                    .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
-                ),
-            ]),
-        ),
+              ...pages.map((page) =>
+                S.listItem()
+                  .title(page.nombre)
+                  .id(`industry-${page.slug}`)
+                  .child(
+                    S.list()
+                      .title(page.nombre)
+                      .items(languageItems(S, 'industry', page.esId, page.enId)),
+                  ),
+              ),
+            ]);
+        }),
       S.listItem()
         .title('Servicios')
         .id('servicios')
         .icon(CaseIcon)
-        .child(
-          S.documentTypeList('service')
+        .child(async () => {
+          const pages = await pairs('service');
+          return S.list()
             .title('Servicios')
-            .filter('_type == "service" && coalesce(locale, "es") == "es"')
-            .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
-        ),
-      S.listItem()
-        .title('Servicios (EN)')
-        .id('servicios-en')
-        .icon(CaseIcon)
-        .child(
-          S.documentTypeList('service')
-            .title('Servicios (EN)')
-            .filter('_type == "service" && locale == "en"')
-            .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
-        ),
+            .menuItems(createMenu(S, 'service'))
+            .items(
+              pages.map((page) =>
+                S.listItem()
+                  .title(page.nombre)
+                  .id(`service-${page.slug}`)
+                  .child(
+                    S.list()
+                      .title(page.nombre)
+                      .items(languageItems(S, 'service', page.esId, page.enId)),
+                  ),
+              ),
+            );
+        }),
       S.listItem()
         .title('Casos')
         .id('casos')
@@ -161,7 +276,12 @@ export const structure: StructureResolver = (S) =>
         .title('Páginas')
         .id('paginas')
         .icon(DocumentIcon)
-        .child(S.documentTypeList('landingPage').title('Páginas')),
+        .child(
+          S.documentList()
+            .title('Páginas')
+            .filter('_type in ["contactPage", "landingPage"]')
+            .defaultOrdering([{ field: 'title', direction: 'asc' }]),
+        ),
       S.listItem()
         .title('Biblioteca')
         .id('biblioteca')
@@ -193,11 +313,52 @@ export const structure: StructureResolver = (S) =>
               S.listItem()
                 .title('Artículos')
                 .id('posts')
-                .child(
-                  S.documentTypeList('post')
+                .child(async () => {
+                  const rows = await client.fetch<
+                    { _id: string; title: string; slug: string; locale: string; esSlug?: string; fecha?: string }[]
+                  >(
+                    `*[_type == "post"]{
+                      _id,
+                      title,
+                      "slug": slug.current,
+                      "locale": coalesce(locale, "es"),
+                      esSlug,
+                      fecha
+                    }`,
+                  );
+                  const grouped = new Map<
+                    string,
+                    { title: string; fecha: string; esId?: string; enId?: string }
+                  >();
+                  for (const row of rows) {
+                    const id = row._id.replace(/^drafts\./, '');
+                    const key = row.locale === 'en' ? row.esSlug || `en:${row.slug}` : row.slug;
+                    const current = grouped.get(key) ?? { title: row.title, fecha: row.fecha ?? '' };
+                    if (row.locale === 'en') current.enId = id;
+                    else {
+                      current.esId = id;
+                      current.title = row.title;
+                      current.fecha = row.fecha ?? current.fecha;
+                    }
+                    if (!current.title) current.title = row.title;
+                    grouped.set(key, current);
+                  }
+                  const pages = [...grouped.values()].sort((a, b) => b.fecha.localeCompare(a.fecha));
+                  return S.list()
                     .title('Artículos')
-                    .defaultOrdering([{ field: 'fecha', direction: 'desc' }]),
-                ),
+                    .items(
+                      pages.map((page) =>
+                        S.listItem()
+                          .title(page.title)
+                          .id(`post-${page.esId ?? page.enId}`)
+                          .child(
+                            S.list()
+                              .title(page.title)
+                              .items(languageItems(S, 'post', page.esId, page.enId)),
+                          ),
+                      ),
+                    );
+                }),
               S.listItem().title('Autores').id('authors').child(S.documentTypeList('author').title('Autores')),
             ]),
         ),
@@ -209,3 +370,4 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       ...S.documentTypeListItems().filter((item) => !HIDDEN_FROM_FALLBACK.includes(item.getId() ?? '')),
     ]);
+};

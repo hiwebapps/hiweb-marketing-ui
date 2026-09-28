@@ -11,6 +11,7 @@ import { FaqSection } from '../../../components/sections/FaqSection';
 import { FinalCta } from '../../../components/sections/FinalCta';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
 import { industryServiceDescription } from '../../../data/industryServices';
+import { serviceContentKey } from '../../../lib/en-slugs';
 import type { BadgeVariant } from '../../../components/ui';
 import { formatCaseStat } from '../../../lib/content/format';
 import type { IndustryRecord } from '../../../lib/content/types';
@@ -42,7 +43,8 @@ const industryServices = services.map((item) => ({
 	nombre: item.data.nombre,
 	description:
 		blurbByService[item.id] ??
-		industryServiceDescription(entry.id, item.id, entry.data.nombre),
+		blurbByService[serviceContentKey(item.id)] ??
+		industryServiceDescription(entry.id, serviceContentKey(item.id), entry.data.nombre),
 }));
 
 const caseStories = cases.map((item) => ({

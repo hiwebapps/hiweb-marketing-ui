@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../../layouts/Layout.astro';
-import { getCases, getHomeCopy, getIndustries, getServices } from '../../../lib/content';
+import { getCases, getHomeCopy, getIndustries, getIndustriesIndex, getServices } from '../../../lib/content';
 import { PageHero } from '../../../components/sections/PageHero';
 import { ServiceGrid } from '../../../components/sections/ServiceGrid';
 import { IndustryGrid } from '../../../components/sections/IndustryGrid';
@@ -11,7 +11,8 @@ import { CasePreview } from '../../../components/sections/CasePreview';
 import { FinalCta } from '../../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../../lib/schema';
 const services = await getServices('en');
-const industries = await getIndustries();
+const industries = await getIndustries('en');
+const industriesIndex = await getIndustriesIndex();
 const cases = await getCases();
 const home = await getHomeCopy('en');
 const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
@@ -54,7 +55,11 @@ const intro = {
 				tagline: item.data.tagline,
 				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
-			title="El mismo servicio, un playbook distinto por industria"
+			eyebrow={industriesIndex?.eyebrow}
+			title={industriesIndex?.title}
+			description={industriesIndex?.description}
+			hrefPrefix="/en/industrias"
+			ctaLabel={industriesIndex?.cardCtaLabel}
 			tone="surface"
 		/>
 		<ProcessPhases client:visible phases={home.process ?? []} tone="canvas" />

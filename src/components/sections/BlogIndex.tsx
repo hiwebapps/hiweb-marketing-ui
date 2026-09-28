@@ -126,19 +126,23 @@ type BlogIndexProps = {
   services?: BlogServiceFilter[];
   title?: string;
   description?: string;
+  hrefPrefix?: string;
+  allLabel?: string;
+  filterLabel?: string;
+  readingSuffix?: string;
 };
 
-function postHref(post: BlogCard) {
+function postHref(post: BlogCard, hrefPrefix: string) {
   if (post.placeholder) return '#';
-  return post.href ?? `/blog/${post.id}`;
+  return post.href ?? `${hrefPrefix}/${post.id}`;
 }
 
 function postImage(post: BlogCard) {
   return post.image ?? postCoverUrl(post.id, 800, 520);
 }
 
-function readingLabel(post: BlogCard) {
-  return `${post.readingMinutes ?? BLOG_READING_MINUTES} minutos`;
+function readingLabel(post: BlogCard, suffix: string) {
+  return `${post.readingMinutes ?? BLOG_READING_MINUTES} ${suffix}`;
 }
 
 export function BlogIndex({
@@ -146,6 +150,10 @@ export function BlogIndex({
   services = [],
   title = 'Todos los artículos',
   description = 'Filtra por servicio. Cada pieza enlaza a lo que sí ejecutamos — no a un magazine genérico.',
+  hrefPrefix = '/blog',
+  allLabel = 'Todos',
+  filterLabel = 'Filtrar por servicio',
+  readingSuffix = 'minutos',
 }: BlogIndexProps) {
   const [filter, setFilter] = useState<FilterId>('all');
   const gridRef = useRef<HTMLUListElement>(null);
@@ -161,8 +169,8 @@ export function BlogIndex({
         const post = catalog.find((item) => item.servicio === id);
         return { id: id as string, nombre: post?.servicioNombre ?? id };
       });
-    return [{ id: 'all', nombre: 'Todos' }, ...fromServices, ...extras];
-  }, [catalog, services]);
+    return [{ id: 'all', nombre: allLabel }, ...fromServices, ...extras];
+  }, [catalog, services, allLabel]);
 
   const visible = useMemo(() => {
     if (filter === 'all') return catalog;
@@ -206,7 +214,7 @@ export function BlogIndex({
         badgeVariant="purple"
       />
 
-      <div className="blog-filters" role="radiogroup" aria-label="Filtrar por servicio">
+      <div className="blog-filters" role="radiogroup" aria-label={filterLabel}>
         {filters.map((item) => {
           const active = filter === item.id;
           return (
@@ -227,7 +235,7 @@ export function BlogIndex({
 
       <ul ref={gridRef} className="blog-grid">
         {visible.map((post) => {
-          const href = postHref(post);
+          const href = postHref(post, hrefPrefix);
           const stopPlaceholder = post.placeholder
             ? (event: { preventDefault: () => void }) => event.preventDefault()
             : undefined;
@@ -261,7 +269,7 @@ export function BlogIndex({
                 </h3>
                 <p className="blog-card__desc">{post.description}</p>
                 <p className="blog-card__meta">
-                  <span>{readingLabel(post)}</span>
+                  <span>{readingLabel(post, readingSuffix)}</span>
                   <span aria-hidden="true">·</span>
                   <span>{post.autor}</span>
                   <span aria-hidden="true">·</span>

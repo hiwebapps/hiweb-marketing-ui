@@ -140,7 +140,11 @@ export const industry = defineType({
     },
   ],
   preview: {
-    select: { title: 'nombre', subtitle: 'tagline', media: 'heroImage' },
+    select: { title: 'nombre', locale: 'locale', media: 'heroImage' },
+    prepare: ({ title, locale }) => ({
+      title: title || 'Industria',
+      subtitle: locale === 'en' ? 'English' : 'Español',
+    }),
   },
 });
 

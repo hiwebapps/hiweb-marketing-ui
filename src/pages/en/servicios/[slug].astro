@@ -16,6 +16,7 @@ import { CaseStories } from '../../../components/sections/CaseStories';
 import { FaqSection } from '../../../components/sections/FaqSection';
 import { FinalCta } from '../../../components/sections/FinalCta';
 import ServicePageSection from '../../../components/sections/ServicePageSection.astro';
+import { serviceContentKey } from '../../../lib/en-slugs';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
 import type { BadgeVariant } from '../../../components/ui';
 import { iconForServiceOverviewCard } from '../../../components/icons/PillarIcons';
@@ -35,8 +36,9 @@ interface Props {
 
 const { entry } = Astro.props;
 const industries = await getIndustries();
+const contentKey = serviceContentKey(entry.id);
 const cases = (await getCases()).filter((item) =>
-	item.data.servicios.some((ref) => ref.id === entry.id),
+	item.data.servicios.some((ref) => ref.id === entry.id || ref.id === contentKey),
 );
 const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
 const phases = entry.data.proceso.map((step, index) => ({
@@ -55,8 +57,8 @@ const serviceOverviewPillars = entry.data.cards.map((card, index) => ({
 	icon: iconForServiceOverviewCard(card.title, index),
 }));
 
-const pitch = servicePitch(entry.id);
-const plans = entry.data.planes ?? servicePlans(entry.id);
+const pitch = servicePitch(contentKey);
+const plans = entry.data.planes ?? servicePlans(contentKey);
 const sections = entry.data.sections ?? [];
 const faqFromSections = sections.find((section) => section._type === 'serviceFaq');
 const pageFaqs = faqFromSections?._type === 'serviceFaq' && faqFromSections.items?.length
@@ -111,7 +113,7 @@ const caseStories = cases.map((item) => ({
 				<IndustryHero
 					title={entry.data.heroTitle}
 					description={entry.data.heroDescription ?? entry.data.tagline}
-					image={entry.data.heroImage ?? `/images/services/${entry.id}-hero.jpg`}
+					image={entry.data.heroImage ?? `/images/services/${contentKey}-hero.jpg`}
 					imageAlt={entry.data.heroImageAlt ?? `Imagen de ${entry.data.nombre}`}
 					badges={serviceHeroBadges}
 					ctaLabel="Cotiza tu proyecto"
@@ -125,9 +127,9 @@ const caseStories = cases.map((item) => ({
 					pillars={serviceOverviewPillars}
 					tone="canvas"
 				/>
-				<ServiceFocus client:visible items={serviceFocusItems(entry.id)} tone="canvas" />
+				<ServiceFocus client:visible items={serviceFocusItems(contentKey)} tone="canvas" />
 				{pitch ? <ServicePitch {...pitch} tone="canvas" /> : null}
-				{entry.id === 'seo' ? <ServiceWhy client:visible tone="canvas" /> : null}
+				{contentKey === 'seo' ? <ServiceWhy client:visible tone="canvas" /> : null}
 				{plans ? <ServicePlans {...plans} tone="canvas" /> : null}
 				<IndustryGrid
 					client:visible

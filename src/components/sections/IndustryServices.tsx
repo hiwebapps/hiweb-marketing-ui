@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { serviceContentKey } from '../../lib/en-slugs';
 import { ServiceIcon, SERVICE_ICON_NAMES, type ServiceIconName } from '../icons/ServiceIcons';
 import { Badge, Button } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
@@ -80,7 +81,7 @@ export function IndustryServices({
 
         <ul className="industry-services__grid">
           {services.map((item, index) => {
-            const icon = SERVICE_ICONS[item.slug] ?? SERVICE_ICON_NAMES[index % SERVICE_ICON_NAMES.length];
+            const icon = SERVICE_ICONS[serviceContentKey(item.slug)] ?? SERVICE_ICON_NAMES[index % SERVICE_ICON_NAMES.length];
             const accent = ACCENTS[index % ACCENTS.length];
 
             return (

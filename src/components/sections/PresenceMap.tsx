@@ -6,6 +6,8 @@ type PresenceMapProps = {
   eyebrow?: string;
   title?: string;
   description?: string;
+  sectionLabel?: string;
+  globeLabel?: string;
   ctaLabel?: string;
   ctaHref?: string;
 };
@@ -54,8 +56,10 @@ export function PresenceMap({
   description = 'Operamos desde Mérida, Cancún y Monterrey con alcance cross-border en México, Estados Unidos y Canadá. La auditoría puede ser remota.',
   ctaLabel = 'Agenda tu auditoría',
   ctaHref = '/contacto',
+  sectionLabel = 'Presencia global',
+  globeLabel = 'Globo interactivo con México, Estados Unidos y Canadá',
 }: PresenceMapProps) {
-  const titleParts = title.split(/(Norteamérica)/i);
+  const titleParts = title.split(/(Norteamérica|North America)/i);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const phiRef = useRef(2.55);
@@ -183,7 +187,7 @@ export function PresenceMap({
   }, []);
 
   return (
-    <section className="presence-map" id="presencia" aria-label="Presencia global">
+    <section className="presence-map" id="presencia" aria-label={sectionLabel}>
       <div className="presence-map__grid" aria-hidden="true" />
 
       <div className="presence-map__inner">
@@ -191,7 +195,7 @@ export function PresenceMap({
           <p className="presence-map__badge">{eyebrow}</p>
           <h2 className="presence-map__title">
             {titleParts.map((part, index) =>
-              /norteamérica/i.test(part) ? (
+              /norteamérica|north america/i.test(part) ? (
                 <span key={index} className="presence-map__accent">
                   {part}
                 </span>
@@ -203,7 +207,7 @@ export function PresenceMap({
           <p className="presence-map__lead">{description}</p>
         </header>
 
-        <div ref={stageRef} className="presence-map__stage" role="img" aria-label="Globo interactivo con México, Estados Unidos y Canadá">
+        <div ref={stageRef} className="presence-map__stage" role="img" aria-label={globeLabel}>
           <canvas ref={canvasRef} className="presence-map__canvas" />
 
           {MARKERS.map((item) => (

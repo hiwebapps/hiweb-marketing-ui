@@ -2,54 +2,89 @@
 export const prerender = true;
 
 import Layout from '../layouts/Layout.astro';
-import { PageHero } from '../components/sections/PageHero';
-import { SectionBand } from '../components/sections/primitives/SectionBand';
 import { ContactForm } from '../components/sections/ContactForm';
-import { CalendarPlaceholder, ContactDetails } from '../components/sections/ContactDetails';
-import { FaqSection } from '../components/sections/FaqSection';
-import { FinalCta } from '../components/sections/FinalCta';
-import { CONTACT_FAQS } from '../data/site';
-import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import { getContactPage } from '../lib/content';
+import { breadcrumbSchema } from '../lib/schema';
+
+const contact = await getContactPage();
 ---
 
 <Layout
-	title="Contacto — Hiweb Marketing"
-	description="Agenda tu auditoría. Formulario, calendario, teléfono, email y WhatsApp."
+	title={contact.metaTitle}
+	description={contact.metaDescription}
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Inicio', href: '/' },
 			{ name: 'Contacto', href: '/contacto' },
 		]),
-		faqSchema([...CONTACT_FAQS]),
 	]}
 >
 	<main>
-		<PageHero
-			eyebrow="Contacto"
-			title="Agenda tu auditoría"
-			description="Trae industria, objetivo y qué ya está en marcha. Respuesta en 24h. Sin compromiso de retainer."
-		/>
-		<SectionBand>
-			<div class="grid gap-10 lg:grid-cols-2 lg:items-start">
-				<ContactForm client:load />
-				<CalendarPlaceholder />
-			</div>
-		</SectionBand>
-		<ContactDetails />
-		<FaqSection
-			client:visible
-			items={[...CONTACT_FAQS]}
-			title="Antes de escribir"
-			description="Tres respuestas rápidas. El resto, en la llamada."
-			withSchema={false}
-		/>
-		<FinalCta
-			client:load
-			title="¿Prefieres ir directo?"
-			primaryHref="mailto:hola@hiweb.marketing"
-			primaryLabel="Escribir ahora"
-			secondaryLabel="Ver casos"
-			secondaryHref="/portafolio"
-		/>
+		<ContactForm copy={contact} />
 	</main>
+	<script>
+		const form = document.querySelector('.contact-form');
+
+		if (form instanceof HTMLFormElement) {
+			const showError = (key: string, message: string) => {
+				const node = form.querySelector(`[data-error="${key}"]`);
+				if (!(node instanceof HTMLElement)) return;
+				node.hidden = message.length === 0;
+				node.textContent = message;
+			};
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				const data = new FormData(form);
+				const servicesField = form.querySelector('[data-kind="services"]');
+				const budgetField = form.querySelector('[data-kind="budget"]');
+				const services = data.getAll('services').map(String).filter(Boolean);
+				const selected = form.querySelector('input[name="budget"]:checked');
+				const budget = selected instanceof HTMLInputElement ? selected : null;
+				const custom = String(data.get('customBudget') ?? '').trim();
+				let valid = form.reportValidity();
+
+				if (servicesField?.getAttribute('data-required') === 'true' && services.length === 0) {
+					showError('services', form.dataset.servicesError || 'Elige al menos un servicio.');
+					valid = false;
+				} else {
+					showError('services', '');
+				}
+
+				if (budgetField?.getAttribute('data-required') === 'true' && !budget) {
+					showError('budget', form.dataset.budgetError || 'Elige un presupuesto.');
+					valid = false;
+				} else if (budget?.dataset.custom === 'true' && !custom) {
+					showError('budget', form.dataset.customError || 'Escribe el monto en MXN.');
+					valid = false;
+				} else {
+					showError('budget', '');
+				}
+
+				if (!valid) return;
+
+				const budgetLabel =
+					budget?.dataset.custom === 'true'
+						? `${budget.dataset.label}: $${custom} MXN`
+						: budget?.dataset.label || '—';
+				const lines = [
+					['Nombre', data.get('firstName')],
+					['Apellido', data.get('lastName')],
+					['Email', data.get('email')],
+					['Celular', data.get('phone')],
+					['Sitio web', data.get('website')],
+					['Servicios', services.join(', ')],
+					['Presupuesto', budget ? budgetLabel : ''],
+					['Proyecto', data.get('project')],
+				]
+					.filter(([, value]) => String(value ?? '').trim())
+					.map(([label, value]) => `${label}: ${value}`);
+
+				const email = form.dataset.email || 'hola@hiweb.marketing';
+				const subject = encodeURIComponent('Nuevo proyecto — Hiweb');
+				const body = encodeURIComponent(lines.join('\n'));
+				window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+			});
+		}
+	</script>
 </Layout>
