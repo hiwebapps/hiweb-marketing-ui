@@ -77,7 +77,7 @@ const serviceSectionsProjection = /* groq */ `
         "slug": industry->slug.current,
         "nombre": coalesce(title, industry->nombre),
         "taglineResolved": coalesce(tagline, industry->tagline),
-        "puntos": coalesce(puntos, industry->porQue[].title)
+        "puntos": coalesce(puntos, industry->sections[_type == "industryWhy"][0].pillars[].title, industry->porQue[].title)
       }
     },
     _type == "serviceProcess" => {
@@ -333,6 +333,89 @@ export const aboutPageQuery = defineQuery(`*[_type == "aboutPage" && _id == $id]
   ${seoProjection}
 }`);
 
+const industrySectionsProjection = /* groq */ `
+  sections[]{
+    _type,
+    _key,
+    _type == "industryHero" => {
+      badge,
+      title,
+      description,
+      image ${imageProjection},
+      ctaLabel,
+      ctaHref
+    },
+    _type == "industryWhy" => {
+      eyebrow,
+      title,
+      pillars[]{ title, description },
+      retos
+    },
+    _type == "industryServices" => {
+      eyebrow,
+      title,
+      description,
+      catalogLabel,
+      catalogHref,
+      ctaLabel,
+      tagLabel
+    },
+    _type == "industryCases" => {
+      eyebrow,
+      title,
+      description,
+      emptyText
+    },
+    _type == "industryFaq" => {
+      eyebrow,
+      title,
+      items[]{ question, answer }
+    },
+    _type == "industryCta" => {
+      title
+    }
+  }
+`;
+
+const industryBodyProjection = /* groq */ `
+  "heroTitle": coalesce(sections[_type == "industryHero"][0].title, heroTitle),
+  "heroDescription": coalesce(sections[_type == "industryHero"][0].description, heroDescription),
+  "heroImage": coalesce(sections[_type == "industryHero"][0].image ${imageProjection}, heroImage ${imageProjection}),
+  "heroBadge": coalesce(sections[_type == "industryHero"][0].badge, heroBadge),
+  "heroCtaLabel": coalesce(sections[_type == "industryHero"][0].ctaLabel, heroCtaLabel),
+  "heroCtaHref": sections[_type == "industryHero"][0].ctaHref,
+  "retos": coalesce(sections[_type == "industryWhy"][0].retos, retos),
+  "porQue": coalesce(sections[_type == "industryWhy"][0].pillars[]{ title, description }, porQue[]{ title, description }),
+  "whyEyebrow": coalesce(sections[_type == "industryWhy"][0].eyebrow, whyEyebrow),
+  "whyTitle": coalesce(sections[_type == "industryWhy"][0].title, whyTitle),
+  "servicesTitle": coalesce(sections[_type == "industryServices"][0].title, servicesTitle),
+  "servicesDescription": coalesce(sections[_type == "industryServices"][0].description, servicesDescription),
+  "servicesCtaLabel": coalesce(sections[_type == "industryServices"][0].ctaLabel, servicesCtaLabel),
+  "servicesTag": coalesce(sections[_type == "industryServices"][0].tagLabel, servicesTag),
+  "servicesEyebrow": sections[_type == "industryServices"][0].eyebrow,
+  "servicesCatalogLabel": sections[_type == "industryServices"][0].catalogLabel,
+  "servicesCatalogHref": sections[_type == "industryServices"][0].catalogHref,
+  "casesEyebrow": coalesce(sections[_type == "industryCases"][0].eyebrow, casesEyebrow),
+  "casesTitle": coalesce(sections[_type == "industryCases"][0].title, casesTitle),
+  "casesDescription": coalesce(sections[_type == "industryCases"][0].description, casesDescription),
+  "casesEmpty": coalesce(sections[_type == "industryCases"][0].emptyText, casesEmpty),
+  "faqTitle": coalesce(sections[_type == "industryFaq"][0].title, faqTitle),
+  "faqEyebrow": sections[_type == "industryFaq"][0].eyebrow,
+  "faqs": coalesce(sections[_type == "industryFaq"][0].items[]{ question, answer }, faqs[]{ question, answer }),
+  "closingTitle": coalesce(sections[_type == "industryCta"][0].title, closingTitle),
+  "serviceBlurbs": coalesce(
+    sections[_type == "industryServices"][0].blurbs[]{
+      "serviceSlug": service->slug.current,
+      description
+    },
+    serviceBlurbs[]{
+      "serviceSlug": service->slug.current,
+      description
+    }
+  ),
+  ${industrySectionsProjection}
+`;
+
 export const industriesQuery = defineQuery(`*[
   _type == "industry" && defined(slug.current) && coalesce(locale, "es") == $locale
 ] | order(orden asc) {
@@ -340,30 +423,7 @@ export const industriesQuery = defineQuery(`*[
   nombre,
   orden,
   tagline,
-  heroTitle,
-  heroDescription,
-  heroImage ${imageProjection},
-  heroBadge,
-  retos,
-  porQue[]{ title, description },
-  faqs[]{ question, answer },
-  heroCtaLabel,
-  whyEyebrow,
-  whyTitle,
-  servicesTitle,
-  servicesDescription,
-  servicesCtaLabel,
-  servicesTag,
-  casesEyebrow,
-  casesTitle,
-  casesDescription,
-  casesEmpty,
-  faqTitle,
-  closingTitle,
-  serviceBlurbs[]{
-    "serviceSlug": service->slug.current,
-    description
-  },
+  ${industryBodyProjection},
   ${seoProjection}
 }`);
 
@@ -374,30 +434,7 @@ export const industryBySlugQuery = defineQuery(`*[
   nombre,
   orden,
   tagline,
-  heroTitle,
-  heroDescription,
-  heroImage ${imageProjection},
-  heroBadge,
-  retos,
-  porQue[]{ title, description },
-  faqs[]{ question, answer },
-  heroCtaLabel,
-  whyEyebrow,
-  whyTitle,
-  servicesTitle,
-  servicesDescription,
-  servicesCtaLabel,
-  servicesTag,
-  casesEyebrow,
-  casesTitle,
-  casesDescription,
-  casesEmpty,
-  faqTitle,
-  closingTitle,
-  serviceBlurbs[]{
-    "serviceSlug": service->slug.current,
-    description
-  },
+  ${industryBodyProjection},
   ${seoProjection}
 }`);
 

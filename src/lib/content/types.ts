@@ -60,9 +60,56 @@ export type IndustryRecord = {
     casesEmpty?: string;
     faqTitle?: string;
     closingTitle?: string;
+    sections?: IndustrySection[];
     seo?: SeoFields;
   };
 };
+
+export type IndustrySection =
+  | {
+      _type: 'industryHero';
+      badge?: string;
+      title?: string;
+      description?: string;
+      image?: string;
+      imageAlt?: string;
+      ctaLabel?: string;
+      ctaHref?: string;
+    }
+  | {
+      _type: 'industryWhy';
+      eyebrow?: string;
+      title?: string;
+      pillars?: TitledBlock[];
+      retos?: string[];
+    }
+  | {
+      _type: 'industryServices';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      catalogLabel?: string;
+      catalogHref?: string;
+      ctaLabel?: string;
+      tagLabel?: string;
+    }
+  | {
+      _type: 'industryCases';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      emptyText?: string;
+    }
+  | {
+      _type: 'industryFaq';
+      eyebrow?: string;
+      title?: string;
+      items?: FaqItem[];
+    }
+  | {
+      _type: 'industryCta';
+      title?: string;
+    };
 
 export type ServiceSection =
   | {

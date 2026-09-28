@@ -78,9 +78,80 @@ export function mapIndustry(doc: Record<string, unknown>): IndustryRecord {
       casesEmpty: doc.casesEmpty ? String(doc.casesEmpty) : undefined,
       faqTitle: doc.faqTitle ? String(doc.faqTitle) : undefined,
       closingTitle: doc.closingTitle ? String(doc.closingTitle) : undefined,
+      sections: mapIndustrySections(doc),
       seo: seoOf(doc),
     },
   };
+}
+
+function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data']['sections'] {
+  if (!Array.isArray(doc.sections)) return undefined;
+  const sections = doc.sections.flatMap((item) => {
+    const section = item as Record<string, unknown>;
+    const type = String(section._type ?? '');
+    const text = (value: unknown) => (value ? String(value) : undefined);
+    if (type === 'industryHero') {
+      const image = section.image as CmsImage | undefined;
+      return [{
+        _type: 'industryHero' as const,
+        badge: text(section.badge),
+        title: text(section.title),
+        description: text(section.description),
+        image: imageUrl(image) ?? undefined,
+        imageAlt: imageAlt(image),
+        ctaLabel: text(section.ctaLabel),
+        ctaHref: text(section.ctaHref),
+      }];
+    }
+    if (type === 'industryWhy') {
+      return [{
+        _type: 'industryWhy' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        pillars: Array.isArray(section.pillars) ? (section.pillars as TitledBlock[]) : [],
+        retos: Array.isArray(section.retos) ? section.retos.map(String) : [],
+      }];
+    }
+    if (type === 'industryServices') {
+      return [{
+        _type: 'industryServices' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        description: text(section.description),
+        catalogLabel: text(section.catalogLabel),
+        catalogHref: text(section.catalogHref),
+        ctaLabel: text(section.ctaLabel),
+        tagLabel: text(section.tagLabel),
+      }];
+    }
+    if (type === 'industryCases') {
+      return [{
+        _type: 'industryCases' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        description: text(section.description),
+        emptyText: text(section.emptyText),
+      }];
+    }
+    if (type === 'industryFaq') {
+      const items = Array.isArray(section.items)
+        ? (section.items as { question?: string; answer?: string }[])
+            .filter((item) => item.question && item.answer)
+            .map((item) => ({ question: String(item.question), answer: String(item.answer) }))
+        : [];
+      return [{
+        _type: 'industryFaq' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        items,
+      }];
+    }
+    if (type === 'industryCta') {
+      return [{ _type: 'industryCta' as const, title: text(section.title) }];
+    }
+    return [];
+  });
+  return sections.length ? sections : undefined;
 }
 
 function mapServicePlans(doc: Record<string, unknown>): ServiceRecord['data']['planes'] {

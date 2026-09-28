@@ -24,6 +24,8 @@ type IndustryServicesProps = {
   hrefPrefix?: string;
   ctaLabel?: string;
   tagLabel?: string;
+  catalogLabel?: string;
+  catalogHref?: string;
 };
 
 const ACCENT_HEX: Record<ServiceAccent, string> = {
@@ -61,6 +63,8 @@ export function IndustryServices({
   hrefPrefix = '/servicios',
   ctaLabel = 'Ver más',
   tagLabel = 'Servicio',
+  catalogLabel = 'Ver todos los servicios',
+  catalogHref = '/servicios',
 }: IndustryServicesProps) {
   return (
     <SectionBand id="servicios" tone={tone}>
@@ -72,8 +76,8 @@ export function IndustryServices({
           <div className="industry-services__header">
             <SectionHeader title={title} description={description} className="mt-4" />
             <div className="industry-services__header-cta">
-              <Button href="/servicios" variant="primary" size="sm" className="no-underline">
-                Ver todos los servicios
+              <Button href={catalogHref} variant="primary" size="sm" className="no-underline">
+                {catalogLabel}
               </Button>
             </div>
           </div>

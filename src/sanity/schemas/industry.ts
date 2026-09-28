@@ -1,24 +1,29 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { imageWithAlt, seoFields, seoGroups } from './shared';
+import { industrySectionMembers } from './industrySections';
+import { seoFields, seoGroups } from './shared';
 
 export const industry = defineType({
   name: 'industry',
   title: 'Industria',
   type: 'document',
-  groups: seoGroups,
+  groups: [
+    { name: 'datos', title: 'Datos', default: true },
+    { name: 'content', title: 'Secciones' },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'nombre',
       title: 'Nombre',
       type: 'string',
-      group: 'content',
+      group: 'datos',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      group: 'content',
+      group: 'datos',
       options: {
         source: 'nombre',
         maxLength: 96,
@@ -41,7 +46,7 @@ export const industry = defineType({
       name: 'locale',
       title: 'Idioma',
       type: 'string',
-      group: 'content',
+      group: 'datos',
       options: {
         list: [
           { title: 'Español', value: 'es' },
@@ -56,7 +61,7 @@ export const industry = defineType({
       name: 'orden',
       title: 'Orden',
       type: 'number',
-      group: 'content',
+      group: 'datos',
       validation: (rule) => rule.required().integer().min(0),
     }),
     defineField({
@@ -64,71 +69,26 @@ export const industry = defineType({
       title: 'Tagline',
       type: 'text',
       rows: 2,
-      group: 'content',
+      group: 'datos',
+      description: 'Aparece en las cards del índice, en Home y en las páginas de servicio.',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'heroTitle',
-      title: 'Título hero',
-      type: 'string',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'heroDescription',
-      title: 'Descripción hero',
-      type: 'text',
-      rows: 4,
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
-    imageWithAlt({ name: 'heroImage', title: 'Imagen hero', group: 'content' }),
-    defineField({
-      name: 'heroBadge',
-      title: 'Badge hero',
-      type: 'string',
-      group: 'content',
-    }),
-    defineField({
-      name: 'retos',
-      title: 'Retos',
+      name: 'sections',
+      title: 'Secciones',
       type: 'array',
       group: 'content',
-      of: [defineArrayMember({ type: 'string' })],
-    }),
-    defineField({
-      name: 'porQue',
-      title: 'Por qué Hiweb',
-      type: 'array',
-      group: 'content',
-      of: [defineArrayMember({ type: 'titledBlock' })],
-    }),
-    defineField({
-      name: 'faqs',
-      title: 'FAQs',
-      type: 'array',
-      group: 'content',
-      of: [defineArrayMember({ type: 'faqItem' })],
-    }),
-    defineField({ name: 'heroCtaLabel', title: 'Texto del botón del hero', type: 'string', group: 'content' }),
-    defineField({ name: 'whyEyebrow', title: 'Badge de Por qué', type: 'string', group: 'content' }),
-    defineField({ name: 'whyTitle', title: 'Título de Por qué', type: 'string', group: 'content' }),
-    defineField({ name: 'servicesTitle', title: 'Título de servicios', type: 'string', group: 'content' }),
-    defineField({ name: 'servicesDescription', title: 'Descripción de servicios', type: 'text', rows: 2, group: 'content' }),
-    defineField({ name: 'servicesCtaLabel', title: 'Texto del enlace en cada servicio', type: 'string', group: 'content' }),
-    defineField({ name: 'servicesTag', title: 'Etiqueta de cada servicio', type: 'string', group: 'content' }),
-    defineField({ name: 'casesEyebrow', title: 'Badge de casos', type: 'string', group: 'content' }),
-    defineField({ name: 'casesTitle', title: 'Título de casos', type: 'string', group: 'content' }),
-    defineField({ name: 'casesDescription', title: 'Descripción de casos', type: 'text', rows: 2, group: 'content' }),
-    defineField({ name: 'casesEmpty', title: 'Texto si no hay casos', type: 'text', rows: 2, group: 'content' }),
-    defineField({ name: 'faqTitle', title: 'Título de FAQ', type: 'string', group: 'content' }),
-    defineField({ name: 'closingTitle', title: 'Título de cierre', type: 'string', group: 'content' }),
-    defineField({
-      name: 'serviceBlurbs',
-      title: 'Copy industria × servicio',
-      type: 'array',
-      group: 'content',
-      of: [defineArrayMember({ type: 'serviceBlurb' })],
+      description: 'Mini page builder: añade, reordena o quita componentes de la página.',
+      of: industrySectionMembers,
+      options: {
+        insertMenu: { filter: true, views: [{ name: 'list' }] },
+      },
+      validation: (rule) =>
+        rule.custom((sections) => {
+          const types = (sections ?? []).map((section) => section._type);
+          const duplicate = types.find((type, index) => types.indexOf(type) !== index);
+          return duplicate ? 'Cada sección solo puede aparecer una vez.' : true;
+        }),
     }),
     ...seoFields,
   ],
@@ -140,7 +100,7 @@ export const industry = defineType({
     },
   ],
   preview: {
-    select: { title: 'nombre', locale: 'locale', media: 'heroImage' },
+    select: { title: 'nombre', locale: 'locale', media: 'sections.0.image' },
     prepare: ({ title, locale }) => ({
       title: title || 'Industria',
       subtitle: locale === 'en' ? 'English' : 'Español',

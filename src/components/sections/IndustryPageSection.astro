@@ -1,0 +1,95 @@
+---
+import { IndustryHero } from './IndustryHero';
+import { IndustryServices, type IndustryServiceCard } from './IndustryServices';
+import { PillarGrid } from './PillarGrid';
+import { CaseStories, type CaseStory } from './CaseStories';
+import { FaqSection } from './FaqSection';
+import { FinalCta } from './FinalCta';
+import type { IndustrySection } from '../../lib/content/types';
+
+interface Props {
+	section: IndustrySection;
+	nombre: string;
+	heroFallback: string;
+	services: IndustryServiceCard[];
+	stories: CaseStory[];
+	hasCases: boolean;
+	hrefPrefix?: string;
+}
+
+const { section, nombre, heroFallback, services, stories, hasCases, hrefPrefix = '/servicios' } = Astro.props;
+const lower = nombre.toLowerCase();
+---
+
+{
+	section._type === 'industryHero' && (
+		<IndustryHero
+			title={section.title || nombre}
+			description={section.description || ''}
+			image={section.image || heroFallback}
+			imageAlt={section.imageAlt || `Imagen de ${nombre}`}
+			badges={[{ label: section.badge || nombre, variant: 'lime' }]}
+			ctaLabel={section.ctaLabel || 'Ver casos de éxito'}
+			ctaHref={section.ctaHref || '#casos'}
+		/>
+	)
+}
+{
+	section._type === 'industryWhy' && (
+		<PillarGrid
+			eyebrow={section.eyebrow || 'Por qué Hiweb'}
+			title={section.title || `Por qué Hiweb en ${lower}`}
+			pillars={section.pillars ?? []}
+			tone="canvas"
+		/>
+	)
+}
+{
+	section._type === 'industryServices' && (
+		<IndustryServices
+			industryName={nombre}
+			services={services}
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			hrefPrefix={hrefPrefix}
+			ctaLabel={section.ctaLabel}
+			tagLabel={section.tagLabel}
+			catalogLabel={section.catalogLabel}
+			catalogHref={section.catalogHref}
+			tone="canvas"
+		/>
+	)
+}
+{
+	section._type === 'industryCases' && (
+		<CaseStories
+			client:visible
+			eyebrow={section.eyebrow || 'Casos'}
+			title={section.title || `Casos en ${lower}`}
+			description={
+				hasCases
+					? section.description || 'Resultados de empresas consolidadas en este sector.'
+					: section.emptyText ||
+						'Estamos documentando más casos de este sector. El diagnóstico sigue abierto.'
+			}
+			stories={stories}
+		/>
+	)
+}
+{
+	section._type === 'industryFaq' && (
+		<FaqSection
+			client:visible
+			items={section.items ?? []}
+			eyebrow={section.eyebrow}
+			title={section.title || `Preguntas de ${lower}`}
+			withSchema={false}
+		/>
+	)
+}
+{
+	section._type === 'industryCta' && (
+		<FinalCta client:load title={section.title || `Agenda un diagnóstico para ${lower}`} />
+	)
+}

@@ -9,6 +9,7 @@ import { PillarGrid } from '../../../components/sections/PillarGrid';
 import { CaseStories } from '../../../components/sections/CaseStories';
 import { FaqSection } from '../../../components/sections/FaqSection';
 import { FinalCta } from '../../../components/sections/FinalCta';
+import IndustryPageSection from '../../../components/sections/IndustryPageSection.astro';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
 import { industryServiceDescription } from '../../../data/industryServices';
 import { serviceContentKey } from '../../../lib/en-slugs';
@@ -47,6 +48,8 @@ const industryServices = services.map((item) => ({
 		industryServiceDescription(entry.id, serviceContentKey(item.id), entry.data.nombre),
 }));
 
+const pageSections = entry.data.sections ?? [];
+
 const caseStories = cases.map((item) => ({
 	client: item.data.cliente,
 	quote: item.data.testimonio?.quote ?? item.data.resumen,
@@ -72,6 +75,21 @@ const caseStories = cases.map((item) => ({
 	]}
 >
 	<main>
+		{pageSections.length ? (
+			pageSections.map((section) => (
+				<IndustryPageSection
+					key={section._type}
+					section={section}
+					nombre={entry.data.nombre}
+					heroFallback={heroImage}
+					services={industryServices}
+					stories={caseStories}
+					hasCases={cases.length > 0}
+					hrefPrefix="/en/servicios"
+				/>
+			))
+		) : (
+		<>
 		<IndustryHero
 			title={entry.data.heroTitle}
 			description={entry.data.heroDescription}
@@ -111,5 +129,7 @@ const caseStories = cases.map((item) => ({
 			withSchema={false}
 		/>
 		<FinalCta client:load title={entry.data.closingTitle} />
+		</>
+		)}
 	</main>
 </Layout>
