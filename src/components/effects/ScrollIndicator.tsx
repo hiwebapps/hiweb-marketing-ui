@@ -21,6 +21,7 @@ const SECTION_LABELS: Record<string, string> = {
   servicios: 'Servicios',
   industrias: 'Industrias',
   casos: 'Casos',
+  testimonio: 'Testimonio',
   proceso: 'Proceso',
   'como-trabajamos': 'Método',
   nosotros: 'Nosotros',

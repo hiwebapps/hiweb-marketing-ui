@@ -1,24 +1,29 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { seoFields, seoGroups } from './shared';
+import { caseSectionMembers } from './caseSections';
+import { seoFields } from './shared';
 
 export const caseStudy = defineType({
   name: 'caseStudy',
   title: 'Caso',
   type: 'document',
-  groups: seoGroups,
+  groups: [
+    { name: 'datos', title: 'Datos', default: true },
+    { name: 'content', title: 'Secciones' },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'cliente',
       title: 'Cliente',
       type: 'string',
-      group: 'content',
+      group: 'datos',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      group: 'content',
+      group: 'datos',
       options: { source: 'cliente', maxLength: 96 },
       validation: (rule) => rule.required(),
     }),
@@ -26,28 +31,28 @@ export const caseStudy = defineType({
       name: 'industria',
       title: 'Industria',
       type: 'reference',
-      group: 'content',
+      group: 'datos',
       to: [{ type: 'industry' }],
     }),
     defineField({
       name: 'servicios',
       title: 'Servicios',
       type: 'array',
-      group: 'content',
+      group: 'datos',
       of: [defineArrayMember({ type: 'reference', to: [{ type: 'service' }] })],
     }),
     defineField({
       name: 'resultadoFrase',
       title: 'Resultado (frase)',
       type: 'string',
-      group: 'content',
+      group: 'datos',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'titulo',
       title: 'Título',
       type: 'string',
-      group: 'content',
+      group: 'datos',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -55,21 +60,21 @@ export const caseStudy = defineType({
       title: 'Resumen',
       type: 'text',
       rows: 3,
-      group: 'content',
+      group: 'datos',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'destacado',
       title: 'Destacado',
       type: 'boolean',
-      group: 'content',
+      group: 'datos',
       initialValue: false,
     }),
     defineField({
       name: 'accent',
       title: 'Acento',
       type: 'string',
-      group: 'content',
+      group: 'datos',
       options: {
         list: [
           { title: 'Cyan', value: 'cyan' },
@@ -81,43 +86,21 @@ export const caseStudy = defineType({
       initialValue: 'cyan',
     }),
     defineField({
-      name: 'metricas',
-      title: 'Métricas',
+      name: 'sections',
+      title: 'Secciones',
       type: 'array',
       group: 'content',
-      of: [defineArrayMember({ type: 'metric' })],
-    }),
-    defineField({
-      name: 'reto',
-      title: 'Reto',
-      type: 'text',
-      rows: 4,
-      group: 'content',
-    }),
-    defineField({
-      name: 'estrategia',
-      title: 'Estrategia',
-      type: 'text',
-      rows: 4,
-      group: 'content',
-    }),
-    defineField({
-      name: 'fases',
-      title: 'Fases',
-      type: 'array',
-      group: 'content',
-      of: [defineArrayMember({ type: 'titledBlock' })],
-    }),
-    defineField({
-      name: 'testimonio',
-      title: 'Testimonio',
-      type: 'object',
-      group: 'content',
-      fields: [
-        defineField({ name: 'quote', title: 'Cita', type: 'text', rows: 4 }),
-        defineField({ name: 'name', title: 'Nombre', type: 'string' }),
-        defineField({ name: 'role', title: 'Cargo', type: 'string' }),
-      ],
+      description: 'Mini page builder: añade, reordena o quita componentes de la página del caso.',
+      of: caseSectionMembers,
+      options: {
+        insertMenu: { filter: true, views: [{ name: 'list' }] },
+      },
+      validation: (rule) =>
+        rule.custom((sections) => {
+          const types = (sections ?? []).map((section) => section._type);
+          const duplicate = types.find((type, index) => types.indexOf(type) !== index);
+          return duplicate ? 'Cada sección solo puede aparecer una vez.' : true;
+        }),
     }),
     ...seoFields,
   ],

@@ -6,6 +6,7 @@ import { faq } from './faq';
 import { landingPage } from './landingPage';
 import { author, post } from './post';
 import { caseStudy } from './caseStudy';
+import { caseSectionTypes } from './caseSections';
 import { homePage } from './homePage';
 import { homeSectionTypes, homeServiceItem } from './homeSections';
 import { industriesIndex, industry } from './industry';
@@ -45,6 +46,7 @@ export const schemaTypes = [
   homeServiceItem,
   ...homeSectionTypes,
   ...serviceSectionTypes,
+  ...caseSectionTypes,
   navLink,
   navGroup,
   navBarItem,

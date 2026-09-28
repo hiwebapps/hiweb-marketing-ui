@@ -18,10 +18,12 @@ import '../../components/sections/FaqSection.css';
 import '../../components/sections/CaseStories.css';
 import '../../components/sections/MetricsBand.css';
 import { faqSchema } from '../../lib/schema';
-import { getCases, getHomeCopy, getIndustries, getIndustriesIndex, getServices } from '../../lib/content';
+import { getCases, getHomeCopy, getIndustries, getIndustriesIndex, getPeople, getServices } from '../../lib/content';
+import type { TeamMember } from '../../components/sections/TeamGrid';
 import { SITE } from '../../data/site';
 
 const home = await getHomeCopy('en');
+const people = (await getPeople()) as TeamMember[];
 const industriesIndex = await getIndustriesIndex();
 const industryCards = (await getIndustries('en')).map((item) => ({
 	slug: item.id,
@@ -215,6 +217,7 @@ const sectionOrder = home.sectionOrder?.length
 						key={type}
 						client:visible
 						limit={4}
+						members={people}
 						eyebrow={home.team?.eyebrow}
 						title={home.team?.title}
 						description={home.team?.description}

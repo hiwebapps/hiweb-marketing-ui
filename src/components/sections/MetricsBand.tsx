@@ -39,7 +39,7 @@ function formatMetric(value: number, decimals: number, prefix: string, suffix: s
 }
 
 /**
- * Ink metrics band — design-system Badge/Button + GSAP counter-up on enter.
+ * Canvas metrics band — design-system Badge/Button + GSAP counter-up on enter.
  */
 export function MetricsBand({
   metrics,
@@ -117,12 +117,10 @@ export function MetricsBand({
   );
 
   return (
-    <SectionBand id="cifras" tone="ink" className="metrics-band">
+    <SectionBand id="cifras" tone="canvas" className="metrics-band">
       <div ref={rootRef} className="metrics-band__inner">
         <div className="metrics-band__intro">
-          <Badge variant="cyan" tone="on-ink">
-            {eyebrow}
-          </Badge>
+          <Badge variant="cyan">{eyebrow}</Badge>
 
           <h2 className="metrics-band__title">
             <span className="metrics-band__title-main">{title}</span>
@@ -134,16 +132,10 @@ export function MetricsBand({
           {description ? <p className="metrics-band__lead">{description}</p> : null}
 
           <div className="metrics-band__actions">
-            <Button href={primaryHref} variant="secondary" size="md" glow={false} className="no-underline">
+            <Button href={primaryHref} variant="primary" size="md" className="no-underline">
               {primaryLabel}
             </Button>
-            <Button
-              href={secondaryHref}
-              variant="outline"
-              size="md"
-              glow={false}
-              className="metrics-band__btn-outline no-underline"
-            >
+            <Button href={secondaryHref} variant="outline" size="md" glow={false} className="no-underline">
               {secondaryLabel}
             </Button>
           </div>

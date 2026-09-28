@@ -95,8 +95,8 @@ const serviceSectionsProjection = /* groq */ `
         cliente,
         resumen,
         "industria": industria->nombre,
-        testimonio{ quote, name, role },
-        metricas[]{ valor, label, prefix, suffix, decimals }
+        "testimonio": coalesce(sections[_type == "caseTestimonial"][0]{ quote, name, role }, testimonio{ quote, name, role }),
+        "metricas": coalesce(sections[_type == "caseMetrics"][0].items[]{ valor, label, prefix, suffix, decimals }, metricas[]{ valor, label, prefix, suffix, decimals })
       }
     },
     _type == "serviceFaq" => {
@@ -469,6 +469,69 @@ export const serviceBySlugQuery = defineQuery(`*[
   ${seoProjection}
 }`);
 
+const caseSectionsProjection = /* groq */ `
+sections[]{
+  _key,
+  _type,
+  _type == "caseHero" => {
+    anio,
+    imagenesProyecto[] ${imageProjection}
+  },
+  _type == "caseContext" => {
+    retoEyebrow,
+    retoTitle,
+    reto,
+    estrategiaEyebrow,
+    estrategiaTitle,
+    estrategia
+  },
+  _type == "caseProcess" => {
+    eyebrow,
+    title,
+    description,
+    fases[]{ title, description }
+  },
+  _type == "caseMetrics" => {
+    eyebrow,
+    title,
+    titleMuted,
+    description,
+    items[]{ valor, label, prefix, suffix, decimals, antes, despues },
+    primaryCta{ label, href },
+    secondaryCta{ label, href }
+  },
+  _type == "caseTestimonial" => {
+    eyebrow,
+    title,
+    description,
+    quote,
+    name,
+    role
+  },
+  _type == "caseRelated" => {
+    eyebrow,
+    title,
+    description
+  },
+  _type == "caseCta" => {
+    badge,
+    title,
+    description,
+    primaryCta{ label, href }
+  }
+}`;
+
+const caseBodyProjection = /* groq */ `
+  "metricas": coalesce(sections[_type == "caseMetrics"][0].items[]{ valor, label, prefix, suffix, decimals, antes, despues }, metricas[]{ valor, label, prefix, suffix, decimals, antes, despues }),
+  "reto": coalesce(sections[_type == "caseContext"][0].reto, reto),
+  "estrategia": coalesce(sections[_type == "caseContext"][0].estrategia, estrategia),
+  "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description }, fases[]{ title, description }),
+  "testimonio": coalesce(sections[_type == "caseTestimonial"][0]{ quote, name, role }, testimonio{ quote, name, role }),
+  "anio": coalesce(sections[_type == "caseHero"][0].anio, anio),
+  "imagenesProyecto": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[] ${imageProjection}, imagenesProyecto[] ${imageProjection}),
+  ${caseSectionsProjection}
+`;
+
 export const casesQuery = defineQuery(`*[
   _type == "caseStudy" && defined(slug.current)
 ]{
@@ -481,11 +544,7 @@ export const casesQuery = defineQuery(`*[
   resumen,
   destacado,
   accent,
-  metricas[]{ valor, label, prefix, suffix, decimals, antes, despues },
-  reto,
-  estrategia,
-  fases[]{ title, description },
-  testimonio{ quote, name, role },
+  ${caseBodyProjection},
   ${seoProjection}
 }`);
 
@@ -501,11 +560,7 @@ export const caseBySlugQuery = defineQuery(`*[
   resumen,
   destacado,
   accent,
-  metricas[]{ valor, label, prefix, suffix, decimals, antes, despues },
-  reto,
-  estrategia,
-  fases[]{ title, description },
-  testimonio{ quote, name, role },
+  ${caseBodyProjection},
   ${seoProjection}
 }`);
 
@@ -570,11 +625,11 @@ const landingCaseProjection = /* groq */ `{
   resumen,
   destacado,
   accent,
-  metricas[]{ valor, label, prefix, suffix, decimals, antes, despues },
-  reto,
-  estrategia,
-  fases[]{ title, description },
-  testimonio{ quote, name, role }
+  "metricas": coalesce(sections[_type == "caseMetrics"][0].items[]{ valor, label, prefix, suffix, decimals, antes, despues }, metricas[]{ valor, label, prefix, suffix, decimals, antes, despues }),
+  "reto": coalesce(sections[_type == "caseContext"][0].reto, reto),
+  "estrategia": coalesce(sections[_type == "caseContext"][0].estrategia, estrategia),
+  "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description }, fases[]{ title, description }),
+  "testimonio": coalesce(sections[_type == "caseTestimonial"][0]{ quote, name, role }, testimonio{ quote, name, role })
 }`;
 
 const landingPersonProjection = /* groq */ `{

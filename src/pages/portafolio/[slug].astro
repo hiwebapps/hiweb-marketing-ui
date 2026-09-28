@@ -9,15 +9,16 @@ import { SectionHeader } from '../../components/sections/primitives/SectionHeade
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { MetricsBand } from '../../components/sections/MetricsBand';
 import { CaseStories } from '../../components/sections/CaseStories';
-import { CasePreview } from '../../components/sections/CasePreview';
+import { CaseCards } from '../../components/sections/CasesIndex';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../lib/schema';
 import { postCoverUrl } from '../../lib/blog';
 import { formatCaseStat } from '../../lib/content/format';
-import type { CaseRecord } from '../../lib/content/types';
+import type { CasePageSection, CaseRecord } from '../../lib/content/types';
 import '../../components/sections/CaseTelescopeHero.css';
 import '../../components/sections/MetricsBand.css';
 import '../../components/sections/CaseStories.css';
+import '../../components/sections/BlogIndex.css';
 
 export async function getStaticPaths() {
 	return caseStaticPaths();
@@ -38,19 +39,60 @@ const related = allCases.filter(
 
 const heroImage =
 	entry.data.seo?.ogImage ?? industry?.data.heroImage ?? postCoverUrl(`caso-${entry.id}`, 1600, 1000);
-const floatImages = [
-	heroImage,
-	...relatedServices.map((service) => service.heroImage).filter((src): src is string => Boolean(src)),
-	industry?.data.heroImage,
-	...Array.from({ length: 10 }, (_, index) =>
-		postCoverUrl(`${entry.id}-float-${index}`, 400, 500),
-	),
-].filter((src): src is string => Boolean(src));
 
 const projectWords = entry.data.cliente.trim().split(/\s+/);
 const projectMid = Math.max(1, Math.ceil(projectWords.length / 2));
 const titleLeft = projectWords.slice(0, projectMid).join(' ');
 const titleRight = projectWords.slice(projectMid).join(' ');
+
+const sections: CasePageSection[] = entry.data.sections?.length
+	? entry.data.sections
+	: [
+			{ _type: 'caseHero', anio: entry.data.anio, imagenesProyecto: entry.data.imagenesProyecto },
+			{
+				_type: 'caseContext',
+				retoEyebrow: 'Reto',
+				retoTitle: 'Contexto inicial',
+				reto: entry.data.reto,
+				estrategiaEyebrow: 'Estrategia',
+				estrategiaTitle: 'Servicios aplicados',
+				estrategia: entry.data.estrategia,
+			},
+			{
+				_type: 'caseProcess',
+				eyebrow: 'Ejecución',
+				title: 'Cómo se hizo el trabajo',
+				fases: entry.data.fases,
+			},
+			{
+				_type: 'caseMetrics',
+				eyebrow: 'Cifras',
+				title: 'Antes y después',
+				titleMuted: 'en cifras verificables',
+				description: 'Baseline incluido cuando aplica. Números de negocio, no recortes de Ads Manager.',
+				metricas: entry.data.metricas,
+			},
+			...(entry.data.testimonio
+				? [
+						{
+							_type: 'caseTestimonial' as const,
+							eyebrow: 'Testimonio',
+							title: `Lo que dice ${entry.data.cliente}`,
+							description: 'Voz del cliente. Sin quotes inventadas ni outcomes ornamentales.',
+							quote: entry.data.testimonio.quote,
+							name: entry.data.testimonio.name,
+							role: entry.data.testimonio.role,
+						},
+					]
+				: []),
+			{
+				_type: 'caseRelated',
+				eyebrow: 'Casos',
+				title: 'Más casos de esta industria',
+				description: 'Cliente, industria y outcome. Sin portfolio ornamental.',
+			},
+			{ _type: 'caseCta', title: 'Agenda un diagnóstico similar' },
+		];
 ---
 
 <Layout
@@ -64,103 +106,160 @@ const titleRight = projectWords.slice(projectMid).join(' ');
 	])}
 >
 	<main>
-		<CaseTelescopeHero
-			client:load
-			titleLeft={titleLeft}
-			titleRight={titleRight}
-			image={heroImage}
-			imageAlt={industry?.data.heroImageAlt ?? `Imagen del caso ${entry.data.cliente}`}
-			floatImages={floatImages}
-		/>
-
-		<SectionBand>
-			<div class="grid gap-10 md:grid-cols-2">
-				<div>
-					<SectionHeader eyebrow="Reto" title="Contexto inicial" description={entry.data.reto} badgeVariant="purple" />
-				</div>
-				<div>
-					<SectionHeader eyebrow="Estrategia" title="Servicios aplicados" description={entry.data.estrategia} badgeVariant="cyan" />
-					<ul class="mt-6 flex-wrap gap-2 flex">
-						{relatedServices.map((service) => (
-							<li>
-								<a
-									href={`/servicios/${service.id}`}
-									class="rounded-full border border-border px-3 py-1 font-display text-xs font-medium text-ink no-underline"
-								>
-									{service.nombre ?? service.id}
-								</a>
-							</li>
-						))}
-					</ul>
-				</div>
-			</div>
-		</SectionBand>
-
-		<ProcessPhases
-			client:visible
-			phases={entry.data.fases.map((fase, index) => ({
-				index: String(index + 1).padStart(2, '0'),
-				title: fase.title,
-				description: fase.description,
-			}))}
-			eyebrow="Ejecución"
-			title="Cómo se hizo el trabajo"
-		/>
-
-		<MetricsBand
-			client:visible
-			metrics={entry.data.metricas.map((metric) => ({
-				valor: metric.valor,
-				label: metric.label,
-				prefix: metric.prefix,
-				suffix: metric.suffix,
-				decimals: metric.decimals,
-				detail:
-					metric.antes && metric.despues
-						? `De ${metric.antes} a ${metric.despues}`
-						: metric.despues
-							? metric.despues
-							: undefined,
-			}))}
-			title="Antes y después"
-			titleMuted="en cifras verificables"
-			description="Baseline incluido cuando aplica. Números de negocio, no recortes de Ads Manager."
-		/>
-
-		{entry.data.testimonio ? (
-			<CaseStories
-				client:visible
-				eyebrow="Testimonio"
-				title={`Lo que dice ${entry.data.cliente}`}
-				description="Voz del cliente. Sin quotes inventadas ni outcomes ornamentales."
-				stories={[
-					{
-						client: entry.data.cliente,
-						quote: entry.data.testimonio.quote,
-						name: entry.data.testimonio.name,
-						role: entry.data.testimonio.role,
-						stats: entry.data.metricas.slice(0, 2).map(formatCaseStat),
-						href: `/portafolio/${entry.id}`,
-					},
-				]}
-			/>
-		) : null}
-
-		{related.length ? (
-			<CasePreview
-				cases={related.map((item) => ({
-					client: item.data.cliente,
-					industry: industry?.data.nombre ?? '',
-					outcome: item.data.resultadoFrase,
-					title: item.data.titulo,
-					summary: item.data.resumen,
-					href: `/portafolio/${item.id}`,
-					accent: item.data.accent,
-				}))}
-				title="Más casos de esta industria"
-			/>
-		) : null}
-
-		<FinalCta client:load title="Agenda un diagnóstico similar" />
+		{sections.map((section) => {
+			if (section._type === 'caseHero') {
+				return (
+					<CaseTelescopeHero
+						client:load
+						titleLeft={titleLeft}
+						titleRight={titleRight}
+						image={heroImage}
+						imageAlt={industry?.data.heroImageAlt ?? `Imagen del caso ${entry.data.cliente}`}
+						floatImages={section.imagenesProyecto ?? []}
+						year={section.anio}
+					/>
+				);
+			}
+			if (section._type === 'caseContext') {
+				return (
+					<SectionBand>
+						<div class="grid gap-10 md:grid-cols-2">
+							<div>
+								<SectionHeader
+									eyebrow={section.retoEyebrow ?? 'Reto'}
+									title={section.retoTitle ?? 'Contexto inicial'}
+									description={section.reto}
+									badgeVariant="purple"
+								/>
+							</div>
+							<div>
+								<SectionHeader
+									eyebrow={section.estrategiaEyebrow ?? 'Estrategia'}
+									title={section.estrategiaTitle ?? 'Servicios aplicados'}
+									description={section.estrategia}
+									badgeVariant="cyan"
+								/>
+								<ul class="mt-6 flex-wrap gap-2 flex">
+									{relatedServices.map((service) => (
+										<li>
+											<a
+												href={`/servicios/${service.id}`}
+												class="rounded-full border border-border px-3 py-1 font-display text-xs font-medium text-ink no-underline"
+											>
+												{service.nombre ?? service.id}
+											</a>
+										</li>
+									))}
+								</ul>
+							</div>
+						</div>
+					</SectionBand>
+				);
+			}
+			if (section._type === 'caseProcess' && section.fases.length) {
+				return (
+					<ProcessPhases
+						client:visible
+						phases={section.fases.map((fase, index) => ({
+							index: String(index + 1).padStart(2, '0'),
+							title: fase.title,
+							description: fase.description,
+						}))}
+						eyebrow={section.eyebrow ?? 'Ejecución'}
+						title={section.title ?? 'Cómo se hizo el trabajo'}
+						description={section.description}
+					/>
+				);
+			}
+			if (section._type === 'caseMetrics' && section.metricas.length) {
+				return (
+					<MetricsBand
+						client:visible
+						metrics={section.metricas.map((metric) => ({
+							valor: metric.valor,
+							label: metric.label,
+							prefix: metric.prefix,
+							suffix: metric.suffix,
+							decimals: metric.decimals,
+							detail:
+								metric.antes && metric.despues
+									? `De ${metric.antes} a ${metric.despues}`
+									: metric.despues
+										? metric.despues
+										: undefined,
+						}))}
+						eyebrow={section.eyebrow}
+						title={section.title}
+						titleMuted={section.titleMuted}
+						description={section.description}
+						primaryLabel={section.primaryLabel}
+						primaryHref={section.primaryHref}
+						secondaryLabel={section.secondaryLabel}
+						secondaryHref={section.secondaryHref}
+					/>
+				);
+			}
+			if (section._type === 'caseTestimonial' && section.quote) {
+				return (
+					<CaseStories
+						client:visible
+						id="testimonio"
+						eyebrow={section.eyebrow ?? 'Testimonio'}
+						title={section.title ?? `Lo que dice ${entry.data.cliente}`}
+						description={section.description}
+						stories={[
+							{
+								client: entry.data.cliente,
+								quote: section.quote,
+								name: section.name ?? entry.data.cliente,
+								role: section.role ?? '',
+								stats: (section.quote ? entry.data.metricas : []).slice(0, 2).map(formatCaseStat),
+								href: `/portafolio/${entry.id}`,
+							},
+						]}
+					/>
+				);
+			}
+			if (section._type === 'caseRelated' && related.length) {
+				return (
+					<SectionBand id="casos" tone="canvas">
+						<div class="blog-index">
+							<SectionHeader
+								eyebrow={section.eyebrow ?? 'Casos'}
+								title={section.title ?? 'Más casos de esta industria'}
+								description={section.description}
+								badgeVariant="lime"
+							/>
+							<CaseCards
+								cases={related.map((item) => ({
+									id: item.id,
+									title: item.data.titulo,
+									description: item.data.resumen,
+									client: item.data.cliente,
+									outcome: item.data.resultadoFrase,
+									industry: industry?.data.nombre ?? item.data.cliente,
+									industrySlug: item.data.industria.id,
+									image: item.data.seo?.ogImage ?? postCoverUrl(`caso-${item.id}`, 800, 520),
+									href: `/portafolio/${item.id}`,
+								}))}
+							/>
+						</div>
+					</SectionBand>
+				);
+			}
+			if (section._type === 'caseCta') {
+				return (
+					<FinalCta
+						client:load
+						badge={section.badge}
+						title={section.title ?? 'Agenda un diagnóstico similar'}
+						description={section.description}
+						primaryLabel={section.primaryLabel}
+						primaryHref={section.primaryHref}
+					/>
+				);
+			}
+			return null;
+		})}
 	</main>
 </Layout>

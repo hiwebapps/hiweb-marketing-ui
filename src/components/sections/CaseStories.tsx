@@ -29,6 +29,7 @@ type CaseStoriesProps = {
   eyebrow?: string;
   title?: string;
   description?: string;
+  id?: string;
 };
 
 const PHOTO_FALLBACKS: Record<string, string> = {
@@ -157,6 +158,7 @@ export function CaseStories({
   eyebrow = 'Casos',
   title = 'Resultados propios, solo con empresas consolidadas',
   description = 'Cliente, industria y outcome. Sin portfolio ornamental.',
+  id = 'casos',
 }: CaseStoriesProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
@@ -316,7 +318,7 @@ export function CaseStories({
   };
 
   return (
-    <SectionBand id="casos" tone="ink" className="case-stories-band">
+    <SectionBand id={id} tone="ink" className="case-stories-band">
       <div className="case-stories__wash" aria-hidden="true">
         <span className="case-stories__blob case-stories__blob--a" />
         <span className="case-stories__blob case-stories__blob--b" />

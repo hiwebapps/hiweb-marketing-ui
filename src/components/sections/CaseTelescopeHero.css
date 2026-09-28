@@ -29,14 +29,37 @@
   pointer-events: none;
 }
 
-.case-telescope__title {
+.case-telescope__heading {
   position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  max-width: min(92vw, 48rem);
+  transform: translateY(-8%);
+  pointer-events: none;
+}
+
+.case-telescope__year {
+  margin: 0;
+  color: #ffffff;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+  opacity: clamp(0, calc((var(--progress) - 0.78) / 0.22), 1);
+}
+
+.case-telescope__title {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.35em;
-  max-width: min(92vw, 48rem);
   margin: 0;
   padding-inline: 1rem;
   color: #ffffff;
@@ -47,8 +70,6 @@
   line-height: 1.05;
   text-align: center;
   text-wrap: balance;
-  transform: translateY(-8%);
-  pointer-events: none;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
 }
 
@@ -277,7 +298,8 @@
     transform: none !important;
   }
 
-  .case-telescope__eyebrow {
+  .case-telescope__eyebrow,
+  .case-telescope__year {
     opacity: 1;
   }
 

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, type Ref } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
@@ -32,6 +32,40 @@ type CasesIndexProps = {
 
 function caseHref(item: CaseIndexCard) {
   return item.href ?? `/portafolio/${item.id}`;
+}
+
+export function CaseCards({
+  cases,
+  listRef,
+}: {
+  cases: CaseIndexCard[];
+  listRef?: Ref<HTMLUListElement>;
+}) {
+  return (
+    <ul ref={listRef} className="blog-grid">
+      {cases.map((item) => (
+        <li key={item.id} className="blog-card">
+          <a href={caseHref(item)} className="blog-card__link">
+            <div className="blog-card__media">
+              <img src={caseImage(item)} alt="" width={800} height={520} loading="lazy" />
+            </div>
+            <div className="blog-card__body">
+              <p className="blog-card__tag">
+                {item.industry}
+                {item.outcome ? ` · ${item.outcome}` : ''}
+              </p>
+              <h3 className="blog-card__title">{item.title}</h3>
+              <p className="blog-card__desc">{item.description}</p>
+              <span className="blog-card__cta">
+                Ver caso
+                <span aria-hidden="true"> →</span>
+              </span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 function caseImage(item: CaseIndexCard) {
@@ -127,35 +161,7 @@ export function CasesIndex({
           <a href="/contacto">agenda una auditoría</a>.
         </p>
       ) : (
-        <ul ref={gridRef} className="blog-grid">
-          {visible.map((item) => (
-            <li key={item.id} className="blog-card">
-              <a href={caseHref(item)} className="blog-card__link">
-                <div className="blog-card__media">
-                  <img
-                    src={caseImage(item)}
-                    alt=""
-                    width={800}
-                    height={520}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="blog-card__body">
-                  <p className="blog-card__tag">
-                    {item.industry}
-                    {item.outcome ? ` · ${item.outcome}` : ''}
-                  </p>
-                  <h3 className="blog-card__title">{item.title}</h3>
-                  <p className="blog-card__desc">{item.description}</p>
-                  <span className="blog-card__cta">
-                    Ver caso
-                    <span aria-hidden="true"> →</span>
-                  </span>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
+        <CaseCards cases={visible} listRef={gridRef} />
       )}
     </div>
   );

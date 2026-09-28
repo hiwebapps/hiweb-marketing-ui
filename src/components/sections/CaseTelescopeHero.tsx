@@ -13,6 +13,7 @@ type CaseTelescopeHeroProps = {
   image: string;
   imageAlt?: string;
   floatImages?: ReadonlyArray<string>;
+  year?: string;
   eyebrow?: string;
 };
 
@@ -25,6 +26,7 @@ export function CaseTelescopeHero({
   image,
   imageAlt = '',
   floatImages = [],
+  year,
   eyebrow,
 }: CaseTelescopeHeroProps) {
   const rootRef = useRef<HTMLElement>(null);
@@ -118,12 +120,15 @@ export function CaseTelescopeHero({
     >
       {eyebrow ? <p className="case-telescope__eyebrow">{eyebrow}</p> : null}
 
-      <h1 className="case-telescope__title">
-        <span className="case-telescope__title-left">{titleLeft}</span>
-        {titleRight ? (
-          <span className="case-telescope__title-right">{titleRight}</span>
-        ) : null}
-      </h1>
+      <div className="case-telescope__heading">
+        {year ? <p className="case-telescope__year">{year}</p> : null}
+        <h1 className="case-telescope__title">
+          <span className="case-telescope__title-left">{titleLeft}</span>
+          {titleRight ? (
+            <span className="case-telescope__title-right">{titleRight}</span>
+          ) : null}
+        </h1>
+      </div>
 
       <div className="case-telescope__media" aria-hidden="true">
         <div className="case-telescope__back">

@@ -199,6 +199,64 @@ export type ServiceRecord = {
   };
 };
 
+export type CasePageSection =
+  | {
+      _type: 'caseHero';
+      anio?: string;
+      imagenesProyecto?: string[];
+    }
+  | {
+      _type: 'caseContext';
+      retoEyebrow?: string;
+      retoTitle?: string;
+      reto?: string;
+      estrategiaEyebrow?: string;
+      estrategiaTitle?: string;
+      estrategia?: string;
+    }
+  | {
+      _type: 'caseProcess';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      fases: TitledBlock[];
+    }
+  | {
+      _type: 'caseMetrics';
+      eyebrow?: string;
+      title?: string;
+      titleMuted?: string;
+      description?: string;
+      metricas: Metric[];
+      primaryLabel?: string;
+      primaryHref?: string;
+      secondaryLabel?: string;
+      secondaryHref?: string;
+    }
+  | {
+      _type: 'caseTestimonial';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      quote?: string;
+      name?: string;
+      role?: string;
+    }
+  | {
+      _type: 'caseRelated';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+    }
+  | {
+      _type: 'caseCta';
+      badge?: string;
+      title?: string;
+      description?: string;
+      primaryLabel?: string;
+      primaryHref?: string;
+    };
+
 export type CaseRecord = {
   id: string;
   data: {
@@ -215,6 +273,9 @@ export type CaseRecord = {
     estrategia: string;
     fases: TitledBlock[];
     testimonio?: { quote: string; name: string; role: string };
+    anio?: string;
+    imagenesProyecto?: string[];
+    sections?: CasePageSection[];
     seo?: SeoFields;
   };
 };

@@ -2,6 +2,7 @@ import { urlForWidth } from '../../sanity/image';
 import type {
   AboutCopy,
   CaseRecord,
+  CasePageSection,
   CmsImage,
   FaqItem,
   HomeCopy,
@@ -348,6 +349,123 @@ export function mapService(doc: Record<string, unknown>): ServiceRecord {
   };
 }
 
+function asText(value: unknown) {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+}
+
+function asBlocks(value: unknown): { title: string; description: string }[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item) => item && typeof item === 'object' && 'title' in item)
+    .map((item) => {
+      const block = item as { title?: string; description?: string };
+      return { title: String(block.title ?? ''), description: String(block.description ?? '') };
+    });
+}
+
+function asMetrics(value: unknown): CaseRecord['data']['metricas'] {
+  if (!Array.isArray(value)) return [];
+  return value as CaseRecord['data']['metricas'];
+}
+
+function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[] {
+  return raw.flatMap((section): CasePageSection[] => {
+    const type = String(section._type ?? '');
+    if (type === 'caseHero') {
+      return [
+        {
+          _type: 'caseHero',
+          anio: asText(section.anio),
+          imagenesProyecto: Array.isArray(section.imagenesProyecto)
+            ? section.imagenesProyecto
+                .map((image) => imageUrl(image as CmsImage, 800))
+                .filter((src): src is string => Boolean(src))
+            : [],
+        },
+      ];
+    }
+    if (type === 'caseContext') {
+      return [
+        {
+          _type: 'caseContext',
+          retoEyebrow: asText(section.retoEyebrow),
+          retoTitle: asText(section.retoTitle),
+          reto: asText(section.reto),
+          estrategiaEyebrow: asText(section.estrategiaEyebrow),
+          estrategiaTitle: asText(section.estrategiaTitle),
+          estrategia: asText(section.estrategia),
+        },
+      ];
+    }
+    if (type === 'caseProcess') {
+      return [
+        {
+          _type: 'caseProcess',
+          eyebrow: asText(section.eyebrow),
+          title: asText(section.title),
+          description: asText(section.description),
+          fases: asBlocks(section.fases),
+        },
+      ];
+    }
+    if (type === 'caseMetrics') {
+      const primary = asCta(section.primaryCta);
+      const secondary = asCta(section.secondaryCta);
+      return [
+        {
+          _type: 'caseMetrics',
+          eyebrow: asText(section.eyebrow),
+          title: asText(section.title),
+          titleMuted: asText(section.titleMuted),
+          description: asText(section.description),
+          metricas: asMetrics(section.items),
+          primaryLabel: primary?.label,
+          primaryHref: primary?.href,
+          secondaryLabel: secondary?.label,
+          secondaryHref: secondary?.href,
+        },
+      ];
+    }
+    if (type === 'caseTestimonial') {
+      return [
+        {
+          _type: 'caseTestimonial',
+          eyebrow: asText(section.eyebrow),
+          title: asText(section.title),
+          description: asText(section.description),
+          quote: asText(section.quote),
+          name: asText(section.name),
+          role: asText(section.role),
+        },
+      ];
+    }
+    if (type === 'caseRelated') {
+      return [
+        {
+          _type: 'caseRelated',
+          eyebrow: asText(section.eyebrow),
+          title: asText(section.title),
+          description: asText(section.description),
+        },
+      ];
+    }
+    if (type === 'caseCta') {
+      const primary = asCta(section.primaryCta);
+      return [
+        {
+          _type: 'caseCta',
+          badge: asText(section.badge),
+          title: asText(section.title),
+          description: asText(section.description),
+          primaryLabel: primary?.label,
+          primaryHref: primary?.href,
+        },
+      ];
+    }
+    return [];
+  });
+}
+
 export function mapCase(doc: Record<string, unknown>): CaseRecord {
   const servicios = Array.isArray(doc.servicios)
     ? (doc.servicios as Array<{ id?: string; nombre?: string; heroImage?: CmsImage }>)
@@ -361,6 +479,15 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
 
   const industria = doc.industria as { id?: string } | undefined;
   const accent = doc.accent === 'orange' || doc.accent === 'purple' ? doc.accent : 'cyan';
+  const sections = Array.isArray(doc.sections)
+    ? mapCaseSections(doc.sections as Array<Record<string, unknown>>)
+    : [];
+  const hero = sections.find((section) => section._type === 'caseHero');
+  const context = sections.find((section) => section._type === 'caseContext');
+  const process = sections.find((section) => section._type === 'caseProcess');
+  const metrics = sections.find((section) => section._type === 'caseMetrics');
+  const testimonial = sections.find((section) => section._type === 'caseTestimonial');
+  const legacyQuote = doc.testimonio as CaseRecord['data']['testimonio'];
 
   return {
     id: String(doc.id),
@@ -373,11 +500,25 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
       resumen: String(doc.resumen ?? ''),
       destacado: Boolean(doc.destacado),
       accent,
-      metricas: Array.isArray(doc.metricas) ? (doc.metricas as CaseRecord['data']['metricas']) : [],
-      reto: String(doc.reto ?? ''),
-      estrategia: String(doc.estrategia ?? ''),
-      fases: Array.isArray(doc.fases) ? (doc.fases as CaseRecord['data']['fases']) : [],
-      testimonio: doc.testimonio as CaseRecord['data']['testimonio'],
+      metricas: metrics?._type === 'caseMetrics' ? metrics.metricas : asMetrics(doc.metricas),
+      reto: context?._type === 'caseContext' ? (context.reto ?? '') : String(doc.reto ?? ''),
+      estrategia:
+        context?._type === 'caseContext' ? (context.estrategia ?? '') : String(doc.estrategia ?? ''),
+      fases: process?._type === 'caseProcess' ? process.fases : asBlocks(doc.fases),
+      testimonio:
+        testimonial?._type === 'caseTestimonial' && testimonial.quote
+          ? { quote: testimonial.quote, name: testimonial.name ?? '', role: testimonial.role ?? '' }
+          : legacyQuote,
+      anio: hero?._type === 'caseHero' ? hero.anio : asText(doc.anio),
+      imagenesProyecto:
+        hero?._type === 'caseHero'
+          ? (hero.imagenesProyecto ?? [])
+          : Array.isArray(doc.imagenesProyecto)
+            ? doc.imagenesProyecto
+                .map((image) => imageUrl(image as CmsImage, 800))
+                .filter((src): src is string => Boolean(src))
+            : [],
+      sections,
       seo: seoOf(doc),
     },
   };
