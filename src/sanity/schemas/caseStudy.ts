@@ -1,4 +1,4 @@
-import { defineArrayMember, defineField, defineType } from 'sanity';
+import { defineField, defineType } from 'sanity';
 import { caseSectionMembers } from './caseSections';
 import { seoFields } from './shared';
 
@@ -10,6 +10,14 @@ export const caseStudy = defineType({
     { name: 'datos', title: 'Datos', default: true },
     { name: 'content', title: 'Secciones' },
     { name: 'seo', title: 'SEO' },
+  ],
+  fieldsets: [
+    {
+      name: 'cards',
+      title: 'Datos de las cards',
+      description: 'Aparecen en las cards del índice de Casos de éxito.',
+      options: { collapsible: false },
+    },
   ],
   fields: [
     defineField({
@@ -35,24 +43,11 @@ export const caseStudy = defineType({
       to: [{ type: 'industry' }],
     }),
     defineField({
-      name: 'servicios',
-      title: 'Servicios',
-      type: 'array',
-      group: 'datos',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'service' }] })],
-    }),
-    defineField({
-      name: 'resultadoFrase',
-      title: 'Resultado (frase)',
-      type: 'string',
-      group: 'datos',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: 'titulo',
       title: 'Título',
       type: 'string',
       group: 'datos',
+      fieldset: 'cards',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -61,6 +56,7 @@ export const caseStudy = defineType({
       type: 'text',
       rows: 3,
       group: 'datos',
+      fieldset: 'cards',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -105,6 +101,6 @@ export const caseStudy = defineType({
     ...seoFields,
   ],
   preview: {
-    select: { title: 'cliente', subtitle: 'resultadoFrase' },
+    select: { title: 'cliente', subtitle: 'titulo' },
   },
 });

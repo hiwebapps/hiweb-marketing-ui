@@ -63,7 +63,6 @@ const pillars = (page?.pillars ?? []).map((pillar, index) => {
 			cases={cases.slice(0, 3).map((item) => ({
 				client: item.data.cliente,
 				industry: industryName[item.data.industria.id] ?? item.data.industria.id,
-				outcome: item.data.resultadoFrase,
 				title: item.data.titulo,
 				summary: item.data.resumen,
 				href: `/portafolio/${item.id}`,

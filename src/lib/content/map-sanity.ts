@@ -495,7 +495,7 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
       cliente: String(doc.cliente ?? ''),
       industria: { id: String(industria?.id ?? '') },
       servicios,
-      resultadoFrase: String(doc.resultadoFrase ?? ''),
+      resultadoFrase: asText(doc.resultadoFrase) ?? '',
       titulo: String(doc.titulo ?? ''),
       resumen: String(doc.resumen ?? ''),
       destacado: Boolean(doc.destacado),

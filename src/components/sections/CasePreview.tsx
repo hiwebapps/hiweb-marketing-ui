@@ -4,7 +4,7 @@ import { SectionHeader } from './primitives/SectionHeader';
 export type CaseItem = {
   client: string;
   industry: string;
-  outcome: string;
+  outcome?: string;
   title: string;
   summary: string;
   href?: string;
@@ -72,7 +72,7 @@ export function CaseCard({ item }: { item: CaseItem }) {
         <div className="border-t border-border p-5">
           <p className="font-display text-xs font-semibold tracking-wide text-ink">
             {item.client}
-            <span className="text-muted"> · {item.outcome}</span>
+            {item.outcome ? <span className="text-muted"> · {item.outcome}</span> : null}
           </p>
           <h3 className="mt-3 font-display text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-ink-soft">
             {item.title}

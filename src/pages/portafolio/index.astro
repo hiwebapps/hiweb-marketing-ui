@@ -25,7 +25,6 @@ const cards = cases.map((item) => ({
 	title: item.data.titulo,
 	description: item.data.resumen,
 	client: item.data.cliente,
-	outcome: item.data.resultadoFrase,
 	industry: industryName[item.data.industria.id] || item.data.cliente,
 	industrySlug: item.data.industria.id,
 	image: item.data.seo?.ogImage ?? postCoverUrl(`caso-${item.id}`, 800, 520),

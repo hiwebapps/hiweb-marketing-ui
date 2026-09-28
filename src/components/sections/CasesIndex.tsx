@@ -13,7 +13,7 @@ export type CaseIndexCard = {
   title: string;
   description: string;
   client: string;
-  outcome: string;
+  outcome?: string;
   industry: string;
   industrySlug: string;
   image?: string;
@@ -79,7 +79,7 @@ export function CasesIndex({
   cases,
   industries,
   title = 'Todos los casos',
-  description = 'Filtra por industria. Cada caso muestra cliente, outcome y el trabajo real.',
+  description = 'Filtra por industria. Cada caso muestra el cliente y el trabajo real.',
 }: CasesIndexProps) {
   const [filter, setFilter] = useState<FilterId>('all');
   const gridRef = useRef<HTMLUListElement>(null);

@@ -89,14 +89,14 @@ const sections: CasePageSection[] = entry.data.sections?.length
 				_type: 'caseRelated',
 				eyebrow: 'Casos',
 				title: 'Más casos de esta industria',
-				description: 'Cliente, industria y outcome. Sin portfolio ornamental.',
+				description: 'Cliente, industria y el trabajo realizado.',
 			},
 			{ _type: 'caseCta', title: 'Agenda un diagnóstico similar' },
 		];
 ---
 
 <Layout
-	title={entry.data.seo?.metaTitle ?? `${entry.data.cliente} — ${entry.data.resultadoFrase}`}
+	title={entry.data.seo?.metaTitle ?? entry.data.titulo ?? entry.data.cliente}
 	description={entry.data.seo?.metaDescription ?? entry.data.resumen}
 	ogImage={entry.data.seo?.ogImage ?? heroImage}
 	jsonLd={breadcrumbSchema([
@@ -236,7 +236,6 @@ const sections: CasePageSection[] = entry.data.sections?.length
 									title: item.data.titulo,
 									description: item.data.resumen,
 									client: item.data.cliente,
-									outcome: item.data.resultadoFrase,
 									industry: industry?.data.nombre ?? item.data.cliente,
 									industrySlug: item.data.industria.id,
 									image: item.data.seo?.ogImage ?? postCoverUrl(`caso-${item.id}`, 800, 520),

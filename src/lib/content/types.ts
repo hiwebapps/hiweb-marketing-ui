@@ -263,7 +263,7 @@ export type CaseRecord = {
     cliente: string;
     industria: { id: string };
     servicios: { id: string; nombre?: string; heroImage?: string }[];
-    resultadoFrase: string;
+    resultadoFrase?: string;
     titulo: string;
     resumen: string;
     destacado: boolean;

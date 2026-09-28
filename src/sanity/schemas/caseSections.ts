@@ -80,6 +80,13 @@ export const caseContext = defineType({
       initialValue: 'Servicios aplicados',
     }),
     defineField({ name: 'estrategia', title: 'Estrategia', type: 'text', rows: 5 }),
+    defineField({
+      name: 'servicios',
+      title: 'Servicios',
+      type: 'array',
+      description: 'Aparecen como etiquetas junto a la estrategia.',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'service' }] })],
+    }),
   ],
   preview: sectionPreview('Sección Contexto', 'retoTitle'),
 });
@@ -181,7 +188,7 @@ export const caseRelated = defineType({
       title: 'Descripción',
       type: 'text',
       rows: 2,
-      initialValue: 'Cliente, industria y outcome. Sin portfolio ornamental.',
+      initialValue: 'Cliente, industria y el trabajo realizado.',
     }),
   ],
   preview: sectionPreview('Sección Más casos'),
