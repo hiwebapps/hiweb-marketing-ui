@@ -6,6 +6,7 @@ import { RocketIcon } from '@sanity/icons/Rocket';
 import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
+import { withVisibility } from './shared';
 import { imageWithAlt } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
@@ -383,15 +384,17 @@ export const serviceSectionTypes = [
   serviceWhyCard,
   serviceIndustryItem,
   serviceProcessStep,
-  serviceHero,
-  serviceOverview,
-  serviceFocus,
-  servicePitch,
-  serviceWhy,
-  servicePlansSection,
-  serviceIndustries,
-  serviceProcess,
-  serviceCases,
-  serviceFaq,
-  serviceCta,
+  ...[
+    serviceHero,
+    serviceOverview,
+    serviceFocus,
+    servicePitch,
+    serviceWhy,
+    servicePlansSection,
+    serviceIndustries,
+    serviceProcess,
+    serviceCases,
+    serviceFaq,
+    serviceCta,
+  ].map(withVisibility),
 ];

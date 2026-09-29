@@ -9,6 +9,7 @@ import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
+import { withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -287,4 +288,4 @@ export const homeSectionTypes = [
   homeTeam,
   homeFaq,
   homeCta,
-];
+].map(withVisibility);

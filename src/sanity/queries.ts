@@ -20,6 +20,7 @@ const serviceSectionsProjection = /* groq */ `
   sections[]{
     _type,
     _key,
+    hidden,
     _type == "serviceHero" => {
       title,
       description,
@@ -163,6 +164,7 @@ const introProjection = /* groq */ `{ eyebrow, title, titleMuted, description }`
 export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "homePage-en"][0]{
   sections[]{
     _type,
+    hidden,
     _type == "homeHero" => {
       title,
       lead,
@@ -233,6 +235,7 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
 export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homePage"][0]{
   sections[]{
     _type,
+    hidden,
     _type == "homeHero" => {
       title,
       lead,
@@ -304,6 +307,7 @@ const aboutSectionsProjection = /* groq */ `
   sections[]{
     _type,
     _key,
+    hidden,
     _type == "aboutHero" => {
       badges[]{ label, variant },
       title,
@@ -397,6 +401,7 @@ const industrySectionsProjection = /* groq */ `
   sections[]{
     _type,
     _key,
+    hidden,
     _type == "industryHero" => {
       badge,
       title,
@@ -570,6 +575,7 @@ const caseSectionsProjection = /* groq */ `
 sections[]{
   _key,
   _type,
+  hidden,
   _type == "caseHero" => {
     anio,
     imagenesProyecto[] ${imageProjection}

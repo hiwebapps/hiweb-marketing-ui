@@ -9,7 +9,7 @@ import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { imageWithAlt } from '../shared';
+import { imageWithAlt, withVisibility } from '../shared';
 
 const TONE_OPTIONS = [
   { title: 'Canvas', value: 'canvas' },
@@ -466,4 +466,4 @@ export const landingSectionTypes = [
   teamGrid,
   metricsBand,
   presenceMap,
-];
+].map(withVisibility);

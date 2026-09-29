@@ -21,7 +21,8 @@ import '../components/sections/PresenceMap.css';
 const about = await getAboutCopy();
 const home = await getHomeCopy();
 const people = (await getPeople()) as TeamMember[];
-const pageSections = about.sections ?? [];
+const allSections = about.sections ?? [];
+const pageSections = allSections.filter((section) => !section.hidden);
 const historyColumns =
 	about.historyColumns && about.historyColumns.length === 2
 		? ([about.historyColumns[0], about.historyColumns[1]] as [
@@ -41,7 +42,7 @@ const historyColumns =
 	])}
 >
 	<main>
-		{pageSections.length ? (
+		{allSections.length ? (
 			pageSections.map((section) => (
 				<AboutPageSection
 					key={section._type}

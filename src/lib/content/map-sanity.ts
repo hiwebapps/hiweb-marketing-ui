@@ -90,6 +90,7 @@ function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data
     const section = item as Record<string, unknown>;
     const type = String(section._type ?? '');
     const text = (value: unknown) => (value ? String(value) : undefined);
+    const mapped = ((): NonNullable<IndustryRecord['data']['sections']> => {
     if (type === 'industryHero') {
       const image = section.image as CmsImage | undefined;
       return [{
@@ -150,6 +151,8 @@ function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data
       return [{ _type: 'industryCta' as const, title: text(section.title) }];
     }
     return [];
+    })();
+    return section.hidden === true ? mapped.map((entry) => ({ ...entry, hidden: true })) : mapped;
   });
   return sections.length ? sections : undefined;
 }
@@ -193,6 +196,7 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
     .map((item) => {
       const section = item as Record<string, unknown>;
       const type = String(section._type ?? '');
+      const mapped = ((): ServiceSection | null => {
       if (type === 'serviceHero') {
         const image = section.image as CmsImage | undefined;
         return {
@@ -363,6 +367,9 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
         return section as ServiceSection;
       }
       return null;
+      })();
+      if (!mapped || section.hidden !== true) return mapped;
+      return { ...mapped, hidden: true };
     })
     .filter((item): item is ServiceSection => item !== null);
 
@@ -442,6 +449,7 @@ function asMetrics(value: unknown): CaseRecord['data']['metricas'] {
 function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[] {
   return raw.flatMap((section): CasePageSection[] => {
     const type = String(section._type ?? '');
+    const mapped = ((): CasePageSection[] => {
     if (type === 'caseHero') {
       return [
         {
@@ -534,6 +542,8 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
       ];
     }
     return [];
+    })();
+    return section.hidden === true ? mapped.map((entry) => ({ ...entry, hidden: true })) : mapped;
   });
 }
 
@@ -769,7 +779,12 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
     }
   }
 
-  if (sections.length) copy.sectionOrder = sections.map((section) => String(section._type));
+  if (sections.length) {
+    copy.hasSections = true;
+    copy.sectionOrder = sections
+      .filter((section) => section.hidden !== true)
+      .map((section) => String(section._type));
+  }
   return copy;
 }
 
@@ -819,6 +834,7 @@ function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
   const sections = doc.sections.flatMap((item) => {
     const section = item as Record<string, unknown>;
     const type = String(section._type ?? '');
+    const mapped = ((): NonNullable<AboutCopy['sections']> => {
     if (type === 'aboutHero') {
       const image = section.image as CmsImage | undefined;
       const badges = Array.isArray(section.badges)
@@ -916,6 +932,8 @@ function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
       }];
     }
     return [];
+    })();
+    return section.hidden === true ? mapped.map((entry) => ({ ...entry, hidden: true })) : mapped;
   });
   return sections.length ? sections : undefined;
 }
@@ -1156,7 +1174,12 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
 export function mapLanding(doc: Record<string, unknown>): LandingPage {
   const sections = Array.isArray(doc.sections)
     ? doc.sections
-        .map((section) => mapLandingSection(section as Record<string, unknown>))
+        .map((section) => {
+          const raw = section as Record<string, unknown>;
+          const mapped = mapLandingSection(raw);
+          if (!mapped) return null;
+          return raw.hidden === true ? { ...mapped, hidden: true } : mapped;
+        })
         .filter((section): section is LandingSection => Boolean(section))
     : [];
 

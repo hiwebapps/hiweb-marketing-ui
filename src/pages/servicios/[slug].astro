@@ -22,6 +22,7 @@ import { iconForServiceOverviewCard } from '../../components/icons/PillarIcons';
 import { serviceFocusItems } from '../../data/service-focus';
 import { servicePitch } from '../../data/service-pitch';
 import { servicePlans } from '../../data/service-plans';
+import { notFound, resolveEntry } from '../../lib/content/resolve-entry';
 import type { ServiceRecord, ServiceSection } from '../../lib/content/types';
 import '../../components/sections/CaseStories.css';
 
@@ -33,7 +34,10 @@ interface Props {
 	entry: ServiceRecord;
 }
 
-const { entry } = Astro.props;
+const entry = await resolveEntry<ServiceRecord>(Astro.props.entry, Astro.params.slug, () =>
+	serviceStaticPaths(),
+);
+if (!entry) return notFound();
 const industries = await getIndustries();
 const cases = (await getCases()).filter((item) =>
 	item.data.servicios.some((ref) => ref.id === entry.id),
@@ -57,11 +61,14 @@ const serviceOverviewPillars = entry.data.cards.map((card, index) => ({
 
 const pitch = servicePitch(entry.id);
 const plans = entry.data.planes ?? servicePlans(entry.id);
-const sections = entry.data.sections ?? [];
+const allSections = entry.data.sections ?? [];
+const sections = allSections.filter((section) => !section.hidden);
 const faqFromSections = sections.find((section) => section._type === 'serviceFaq');
 const pageFaqs = faqFromSections?._type === 'serviceFaq' && faqFromSections.items?.length
   ? faqFromSections.items
-  : entry.data.faqs;
+  : allSections.length
+    ? []
+    : entry.data.faqs;
 
 const caseStories = cases.map((item) => ({
 	client: item.data.cliente,
@@ -83,11 +90,11 @@ const caseStories = cases.map((item) => ({
 			{ name: 'Servicios', href: '/servicios' },
 			{ name: entry.data.nombre, href: `/servicios/${entry.id}` },
 		]),
-		faqSchema(pageFaqs),
+		...(pageFaqs.length ? [faqSchema(pageFaqs)] : []),
 	]}
 >
 	<main>
-		{sections.length ? (
+		{allSections.length ? (
 			sections.map((section) => (
 				<ServicePageSection
 					key={section._type}

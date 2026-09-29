@@ -65,7 +65,7 @@ export type IndustryRecord = {
   };
 };
 
-export type IndustrySection =
+export type IndustrySection = (
   | {
       _type: 'industryHero';
       badge?: string;
@@ -109,9 +109,10 @@ export type IndustrySection =
   | {
       _type: 'industryCta';
       title?: string;
-    };
+    }
+) & { hidden?: boolean };
 
-export type ServiceSection =
+export type ServiceSection = (
   | {
       _type: 'serviceHero';
       title?: string;
@@ -208,7 +209,8 @@ export type ServiceSection =
       columns?: number;
       items?: FaqItem[];
     }
-  | { _type: 'serviceCta'; badge?: string; title?: string; description?: string };
+  | { _type: 'serviceCta'; badge?: string; title?: string; description?: string }
+) & { hidden?: boolean };
 
 export type ServiceRecord = {
   id: string;
@@ -246,7 +248,7 @@ export type ServiceRecord = {
   };
 };
 
-export type CasePageSection =
+export type CasePageSection = (
   | {
       _type: 'caseHero';
       anio?: string;
@@ -302,7 +304,8 @@ export type CasePageSection =
       description?: string;
       primaryLabel?: string;
       primaryHref?: string;
-    };
+    }
+) & { hidden?: boolean };
 
 export type CaseRecord = {
   id: string;
@@ -434,6 +437,7 @@ export type HomeCopy = {
     description?: string;
     primaryCta?: { label: string; href: string };
   };
+  hasSections?: boolean;
   sectionOrder?: string[];
   seo?: SeoFields;
 };
@@ -473,7 +477,7 @@ export type AboutCopy = {
   seo?: SeoFields;
 };
 
-export type AboutSection =
+export type AboutSection = (
   | {
       _type: 'aboutHero';
       badges?: { label: string; variant?: string }[];
@@ -533,13 +537,14 @@ export type AboutSection =
       description?: string;
       ctaLabel?: string;
       ctaHref?: string;
-    };
+    }
+) & { hidden?: boolean };
 
 export type CmsImage = SanityImageSource & { alt?: string };
 
 export type LandingCta = { label: string; href: string };
 
-export type LandingSection =
+export type LandingSection = (
   | {
       _type: 'pageHero';
       variant: 'plain' | 'photo';
@@ -650,7 +655,8 @@ export type LandingSection =
       title?: string;
       description?: string;
       cta?: LandingCta;
-    };
+    }
+) & { hidden?: boolean };
 
 export type LandingPage = {
   id: string;

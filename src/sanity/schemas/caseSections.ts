@@ -5,6 +5,7 @@ import { RocketIcon } from '@sanity/icons/Rocket';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
+import { withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -231,4 +232,4 @@ export const caseSectionTypes = [
   caseTestimonial,
   caseRelated,
   caseCta,
-];
+].map(withVisibility);

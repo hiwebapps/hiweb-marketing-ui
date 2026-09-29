@@ -92,8 +92,8 @@ const metrics = (home.metrics ?? []).map((item) => ({
 	suffix: item.suffix,
 	decimals: item.decimals,
 }));
-const sectionOrder = home.sectionOrder?.length
-	? home.sectionOrder
+const sectionOrder = home.hasSections
+	? (home.sectionOrder ?? [])
 	: [
 			'homeHero',
 			'homePillars',
@@ -112,7 +112,7 @@ const sectionOrder = home.sectionOrder?.length
 	title={home.seo?.metaTitle ?? 'Hiweb Marketing — Partner estratégico'}
 	description={home.seo?.metaDescription ?? SITE.tagline}
 	ogImage={home.seo?.ogImage}
-	jsonLd={faqSchema(faqs)}
+	jsonLd={sectionOrder.includes('homeFaq') ? faqSchema(faqs) : undefined}
 >
 	<main>
 		{sectionOrder.map((type) => {

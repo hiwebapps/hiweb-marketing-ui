@@ -14,6 +14,7 @@ import { FinalCta } from '../../components/sections/FinalCta';
 import { breadcrumbSchema } from '../../lib/schema';
 import { postCoverUrl } from '../../lib/blog';
 import { formatCaseStat } from '../../lib/content/format';
+import { notFound, resolveEntry } from '../../lib/content/resolve-entry';
 import type { CasePageSection, CaseRecord } from '../../lib/content/types';
 import '../../components/sections/CaseTelescopeHero.css';
 import '../../components/sections/MetricsBand.css';
@@ -28,7 +29,8 @@ interface Props {
 	entry: CaseRecord;
 }
 
-const { entry } = Astro.props;
+const entry = await resolveEntry<CaseRecord>(Astro.props.entry, Astro.params.slug, caseStaticPaths);
+if (!entry) return notFound();
 const industries = await getIndustries();
 const industry = industries.find((item) => item.id === entry.data.industria.id);
 const relatedServices = entry.data.servicios;
@@ -46,7 +48,7 @@ const titleLeft = projectWords.slice(0, projectMid).join(' ');
 const titleRight = projectWords.slice(projectMid).join(' ');
 
 const sections: CasePageSection[] = entry.data.sections?.length
-	? entry.data.sections
+	? entry.data.sections.filter((section) => !section.hidden)
 	: [
 			{ _type: 'caseHero', anio: entry.data.anio, imagenesProyecto: entry.data.imagenesProyecto },
 			{

@@ -1,4 +1,5 @@
-import { defineArrayMember, defineField, defineType } from 'sanity';
+import { EyeClosedIcon } from '@sanity/icons/EyeClosed';
+import { defineArrayMember, defineField, defineType, type ObjectDefinition, type PreviewConfig } from 'sanity';
 
 export const seoFields = [
   defineField({
@@ -340,3 +341,36 @@ export const serviceBlurb = defineType({
     select: { title: 'service.nombre', subtitle: 'description' },
   },
 });
+
+type PreviewValue = { title?: string; subtitle?: string; media?: unknown };
+
+/** Keeps a section in Studio while the site skips it. */
+export function withVisibility<T extends ObjectDefinition>(type: T): T {
+  const preview = type.preview as PreviewConfig | undefined;
+  const hiddenField = defineField({
+    name: 'hidden',
+    title: 'Ocultar sección',
+    type: 'boolean',
+    initialValue: false,
+    description: 'Sigue en Studio, pero no aparece en el sitio.',
+  });
+
+  return {
+    ...type,
+    fields: [hiddenField, ...(type.fields ?? [])],
+    preview: {
+      select: { ...(preview?.select ?? {}), hidden: 'hidden' },
+      prepare: (selection: { hidden?: boolean; title?: string; subtitle?: string }) => {
+        const prepared = (
+          preview?.prepare ? preview.prepare(selection) : { title: selection.title, subtitle: selection.subtitle }
+        ) as PreviewValue;
+        if (!selection.hidden) return prepared;
+        return {
+          ...prepared,
+          subtitle: prepared.subtitle ? `Oculta · ${prepared.subtitle}` : 'Oculta',
+          media: EyeClosedIcon,
+        };
+      },
+    },
+  };
+}

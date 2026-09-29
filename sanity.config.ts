@@ -2,10 +2,12 @@ import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { completeLandingTemplate } from './src/sanity/actions/completeLandingTemplate';
+import { viewOnStaging } from './src/sanity/actions/viewOnStaging';
 import { landingTemplateSections, type LandingTemplateKind } from './src/sanity/landingTemplate';
 import { schemaTypes } from './src/sanity/schemas';
 import { industryStarter, serviceStarter } from './src/sanity/starters';
 import { structure } from './src/sanity/structure';
+import { imageGalleryTool } from './src/sanity/tools/imageGalleryTool';
 
 const projectId =
   process.env.SANITY_STUDIO_PROJECT_ID ||
@@ -26,9 +28,23 @@ export default defineConfig({
     structureTool({ structure }),
     visionTool({ defaultApiVersion: '2026-09-18' }),
   ],
+  tools: (prev) => [...prev, imageGalleryTool()],
   document: {
-    actions: (prev, context) =>
-      context.schemaType === 'landingPage' ? [...prev, completeLandingTemplate] : prev,
+    actions: (prev, context) => {
+      const withTemplate =
+        context.schemaType === 'landingPage' ? [...prev, completeLandingTemplate] : prev;
+      const stagingTypes = new Set([
+        'homePage',
+        'aboutPage',
+        'contactPage',
+        'service',
+        'industry',
+        'caseStudy',
+        'post',
+        'landingPage',
+      ]);
+      return stagingTypes.has(context.schemaType) ? [...withTemplate, viewOnStaging] : withTemplate;
+    },
   },
   schema: {
     types: schemaTypes,

@@ -4,6 +4,7 @@ export const prerender = true;
 import Layout from '../layouts/Layout.astro';
 import SectionRenderer from '../components/content/SectionRenderer.astro';
 import { getIndustries, landingStaticPaths } from '../lib/content';
+import { notFound, resolveEntry } from '../lib/content/resolve-entry';
 import { isReservedSlug } from '../sanity/reservedSlugs';
 import { breadcrumbSchema, faqSchema } from '../lib/schema';
 import type { LandingPage } from '../lib/content/types';
@@ -21,10 +22,14 @@ interface Props {
 	entry: LandingPage;
 }
 
-const { entry } = Astro.props;
+const slug = Astro.params.slug;
+if (slug && isReservedSlug(slug)) return notFound();
+const entry = await resolveEntry<LandingPage>(Astro.props.entry, slug, landingStaticPaths);
+if (!entry) return notFound();
 const industries = await getIndustries();
 const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
-const faqs = entry.sections.flatMap((section) => (section._type === 'faqSection' ? section.items : []));
+const sections = entry.sections.filter((section) => !section.hidden);
+const faqs = sections.flatMap((section) => (section._type === 'faqSection' ? section.items : []));
 ---
 
 <Layout
@@ -40,7 +45,7 @@ const faqs = entry.sections.flatMap((section) => (section._type === 'faqSection'
 	]}
 >
 	<main>
-		{entry.sections.map((section) => (
+		{sections.map((section) => (
 			<SectionRenderer section={section} industryName={industryName} />
 		))}
 	</main>

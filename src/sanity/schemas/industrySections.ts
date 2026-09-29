@@ -5,7 +5,7 @@ import { ImageIcon } from '@sanity/icons/Image';
 import { RocketIcon } from '@sanity/icons/Rocket';
 import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { imageWithAlt } from './shared';
+import { imageWithAlt, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -171,4 +171,4 @@ export const industrySectionTypes = [
   industryCases,
   industryFaq,
   industryCta,
-];
+].map(withVisibility);

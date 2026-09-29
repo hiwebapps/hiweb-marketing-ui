@@ -1,0 +1,36 @@
+# Staging Worker. SSR, so Sanity drafts show up without a content rebuild.
+# Does not deploy the live Worker.
+name: Deploy staging
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # CLOUDFLARE_ENV selects the Worker written into dist/server/wrangler.json.
+      # Without it, wrangler deploy --env staging publishes this bundle to the live Worker.
+      - run: npm run build
+        env:
+          PUBLIC_SITE_ENV: staging
+          PUBLIC_SITE_URL: https://hiweb-marketing-ui-staging.hiwebapps.workers.dev
+          CLOUDFLARE_ENV: staging
+          PUBLIC_SITE_INDEXABLE: 'false'
+          PUBLIC_SANITY_PROJECT_ID: fxardjr1
+          PUBLIC_SANITY_DATASET: web-2026
+          SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env staging --keep-vars

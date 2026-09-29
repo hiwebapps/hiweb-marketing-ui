@@ -8,6 +8,7 @@ export async function loadQuery<QueryResponse>({
   query: string;
   params?: QueryParams;
 }) {
-  const data = await getSanityClient().fetch<QueryResponse>(query, params ?? {});
+  const client = await getSanityClient();
+  const data = await client.fetch<QueryResponse>(query, params ?? {});
   return { data };
 }

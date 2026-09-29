@@ -4,7 +4,7 @@ import { ImageIcon } from '@sanity/icons/Image';
 import { RocketIcon } from '@sanity/icons/Rocket';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { imageWithAlt } from './shared';
+import { imageWithAlt, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -262,4 +262,4 @@ export const aboutSectionTypes = [
   aboutTeam,
   aboutMap,
   aboutCta,
-];
+].map(withVisibility);

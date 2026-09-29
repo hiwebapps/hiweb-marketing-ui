@@ -9,6 +9,7 @@ import { FinalCta } from '../../components/sections/FinalCta';
 import { Button } from '../../components/ui';
 import { articleSchema, breadcrumbSchema } from '../../lib/schema';
 import { extractPortableHeadings, extractPostHeadings, postCoverUrl } from '../../lib/blog';
+import { notFound, resolveEntry } from '../../lib/content/resolve-entry';
 import type { PostRecord } from '../../lib/content/types';
 import '../../components/sections/BlogPost.css';
 
@@ -20,7 +21,10 @@ interface Props {
 	entry: PostRecord;
 }
 
-const { entry } = Astro.props;
+const entry = await resolveEntry<PostRecord>(Astro.props.entry, Astro.params.slug, () =>
+	postStaticPaths(),
+);
+if (!entry) return notFound();
 const allPosts = await getPosts();
 const related = allPosts
 	.filter((post) => post.id !== entry.id)
