@@ -13,6 +13,7 @@ import {
   sanityContactPage,
   sanityCase,
   sanityCases,
+  sanityFooter,
   sanityHome,
   sanityIndustries,
   sanityIndustriesIndex,
@@ -71,6 +72,14 @@ export async function getIndustries(locale: 'es' | 'en' = 'es'): Promise<Industr
     () => sanityIndustries(locale),
     collectionsIndustries,
     (items) => items.length === 0,
+  );
+}
+
+export async function getFooter(locale: 'es' | 'en' = 'es') {
+  return withFallback(
+    () => sanityFooter(locale),
+    () => null,
+    (value) => !value,
   );
 }
 

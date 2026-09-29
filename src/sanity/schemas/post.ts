@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { charCountInput } from '../components/CharCountInput';
 import { imageWithAlt, seoFields, seoGroups } from './shared';
 
 export const author = defineType({
@@ -113,6 +114,7 @@ export const post = defineType({
       type: 'text',
       rows: 3,
       group: 'content',
+      components: { input: charCountInput(155, 160) },
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -177,6 +179,12 @@ export const post = defineType({
         defineArrayMember({
           type: 'image',
           options: { hotspot: true },
+          validation: (rule) =>
+            rule
+              .custom((value: { asset?: unknown; alt?: string } | undefined) =>
+                value?.asset && !value.alt?.trim() ? 'Falta el texto alternativo de la imagen' : true,
+              )
+              .warning(),
           fields: [
             defineField({
               name: 'alt',

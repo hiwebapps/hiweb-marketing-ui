@@ -146,6 +146,20 @@ export const navigationQuery = defineQuery(`*[_type == "navigation" && _id == $i
   exploreLinks[] ${navLinkProjection}
 }`);
 
+export const footerQuery = defineQuery(`*[_type == "footer" && _id == $id][0]{
+  brand,
+  title,
+  emailPlaceholder,
+  menuHeading,
+  menuLinks[]{ label, href },
+  contactHeading,
+  contactLinks[]{ label, href },
+  locations,
+  legalName,
+  legalLinks[]{ label, href },
+  backToTop
+}`);
+
 export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
   name,
   legalName,

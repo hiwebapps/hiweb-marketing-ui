@@ -1,5 +1,6 @@
 import { EyeClosedIcon } from '@sanity/icons/EyeClosed';
 import { defineArrayMember, defineField, defineType, type ObjectDefinition, type PreviewConfig } from 'sanity';
+import { charCountInput } from '../components/CharCountInput';
 
 export const seoFields = [
   defineField({
@@ -7,6 +8,7 @@ export const seoFields = [
     title: 'Título SEO',
     type: 'string',
     group: 'seo',
+    components: { input: charCountInput(60, 70) },
     validation: (rule) => rule.max(70).warning('Idealmente ≤ 60–70 caracteres'),
   }),
   defineField({
@@ -15,6 +17,7 @@ export const seoFields = [
     type: 'text',
     rows: 3,
     group: 'seo',
+    components: { input: charCountInput(155, 160) },
     validation: (rule) => rule.max(160).warning('Idealmente ≤ 155–160 caracteres'),
   }),
   defineField({

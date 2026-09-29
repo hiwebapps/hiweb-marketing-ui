@@ -16,6 +16,7 @@ type NavDoc = {
   _id: string;
   title?: string;
   slug?: string;
+  locale?: string;
 };
 
 type NavData = {
@@ -41,8 +42,8 @@ const NAV_QUERY = `{
   "pages": *[_type == "landingPage" && defined(slug.current)] | order(title asc) {
     _id, title, "slug": slug.current
   },
-  "posts": *[_type == "post" && coalesce(locale, "es") == $locale && defined(slug.current)] | order(coalesce(fecha, _updatedAt) desc) {
-    _id, title, "slug": slug.current
+  "posts": *[_type == "post" && defined(slug.current)] | order(coalesce(fecha, _updatedAt) desc) {
+    _id, title, "slug": slug.current, "locale": coalesce(locale, "es")
   }
 }`;
 
@@ -178,6 +179,8 @@ export function SiteNavigator() {
   const homeHref = locale === 'en' ? '/en' : '/';
   const aboutHref = locale === 'en' ? '/en/nosotros' : '/nosotros';
   const blogIndex = locale === 'en' ? '/en/blogs' : '/blog';
+  const spanishPosts = data.posts.filter((post) => post.locale !== 'en');
+  const englishPosts = data.posts.filter((post) => post.locale === 'en');
 
   const folder = (id: string, label: string, items: ReactNode) =>
     createElement(
@@ -326,11 +329,15 @@ export function SiteNavigator() {
             active: currentPath === blogIndex,
             onClick: () => go(blogIndex),
           }),
-          docs(
-            data.posts,
-            (slug) => (locale === 'en' ? `/en/blogs/${slug}` : `/blog/${slug}`),
-            'post',
-            ComposeIcon,
+          folder(
+            'blog-es',
+            'Español',
+            docs(spanishPosts, (slug) => `/blog/${slug}`, 'post', ComposeIcon),
+          ),
+          folder(
+            'blog-en',
+            'English',
+            docs(englishPosts, (slug) => `/en/blogs/${slug}`, 'post', ComposeIcon),
           ),
         ],
       ),

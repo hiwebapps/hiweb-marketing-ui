@@ -11,6 +11,7 @@ import type { StructureResolver } from 'sanity/structure';
 const HIDDEN_FROM_FALLBACK = [
   'siteSettings',
   'navigation',
+  'footer',
   'navLink',
   'navGroup',
   'navBarItem',
@@ -117,6 +118,19 @@ function createMenu(
   ];
 }
 
+function postList(S: Parameters<StructureResolver>[0], locale: 'es' | 'en') {
+  const english = locale === 'en';
+  return S.documentTypeList('post')
+    .title(english ? 'English' : 'Español')
+    .filter(
+      english
+        ? '_type == "post" && locale == "en"'
+        : '_type == "post" && coalesce(locale, "es") == "es"',
+    )
+    .defaultOrdering([{ field: 'fecha', direction: 'desc' }])
+    .initialValueTemplates([S.initialValueTemplateItem(english ? 'post-en' : 'post-es')]);
+}
+
 function languageItems(
   S: Parameters<StructureResolver>[0],
   schemaType: string,
@@ -194,6 +208,24 @@ export const structure: StructureResolver = (S, context) => {
                 .title('English')
                 .id('navbar-en')
                 .child(S.document().schemaType('navigation').documentId('navigation-en').title('English')),
+            ]),
+        ),
+      S.listItem()
+        .title('Footer')
+        .id('footer')
+        .icon(CogIcon)
+        .child(
+          S.list()
+            .title('Footer')
+            .items([
+              S.listItem()
+                .title('Español')
+                .id('footer-es')
+                .child(S.document().schemaType('footer').documentId('footer').title('Español')),
+              S.listItem()
+                .title('English')
+                .id('footer-en')
+                .child(S.document().schemaType('footer').documentId('footer-en').title('English')),
             ]),
         ),
       S.listItem()
@@ -331,54 +363,13 @@ export const structure: StructureResolver = (S, context) => {
             .title('Blog')
             .items([
               S.listItem()
-                .title('Artículos')
-                .id('posts')
-                .child(async () => {
-                  const rows = await client.fetch<
-                    { _id: string; title: string; slug: string; locale: string; esSlug?: string; fecha?: string }[]
-                  >(
-                    `*[_type == "post"]{
-                      _id,
-                      title,
-                      "slug": slug.current,
-                      "locale": coalesce(locale, "es"),
-                      esSlug,
-                      fecha
-                    }`,
-                  );
-                  const grouped = new Map<
-                    string,
-                    { title: string; fecha: string; esId?: string; enId?: string }
-                  >();
-                  for (const row of rows) {
-                    const id = row._id.replace(/^drafts\./, '');
-                    const key = row.locale === 'en' ? row.esSlug || `en:${row.slug}` : row.slug;
-                    const current = grouped.get(key) ?? { title: row.title, fecha: row.fecha ?? '' };
-                    if (row.locale === 'en') current.enId = id;
-                    else {
-                      current.esId = id;
-                      current.title = row.title;
-                      current.fecha = row.fecha ?? current.fecha;
-                    }
-                    if (!current.title) current.title = row.title;
-                    grouped.set(key, current);
-                  }
-                  const pages = [...grouped.values()].sort((a, b) => b.fecha.localeCompare(a.fecha));
-                  return S.list()
-                    .title('Artículos')
-                    .items(
-                      pages.map((page) =>
-                        S.listItem()
-                          .title(page.title)
-                          .id(`post-${page.esId ?? page.enId}`)
-                          .child(
-                            S.list()
-                              .title(page.title)
-                              .items(languageItems(S, 'post', page.esId, page.enId)),
-                          ),
-                      ),
-                    );
-                }),
+                .title('Español')
+                .id('posts-es')
+                .child(postList(S, 'es')),
+              S.listItem()
+                .title('English')
+                .id('posts-en')
+                .child(postList(S, 'en')),
               S.listItem().title('Autores').id('authors').child(S.documentTypeList('author').title('Autores')),
             ]),
         ),

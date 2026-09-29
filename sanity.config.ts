@@ -3,13 +3,16 @@ import { presentationTool } from 'sanity/presentation';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { completeLandingTemplate } from './src/sanity/actions/completeLandingTemplate';
+import { createEnglishVersion } from './src/sanity/actions/createEnglishVersion';
 import { viewOnStaging } from './src/sanity/actions/viewOnStaging';
+import { translationBadge, wordsBadge } from './src/sanity/badges/postBadges';
 import { resolve } from './src/sanity/presentation/resolve';
 import { SiteNavigator } from './src/sanity/presentation/SiteNavigator';
 import { landingTemplateSections, type LandingTemplateKind } from './src/sanity/landingTemplate';
 import { schemaTypes } from './src/sanity/schemas';
 import { industryStarter, serviceStarter } from './src/sanity/starters';
 import { structure } from './src/sanity/structure';
+import { blogsTool } from './src/sanity/tools/blogsTool';
 import { imageGalleryTool } from './src/sanity/tools/imageGalleryTool';
 
 const projectId =
@@ -57,11 +60,17 @@ export default defineConfig({
     }),
     visionTool({ defaultApiVersion: '2026-09-18' }),
   ],
-  tools: (prev) => [...prev, imageGalleryTool()],
+  tools: (prev) => [...prev, blogsTool(), imageGalleryTool()],
   document: {
+    badges: (prev, context) =>
+      context.schemaType === 'post' ? [...prev, translationBadge, wordsBadge] : prev,
     actions: (prev, context) => {
       const withTemplate =
-        context.schemaType === 'landingPage' ? [...prev, completeLandingTemplate] : prev;
+        context.schemaType === 'landingPage'
+          ? [...prev, completeLandingTemplate]
+          : context.schemaType === 'post'
+            ? [...prev, createEnglishVersion]
+            : prev;
       const stagingTypes = new Set([
         'homePage',
         'aboutPage',
@@ -107,6 +116,18 @@ export default defineConfig({
         title: 'Industria en inglés',
         schemaType: 'industry',
         value: industryStarter('en'),
+      },
+      {
+        id: 'post-es',
+        title: 'Artículo en español',
+        schemaType: 'post',
+        value: { locale: 'es' },
+      },
+      {
+        id: 'post-en',
+        title: 'Artículo en inglés',
+        schemaType: 'post',
+        value: { locale: 'en' },
       },
       ...(['serviceLite', 'industryLite', 'campaign'] as const).map((kind: LandingTemplateKind) => ({
         id: `landing-${kind}`,

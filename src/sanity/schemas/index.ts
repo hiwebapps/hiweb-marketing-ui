@@ -28,6 +28,7 @@ import {
   servicePlan,
   titledBlock,
 } from './shared';
+import { footer, footerLink } from './footer';
 import { navBarItem, navGroup, navLink, navigation } from './navigation';
 import { siteSettings } from './siteSettings';
 
@@ -55,6 +56,8 @@ export const schemaTypes = [
   navGroup,
   navBarItem,
   navigation,
+  footerLink,
+  footer,
   siteSettings,
   homePage,
   aboutPage,

@@ -17,6 +17,7 @@ const TYPE_LABELS: Record<string, string> = {
   industriesIndex: 'Índice de industrias',
   industry: 'Industria',
   landingPage: 'Página',
+  footer: 'Footer',
   navigation: 'Navbar',
   person: 'Equipo',
   post: 'Blog',

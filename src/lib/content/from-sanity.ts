@@ -8,6 +8,7 @@ import {
   homePageQuery,
   industriesIndexQuery,
   industriesQuery,
+  footerQuery,
   navigationQuery,
   industryBySlugQuery,
   landingBySlugQuery,
@@ -29,6 +30,7 @@ import {
   mapPost,
   mapService,
 } from './map-sanity';
+import type { FooterLink, SiteFooterContent } from '../footer';
 import type { NavGroup, NavLink, SiteNavContent } from '../nav';
 import type {
   AboutCopy,
@@ -251,6 +253,39 @@ function asBar(value: unknown, doc: Record<string, unknown>): SiteNavContent['ba
       },
     ];
   });
+}
+
+function asFooterLinks(value: unknown): FooterLink[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((item) => {
+    if (!item || typeof item !== 'object') return [];
+    const row = item as { label?: unknown; href?: unknown };
+    const label = text(row.label);
+    const href = text(row.href);
+    if (!label || !href) return [];
+    return [{ label, href }];
+  });
+}
+
+export async function sanityFooter(locale: 'es' | 'en'): Promise<SiteFooterContent | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: footerQuery,
+    params: { id: locale === 'en' ? 'footer-en' : 'footer' },
+  });
+  if (!data) return null;
+  return {
+    brand: text(data.brand),
+    title: text(data.title),
+    emailPlaceholder: text(data.emailPlaceholder),
+    menuHeading: text(data.menuHeading),
+    menuLinks: asFooterLinks(data.menuLinks),
+    contactHeading: text(data.contactHeading),
+    contactLinks: asFooterLinks(data.contactLinks),
+    locations: text(data.locations),
+    legalName: text(data.legalName),
+    legalLinks: asFooterLinks(data.legalLinks),
+    backToTop: text(data.backToTop),
+  };
 }
 
 export async function sanityNavigation(locale: 'es' | 'en'): Promise<SiteNavContent | null> {

@@ -3,18 +3,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
-import { LEGAL_LINKS, NAV_LINKS, SITE } from '../../data/site';
-import { CHROME, localePath, type Locale } from '../../lib/locale';
+import { SITE } from '../../data/site';
+import { fallbackFooter, type SiteFooterContent } from '../../lib/footer';
+import { localePath, type Locale } from '../../lib/locale';
 import { MOTION } from '../../lib/motion';
 import './SiteFooter.css';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
-
-const CONTACT = [
-  { href: SITE.phoneHref, label: SITE.phone },
-  { href: `mailto:${SITE.email}`, label: SITE.email },
-  { href: SITE.whatsapp, label: 'WhatsApp' },
-];
 
 function IconInstagram() {
   return (
@@ -44,20 +39,16 @@ function prefersReducedMotion() {
 /**
  * Footer — panel dark + wordmark gigante, SplitText y ScrollTrigger.
  */
-export function SiteFooter({ locale = 'es' }: { locale?: Locale }) {
+export function SiteFooter({
+  locale = 'es',
+  footer = null,
+}: {
+  locale?: Locale;
+  footer?: SiteFooterContent | null;
+}) {
   const rootRef = useRef<HTMLElement>(null);
   const year = new Date().getFullYear();
-  const copy = CHROME[locale];
-  const menu = [
-    { href: localePath('/nosotros', locale), label: copy.about },
-    { href: localePath('/industrias', locale), label: copy.industries },
-    { href: localePath('/servicios', locale), label: copy.services },
-    ...NAV_LINKS.filter((item) => item.href !== '/nosotros').map((item) => ({
-      href: localePath(item.href, locale),
-      label: item.href === '/portafolio' ? copy.cases : item.href === '/blog' ? copy.blog : item.label,
-    })),
-    { href: localePath('/contacto', locale), label: copy.contact },
-  ];
+  const copy = footer ?? fallbackFooter(locale);
 
   useGSAP(
     () => {
@@ -169,11 +160,11 @@ export function SiteFooter({ locale = 'es' }: { locale?: Locale }) {
         <div className="site-footer__panel">
           <div className="site-footer__top">
             <div className="site-footer__intro">
-              <p className="site-footer__brand">{SITE.name}</p>
-              <h2 className="site-footer__title">{copy.footerTitle}</h2>
+              <p className="site-footer__brand">{copy.brand}</p>
+              <h2 className="site-footer__title">{copy.title}</h2>
               <form className="site-footer__form" action={localePath('/contacto', locale)} method="get">
                 <label className="sr-only" htmlFor="footer-email">
-                  {copy.workEmail}
+                  {copy.emailPlaceholder}
                 </label>
                 <input
                   id="footer-email"
@@ -181,7 +172,7 @@ export function SiteFooter({ locale = 'es' }: { locale?: Locale }) {
                   type="email"
                   name="email"
                   autoComplete="email"
-                  placeholder={copy.workEmail}
+                  placeholder={copy.emailPlaceholder}
                   required
                 />
                 <button className="site-footer__submit" type="submit" aria-label={copy.toContact}>
@@ -198,22 +189,22 @@ export function SiteFooter({ locale = 'es' }: { locale?: Locale }) {
               </form>
             </div>
 
-            <nav className="site-footer__col" aria-label={copy.menu}>
-              <p className="site-footer__heading">{copy.menu}</p>
+            <nav className="site-footer__col" aria-label={copy.menuHeading}>
+              <p className="site-footer__heading">{copy.menuHeading}</p>
               <ul>
-                {menu.map((item) => (
-                  <li key={item.href}>
+                {copy.menuLinks.map((item) => (
+                  <li key={`${item.href}-${item.label}`}>
                     <a href={item.href}>{item.label}</a>
                   </li>
                 ))}
               </ul>
             </nav>
 
-            <nav className="site-footer__col" aria-label={copy.contact}>
-              <p className="site-footer__heading">{copy.contact}</p>
+            <nav className="site-footer__col" aria-label={copy.contactHeading}>
+              <p className="site-footer__heading">{copy.contactHeading}</p>
               <ul>
-                {CONTACT.map((item) => (
-                  <li key={item.href}>
+                {copy.contactLinks.map((item) => (
+                  <li key={`${item.href}-${item.label}`}>
                     <a href={item.href}>{item.label}</a>
                   </li>
                 ))}
@@ -222,7 +213,7 @@ export function SiteFooter({ locale = 'es' }: { locale?: Locale }) {
           </div>
 
           <div className="site-footer__bar">
-            <p className="site-footer__locales">{SITE.locales.join(' · ')}</p>
+            <p className="site-footer__locales">{copy.locations}</p>
             <div className="site-footer__tools">
               {SITE.socials.map((item) => (
                 <a
@@ -241,11 +232,11 @@ export function SiteFooter({ locale = 'es' }: { locale?: Locale }) {
 
           <div className="site-footer__legal">
             <p>
-              © {year} {SITE.legalName}
+              © {year} {copy.legalName}
             </p>
             <nav aria-label="Legal">
-              {LEGAL_LINKS.map((item) => (
-                <a key={item.href} href={item.href}>
+              {copy.legalLinks.map((item) => (
+                <a key={`${item.href}-${item.label}`} href={item.href}>
                   {item.label}
                 </a>
               ))}

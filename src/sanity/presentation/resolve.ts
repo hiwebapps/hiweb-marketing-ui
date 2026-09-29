@@ -186,6 +186,24 @@ export const resolve: PresentationPluginOptions['resolve'] = {
         ],
       }),
     }),
+    footer: defineLocations({
+      select: { locale: 'locale' },
+      resolve: (doc) => ({
+        message: 'El footer se usa en todas las páginas de este idioma.',
+        tone: 'caution',
+        locations:
+          doc?.locale === 'en'
+            ? [
+                { title: 'Home', href: '/en' },
+                { title: 'About', href: '/en/nosotros' },
+              ]
+            : [
+                { title: 'Inicio', href: '/' },
+                { title: 'Nosotros', href: '/nosotros' },
+                { title: 'Contacto', href: '/contacto' },
+              ],
+      }),
+    }),
     navigation: defineLocations({
       select: { locale: 'locale' },
       resolve: (doc) => ({
