@@ -1,8 +1,11 @@
 import { defineConfig } from 'sanity';
+import { presentationTool } from 'sanity/presentation';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { completeLandingTemplate } from './src/sanity/actions/completeLandingTemplate';
 import { viewOnStaging } from './src/sanity/actions/viewOnStaging';
+import { resolve } from './src/sanity/presentation/resolve';
+import { SiteNavigator } from './src/sanity/presentation/SiteNavigator';
 import { landingTemplateSections, type LandingTemplateKind } from './src/sanity/landingTemplate';
 import { schemaTypes } from './src/sanity/schemas';
 import { industryStarter, serviceStarter } from './src/sanity/starters';
@@ -19,6 +22,14 @@ const dataset =
   process.env.PUBLIC_SANITY_DATASET ||
   'web-2026';
 
+const STAGING_ORIGIN = 'https://hiweb-marketing-ui-staging.hiwebapps.workers.dev';
+
+function previewOrigin() {
+  const fromEnv = process.env.SANITY_STUDIO_PREVIEW_URL?.trim();
+  if (fromEnv) return fromEnv.replace(/\/$/, '');
+  return STAGING_ORIGIN;
+}
+
 export default defineConfig({
   name: 'hiweb-web',
   title: 'Hiweb Web 2026',
@@ -26,6 +37,24 @@ export default defineConfig({
   dataset,
   plugins: [
     structureTool({ structure }),
+    presentationTool({
+      resolve,
+      allowOrigins: [STAGING_ORIGIN, 'http://localhost:4321', 'http://127.0.0.1:4321'],
+      previewUrl: {
+        initial: previewOrigin(),
+        previewMode: {
+          enable: '/api/draft-mode/enable',
+          disable: '/api/draft-mode/disable',
+        },
+      },
+      components: {
+        unstable_navigator: {
+          minWidth: 240,
+          maxWidth: 360,
+          component: SiteNavigator,
+        },
+      },
+    }),
     visionTool({ defaultApiVersion: '2026-09-18' }),
   ],
   tools: (prev) => [...prev, imageGalleryTool()],

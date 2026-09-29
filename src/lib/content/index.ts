@@ -137,9 +137,12 @@ export async function getCase(slug: string): Promise<CaseRecord | undefined> {
   return fromSanity ?? undefined;
 }
 
-export async function getPosts(locale: 'es' | 'en' = 'es'): Promise<PostRecord[]> {
-  if (locale === 'en') return sanityPosts('en');
-  return withFallback(sanityPosts, collectionsPosts, (items) => items.length === 0);
+export async function getPosts(
+  locale: 'es' | 'en' = 'es',
+  options?: { stega?: boolean },
+): Promise<PostRecord[]> {
+  if (locale === 'en') return sanityPosts('en', options);
+  return withFallback(() => sanityPosts('es', options), collectionsPosts, (items) => items.length === 0);
 }
 
 export async function getPost(slug: string, locale: 'es' | 'en' = 'es'): Promise<PostRecord | undefined> {

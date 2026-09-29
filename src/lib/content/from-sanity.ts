@@ -123,8 +123,15 @@ export async function sanityCase(slug: string): Promise<CaseRecord | null> {
   return fetchOne(caseBySlugQuery, { slug }, mapCase);
 }
 
-export async function sanityPosts(locale: 'es' | 'en' = 'es'): Promise<PostRecord[]> {
-  const { data } = await loadQuery<Record<string, unknown>[]>({ query: postsQuery, params: { locale } });
+export async function sanityPosts(
+  locale: 'es' | 'en' = 'es',
+  options?: { stega?: boolean },
+): Promise<PostRecord[]> {
+  const { data } = await loadQuery<Record<string, unknown>[]>({
+    query: postsQuery,
+    params: { locale },
+    stega: options?.stega,
+  });
   if (!Array.isArray(data) || data.length === 0) return [];
   return data.filter((item) => item?.id).map(mapPost);
 }

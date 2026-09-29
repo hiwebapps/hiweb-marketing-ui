@@ -1,7 +1,18 @@
+import { perspectiveCookieName } from '@sanity/preview-url-secret/constants';
 import { defineMiddleware } from 'astro:middleware';
+import { PREVIEW_ACCESS_COOKIE, verifyPreviewAccess } from './lib/preview-auth';
+import { runWithPreview } from './lib/preview-context';
 import { readBinding } from './lib/runtime-env';
 import { ROBOTS_NOINDEX, shouldNoIndex } from './lib/seo';
 import { isStagingSite } from './lib/site-env';
+
+const STUDIO_FRAME_ANCESTORS = [
+  "'self'",
+  'https://hiweb-web.sanity.studio',
+  'https://*.sanity.studio',
+  'http://localhost:3333',
+  'http://localhost:4321',
+].join(' ');
 
 function unauthorized() {
   return new Response('Staging requiere usuario y contraseña.', {
@@ -42,6 +53,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect('/en');
   }
 
+  let previewPerspective: string | undefined;
   if (isStagingSite()) {
     const user = await readBinding('STAGING_USER');
     const password = await readBinding('STAGING_PASSWORD');
@@ -51,15 +63,26 @@ export const onRequest = defineMiddleware(async (context, next) => {
         headers: { 'Cache-Control': 'no-store' },
       });
     }
-    if (!credentialsMatch(context.request.headers.get('authorization'), user, password)) {
+    const draftModeRoute = pathname === '/api/draft-mode/enable' || pathname === '/api/draft-mode/disable';
+    const previewCookie = context.cookies.get(PREVIEW_ACCESS_COOKIE)?.value;
+    const presentation = await verifyPreviewAccess(password, previewCookie);
+    if (!draftModeRoute && !presentation && !credentialsMatch(context.request.headers.get('authorization'), user, password)) {
       return unauthorized();
     }
+    if (presentation) previewPerspective = context.cookies.get(perspectiveCookieName)?.value;
   }
 
-  const response = await next();
+  const response = await runWithPreview(
+    previewPerspective ? { perspective: previewPerspective, stega: true } : undefined,
+    () => next(),
+  );
 
   const headers = new Headers(response.headers);
-  if (isStagingSite()) headers.set('Cache-Control', 'no-store');
+  if (isStagingSite()) {
+    headers.set('Cache-Control', 'no-store');
+    headers.set('Content-Security-Policy', `frame-ancestors ${STUDIO_FRAME_ANCESTORS}`);
+    headers.delete('X-Frame-Options');
+  }
   if (shouldNoIndex(context.url.hostname)) headers.set('X-Robots-Tag', ROBOTS_NOINDEX);
   if (!isStagingSite() && !shouldNoIndex(context.url.hostname)) return response;
 

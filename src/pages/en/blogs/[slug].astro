@@ -3,13 +3,13 @@ export const prerender = true;
 
 import Layout from '../../../layouts/Layout.astro';
 import BlogBody from '../../../components/content/BlogBody.astro';
-import { getPosts, postStaticPaths } from '../../../lib/content';
+import { getPost, getPosts, postStaticPaths } from '../../../lib/content';
 import { BlogPostToc } from '../../../components/sections/BlogPostToc';
 import { FinalCta } from '../../../components/sections/FinalCta';
 import { Button } from '../../../components/ui';
 import { articleSchema, breadcrumbSchema } from '../../../lib/schema';
 import { extractPortableHeadings, extractPostHeadings, postCoverUrl } from '../../../lib/blog';
-import { notFound, resolveEntry } from '../../../lib/content/resolve-entry';
+import { notFound } from '../../../lib/content/resolve-entry';
 import type { PostRecord } from '../../../lib/content/types';
 import '../../../components/sections/BlogPost.css';
 
@@ -21,11 +21,9 @@ interface Props {
 	entry: PostRecord;
 }
 
-const entry = await resolveEntry<PostRecord>(Astro.props.entry, Astro.params.slug, () =>
-	postStaticPaths('en'),
-);
+const entry = Astro.props.entry ?? (await getPost(Astro.params.slug ?? '', 'en'));
 if (!entry) return notFound();
-const allPosts = await getPosts('en');
+const allPosts = await getPosts('en', { stega: false });
 const related = allPosts
 	.filter((post) => post.id !== entry.id)
 	.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf())

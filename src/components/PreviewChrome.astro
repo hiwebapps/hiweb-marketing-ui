@@ -1,0 +1,19 @@
+---
+import { perspectiveCookieName } from '@sanity/preview-url-secret/constants';
+import ClearStaleDraftMode from './ClearStaleDraftMode';
+import SanityVisualEditing from './SanityVisualEditing';
+import { PREVIEW_ACCESS_COOKIE } from '../lib/preview-auth';
+
+const presentation =
+	Boolean(Astro.cookies.get(perspectiveCookieName)?.value) &&
+	Boolean(Astro.cookies.get(PREVIEW_ACCESS_COOKIE)?.value);
+---
+
+{
+	presentation && (
+		<>
+			<SanityVisualEditing client:only="react" />
+			<ClearStaleDraftMode client:only="react" />
+		</>
+	)
+}

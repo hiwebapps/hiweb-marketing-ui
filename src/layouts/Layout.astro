@@ -35,6 +35,10 @@ const {
 } = Astro.props;
 
 const nav = await getNavigation(lang);
+const staging = import.meta.env.PUBLIC_SITE_ENV === 'staging';
+const PreviewChrome = staging
+	? (await import('../components/PreviewChrome.astro')).default
+	: null;
 const hideFromIndex = forceNoIndex || shouldNoIndex(Astro.url.hostname);
 const canonicalUrl = canonical
 	?? (Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href);
@@ -101,6 +105,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 		<ScrollIndicator client:load />
 		<slot />
 		<SiteFooter client:idle locale={lang} />
+		{PreviewChrome && <PreviewChrome />}
 		<script src="../scripts/motion.ts"></script>
 	</body>
 </html>
