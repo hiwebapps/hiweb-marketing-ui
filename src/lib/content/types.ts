@@ -196,14 +196,7 @@ export type ServiceSection = (
       eyebrow?: string;
       title?: string;
       description?: string;
-      items?: {
-        id: string;
-        cliente: string;
-        resumen: string;
-        industria?: string;
-        testimonio?: { quote?: string; name?: string; role?: string; client?: string; photo?: string };
-        metricas?: { valor: number; label: string; prefix?: string; suffix?: string; decimals?: number }[];
-      }[];
+      items?: { client: string; quote: string; name: string; role?: string; photo?: string }[];
     }
   | {
       _type: 'serviceFaq';

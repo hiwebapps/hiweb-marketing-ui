@@ -101,14 +101,7 @@ const serviceSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      items[]->{
-        "id": slug.current,
-        cliente,
-        resumen,
-        "industria": industria->nombre,
-        "testimonio": coalesce(sections[_type == "caseTestimonial"][0]${testimonialFields}, testimonio{ quote, name, role }),
-        "metricas": coalesce(sections[_type == "caseMetrics"][0].items[]{ valor, label, prefix, suffix, decimals }, metricas[]{ valor, label, prefix, suffix, decimals })
-      }
+      items[]->{ client, quote, name, role, photo ${imageProjection} }
     },
     _type == "serviceFaq" => {
       eyebrow,

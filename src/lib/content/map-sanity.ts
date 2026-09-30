@@ -341,16 +341,11 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
       }
       if (type === 'serviceCases') {
         const items = Array.isArray(section.items)
-          ? (section.items as { id?: string; cliente?: string; resumen?: string; industria?: string; testimonio?: unknown; metricas?: { valor: number; label: string; prefix?: string; suffix?: string; decimals?: number }[] }[])
-              .filter((item) => item?.id)
-              .map((item) => ({
-                id: String(item.id),
-                cliente: String(item.cliente ?? ''),
-                resumen: String(item.resumen ?? ''),
-                industria: item.industria ? String(item.industria) : undefined,
-                testimonio: asTestimonial(item.testimonio),
-                metricas: item.metricas,
-              }))
+          ? section.items.flatMap((item) => {
+              const quote = asTestimonial(item);
+              if (!quote?.client) return [];
+              return [{ client: quote.client, quote: quote.quote, name: quote.name, role: quote.role, photo: quote.photo }];
+            })
           : [];
         return {
           _type: 'serviceCases' as const,

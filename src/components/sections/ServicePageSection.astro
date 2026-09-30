@@ -16,7 +16,6 @@ import { serviceFocusItems } from '../../data/service-focus';
 import type { ServicePitch as Pitch } from '../../data/service-pitch';
 import type { IndustryIconName } from '../icons/IndustryIcons';
 import type { ServiceIconName } from '../icons/ServiceIcons';
-import { formatCaseStat } from '../../lib/content/format';
 import type { CaseStory } from './CaseStories';
 import type { ProcessAccent, ProcessIconName } from './ProcessPhases';
 import type { ServiceRecord, ServiceSection } from '../../lib/content/types';
@@ -200,13 +199,12 @@ const nombre = entry.data.nombre;
 				section.items?.length
 					? section.items.map(
 							(item): CaseStory => ({
-								client: item.testimonio?.client || item.cliente,
-								quote: item.testimonio?.quote ?? item.resumen,
-								name: item.testimonio?.name ?? item.cliente,
-								role: item.testimonio?.role ?? item.industria ?? nombre,
-								photo: item.testimonio?.photo,
-								stats: (item.metricas ?? []).slice(0, 2).map(formatCaseStat),
-								href: `/portafolio/${item.id}`,
+								client: item.client,
+								quote: item.quote,
+								name: item.name,
+								role: item.role ?? '',
+								photo: item.photo,
+								stats: [],
 							}),
 						)
 					: stories

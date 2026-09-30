@@ -1,5 +1,6 @@
 import { BlockElementIcon } from '@sanity/icons/BlockElement';
 import { CaseIcon } from '@sanity/icons/Case';
+import { CommentIcon } from '@sanity/icons/Comment';
 import { HelpCircleIcon } from '@sanity/icons/HelpCircle';
 import { ImageIcon } from '@sanity/icons/Image';
 import { RocketIcon } from '@sanity/icons/Rocket';
@@ -302,22 +303,23 @@ export const serviceProcess = defineType({
 
 export const serviceCases = defineType({
   name: 'serviceCases',
-  title: 'Casos',
+  title: 'Testimonios',
   type: 'object',
-  icon: CaseIcon,
+  icon: CommentIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
     defineField({ name: 'title', title: 'Título', type: 'string' }),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 2 }),
     defineField({
       name: 'items',
-      title: 'Proyectos',
+      title: 'Testimonios',
       type: 'array',
-      description: 'Agrega, quita o arrastra los casos de esta página.',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'caseStudy' }] })],
+      description: 'Elige de la biblioteca y arrastra para el orden. La cita, el nombre, el cargo y la foto salen de ahí.',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'testimonial' }] })],
+      validation: (rule) => rule.unique(),
     }),
   ],
-  preview: titled('Sección Casos'),
+  preview: titled('Sección Testimonios'),
 });
 
 export const serviceFaq = defineType({

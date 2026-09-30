@@ -196,7 +196,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'FAQs reutilizables, ordenadas por el campo Orden. Sirven para armar bloques de preguntas en las páginas. Testimonios es la biblioteca de citas: cliente, cita, nombre, cargo y foto. Home y cada caso eligen de esa lista, y la misma ficha sale en servicios, industrias y landings.',
+        text: 'FAQs reutilizables, ordenadas por el campo Orden. Sirven para armar bloques de preguntas en las páginas. Testimonios es la biblioteca de citas: cliente, cita, nombre, cargo y foto. Home, cada caso y la sección Testimonios de cada servicio eligen de esa lista. En un servicio se ve igual que en la home: foto, cita y persona, sin las cifras del caso.',
       },
       {
         kind: 'h',
