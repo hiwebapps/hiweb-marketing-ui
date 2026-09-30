@@ -1,5 +1,6 @@
-import { LEGAL_LINKS, SITE } from '../data/site';
+import { LEGAL_LINKS } from '../data/site';
 import { CHROME, localePath, type Locale } from './locale';
+import { fallbackSite, type SiteIdentity } from './site-identity';
 
 export type FooterLink = {
   label: string;
@@ -21,10 +22,10 @@ export type SiteFooterContent = {
 };
 
 /** Same footer the site shipped before it lived in Studio. */
-export function fallbackFooter(locale: Locale): SiteFooterContent {
+export function fallbackFooter(locale: Locale, site: SiteIdentity = fallbackSite()): SiteFooterContent {
   const copy = CHROME[locale];
   return {
-    brand: SITE.name,
+    brand: site.name,
     title: copy.footerTitle,
     emailPlaceholder: copy.workEmail,
     menuHeading: copy.menu,
@@ -38,12 +39,12 @@ export function fallbackFooter(locale: Locale): SiteFooterContent {
     ],
     contactHeading: copy.contact,
     contactLinks: [
-      { href: SITE.phoneHref, label: SITE.phone },
-      { href: `mailto:${SITE.email}`, label: SITE.email },
-      { href: SITE.whatsapp, label: 'WhatsApp' },
+      { href: site.phoneHref, label: site.phone },
+      { href: `mailto:${site.email}`, label: site.email },
+      { href: site.whatsapp, label: 'WhatsApp' },
     ],
-    locations: SITE.locales.join(' · '),
-    legalName: SITE.legalName,
+    locations: site.locales.join(' · '),
+    legalName: site.legalName,
     legalLinks: LEGAL_LINKS.map((item) => ({ href: item.href, label: item.label })),
     backToTop: copy.backToTop,
   };

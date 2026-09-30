@@ -32,6 +32,9 @@ const pillars = (page?.pillars ?? []).map((pillar, index) => {
 	lang="en"
 	title={page?.seo?.metaTitle ?? page?.title}
 	description={page?.seo?.metaDescription ?? page?.description}
+	noindex={page?.seo?.noindex}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/industrias', en: '/en/industrias' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Home', href: '/en' },
 		{ name: 'Industries', href: '/en/industrias' },

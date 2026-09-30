@@ -5,6 +5,7 @@ import { DocumentIcon } from '@sanity/icons/Document';
 import { FolderIcon } from '@sanity/icons/Folder';
 import { HelpCircleIcon } from '@sanity/icons/HelpCircle';
 import { HomeIcon } from '@sanity/icons/Home';
+import { CommentIcon } from '@sanity/icons/Comment';
 import { UsersIcon } from '@sanity/icons/Users';
 import type { StructureResolver } from 'sanity/structure';
 
@@ -12,6 +13,7 @@ const HIDDEN_FROM_FALLBACK = [
   'siteSettings',
   'navigation',
   'footer',
+  'redirect',
   'navLink',
   'navGroup',
   'navBarItem',
@@ -19,12 +21,17 @@ const HIDDEN_FROM_FALLBACK = [
   'aboutPage',
   'industry',
   'industriesIndex',
+  'servicesIndex',
+  'blogIndex',
+  'casesIndex',
+  'legalPage',
   'service',
   'caseStudy',
   'post',
   'author',
   'person',
   'faq',
+  'testimonial',
   'landingPage',
   'contactPage',
   'faqItem',
@@ -191,7 +198,28 @@ export const structure: StructureResolver = (S, context) => {
         .title('Sitio')
         .id('sitio')
         .icon(CogIcon)
-        .child(S.document().schemaType('siteSettings').documentId('siteSettings').title('Ajustes del sitio')),
+        .child(
+          S.list()
+            .title('Sitio')
+            .items([
+              S.listItem()
+                .title('Ajustes')
+                .id('site-settings')
+                .child(S.document().schemaType('siteSettings').documentId('siteSettings').title('Ajustes del sitio')),
+              S.listItem()
+                .title('Redirecciones')
+                .id('redirects')
+                .child(S.documentTypeList('redirect').title('Redirecciones')),
+              S.listItem()
+                .title('Aviso de privacidad')
+                .id('legal-privacy')
+                .child(S.document().schemaType('legalPage').documentId('legal-privacy').title('Aviso de privacidad')),
+              S.listItem()
+                .title('Términos')
+                .id('legal-terms')
+                .child(S.document().schemaType('legalPage').documentId('legal-terms').title('Términos')),
+            ]),
+        ),
       S.listItem()
         .title('Navbar')
         .id('navbar')
@@ -279,10 +307,28 @@ export const structure: StructureResolver = (S, context) => {
                 .title('Índice')
                 .id('industries-index')
                 .child(
-                  S.document()
-                    .schemaType('industriesIndex')
-                    .documentId('industriesIndex-en')
-                    .title('Índice · English'),
+                  S.list()
+                    .title('Índice')
+                    .items([
+                      S.listItem()
+                        .title('Español')
+                        .id('industries-index-es')
+                        .child(
+                          S.document()
+                            .schemaType('industriesIndex')
+                            .documentId('industriesIndex')
+                            .title('Español'),
+                        ),
+                      S.listItem()
+                        .title('English')
+                        .id('industries-index-en')
+                        .child(
+                          S.document()
+                            .schemaType('industriesIndex')
+                            .documentId('industriesIndex-en')
+                            .title('English'),
+                        ),
+                    ]),
                 ),
               ...pages.map((page) =>
                 S.listItem()
@@ -305,8 +351,27 @@ export const structure: StructureResolver = (S, context) => {
           return S.list()
             .title('Servicios')
             .menuItems(createMenu(S, 'service'))
-            .items(
-              pages.map((page) =>
+            .items([
+              S.listItem()
+                .title('Índice')
+                .id('services-index')
+                .child(
+                  S.list()
+                    .title('Índice')
+                    .items([
+                      S.listItem()
+                        .title('Español')
+                        .id('services-index-es')
+                        .child(S.document().schemaType('servicesIndex').documentId('servicesIndex').title('Español')),
+                      S.listItem()
+                        .title('English')
+                        .id('services-index-en')
+                        .child(
+                          S.document().schemaType('servicesIndex').documentId('servicesIndex-en').title('English'),
+                        ),
+                    ]),
+                ),
+              ...pages.map((page) =>
                 S.listItem()
                   .title(page.nombre)
                   .id(`service-${page.slug}`)
@@ -316,13 +381,26 @@ export const structure: StructureResolver = (S, context) => {
                       .items(languageItems(S, 'service', page.esId, page.enId)),
                   ),
               ),
-            );
+            ]);
         }),
       S.listItem()
         .title('Casos')
         .id('casos')
         .icon(CaseIcon)
-        .child(S.documentTypeList('caseStudy').title('Casos')),
+        .child(
+          S.list()
+            .title('Casos')
+            .items([
+              S.listItem()
+                .title('Índice')
+                .id('cases-index')
+                .child(S.document().schemaType('casesIndex').documentId('casesIndex').title('Índice')),
+              S.listItem()
+                .title('Casos')
+                .id('cases-list')
+                .child(S.documentTypeList('caseStudy').title('Casos')),
+            ]),
+        ),
       S.divider(),
       S.listItem()
         .title('Páginas')
@@ -351,6 +429,11 @@ export const structure: StructureResolver = (S, context) => {
                     .title('FAQs')
                     .defaultOrdering([{ field: 'orden', direction: 'asc' }]),
                 ),
+              S.listItem()
+                .title('Testimonios')
+                .id('testimonials')
+                .icon(CommentIcon)
+                .child(S.documentTypeList('testimonial').title('Testimonios')),
             ]),
         ),
       S.divider(),
@@ -362,6 +445,23 @@ export const structure: StructureResolver = (S, context) => {
           S.list()
             .title('Blog')
             .items([
+              S.listItem()
+                .title('Índice')
+                .id('blog-index')
+                .child(
+                  S.list()
+                    .title('Índice')
+                    .items([
+                      S.listItem()
+                        .title('Español')
+                        .id('blog-index-es')
+                        .child(S.document().schemaType('blogIndex').documentId('blogIndex').title('Español')),
+                      S.listItem()
+                        .title('English')
+                        .id('blog-index-en')
+                        .child(S.document().schemaType('blogIndex').documentId('blogIndex-en').title('English')),
+                    ]),
+                ),
               S.listItem()
                 .title('Español')
                 .id('posts-es')

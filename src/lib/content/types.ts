@@ -30,10 +30,13 @@ export type SeoFields = {
   metaTitle?: string;
   metaDescription?: string;
   ogImage?: string;
+  noindex?: boolean;
+  canonicalPath?: string;
 };
 
 export type IndustryRecord = {
   id: string;
+  alternateSlug?: string;
   data: {
     nombre: string;
     orden: number;
@@ -198,7 +201,7 @@ export type ServiceSection = (
         cliente: string;
         resumen: string;
         industria?: string;
-        testimonio?: { quote?: string; name?: string; role?: string };
+        testimonio?: { quote?: string; name?: string; role?: string; client?: string; photo?: string };
         metricas?: { valor: number; label: string; prefix?: string; suffix?: string; decimals?: number }[];
       }[];
     }
@@ -214,6 +217,7 @@ export type ServiceSection = (
 
 export type ServiceRecord = {
   id: string;
+  alternateSlug?: string;
   data: {
     nombre: string;
     orden: number;
@@ -290,6 +294,8 @@ export type CasePageSection = (
       quote?: string;
       name?: string;
       role?: string;
+      client?: string;
+      photo?: string;
     }
   | {
       _type: 'caseRelated';
@@ -322,7 +328,7 @@ export type CaseRecord = {
     reto: string;
     estrategia: string;
     fases: TitledBlock[];
-    testimonio?: { quote: string; name: string; role: string };
+    testimonio?: { quote: string; name: string; role: string; client?: string; photo?: string };
     anio?: string;
     imagenesProyecto?: string[];
     sections?: CasePageSection[];
@@ -332,6 +338,7 @@ export type CaseRecord = {
 
 export type PostRecord = {
   id: string;
+  alternateSlug?: string;
   data: {
     title: string;
     description: string;
@@ -381,6 +388,7 @@ export type HomeTestimonial = {
   quote: string;
   name: string;
   role?: string;
+  photo?: string;
 };
 
 export type HomeHeroCase = {

@@ -1,14 +1,15 @@
 import { SITE } from '../data/site';
+import type { SiteIdentity } from './site-identity';
 
-export function organizationSchema() {
+export function organizationSchema(site: SiteIdentity) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: SITE.legalName,
+    name: site.legalName,
     url: SITE.url,
-    email: SITE.email,
-    telephone: SITE.phone,
-    areaServed: SITE.locales.map((name) => ({ '@type': 'City', name })),
+    email: site.email,
+    telephone: site.phone,
+    areaServed: site.locales.map((name) => ({ '@type': 'City', name })),
   };
 }
 
@@ -48,6 +49,7 @@ export function articleSchema(input: {
     linkedin?: string;
   };
   date: Date;
+  publisher?: string;
 }) {
   const person: Record<string, unknown> = {
     '@type': 'Person',
@@ -70,6 +72,6 @@ export function articleSchema(input: {
     url: new URL(input.href, SITE.url).href,
     datePublished: input.date.toISOString(),
     author: person,
-    publisher: { '@type': 'Organization', name: SITE.legalName },
+    publisher: { '@type': 'Organization', name: input.publisher || SITE.legalName },
   };
 }

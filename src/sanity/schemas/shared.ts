@@ -1,6 +1,7 @@
 import { EyeClosedIcon } from '@sanity/icons/EyeClosed';
 import { defineArrayMember, defineField, defineType, type ObjectDefinition, type PreviewConfig } from 'sanity';
 import { charCountInput } from '../components/CharCountInput';
+import { serpTitleInput } from '../components/SerpPreview';
 
 export const seoFields = [
   defineField({
@@ -8,7 +9,7 @@ export const seoFields = [
     title: 'Título SEO',
     type: 'string',
     group: 'seo',
-    components: { input: charCountInput(60, 70) },
+    components: { input: serpTitleInput },
     validation: (rule) => rule.max(70).warning('Idealmente ≤ 60–70 caracteres'),
   }),
   defineField({
@@ -34,6 +35,29 @@ export const seoFields = [
         validation: (rule) => rule.required().warning('El alt es obligatorio en imágenes'),
       }),
     ],
+  }),
+  defineField({
+    name: 'noindex',
+    title: 'Excluir del índice',
+    type: 'boolean',
+    group: 'seo',
+    initialValue: false,
+    description:
+      'Hoy todo el sitio ya está en noindex. Este checkbox no enciende la indexación: cuando el sitio se lance, esta página seguirá fuera del índice.',
+  }),
+  defineField({
+    name: 'canonicalPath',
+    title: 'Canonical',
+    type: 'string',
+    group: 'seo',
+    description: 'Ruta canónica opcional, por ejemplo /blog/mi-articulo. Si se deja vacía, se usa la URL de la página.',
+    validation: (rule) =>
+      rule.custom((value) => {
+        if (!value) return true;
+        return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//')
+          ? true
+          : 'Empieza con / y sin dominio';
+      }),
   }),
 ];
 
@@ -234,41 +258,6 @@ export const sectionIntro = defineType({
     defineField({ name: 'titleMuted', title: 'Título muted', type: 'string' }),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
   ],
-});
-
-export const homeTestimonial = defineType({
-  name: 'homeTestimonial',
-  title: 'Testimonio',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'client',
-      title: 'Cliente',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'quote',
-      title: 'Cita',
-      type: 'text',
-      rows: 3,
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'name',
-      title: 'Nombre',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'role',
-      title: 'Rol',
-      type: 'string',
-    }),
-  ],
-  preview: {
-    select: { title: 'name', subtitle: 'client' },
-  },
 });
 
 export const cta = defineType({

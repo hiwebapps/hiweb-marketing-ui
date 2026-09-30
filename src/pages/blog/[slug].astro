@@ -3,7 +3,7 @@ export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
 import BlogBody from '../../components/content/BlogBody.astro';
-import { getPost, getPosts, postStaticPaths } from '../../lib/content';
+import { getPost, getPosts, getSiteSettings, postStaticPaths } from '../../lib/content';
 import { BlogPostToc } from '../../components/sections/BlogPostToc';
 import { FinalCta } from '../../components/sections/FinalCta';
 import { Button } from '../../components/ui';
@@ -22,6 +22,7 @@ interface Props {
 }
 
 const entry = Astro.props.entry ?? (await getPost(Astro.params.slug ?? ''));
+const site = await getSiteSettings();
 if (!entry) return notFound();
 const allPosts = await getPosts('es', { stega: false });
 const related = allPosts
@@ -62,6 +63,7 @@ const schemas = [
 			? { role: author.role, company: author.company, linkedin: author.linkedin }
 			: undefined,
 		date: entry.data.fecha,
+		publisher: site.legalName,
 	}),
 ];
 ---
@@ -70,6 +72,13 @@ const schemas = [
 	title={entry.data.seo?.metaTitle ?? `${entry.data.title} — Hiweb`}
 	description={entry.data.seo?.metaDescription ?? entry.data.description}
 	ogImage={entry.data.seo?.ogImage ?? cover}
+	noindex={entry.data.seo?.noindex}
+	canonical={entry.data.seo?.canonicalPath}
+	alternates={
+		entry.alternateSlug
+			? { es: `/blog/${entry.id}`, en: `/en/blogs/${entry.alternateSlug}` }
+			: undefined
+	}
 	jsonLd={schemas}
 >
 	<main>

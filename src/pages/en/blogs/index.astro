@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../../layouts/Layout.astro';
-import { getPosts, getServices } from '../../../lib/content';
+import { getCatalogIndex, getPosts, getServices } from '../../../lib/content';
 import { BlogHero } from '../../../components/sections/BlogHero';
 import { BlogIndex } from '../../../components/sections/BlogIndex';
 import { SectionBand } from '../../../components/sections/primitives/SectionBand';
@@ -12,7 +12,11 @@ import { BLOG_READING_MINUTES, postCoverUrl } from '../../../lib/blog';
 import '../../../components/sections/BlogHero.css';
 import '../../../components/sections/BlogIndex.css';
 
-const [posts, services] = await Promise.all([getPosts('en'), getServices('en')]);
+const [posts, services, page] = await Promise.all([
+	getPosts('en'),
+	getServices('en'),
+	getCatalogIndex('blogIndex-en'),
+]);
 const sorted = posts.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
 const serviceName = Object.fromEntries(services.map((service) => [service.id, service.data.nombre]));
 
@@ -35,7 +39,7 @@ const cards = sorted.map((post) => {
 		servicioNombre: post.data.categoriaServicio?.nombre ?? (servicio ? serviceName[servicio] : undefined),
 		readingMinutes: BLOG_READING_MINUTES,
 		image: post.coverUrl ?? postCoverUrl(post.id, 800, 520),
-		ctaLabel: 'Read article',
+		ctaLabel: page?.featuredCta ?? 'Read article',
 		href: `/en/blogs/${post.id}`,
 	};
 });
@@ -49,8 +53,11 @@ const serviceFilters = services
 
 <Layout
 	lang="en"
-	title="Blog — Hiweb Marketing"
-	description="Discover the latest news and trends in the world of digital marketing. Learn about SEO, Design, Web Development, and more!"
+	title={page?.seo?.metaTitle ?? 'Blog — Hiweb Marketing'}
+	description={page?.seo?.metaDescription ?? page?.description ?? 'Discover the latest news and trends in the world of digital marketing. Learn about SEO, Design, Web Development, and more!'}
+	noindex={page?.seo?.noindex}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/blog', en: '/en/blogs' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Home', href: '/en' },
 		{ name: 'Blog', href: '/en/blogs' },
@@ -59,10 +66,10 @@ const serviceFilters = services
 	<main>
 		{featured ? (
 			<BlogHero
-				eyebrow="Resources / Blog"
-				title="Latest blogs"
-				description="Discover the latest news and trends in the world of digital marketing. Learn about SEO, Design, Web Development, and more!"
-				readingSuffix="min read"
+				eyebrow={page?.eyebrow ?? 'Resources / Blog'}
+				title={page?.title ?? 'Latest blogs'}
+				description={page?.description ?? 'Discover the latest news and trends in the world of digital marketing. Learn about SEO, Design, Web Development, and more!'}
+				readingSuffix={page?.readingSuffix ?? 'min read'}
 				featured={{
 					id: featured.id,
 					title: featured.title,
@@ -70,7 +77,7 @@ const serviceFilters = services
 					servicioNombre: featured.servicioNombre,
 					readingMinutes: featured.readingMinutes,
 					image: featured.image,
-					ctaLabel: 'Read article',
+					ctaLabel: page?.featuredCta ?? 'Read article',
 					href: featured.href,
 				}}
 			/>
@@ -80,14 +87,14 @@ const serviceFilters = services
 				client:load
 				posts={cards}
 				services={serviceFilters}
-				title="All articles"
-				description="Filter by service. Each piece links to work we actually deliver."
+				title={page?.listTitle ?? 'All articles'}
+				description={page?.listDescription ?? 'Filter by service. Each piece links to work we actually deliver.'}
 				hrefPrefix="/en/blogs"
-				allLabel="All"
-				filterLabel="Filter by service"
-				readingSuffix="min read"
+				allLabel={page?.allLabel ?? 'All'}
+				filterLabel={page?.filterLabel ?? 'Filter by service'}
+				readingSuffix={page?.readingSuffix ?? 'min read'}
 			/>
 		</SectionBand>
-		<FinalCta client:load title="Want to apply this to your business?" />
+		<FinalCta client:load title={page?.closingTitle ?? 'Want to apply this to your business?'} />
 	</main>
 </Layout>

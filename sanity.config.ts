@@ -4,8 +4,11 @@ import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { completeLandingTemplate } from './src/sanity/actions/completeLandingTemplate';
 import { createEnglishVersion } from './src/sanity/actions/createEnglishVersion';
+import { createRedirect } from './src/sanity/actions/createRedirect';
 import { viewOnStaging } from './src/sanity/actions/viewOnStaging';
+import { keywordBadge, seoChecklistBadge } from './src/sanity/badges/seoBadges';
 import { translationBadge, wordsBadge } from './src/sanity/badges/postBadges';
+import { PostSeoView } from './src/sanity/components/PostSeoView';
 import { resolve } from './src/sanity/presentation/resolve';
 import { SiteNavigator } from './src/sanity/presentation/SiteNavigator';
 import { landingTemplateSections, type LandingTemplateKind } from './src/sanity/landingTemplate';
@@ -13,7 +16,9 @@ import { schemaTypes } from './src/sanity/schemas';
 import { industryStarter, serviceStarter } from './src/sanity/starters';
 import { structure } from './src/sanity/structure';
 import { blogsTool } from './src/sanity/tools/blogsTool';
+import { guideTool } from './src/sanity/tools/guideTool';
 import { imageGalleryTool } from './src/sanity/tools/imageGalleryTool';
+import { seoTool } from './src/sanity/tools/seoTool';
 
 const projectId =
   process.env.SANITY_STUDIO_PROJECT_ID ||
@@ -39,7 +44,16 @@ export default defineConfig({
   projectId,
   dataset,
   plugins: [
-    structureTool({ structure }),
+    structureTool({
+      structure,
+      defaultDocumentNode: (S, { schemaType }) => {
+        if (schemaType !== 'post') return S.document().views([S.view.form()]);
+        return S.document().views([
+          S.view.form(),
+          S.view.component(PostSeoView).title('SEO'),
+        ]);
+      },
+    }),
     presentationTool({
       resolve,
       allowOrigins: [STAGING_ORIGIN, 'http://localhost:4321', 'http://127.0.0.1:4321'],
@@ -60,10 +74,22 @@ export default defineConfig({
     }),
     visionTool({ defaultApiVersion: '2026-09-18' }),
   ],
-  tools: (prev) => [...prev, blogsTool(), imageGalleryTool()],
+  tools: (prev) => {
+    const order = ['guia', 'structure', 'blogs', 'seo', 'presentation', 'galeria', 'vision'];
+    const tools = [...prev, guideTool(), blogsTool(), seoTool(), imageGalleryTool()];
+    return tools.sort((a, b) => {
+      const left = order.indexOf(a.name);
+      const right = order.indexOf(b.name);
+      return (left === -1 ? order.length : left) - (right === -1 ? order.length : right);
+    });
+  },
   document: {
-    badges: (prev, context) =>
-      context.schemaType === 'post' ? [...prev, translationBadge, wordsBadge] : prev,
+    badges: (prev, context) => {
+      const withChecklist = [...prev, seoChecklistBadge];
+      return context.schemaType === 'post'
+        ? [...withChecklist, translationBadge, wordsBadge, keywordBadge]
+        : withChecklist;
+    },
     actions: (prev, context) => {
       const withTemplate =
         context.schemaType === 'landingPage'
@@ -71,6 +97,9 @@ export default defineConfig({
           : context.schemaType === 'post'
             ? [...prev, createEnglishVersion]
             : prev;
+      const withRedirect = ['post', 'service', 'industry', 'caseStudy', 'landingPage'].includes(context.schemaType)
+        ? [...withTemplate, createRedirect]
+        : withTemplate;
       const stagingTypes = new Set([
         'homePage',
         'aboutPage',
@@ -81,7 +110,7 @@ export default defineConfig({
         'post',
         'landingPage',
       ]);
-      return stagingTypes.has(context.schemaType) ? [...withTemplate, viewOnStaging] : withTemplate;
+      return stagingTypes.has(context.schemaType) ? [...withRedirect, viewOnStaging] : withRedirect;
     },
   },
   schema: {

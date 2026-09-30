@@ -84,6 +84,8 @@ const sections: CasePageSection[] = entry.data.sections?.length
 							quote: entry.data.testimonio.quote,
 							name: entry.data.testimonio.name,
 							role: entry.data.testimonio.role,
+							client: entry.data.testimonio.client,
+							photo: entry.data.testimonio.photo,
 						},
 					]
 				: []),
@@ -101,6 +103,8 @@ const sections: CasePageSection[] = entry.data.sections?.length
 	title={entry.data.seo?.metaTitle ?? entry.data.titulo ?? entry.data.cliente}
 	description={entry.data.seo?.metaDescription ?? entry.data.resumen}
 	ogImage={entry.data.seo?.ogImage ?? heroImage}
+	noindex={entry.data.seo?.noindex}
+	canonical={entry.data.seo?.canonicalPath}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Portafolio', href: '/portafolio' },
@@ -211,10 +215,11 @@ const sections: CasePageSection[] = entry.data.sections?.length
 						description={section.description}
 						stories={[
 							{
-								client: entry.data.cliente,
+								client: section.client || entry.data.cliente,
 								quote: section.quote,
 								name: section.name ?? entry.data.cliente,
 								role: section.role ?? '',
+								photo: section.photo,
 								stats: (section.quote ? entry.data.metricas : []).slice(0, 2).map(formatCaseStat),
 								href: `/portafolio/${entry.id}`,
 							},

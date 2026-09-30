@@ -36,6 +36,8 @@ const faqs = sections.flatMap((section) => (section._type === 'faqSection' ? sec
 	title={entry.seo?.metaTitle ?? `${entry.title} — Hiweb Marketing`}
 	description={entry.seo?.metaDescription ?? entry.title}
 	ogImage={entry.seo?.ogImage}
+	noindex={entry.seo?.noindex}
+	canonical={entry.seo?.canonicalPath}
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Inicio', href: '/' },

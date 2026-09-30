@@ -3,15 +3,18 @@ export const prerender = true;
 
 import Layout from '../layouts/Layout.astro';
 import { ContactForm } from '../components/sections/ContactForm';
-import { getContactPage } from '../lib/content';
+import { getContactPage, getSiteSettings } from '../lib/content';
 import { breadcrumbSchema } from '../lib/schema';
 
 const contact = await getContactPage();
+const site = await getSiteSettings();
 ---
 
 <Layout
 	title={contact.metaTitle}
 	description={contact.metaDescription}
+	noindex={contact.noindex}
+	canonical={contact.canonicalPath}
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Inicio', href: '/' },
@@ -20,7 +23,7 @@ const contact = await getContactPage();
 	]}
 >
 	<main>
-		<ContactForm copy={contact} />
+		<ContactForm copy={contact} site={site} />
 	</main>
 	<script>
 		const form = document.querySelector('.contact-form');

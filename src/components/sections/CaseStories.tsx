@@ -355,7 +355,7 @@ export function CaseStories({
               <li key={`${story.client}-${story.name}`} className="case-stories__slide">
                 <article className="case-story">
                   <div className="case-story__photo">
-                    <img src={photoFor(story, index)} alt="" draggable={false} />
+                    <img src={photoFor(story, index)} alt={story.photo ? story.name : ''} draggable={false} />
                   </div>
                   <div className="case-story__body">
                     <div className="case-story__lead">

@@ -49,13 +49,14 @@ function asAtmosphere(value?: string): AtmosphereVariant {
 
 function storiesFrom(cases: CaseRecord[]) {
 	return cases.map((item) => ({
-		client: item.data.cliente,
+		client: item.data.testimonio?.client || item.data.cliente,
 		quote: item.data.testimonio?.quote ?? item.data.resumen,
 		name: item.data.testimonio?.name ?? item.data.cliente,
 		role:
 			item.data.testimonio?.role
 			?? industryName[item.data.industria.id]
 			?? item.data.industria.id,
+		photo: item.data.testimonio?.photo,
 		stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
 		href: `/portafolio/${item.id}`,
 	}));

@@ -166,7 +166,9 @@ export const homeStories = defineType({
       name: 'items',
       title: 'Testimonios',
       type: 'array',
-      of: [defineArrayMember({ type: 'homeTestimonial' })],
+      description: 'Elige de la biblioteca y arrastra para el orden.',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'testimonial' }] })],
+      validation: (rule) => rule.unique(),
     }),
   ],
   preview: {

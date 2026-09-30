@@ -4,22 +4,29 @@ export const prerender = true;
 import Layout from '../layouts/Layout.astro';
 import { PageHero } from '../components/sections/PageHero';
 import { SectionBand } from '../components/sections/primitives/SectionBand';
-import { SITE } from '../data/site';
+import { getLegalPage } from '../lib/content';
+
+const fallback = {
+	eyebrow: 'Legal',
+	title: 'Términos',
+	body: 'El contenido de este sitio es informativo. Los casos publicados corresponden a empresas consolidadas y cifras verificables. La contratación de servicios se formaliza en un alcance aparte, después de la auditoría. Contacto: hola@hiweb.marketing.',
+	description: 'Condiciones de uso del sitio Hiweb Marketing.',
+};
+const page = await getLegalPage('legal-terms');
+const title = page?.title || fallback.title;
+const body = page?.body || fallback.body;
 ---
 
 <Layout
-	title={`Términos — ${SITE.legalName}`}
-	description="Condiciones de uso del sitio Hiweb Marketing."
-	noindex
+	title={page?.seo?.metaTitle ?? `${title} — Hiweb Marketing`}
+	description={page?.seo?.metaDescription ?? fallback.description}
+	noindex={page?.seo?.noindex ?? true}
+	canonical={page?.seo?.canonicalPath}
 >
 	<main>
-		<PageHero eyebrow="Legal" title="Términos" />
+		<PageHero eyebrow={page?.eyebrow || fallback.eyebrow} title={title} />
 		<SectionBand>
-			<p class="max-w-2xl !text-base">
-				El contenido de este sitio es informativo. Los casos publicados corresponden a empresas
-				consolidadas y cifras verificables. La contratación de servicios se formaliza en un
-				alcance aparte, después de la auditoría. Contacto: {SITE.email}.
-			</p>
+			<p class="max-w-2xl !text-base">{body}</p>
 		</SectionBand>
 	</main>
 </Layout>

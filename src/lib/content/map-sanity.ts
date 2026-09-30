@@ -23,14 +23,27 @@ function seoOf(doc: {
   metaTitle?: string | null;
   metaDescription?: string | null;
   ogImage?: CmsImage | null;
+  noindex?: boolean | null;
+  canonicalPath?: string | null;
 }): SeoFields | undefined {
   const ogImage = urlForWidth(doc.ogImage, 1200);
-  if (!doc.metaTitle && !doc.metaDescription && !ogImage) return undefined;
+  const canonicalPath =
+    typeof doc.canonicalPath === 'string' && doc.canonicalPath.startsWith('/') && !doc.canonicalPath.startsWith('//')
+      ? doc.canonicalPath
+      : undefined;
+  const noindex = doc.noindex === true;
+  if (!doc.metaTitle && !doc.metaDescription && !ogImage && !noindex && !canonicalPath) return undefined;
   return {
     metaTitle: doc.metaTitle ?? undefined,
     metaDescription: doc.metaDescription ?? undefined,
     ogImage,
+    noindex: noindex || undefined,
+    canonicalPath,
   };
+}
+
+function alternateSlugOf(doc: Record<string, unknown>) {
+  return typeof doc.alternateSlug === 'string' && doc.alternateSlug ? doc.alternateSlug : undefined;
 }
 
 function imageUrl(image: CmsImage | null | undefined, width = 1600) {
@@ -48,6 +61,7 @@ export function mapIndustry(doc: Record<string, unknown>): IndustryRecord {
   const image = doc.heroImage as CmsImage | undefined;
   return {
     id: String(doc.id),
+    alternateSlug: alternateSlugOf(doc),
     data: {
       nombre: String(doc.nombre ?? ''),
       orden: Number(doc.orden ?? 0),
@@ -327,14 +341,14 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
       }
       if (type === 'serviceCases') {
         const items = Array.isArray(section.items)
-          ? (section.items as { id?: string; cliente?: string; resumen?: string; industria?: string; testimonio?: { quote?: string; name?: string; role?: string }; metricas?: { valor: number; label: string; prefix?: string; suffix?: string; decimals?: number }[] }[])
+          ? (section.items as { id?: string; cliente?: string; resumen?: string; industria?: string; testimonio?: unknown; metricas?: { valor: number; label: string; prefix?: string; suffix?: string; decimals?: number }[] }[])
               .filter((item) => item?.id)
               .map((item) => ({
                 id: String(item.id),
                 cliente: String(item.cliente ?? ''),
                 resumen: String(item.resumen ?? ''),
                 industria: item.industria ? String(item.industria) : undefined,
-                testimonio: item.testimonio,
+                testimonio: asTestimonial(item.testimonio),
                 metricas: item.metricas,
               }))
           : [];
@@ -404,6 +418,7 @@ export function mapService(doc: Record<string, unknown>): ServiceRecord {
 
   return {
     id: String(doc.id),
+    alternateSlug: alternateSlugOf(doc),
     data: {
       nombre: String(doc.nombre ?? ''),
       orden: Number(doc.orden ?? 0),
@@ -429,6 +444,22 @@ export function mapService(doc: Record<string, unknown>): ServiceRecord {
 
 function asText(value: unknown) {
   return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+}
+
+function asTestimonial(value: unknown) {
+  if (!value || typeof value !== 'object') return undefined;
+  const row = value as { quote?: unknown; name?: unknown; role?: unknown; client?: unknown; photo?: CmsImage | string };
+  const quote = asText(row.quote);
+  if (!quote) return undefined;
+  const photo =
+    typeof row.photo === 'string' && row.photo.startsWith('http') ? row.photo : imageUrl(row.photo as CmsImage, 900);
+  return {
+    quote,
+    name: asText(row.name) ?? '',
+    role: asText(row.role) ?? '',
+    client: asText(row.client),
+    photo,
+  };
 }
 
 function asBlocks(value: unknown): { title: string; description: string }[] {
@@ -506,15 +537,18 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
       ];
     }
     if (type === 'caseTestimonial') {
+      const quote = asTestimonial(section);
       return [
         {
           _type: 'caseTestimonial',
           eyebrow: asText(section.eyebrow),
           title: asText(section.title),
           description: asText(section.description),
-          quote: asText(section.quote),
-          name: asText(section.name),
-          role: asText(section.role),
+          quote: quote?.quote,
+          name: quote?.name,
+          role: quote?.role,
+          client: quote?.client,
+          photo: quote?.photo,
         },
       ];
     }
@@ -588,8 +622,14 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
       fases: process?._type === 'caseProcess' ? process.fases : asBlocks(doc.fases),
       testimonio:
         testimonial?._type === 'caseTestimonial' && testimonial.quote
-          ? { quote: testimonial.quote, name: testimonial.name ?? '', role: testimonial.role ?? '' }
-          : legacyQuote,
+          ? {
+              quote: testimonial.quote,
+              name: testimonial.name ?? '',
+              role: testimonial.role ?? '',
+              client: testimonial.client,
+              photo: testimonial.photo,
+            }
+          : asTestimonial(legacyQuote) ?? legacyQuote,
       anio: hero?._type === 'caseHero' ? hero.anio : asText(doc.anio),
       imagenesProyecto:
         hero?._type === 'caseHero'
@@ -626,6 +666,7 @@ export function mapPost(doc: Record<string, unknown>): PostRecord {
 
   return {
     id: String(doc.id),
+    alternateSlug: alternateSlugOf(doc),
     data: {
       title: String(doc.title ?? ''),
       description: String(doc.description ?? ''),
@@ -748,7 +789,11 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
     } else if (type === 'homeStories') {
       copy.storiesIntro = asIntro(section.intro);
       copy.testimonials = Array.isArray(section.items)
-        ? (section.items as HomeCopy['testimonials'])
+        ? section.items.flatMap((item) => {
+            const quote = asTestimonial(item);
+            if (!quote?.client) return [];
+            return [{ client: quote.client, quote: quote.quote, name: quote.name, role: quote.role, photo: quote.photo }];
+          })
         : undefined;
     } else if (type === 'homeProcess') {
       copy.processIntro = asIntro(section.intro);

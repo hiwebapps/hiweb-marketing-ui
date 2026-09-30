@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
-import { getCases, getIndustries } from '../../lib/content';
+import { getCases, getIndustries, getIndustriesIndex } from '../../lib/content';
 import { PageHero } from '../../components/sections/PageHero';
 import { IndustryGrid } from '../../components/sections/IndustryGrid';
 import { PillarGrid } from '../../components/sections/PillarGrid';
@@ -12,13 +12,27 @@ import { HOME_PILLARS } from '../../data/site';
 import { breadcrumbSchema } from '../../lib/schema';
 
 const industries = await getIndustries();
+const page = await getIndustriesIndex('industriesIndex');
 const cases = await getCases();
+const pillars = (page?.pillars?.length ? page.pillars : HOME_PILLARS).map((pillar, index) => {
+	const visual = HOME_PILLARS[index];
+	return {
+		title: pillar.title,
+		description: pillar.description,
+		icon: visual?.icon,
+		accent: visual?.accent,
+		href: visual?.href,
+	};
+});
 const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
 ---
 
 <Layout
-	title="Industrias — Hiweb Marketing"
-	description="Hablamos el idioma de tu sector: manufactura, salud, inmobiliarias, turismo, restaurantes y SaaS."
+	title={page?.seo?.metaTitle ?? 'Industrias — Hiweb Marketing'}
+	description={page?.seo?.metaDescription ?? page?.description ?? 'Hablamos el idioma de tu sector: manufactura, salud, inmobiliarias, turismo, restaurantes y SaaS.'}
+	noindex={page?.seo?.noindex}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/industrias', en: '/en/industrias' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Industrias', href: '/industrias' },
@@ -26,9 +40,9 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 >
 	<main>
 		<PageHero
-			eyebrow="Industrias"
-			title="De lista de servicios a arquitectura por industria"
-			description="Casos, retos y palancas propias de tu sector. El catálogo existe; el playbook cambia."
+			eyebrow={page?.eyebrow ?? 'Industrias'}
+			title={page?.title ?? 'De lista de servicios a arquitectura por industria'}
+			description={page?.description ?? 'Casos, retos y palancas propias de tu sector. El catálogo existe; el playbook cambia.'}
 		/>
 		<IndustryGrid
 			client:visible
@@ -40,9 +54,9 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 			}))}
 		/>
 		<PillarGrid
-			eyebrow="Por qué Hiweb"
-			title="Un partner que ya operó en tu mesa de decisiones"
-			pillars={[...HOME_PILLARS]}
+			eyebrow={page?.whyEyebrow ?? 'Por qué Hiweb'}
+			title={page?.whyTitle ?? 'Un partner que ya operó en tu mesa de decisiones'}
+			pillars={pillars}
 			tone="surface"
 		/>
 		<CasePreview
@@ -55,6 +69,6 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				accent: item.data.accent,
 			}))}
 		/>
-		<FinalCta client:load title="Agenda un diagnóstico por industria" />
+		<FinalCta client:load title={page?.closingTitle ?? 'Agenda un diagnóstico por industria'} />
 	</main>
 </Layout>

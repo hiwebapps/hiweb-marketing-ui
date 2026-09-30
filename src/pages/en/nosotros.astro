@@ -10,9 +10,8 @@ import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { TeamGrid } from '../../components/sections/TeamGrid';
 import { FinalCta } from '../../components/sections/FinalCta';
 import AboutPageSection from '../../components/sections/AboutPageSection.astro';
-import { SITE } from '../../data/site';
 import { breadcrumbSchema } from '../../lib/schema';
-import { getAboutCopy, getHomeCopy, getPeople } from '../../lib/content';
+import { getAboutCopy, getHomeCopy, getPeople, getSiteSettings } from '../../lib/content';
 import { localePath } from '../../lib/locale';
 import type { TeamMember } from '../../components/sections/TeamGrid';
 import type { Pillar } from '../../components/sections/PillarGrid';
@@ -21,6 +20,7 @@ import '../../components/sections/TeamGrid.css';
 import '../../components/sections/PresenceMap.css';
 
 const about = await getAboutCopy('en');
+const site = await getSiteSettings();
 const home = await getHomeCopy('en');
 const people = (await getPeople()) as TeamMember[];
 const allSections = about.sections ?? [];
@@ -49,8 +49,11 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 <Layout
 	lang="en"
 	title={about.seo?.metaTitle ?? 'About — Hiweb Marketing'}
-	description={about.seo?.metaDescription ?? about.heroDescription ?? SITE.tagline}
+	description={about.seo?.metaDescription ?? about.heroDescription ?? site.tagline}
 	ogImage={about.seo?.ogImage ?? about.heroImage}
+	noindex={about.seo?.noindex}
+	canonical={about.seo?.canonicalPath}
+	alternates={{ es: '/nosotros', en: '/en/nosotros' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Home', href: '/en' },
 		{ name: about.heroBadge ?? 'About', href: '/en/nosotros' },
@@ -79,7 +82,7 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 			imagePosition="center 28%"
 			badges={[
 				{ label: about.heroBadge ?? 'About', variant: 'lime' },
-				{ label: SITE.locales.join(' · '), variant: 'cyan' },
+				{ label: site.locales.join(' · '), variant: 'cyan' },
 			]}
 			ctaLabel={about.heroCtaLabel ?? 'Schedule your audit'}
 			ctaHref={localePath(about.heroCtaHref ?? '/contacto', 'en')}

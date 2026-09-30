@@ -3,8 +3,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
-import { SITE } from '../../data/site';
 import { fallbackFooter, type SiteFooterContent } from '../../lib/footer';
+import { fallbackSite, type SiteIdentity } from '../../lib/site-identity';
 import { localePath, type Locale } from '../../lib/locale';
 import { MOTION } from '../../lib/motion';
 import './SiteFooter.css';
@@ -42,13 +42,15 @@ function prefersReducedMotion() {
 export function SiteFooter({
   locale = 'es',
   footer = null,
+  site = fallbackSite(),
 }: {
   locale?: Locale;
   footer?: SiteFooterContent | null;
+  site?: SiteIdentity;
 }) {
   const rootRef = useRef<HTMLElement>(null);
   const year = new Date().getFullYear();
-  const copy = footer ?? fallbackFooter(locale);
+  const copy = footer ?? fallbackFooter(locale, site);
 
   useGSAP(
     () => {
@@ -215,7 +217,7 @@ export function SiteFooter({
           <div className="site-footer__bar">
             <p className="site-footer__locales">{copy.locations}</p>
             <div className="site-footer__tools">
-              {SITE.socials.map((item) => (
+              {site.socials.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
@@ -224,7 +226,7 @@ export function SiteFooter({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {item.label === 'Instagram' ? <IconInstagram /> : <IconLinkedIn />}
+                  {item.label.toLowerCase().includes('instagram') ? <IconInstagram /> : <IconLinkedIn />}
                 </a>
               ))}
             </div>
@@ -249,7 +251,7 @@ export function SiteFooter({
       </div>
 
       <div className="site-footer__mark-wrap" aria-hidden="true">
-        <p className="site-footer__mark">Hiweb</p>
+        <p className="site-footer__mark">{site.name}</p>
       </div>
     </footer>
   );

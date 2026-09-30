@@ -18,11 +18,11 @@ import '../components/sections/FaqSection.css';
 import '../components/sections/CaseStories.css';
 import '../components/sections/MetricsBand.css';
 import { faqSchema } from '../lib/schema';
-import { getCases, getHomeCopy, getIndustries, getPeople, getServices } from '../lib/content';
+import { getCases, getHomeCopy, getIndustries, getPeople, getServices, getSiteSettings } from '../lib/content';
 import type { TeamMember } from '../components/sections/TeamGrid';
-import { SITE } from '../data/site';
 
 const home = await getHomeCopy();
+const site = await getSiteSettings();
 const people = (await getPeople()) as TeamMember[];
 const industryCards = home.industryCards?.length
 	? home.industryCards.map((item) => ({
@@ -83,6 +83,7 @@ const stories = (home.testimonials ?? []).map((item) => ({
 	quote: item.quote,
 	name: item.name,
 	role: item.role ?? '',
+	photo: item.photo,
 	stats: [],
 }));
 const metrics = (home.metrics ?? []).map((item) => ({
@@ -110,8 +111,11 @@ const sectionOrder = home.hasSections
 
 <Layout
 	title={home.seo?.metaTitle ?? 'Hiweb Marketing — Partner estratégico'}
-	description={home.seo?.metaDescription ?? SITE.tagline}
+	description={home.seo?.metaDescription ?? site.tagline}
 	ogImage={home.seo?.ogImage}
+	noindex={home.seo?.noindex}
+	canonical={home.seo?.canonicalPath}
+	alternates={{ es: '/', en: '/en' }}
 	jsonLd={sectionOrder.includes('homeFaq') ? faqSchema(faqs) : undefined}
 >
 	<main>

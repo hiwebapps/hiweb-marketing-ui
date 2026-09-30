@@ -1,5 +1,5 @@
-import { SITE } from '../../data/site';
 import type { ContactField, ContactPageCopy } from '../../lib/content/contact';
+import type { SiteIdentity } from '../../lib/site-identity';
 import { Button, TextArea, TextField } from '../ui';
 import './ContactForm.css';
 
@@ -13,9 +13,10 @@ const INPUTS: Record<string, { type: string; autoComplete?: string }> = {
 
 type ContactFormProps = {
   copy: ContactPageCopy;
+  site: SiteIdentity;
 };
 
-export function ContactForm({ copy }: ContactFormProps) {
+export function ContactForm({ copy, site }: ContactFormProps) {
   const project = copy.fields.find((field) => field.kind === 'project');
   const left = groupFields(copy.fields.filter((field) => field.kind !== 'project'));
   const customBudget = copy.budgets.some((option) => option.custom);
@@ -34,27 +35,32 @@ export function ContactForm({ copy }: ContactFormProps) {
             ) : null}
           </h1>
           <div className="contact-banner__links">
-            <a className="contact-banner__link" href={`mailto:${SITE.email}`}>
+            <a className="contact-banner__link" href={`mailto:${site.email}`}>
               <span className="contact-banner__icon" aria-hidden="true">
                 <MailIcon />
               </span>
-              {SITE.email}
+              {site.email}
             </a>
-            <a className="contact-banner__link" href={SITE.phoneHref}>
+            <a className="contact-banner__link" href={site.phoneHref}>
               <span className="contact-banner__icon" aria-hidden="true">
                 <PhoneIcon />
               </span>
-              {SITE.phone}
+              {site.phone}
             </a>
+            {site.whatsapp ? (
+              <a className="contact-banner__link" href={site.whatsapp}>
+                WhatsApp
+              </a>
+            ) : null}
           </div>
         </div>
 
         <form
           className="contact-form"
-          action={`mailto:${SITE.email}`}
+          action={`mailto:${site.email}`}
           method="post"
           encType="text/plain"
-          data-email={SITE.email}
+          data-email={site.email}
           data-services-error={copy.servicesError}
           data-budget-error={copy.budgetError}
           data-custom-error={copy.customBudgetError}

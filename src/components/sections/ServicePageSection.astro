@@ -200,10 +200,11 @@ const nombre = entry.data.nombre;
 				section.items?.length
 					? section.items.map(
 							(item): CaseStory => ({
-								client: item.cliente,
+								client: item.testimonio?.client || item.cliente,
 								quote: item.testimonio?.quote ?? item.resumen,
 								name: item.testimonio?.name ?? item.cliente,
 								role: item.testimonio?.role ?? item.industria ?? nombre,
+								photo: item.testimonio?.photo,
 								stats: (item.metricas ?? []).slice(0, 2).map(formatCaseStat),
 								href: `/portafolio/${item.id}`,
 							}),

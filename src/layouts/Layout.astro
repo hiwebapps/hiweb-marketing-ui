@@ -9,42 +9,62 @@ import '../components/sections/FaqSection.css';
 import { SiteNav } from '../components/sections/SiteNav';
 import { SiteFooter } from '../components/sections/SiteFooter';
 import { ScrollIndicator } from '../components/effects/ScrollIndicator';
-import { SITE } from '../data/site';
-import { getFooter, getNavigation } from '../lib/content';
+import { getFavicon, getFooter, getNavigation, getSiteSettings } from '../lib/content';
+import { organizationSchema } from '../lib/schema';
 import { DEFAULT_OG_IMAGE, ROBOTS_NOINDEX, absoluteUrl, shouldNoIndex } from '../lib/seo';
 
 interface Props {
 	title?: string;
 	description?: string;
 	canonical?: string;
-	/** Force noindex even after cutover (legal, kits). */
+	/** Force noindex even after cutover (legal, kits, or the page's own checkbox). */
 	noindex?: boolean;
 	ogImage?: string;
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[] | object | object[];
 	lang?: 'es' | 'en';
+	alternates?: { es?: string; en?: string };
 }
 
 const {
 	title = 'Hiweb Marketing — Partner estratégico',
-	description = SITE.tagline,
 	canonical,
 	noindex: forceNoIndex = false,
 	ogImage = DEFAULT_OG_IMAGE,
 	jsonLd,
 	lang = 'es',
+	alternates,
 } = Astro.props;
 
+const site = await getSiteSettings();
+const description = Astro.props.description ?? site.tagline;
 const nav = await getNavigation(lang);
 const footer = await getFooter(lang);
+const favicon = await getFavicon();
 const staging = import.meta.env.PUBLIC_SITE_ENV === 'staging';
 const PreviewChrome = staging
 	? (await import('../components/PreviewChrome.astro')).default
 	: null;
 const hideFromIndex = forceNoIndex || shouldNoIndex(Astro.url.hostname);
+function toAbsolute(value: string) {
+	if (value.startsWith('http://') || value.startsWith('https://')) return value;
+	const path = value.startsWith('/') ? value : `/${value}`;
+	return Astro.site ? new URL(path, Astro.site).href : path;
+}
 const canonicalUrl = canonical
-	?? (Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href);
+	? toAbsolute(canonical)
+	: Astro.site
+		? new URL(Astro.url.pathname, Astro.site).href
+		: Astro.url.href;
+const alternateLinks = [
+	alternates?.es ? { hreflang: 'es', href: toAbsolute(alternates.es) } : null,
+	alternates?.en ? { hreflang: 'en', href: toAbsolute(alternates.en) } : null,
+	alternates?.es ? { hreflang: 'x-default', href: toAbsolute(alternates.es) } : null,
+].filter((item): item is { hreflang: string; href: string } => item !== null);
 const ogImageUrl = absoluteUrl(ogImage, Astro.site ?? Astro.url);
-const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const jsonLdItems = [
+	...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
+	organizationSchema(site),
+];
 ---
 
 <!doctype html>
@@ -54,6 +74,9 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
+		{alternateLinks.map((item) => (
+			<link rel="alternate" hreflang={item.hreflang} href={item.href} />
+		))}
 		{hideFromIndex ? (
 			<>
 				<meta name="robots" content={ROBOTS_NOINDEX} />
@@ -85,8 +108,14 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 			type="font/ttf"
 			crossorigin
 		/>
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		{favicon ? (
+			<link rel="icon" type={favicon.type} href={favicon.href} />
+		) : (
+			<>
+				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+				<link rel="icon" href="/favicon.ico" />
+			</>
+		)}
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		{jsonLdItems.map((item) => (
@@ -105,7 +134,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 		<SiteNav client:load locale={lang} nav={nav} />
 		<ScrollIndicator client:load />
 		<slot />
-		<SiteFooter client:idle locale={lang} footer={footer} />
+		<SiteFooter client:idle locale={lang} footer={footer} site={site} />
 		{PreviewChrome && <PreviewChrome />}
 		<script src="../scripts/motion.ts"></script>
 	</body>

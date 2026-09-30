@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
-import { getPosts, getServices } from '../../lib/content';
+import { getCatalogIndex, getPosts, getServices } from '../../lib/content';
 import { BlogHero } from '../../components/sections/BlogHero';
 import { BlogIndex } from '../../components/sections/BlogIndex';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
@@ -12,9 +12,10 @@ import { BLOG_READING_MINUTES, postCoverUrl } from '../../lib/blog';
 import '../../components/sections/BlogHero.css';
 import '../../components/sections/BlogIndex.css';
 
-const [posts, services] = await Promise.all([
+const [posts, services, page] = await Promise.all([
 	getPosts(),
 	getServices(),
+	getCatalogIndex('blogIndex'),
 ]);
 const sorted = posts.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
 const serviceName = Object.fromEntries(services.map((service) => [service.id, service.data.nombre]));
@@ -50,8 +51,11 @@ const serviceFilters = services
 ---
 
 <Layout
-	title="Blog — Hiweb Marketing"
-	description="Contenido organizado por servicios. Respuestas directas, sin relleno."
+	title={page?.seo?.metaTitle ?? 'Blog — Hiweb Marketing'}
+	description={page?.seo?.metaDescription ?? page?.description ?? 'Contenido organizado por servicios. Respuestas directas, sin relleno.'}
+	noindex={page?.seo?.noindex}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/blog', en: '/en/blogs' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Blog', href: '/blog' },
@@ -60,6 +64,10 @@ const serviceFilters = services
 	<main>
 		{featured ? (
 			<BlogHero
+				eyebrow={page?.eyebrow ?? 'Recursos / Blog'}
+				title={page?.title ?? 'Artículos para decidir, no para rellenar'}
+				description={page?.description ?? 'Contenido por industria y servicio: respuestas directas, keywords reales y enlaces a lo que sí ejecutamos.'}
+				readingSuffix={page?.readingSuffix}
 				featured={{
 					id: featured.id,
 					title: featured.title,
@@ -67,13 +75,21 @@ const serviceFilters = services
 					servicioNombre: featured.servicioNombre,
 					readingMinutes: featured.readingMinutes,
 					image: featured.image,
-					ctaLabel: 'Descubrir más',
+					ctaLabel: page?.featuredCta ?? 'Descubrir más',
 				}}
 			/>
 		) : null}
 		<SectionBand tone="canvas">
-			<BlogIndex client:load posts={cards} services={serviceFilters} />
+			<BlogIndex
+				client:load
+				posts={cards}
+				services={serviceFilters}
+				title={page?.listTitle}
+				description={page?.listDescription}
+				allLabel={page?.allLabel}
+				filterLabel={page?.filterLabel}
+			/>
 		</SectionBand>
-		<FinalCta client:load title="¿Lo aplicamos a tu industria?" />
+		<FinalCta client:load title={page?.closingTitle ?? '¿Lo aplicamos a tu industria?'} />
 	</main>
 </Layout>

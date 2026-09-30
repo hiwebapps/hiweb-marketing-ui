@@ -1,4 +1,5 @@
 import { isSanityConfigured } from '../../sanity/client';
+import { fallbackSite } from '../site-identity';
 import {
   collectionsAbout,
   collectionsCases,
@@ -13,7 +14,11 @@ import {
   sanityContactPage,
   sanityCase,
   sanityCases,
+  sanityCatalogIndex,
+  sanityFavicon,
   sanityFooter,
+  sanityLegalPage,
+  sanitySiteIdentity,
   sanityHome,
   sanityIndustries,
   sanityIndustriesIndex,
@@ -75,6 +80,37 @@ export async function getIndustries(locale: 'es' | 'en' = 'es'): Promise<Industr
   );
 }
 
+export async function getSiteSettings() {
+  return withFallback(
+    () => sanitySiteIdentity(),
+    () => fallbackSite(),
+  );
+}
+
+export async function getCatalogIndex(id: string) {
+  return withFallback(
+    () => sanityCatalogIndex(id),
+    () => null,
+    (value) => !value,
+  );
+}
+
+export async function getLegalPage(id: string) {
+  return withFallback(
+    () => sanityLegalPage(id),
+    () => null,
+    (value) => !value,
+  );
+}
+
+export async function getFavicon() {
+  return withFallback(
+    () => sanityFavicon(),
+    () => null,
+    (value) => !value,
+  );
+}
+
 export async function getFooter(locale: 'es' | 'en' = 'es') {
   return withFallback(
     () => sanityFooter(locale),
@@ -91,8 +127,12 @@ export async function getNavigation(locale: 'es' | 'en' = 'es') {
   );
 }
 
-export async function getIndustriesIndex() {
-  return sanityIndustriesIndex('industriesIndex-en');
+export async function getIndustriesIndex(id = 'industriesIndex-en') {
+  return withFallback(
+    () => sanityIndustriesIndex(id),
+    () => null,
+    (value) => !value,
+  );
 }
 
 export async function getIndustry(slug: string, locale: 'es' | 'en' = 'es'): Promise<IndustryRecord | undefined> {

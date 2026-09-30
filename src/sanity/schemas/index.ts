@@ -4,6 +4,7 @@ import { contactPage } from './contactPage';
 import { landingSectionTypes } from './blocks/pageSections';
 import { blogTable } from './blogTable';
 import { faq } from './faq';
+import { testimonial } from './testimonial';
 import { landingPage } from './landingPage';
 import { author, post } from './post';
 import { caseStudy } from './caseStudy';
@@ -20,7 +21,6 @@ import {
   cta,
   faqCategory,
   faqItem,
-  homeTestimonial,
   metric,
   processStep,
   sectionIntro,
@@ -30,6 +30,8 @@ import {
 } from './shared';
 import { footer, footerLink } from './footer';
 import { navBarItem, navGroup, navLink, navigation } from './navigation';
+import { redirect } from './redirect';
+import { blogIndex, casesIndex, legalPage, servicesIndex } from './catalogIndex';
 import { siteSettings } from './siteSettings';
 
 export const schemaTypes = [
@@ -38,7 +40,6 @@ export const schemaTypes = [
   processStep,
   metric,
   sectionIntro,
-  homeTestimonial,
   cta,
   faqCategory,
   serviceBlurb,
@@ -58,7 +59,12 @@ export const schemaTypes = [
   navigation,
   footerLink,
   footer,
+  redirect,
   siteSettings,
+  servicesIndex,
+  blogIndex,
+  casesIndex,
+  legalPage,
   homePage,
   aboutPage,
   contactPage,
@@ -70,5 +76,6 @@ export const schemaTypes = [
   post,
   person,
   faq,
+  testimonial,
   landingPage,
 ];

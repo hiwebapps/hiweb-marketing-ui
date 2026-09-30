@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
-import { getCases, getIndustries } from '../../lib/content';
+import { getCases, getCatalogIndex, getIndustries } from '../../lib/content';
 import { BlogHero } from '../../components/sections/BlogHero';
 import { CasesIndex } from '../../components/sections/CasesIndex';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
@@ -14,6 +14,7 @@ import '../../components/sections/BlogHero.css';
 import '../../components/sections/BlogIndex.css';
 
 const industries = await getIndustries();
+const page = await getCatalogIndex('casesIndex');
 const cases = (await getCases()).sort((a, b) => {
 	if (a.data.destacado !== b.data.destacado) return a.data.destacado ? -1 : 1;
 	return a.data.cliente.localeCompare(b.data.cliente, 'es');
@@ -34,8 +35,10 @@ const cards = cases.map((item) => ({
 ---
 
 <Layout
-	title={WEBFLOW_CASES_INDEX.seo.metaTitle ?? WEBFLOW_CASES_INDEX.title}
-	description={WEBFLOW_CASES_INDEX.seo.metaDescription ?? WEBFLOW_CASES_INDEX.description}
+	title={page?.seo?.metaTitle ?? WEBFLOW_CASES_INDEX.seo.metaTitle ?? page?.title ?? WEBFLOW_CASES_INDEX.title}
+	description={page?.seo?.metaDescription ?? WEBFLOW_CASES_INDEX.seo.metaDescription ?? page?.description ?? WEBFLOW_CASES_INDEX.description}
+	noindex={page?.seo?.noindex}
+	canonical={page?.seo?.canonicalPath}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Portafolio', href: '/portafolio' },
@@ -43,10 +46,10 @@ const cards = cases.map((item) => ({
 >
 	<main>
 		<BlogHero
-			label="Casos de éxito"
-			eyebrow={WEBFLOW_CASES_INDEX.eyebrow}
-			title={WEBFLOW_CASES_INDEX.title}
-			description={WEBFLOW_CASES_INDEX.description}
+			label={page?.label ?? 'Casos de éxito'}
+			eyebrow={page?.eyebrow ?? WEBFLOW_CASES_INDEX.eyebrow}
+			title={page?.title ?? WEBFLOW_CASES_INDEX.title}
+			description={page?.description ?? WEBFLOW_CASES_INDEX.description}
 		/>
 		<SectionBand tone="canvas">
 			<CasesIndex
@@ -58,6 +61,6 @@ const cards = cases.map((item) => ({
 				}))}
 			/>
 		</SectionBand>
-		<FinalCta client:load title="¿Un diagnóstico similar al de tu industria?" />
+		<FinalCta client:load title={page?.closingTitle ?? '¿Un diagnóstico similar al de tu industria?'} />
 	</main>
 </Layout>

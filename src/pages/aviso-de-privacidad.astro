@@ -4,22 +4,29 @@ export const prerender = true;
 import Layout from '../layouts/Layout.astro';
 import { PageHero } from '../components/sections/PageHero';
 import { SectionBand } from '../components/sections/primitives/SectionBand';
-import { SITE } from '../data/site';
+import { getLegalPage } from '../lib/content';
+
+const fallback = {
+	eyebrow: 'Legal',
+	title: 'Aviso de privacidad',
+	body: 'Documento de trabajo. Hiweb Marketing recaba los datos del formulario de contacto (nombre, email, empresa y contexto) únicamente para responder la solicitud de auditoría. No vendemos bases. Puedes escribir a hola@hiweb.marketing para ejercer tus derechos.',
+	description: 'Privacidad de datos de contacto de Hiweb Marketing.',
+};
+const page = await getLegalPage('legal-privacy');
+const title = page?.title || fallback.title;
+const body = page?.body || fallback.body;
 ---
 
 <Layout
-	title={`Aviso de privacidad — ${SITE.legalName}`}
-	description={`Privacidad de datos de contacto de ${SITE.legalName}.`}
-	noindex
+	title={page?.seo?.metaTitle ?? `${title} — Hiweb Marketing`}
+	description={page?.seo?.metaDescription ?? fallback.description}
+	noindex={page?.seo?.noindex ?? true}
+	canonical={page?.seo?.canonicalPath}
 >
 	<main>
-		<PageHero eyebrow="Legal" title="Aviso de privacidad" />
+		<PageHero eyebrow={page?.eyebrow || fallback.eyebrow} title={title} />
 		<SectionBand>
-			<p class="max-w-2xl !text-base">
-				Documento de trabajo. {SITE.legalName} recaba los datos del formulario de contacto
-				(nombre, email, empresa y contexto) únicamente para responder la solicitud de
-				auditoría. No vendemos bases. Puedes escribir a {SITE.email} para ejercer tus derechos.
-			</p>
+			<p class="max-w-2xl !text-base">{body}</p>
 		</SectionBand>
 	</main>
 </Layout>

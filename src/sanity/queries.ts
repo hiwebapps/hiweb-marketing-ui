@@ -10,9 +10,19 @@ const imageProjection = /* groq */ `{
   }
 }`;
 
+const testimonialFields = /* groq */ `{
+  "client": coalesce(testimonial->client, client),
+  "quote": coalesce(testimonial->quote, quote),
+  "name": coalesce(testimonial->name, name),
+  "role": coalesce(testimonial->role, role),
+  "photo": testimonial->photo ${imageProjection}
+}`;
+
 const seoProjection = /* groq */ `
   metaTitle,
   metaDescription,
+  noindex,
+  canonicalPath,
   ogImage ${imageProjection}
 `;
 
@@ -96,7 +106,7 @@ const serviceSectionsProjection = /* groq */ `
         cliente,
         resumen,
         "industria": industria->nombre,
-        "testimonio": coalesce(sections[_type == "caseTestimonial"][0]{ quote, name, role }, testimonio{ quote, name, role }),
+        "testimonio": coalesce(sections[_type == "caseTestimonial"][0]${testimonialFields}, testimonio{ quote, name, role }),
         "metricas": coalesce(sections[_type == "caseMetrics"][0].items[]{ valor, label, prefix, suffix, decimals }, metricas[]{ valor, label, prefix, suffix, decimals })
       }
     },
@@ -160,6 +170,47 @@ export const footerQuery = defineQuery(`*[_type == "footer" && _id == $id][0]{
   backToTop
 }`);
 
+export const siteIdentityQuery = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
+  name,
+  legalName,
+  tagline,
+  email,
+  phone,
+  phoneHref,
+  whatsapp,
+  locales,
+  socials[]{ label, href }
+}`);
+
+export const catalogIndexQuery = defineQuery(`*[_id == $id][0]{
+  eyebrow,
+  title,
+  description,
+  label,
+  sectionTitle,
+  listTitle,
+  listDescription,
+  allLabel,
+  filterLabel,
+  featuredCta,
+  readingSuffix,
+  closingTitle,
+  ${seoProjection}
+}`);
+
+export const legalPageQuery = defineQuery(`*[_id == $id][0]{
+  eyebrow,
+  title,
+  body,
+  ${seoProjection}
+}`);
+
+export const siteFaviconQuery = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
+  favicon{
+    asset->{ _id, url, mimeType }
+  }
+}`);
+
 export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
   name,
   legalName,
@@ -215,7 +266,7 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
     },
     _type == "homeStories" => {
       intro ${introProjection},
-      items[]{ client, quote, name, role }
+      items[]->{ client, quote, name, role, photo ${imageProjection} }
     },
     _type == "homeProcess" => {
       intro ${introProjection},
@@ -286,7 +337,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
     },
     _type == "homeStories" => {
       intro ${introProjection},
-      items[]{ client, quote, name, role }
+      items[]->{ client, quote, name, role, photo ${imageProjection} }
     },
     _type == "homeProcess" => {
       intro ${introProjection},
@@ -503,6 +554,10 @@ export const industriesQuery = defineQuery(`*[
   orden,
   tagline,
   ${industryBodyProjection},
+  "alternateSlug": select(
+    $locale == "en" => *[_type == "industry" && _id == string::split(^._id, "-en")[0]][0].slug.current,
+    *[_type == "industry" && _id == ^._id + "-en"][0].slug.current
+  ),
   ${seoProjection}
 }`);
 
@@ -514,6 +569,10 @@ export const industryBySlugQuery = defineQuery(`*[
   orden,
   tagline,
   ${industryBodyProjection},
+  "alternateSlug": select(
+    $locale == "en" => *[_type == "industry" && _id == string::split(^._id, "-en")[0]][0].slug.current,
+    *[_type == "industry" && _id == ^._id + "-en"][0].slug.current
+  ),
   ${seoProjection}
 }`);
 
@@ -555,6 +614,10 @@ export const servicesQuery = defineQuery(`*[
   planesCtaHref,
   planes[]{ name, price, period, featured, includes },
   ${serviceSectionsProjection},
+  "alternateSlug": select(
+    $locale == "en" => *[_type == "service" && _id == string::split(^._id, "-en")[0]][0].slug.current,
+    *[_type == "service" && _id == ^._id + "-en"][0].slug.current
+  ),
   ${seoProjection}
 }`);
 
@@ -582,6 +645,10 @@ export const serviceBySlugQuery = defineQuery(`*[
   planesCtaHref,
   planes[]{ name, price, period, featured, includes },
   ${serviceSectionsProjection},
+  "alternateSlug": select(
+    $locale == "en" => *[_type == "service" && _id == string::split(^._id, "-en")[0]][0].slug.current,
+    *[_type == "service" && _id == ^._id + "-en"][0].slug.current
+  ),
   ${seoProjection}
 }`);
 
@@ -622,9 +689,11 @@ sections[]{
     eyebrow,
     title,
     description,
-    quote,
-    name,
-    role
+    "client": coalesce(testimonial->client, client),
+    "quote": coalesce(testimonial->quote, quote),
+    "name": coalesce(testimonial->name, name),
+    "role": coalesce(testimonial->role, role),
+    "photo": testimonial->photo ${imageProjection}
   },
   _type == "caseRelated" => {
     eyebrow,
@@ -644,7 +713,7 @@ const caseBodyProjection = /* groq */ `
   "reto": coalesce(sections[_type == "caseContext"][0].reto, reto),
   "estrategia": coalesce(sections[_type == "caseContext"][0].estrategia, estrategia),
   "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description }, fases[]{ title, description }),
-  "testimonio": coalesce(sections[_type == "caseTestimonial"][0]{ quote, name, role }, testimonio{ quote, name, role }),
+  "testimonio": coalesce(sections[_type == "caseTestimonial"][0]${testimonialFields}, testimonio{ quote, name, role }),
   "anio": coalesce(sections[_type == "caseHero"][0].anio, anio),
   "imagenesProyecto": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[] ${imageProjection}, imagenesProyecto[] ${imageProjection}),
   ${caseSectionsProjection}
@@ -716,6 +785,10 @@ export const postBySlugQuery = defineQuery(`*[
   cover ${imageProjection},
   body,
   faqs[]{ question, answer },
+  "alternateSlug": select(
+    $locale == "en" => *[_type == "post" && coalesce(locale, "es") == "es" && slug.current == ^.esSlug][0].slug.current,
+    *[_type == "post" && locale == "en" && esSlug == ^.slug.current][0].slug.current
+  ),
   ${seoProjection}
 }`);
 
@@ -744,7 +817,7 @@ const landingCaseProjection = /* groq */ `{
   "reto": coalesce(sections[_type == "caseContext"][0].reto, reto),
   "estrategia": coalesce(sections[_type == "caseContext"][0].estrategia, estrategia),
   "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description }, fases[]{ title, description }),
-  "testimonio": coalesce(sections[_type == "caseTestimonial"][0]{ quote, name, role }, testimonio{ quote, name, role })
+  "testimonio": coalesce(sections[_type == "caseTestimonial"][0]${testimonialFields}, testimonio{ quote, name, role })
 }`;
 
 const landingPersonProjection = /* groq */ `{
@@ -817,7 +890,9 @@ export const contactPageQuery = defineQuery(`*[_type == "contactPage" && _id == 
   services[]{ _key, label },
   budgets[]{ _key, label, custom },
   metaTitle,
-  metaDescription
+  metaDescription,
+  noindex,
+  canonicalPath
 }`);
 
 export const sitemapEntriesQuery = defineQuery(`{

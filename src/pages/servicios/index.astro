@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
-import { getCases, getHomeCopy, getIndustries, getServices } from '../../lib/content';
+import { getCases, getCatalogIndex, getHomeCopy, getIndustries, getServices } from '../../lib/content';
 import { PageHero } from '../../components/sections/PageHero';
 import { ServiceGrid } from '../../components/sections/ServiceGrid';
 import { IndustryGrid } from '../../components/sections/IndustryGrid';
@@ -13,6 +13,12 @@ import { breadcrumbSchema } from '../../lib/schema';
 import { WEBFLOW_SERVICES_INDEX } from '../../data/webflow-services';
 
 const services = await getServices();
+const page = await getCatalogIndex('servicesIndex');
+const hero = {
+	eyebrow: page?.eyebrow ?? WEBFLOW_SERVICES_INDEX.eyebrow,
+	title: page?.title ?? WEBFLOW_SERVICES_INDEX.title,
+	description: page?.description ?? WEBFLOW_SERVICES_INDEX.description,
+};
 const industries = await getIndustries();
 const cases = await getCases();
 const home = await getHomeCopy();
@@ -20,28 +26,27 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 ---
 
 <Layout
-	title={WEBFLOW_SERVICES_INDEX.title}
-	description={WEBFLOW_SERVICES_INDEX.description}
+	title={page?.seo?.metaTitle ?? hero.title}
+	description={page?.seo?.metaDescription ?? hero.description}
+	noindex={page?.seo?.noindex}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/servicios', en: '/en/servicios' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Servicios', href: '/servicios' },
 	])}
 >
 	<main>
-		<PageHero
-			eyebrow={WEBFLOW_SERVICES_INDEX.eyebrow}
-			title={WEBFLOW_SERVICES_INDEX.title}
-			description={WEBFLOW_SERVICES_INDEX.description}
-		/>
+		<PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} />
 		<ServiceGrid
 			services={services.map((item) => ({
 				slug: item.id,
 				nombre: item.data.nombre,
 				tagline: item.data.tagline,
 			}))}
-			eyebrow={home.serviceIntro?.eyebrow ?? WEBFLOW_SERVICES_INDEX.eyebrow}
-			title={home.serviceIntro?.title ?? WEBFLOW_SERVICES_INDEX.title}
-			description={home.serviceIntro?.description ?? WEBFLOW_SERVICES_INDEX.description}
+			eyebrow={home.serviceIntro?.eyebrow ?? hero.eyebrow}
+			title={home.serviceIntro?.title ?? hero.title}
+			description={home.serviceIntro?.description ?? hero.description}
 		/>
 		<IndustryGrid
 			client:visible
@@ -51,7 +56,7 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				tagline: item.data.tagline,
 				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
-			title="El mismo servicio, un playbook distinto por industria"
+			title={page?.sectionTitle ?? 'El mismo servicio, un playbook distinto por industria'}
 			tone="surface"
 		/>
 		<ProcessPhases client:visible phases={home.process ?? []} tone="canvas" />
@@ -65,6 +70,6 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				accent: item.data.accent,
 			}))}
 		/>
-		<FinalCta client:load title="Elige palanca después del diagnóstico" />
+		<FinalCta client:load title={page?.closingTitle ?? 'Elige palanca después del diagnóstico'} />
 	</main>
 </Layout>

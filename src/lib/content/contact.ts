@@ -46,6 +46,8 @@ export type ContactPageCopy = {
   budgets: ContactBudget[];
   metaTitle: string;
   metaDescription: string;
+  noindex?: boolean;
+  canonicalPath?: string;
 };
 
 const WIDE = new Set<ContactFieldKind>(['website', 'services', 'budget', 'project']);
@@ -156,5 +158,10 @@ export function mapContactPage(data: Record<string, unknown> | null): ContactPag
       typeof data.metaDescription === 'string' && data.metaDescription
         ? data.metaDescription
         : DEFAULT_CONTACT.metaDescription,
+    noindex: data.noindex === true,
+    canonicalPath:
+      typeof data.canonicalPath === 'string' && data.canonicalPath.startsWith('/') && !data.canonicalPath.startsWith('//')
+        ? data.canonicalPath
+        : undefined,
   };
 }

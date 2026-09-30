@@ -158,15 +158,20 @@ export const caseTestimonial = defineType({
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Testimonio' }),
     defineField({ name: 'title', title: 'Título', type: 'string' }),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 2 }),
-    defineField({ name: 'quote', title: 'Cita', type: 'text', rows: 4 }),
-    defineField({ name: 'name', title: 'Nombre', type: 'string' }),
-    defineField({ name: 'role', title: 'Cargo', type: 'string' }),
+    defineField({
+      name: 'testimonial',
+      title: 'Testimonio',
+      type: 'reference',
+      to: [{ type: 'testimonial' }],
+      description: 'La cita, el nombre, el cargo y la foto salen de la biblioteca.',
+    }),
   ],
   preview: {
-    select: { title: 'name', subtitle: 'quote' },
-    prepare: ({ title, subtitle }) => ({
+    select: { title: 'testimonial.name', person: 'testimonial.client', media: 'testimonial.photo' },
+    prepare: ({ title, person, media }) => ({
       title: title || 'Testimonio',
-      subtitle: subtitle || 'Sección Testimonio',
+      subtitle: person || 'Sección Testimonio',
+      media,
     }),
   },
 });

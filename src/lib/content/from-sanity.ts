@@ -8,8 +8,12 @@ import {
   homePageQuery,
   industriesIndexQuery,
   industriesQuery,
+  catalogIndexQuery,
   footerQuery,
+  legalPageQuery,
   navigationQuery,
+  siteFaviconQuery,
+  siteIdentityQuery,
   industryBySlugQuery,
   landingBySlugQuery,
   landingsQuery,
@@ -31,6 +35,8 @@ import {
   mapService,
 } from './map-sanity';
 import type { FooterLink, SiteFooterContent } from '../footer';
+import { fallbackSite, type SiteIdentity } from '../site-identity';
+import type { SeoFields } from './types';
 import type { NavGroup, NavLink, SiteNavContent } from '../nav';
 import type {
   AboutCopy,
@@ -78,7 +84,7 @@ export type IndustriesIndexCopy = {
   closingTitle?: string;
   cardCtaLabel?: string;
   pillars?: { title: string; description: string }[];
-  seo?: { metaTitle?: string; metaDescription?: string };
+  seo?: SeoFields;
 };
 
 export async function sanityIndustriesIndex(id = 'industriesIndex-en'): Promise<IndustriesIndexCopy | null> {
@@ -101,8 +107,10 @@ export async function sanityIndustriesIndex(id = 'industriesIndex-en'): Promise<
           .map((item) => ({ title: String(item.title), description: String(item.description ?? '') }))
       : [],
     seo: {
-      metaTitle: data.metaTitle ? String(data.metaTitle) : undefined,
-      metaDescription: data.metaDescription ? String(data.metaDescription) : undefined,
+      metaTitle: optionalText(data.metaTitle),
+      metaDescription: optionalText(data.metaDescription),
+      noindex: data.noindex === true || undefined,
+      canonicalPath: optionalText(data.canonicalPath),
     },
   };
 }
@@ -265,6 +273,139 @@ function asFooterLinks(value: unknown): FooterLink[] {
     if (!label || !href) return [];
     return [{ label, href }];
   });
+}
+
+export type SiteFavicon = {
+  href: string;
+  type: string;
+};
+
+export async function sanityFavicon(): Promise<SiteFavicon | null> {
+  const { data } = await loadQuery<{
+    favicon?: { asset?: { url?: string; mimeType?: string } | null } | null;
+  } | null>({
+    query: siteFaviconQuery,
+    stega: false,
+  });
+  const asset = data?.favicon?.asset;
+  const href = asset?.url?.trim();
+  if (!href) return null;
+  const mime = asset?.mimeType?.trim() || '';
+  const svg = mime.includes('svg') || href.endsWith('.svg');
+  return { href, type: mime || (svg ? 'image/svg+xml' : 'image/png') };
+}
+
+function textList(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => text(item)).filter(Boolean);
+}
+
+function socialsOf(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((item) => {
+    if (!item || typeof item !== 'object') return [];
+    const row = item as { label?: unknown; href?: unknown };
+    const label = text(row.label);
+    const href = text(row.href);
+    if (!label || !href) return [];
+    return [{ label, href }];
+  });
+}
+
+export async function sanitySiteIdentity(): Promise<SiteIdentity> {
+  const fallback = fallbackSite();
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: siteIdentityQuery,
+    stega: false,
+  });
+  if (!data) return fallback;
+  const socials = socialsOf(data.socials);
+  const locales = textList(data.locales);
+  return {
+    name: text(data.name) || fallback.name,
+    legalName: text(data.legalName) || fallback.legalName,
+    tagline: text(data.tagline) || fallback.tagline,
+    email: text(data.email) || fallback.email,
+    phone: text(data.phone) || fallback.phone,
+    phoneHref: text(data.phoneHref) || fallback.phoneHref,
+    whatsapp: text(data.whatsapp) || fallback.whatsapp,
+    locales: locales.length ? locales : fallback.locales,
+    socials: socials.length ? socials : fallback.socials,
+  };
+}
+
+export type CatalogIndexCopy = {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  label?: string;
+  sectionTitle?: string;
+  listTitle?: string;
+  listDescription?: string;
+  allLabel?: string;
+  filterLabel?: string;
+  featuredCta?: string;
+  readingSuffix?: string;
+  closingTitle?: string;
+  seo?: SeoFields;
+};
+
+function optionalText(value: unknown) {
+  const next = text(value);
+  return next || undefined;
+}
+
+export async function sanityCatalogIndex(id: string): Promise<CatalogIndexCopy | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: catalogIndexQuery,
+    params: { id },
+  });
+  if (!data || (!data.title && !data.description)) return null;
+  return {
+    eyebrow: optionalText(data.eyebrow),
+    title: optionalText(data.title),
+    description: optionalText(data.description),
+    label: optionalText(data.label),
+    sectionTitle: optionalText(data.sectionTitle),
+    listTitle: optionalText(data.listTitle),
+    listDescription: optionalText(data.listDescription),
+    allLabel: optionalText(data.allLabel),
+    filterLabel: optionalText(data.filterLabel),
+    featuredCta: optionalText(data.featuredCta),
+    readingSuffix: optionalText(data.readingSuffix),
+    closingTitle: optionalText(data.closingTitle),
+    seo: {
+      metaTitle: optionalText(data.metaTitle),
+      metaDescription: optionalText(data.metaDescription),
+      noindex: data.noindex === true || undefined,
+      canonicalPath: optionalText(data.canonicalPath),
+    },
+  };
+}
+
+export type LegalCopy = {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  seo?: SeoFields;
+};
+
+export async function sanityLegalPage(id: string): Promise<LegalCopy | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: legalPageQuery,
+    params: { id },
+  });
+  if (!data || (!data.title && !data.body)) return null;
+  return {
+    eyebrow: optionalText(data.eyebrow),
+    title: optionalText(data.title),
+    body: optionalText(data.body),
+    seo: {
+      metaTitle: optionalText(data.metaTitle),
+      metaDescription: optionalText(data.metaDescription),
+      canonicalPath: optionalText(data.canonicalPath),
+    },
+  };
 }
 
 export async function sanityFooter(locale: 'es' | 'en'): Promise<SiteFooterContent | null> {

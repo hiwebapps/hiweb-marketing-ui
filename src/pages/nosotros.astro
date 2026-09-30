@@ -10,15 +10,16 @@ import { ProcessPhases } from '../components/sections/ProcessPhases';
 import { TeamGrid } from '../components/sections/TeamGrid';
 import { FinalCta } from '../components/sections/FinalCta';
 import AboutPageSection from '../components/sections/AboutPageSection.astro';
-import { HOME_PILLARS, SITE } from '../data/site';
+import { HOME_PILLARS } from '../data/site';
 import { breadcrumbSchema } from '../lib/schema';
-import { getAboutCopy, getHomeCopy, getPeople } from '../lib/content';
+import { getAboutCopy, getHomeCopy, getPeople, getSiteSettings } from '../lib/content';
 import type { TeamMember } from '../components/sections/TeamGrid';
 import '../components/sections/AboutHistory.css';
 import '../components/sections/TeamGrid.css';
 import '../components/sections/PresenceMap.css';
 
 const about = await getAboutCopy();
+const site = await getSiteSettings();
 const home = await getHomeCopy();
 const people = (await getPeople()) as TeamMember[];
 const allSections = about.sections ?? [];
@@ -34,8 +35,11 @@ const historyColumns =
 
 <Layout
 	title={about.seo?.metaTitle ?? 'Nosotros — Hiweb Marketing'}
-	description={about.seo?.metaDescription ?? SITE.tagline}
+	description={about.seo?.metaDescription ?? site.tagline}
 	ogImage={about.seo?.ogImage ?? about.heroImage}
+	noindex={about.seo?.noindex}
+	canonical={about.seo?.canonicalPath}
+	alternates={{ es: '/nosotros', en: '/en/nosotros' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Nosotros', href: '/nosotros' },
@@ -57,13 +61,13 @@ const historyColumns =
 		<>
 		<IndustryHero
 			title={about.heroTitle ?? 'Expertise colectivo, tecnología propia, capacidad cross-border.'}
-			description={about.heroDescription ?? SITE.tagline}
+			description={about.heroDescription ?? site.tagline}
 			image={about.heroImage ?? '/images/team/hiweb-team.png'}
 			imageAlt={about.heroImageAlt ?? 'Equipo Hiweb con playeras de la marca'}
 			imagePosition="center 28%"
 			badges={[
 				{ label: 'Nosotros', variant: 'lime' },
-				{ label: SITE.locales.join(' · '), variant: 'cyan' },
+				{ label: site.locales.join(' · '), variant: 'cyan' },
 			]}
 			ctaLabel="Agenda tu auditoría"
 			ctaHref="/contacto"
@@ -96,7 +100,7 @@ const historyColumns =
 			client:visible
 			eyebrow="Mapa global"
 			title="Presencia con clientes en Norteamérica"
-			description={`Bases en ${SITE.locales.join(', ')}. Clientes en México, Estados Unidos y Canadá — la auditoría puede ser remota.`}
+			description={`Bases en ${site.locales.join(', ')}. Clientes en México, Estados Unidos y Canadá — la auditoría puede ser remota.`}
 		/>
 		<FinalCta client:load title="Hablemos de tu industria" />
 		</>

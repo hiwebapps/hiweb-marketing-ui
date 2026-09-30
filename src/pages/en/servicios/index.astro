@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../../layouts/Layout.astro';
-import { getCases, getHomeCopy, getIndustries, getIndustriesIndex, getServices } from '../../../lib/content';
+import { getCases, getCatalogIndex, getHomeCopy, getIndustries, getIndustriesIndex, getServices } from '../../../lib/content';
 import { PageHero } from '../../../components/sections/PageHero';
 import { ServiceGrid } from '../../../components/sections/ServiceGrid';
 import { IndustryGrid } from '../../../components/sections/IndustryGrid';
@@ -15,11 +15,13 @@ const industries = await getIndustries('en');
 const industriesIndex = await getIndustriesIndex();
 const cases = await getCases();
 const home = await getHomeCopy('en');
+const page = await getCatalogIndex('servicesIndex-en');
 const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
 const intro = {
-	eyebrow: home.serviceIntro?.eyebrow ?? 'Services',
-	title: home.serviceIntro?.title ?? 'Digital marketing services in México',
+	eyebrow: page?.eyebrow ?? home.serviceIntro?.eyebrow ?? 'Services',
+	title: page?.title ?? home.serviceIntro?.title ?? 'Digital marketing services in México',
 	description:
+		page?.description ??
 		home.serviceIntro?.description ??
 		'We unify strategy, execution and measurement to scale demand and sales. Choose a service or work on a full stack.',
 };
@@ -27,8 +29,11 @@ const intro = {
 
 <Layout
 	lang="en"
-	title={intro.title}
-	description={intro.description}
+	title={page?.seo?.metaTitle ?? intro.title}
+	description={page?.seo?.metaDescription ?? intro.description}
+	noindex={page?.seo?.noindex}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/servicios', en: '/en/servicios' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Home', href: '/en' },
 		{ name: 'Services', href: '/en/servicios' },
@@ -56,7 +61,7 @@ const intro = {
 				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
 			eyebrow={industriesIndex?.eyebrow}
-			title={industriesIndex?.title}
+			title={page?.sectionTitle ?? industriesIndex?.title}
 			description={industriesIndex?.description}
 			hrefPrefix="/en/industrias"
 			ctaLabel={industriesIndex?.cardCtaLabel}
@@ -73,6 +78,6 @@ const intro = {
 				accent: item.data.accent,
 			}))}
 		/>
-		<FinalCta client:load title="Elige palanca después del diagnóstico" />
+		<FinalCta client:load title={page?.closingTitle ?? 'Elige palanca después del diagnóstico'} />
 	</main>
 </Layout>

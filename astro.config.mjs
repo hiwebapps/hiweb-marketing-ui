@@ -6,6 +6,7 @@ import sanity from '@sanity/astro';
 import react from '@astrojs/react';
 import cloudflare from '@astrojs/cloudflare';
 import tailwindcss from '@tailwindcss/vite';
+import { sanityRedirects } from './integrations/sanity-redirects.mjs';
 
 const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET, PUBLIC_SITE_URL } = loadEnv(
   process.env.NODE_ENV ?? 'development',
@@ -70,6 +71,7 @@ export default defineConfig({
     }),
     react(),
     stagingSsr(),
+    sanityRedirects(),
   ],
   adapter: cloudflare({
     imageService: 'compile',
