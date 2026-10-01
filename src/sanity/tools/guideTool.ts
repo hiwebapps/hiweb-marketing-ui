@@ -53,7 +53,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'note',
-        text: 'El sitio público (hiweb-marketing-ui.hiwebapps.workers.dev) se arma al desplegar, con lo que esté publicado en ese momento. Publicar en el Studio no cambia esa URL al instante. Presentation sí muestra el borrador al momento, porque lee staging.',
+        text: 'El sitio público (hiweb.com.mx) se arma al desplegar, con lo que esté publicado en ese momento. Publicar en el Studio no cambia esa URL al instante. Presentation sí muestra el borrador al momento, porque lee staging (staging.hiweb.com.mx).',
       },
       {
         kind: 'p',

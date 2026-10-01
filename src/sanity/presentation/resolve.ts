@@ -57,7 +57,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
     },
     {
       route: '/portafolio/:slug',
-      filter: `_type == "caseStudy" && slug.current == $slug`,
+      filter: `_type == "caseStudy" && slug.current == $slug && coalesce(locale, "es") == "es"`,
     },
     {
       route: '/blog/:slug',

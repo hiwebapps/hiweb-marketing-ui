@@ -21,6 +21,7 @@ jobs:
       - run: npm run build
         env:
           PUBLIC_SITE_INDEXABLE: 'false'
+          PUBLIC_SITE_URL: https://hiweb.com.mx
           PUBLIC_SANITY_PROJECT_ID: fxardjr1
           PUBLIC_SANITY_DATASET: web-2026
           SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}

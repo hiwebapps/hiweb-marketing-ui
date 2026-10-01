@@ -34,6 +34,6 @@ export function absoluteUrl(pathOrUrl: string, site?: URL | string | undefined) 
   const origin =
     typeof site === 'string'
       ? site
-      : site?.href ?? import.meta.env.PUBLIC_SITE_URL ?? 'https://hiweb-marketing-ui.hiwebapps.workers.dev';
+      : site?.href ?? import.meta.env.PUBLIC_SITE_URL ?? 'https://hiweb.com.mx';
   return new URL(pathOrUrl, origin).href;
 }

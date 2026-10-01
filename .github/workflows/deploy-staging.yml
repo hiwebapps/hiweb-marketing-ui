@@ -23,7 +23,7 @@ jobs:
       - run: npm run build
         env:
           PUBLIC_SITE_ENV: staging
-          PUBLIC_SITE_URL: https://hiweb-marketing-ui-staging.hiwebapps.workers.dev
+          PUBLIC_SITE_URL: https://staging.hiweb.com.mx
           CLOUDFLARE_ENV: staging
           PUBLIC_SITE_INDEXABLE: 'false'
           PUBLIC_SANITY_PROJECT_ID: fxardjr1

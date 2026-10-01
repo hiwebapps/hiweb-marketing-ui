@@ -713,7 +713,7 @@ const caseBodyProjection = /* groq */ `
 `;
 
 export const casesQuery = defineQuery(`*[
-  _type == "caseStudy" && defined(slug.current)
+  _type == "caseStudy" && defined(slug.current) && coalesce(locale, "es") == "es"
 ]{
   "id": slug.current,
   cliente,
@@ -728,7 +728,7 @@ export const casesQuery = defineQuery(`*[
 }`);
 
 export const caseBySlugQuery = defineQuery(`*[
-  _type == "caseStudy" && slug.current == $slug
+  _type == "caseStudy" && slug.current == $slug && coalesce(locale, "es") == "es"
 ][0]{
   "id": slug.current,
   cliente,
@@ -891,7 +891,7 @@ export const contactPageQuery = defineQuery(`*[_type == "contactPage" && _id == 
 export const sitemapEntriesQuery = defineQuery(`{
   "industries": *[_type == "industry" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
   "services": *[_type == "service" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
-  "cases": *[_type == "caseStudy" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
+  "cases": *[_type == "caseStudy" && defined(slug.current) && coalesce(locale, "es") == "es"]{ "slug": slug.current, _updatedAt },
   "posts": *[_type == "post" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
   "landings": *[_type == "landingPage" && defined(slug.current)]{ "slug": slug.current, _updatedAt }
 }`);

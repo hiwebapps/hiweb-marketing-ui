@@ -7,6 +7,7 @@ import { HelpCircleIcon } from '@sanity/icons/HelpCircle';
 import { HomeIcon } from '@sanity/icons/Home';
 import { CommentIcon } from '@sanity/icons/Comment';
 import { UsersIcon } from '@sanity/icons/Users';
+import { map } from 'rxjs';
 import type { StructureResolver } from 'sanity/structure';
 
 const HIDDEN_FROM_FALLBACK = [
@@ -113,15 +114,11 @@ function createMenu(
   S: Parameters<StructureResolver>[0],
   schemaType: 'service' | 'industry',
 ) {
-  const esTitle = schemaType === 'service' ? 'Nuevo servicio en español' : 'Nueva industria en español';
-  const enTitle = schemaType === 'service' ? 'Nuevo servicio en inglés' : 'Nueva industria en inglés';
+  const title = schemaType === 'service' ? 'Nuevo servicio' : 'Nueva industria';
   return [
     S.menuItem()
-      .title(esTitle)
+      .title(title)
       .intent({ type: 'create', params: { type: schemaType, template: `${schemaType}-es` } }),
-    S.menuItem()
-      .title(enTitle)
-      .intent({ type: 'create', params: { type: schemaType, template: `${schemaType}-en` } }),
   ];
 }
 
@@ -160,36 +157,156 @@ function languageItems(
   ].filter((item) => item !== null);
 }
 
-export const structure: StructureResolver = (S, context) => {
-  const client = context.getClient({ apiVersion: '2024-01-01' });
+const PAIR_QUERY = /* groq */ `*[_type == $type]{
+  _id,
+  nombre,
+  "slug": coalesce(slug.current, _id),
+  orden,
+  "locale": coalesce(locale, "es")
+}`;
 
-  async function pairs(type: 'service' | 'industry') {
-    const rows = await client.fetch<LocaleDoc[]>(
-      `*[_type == $type]{
-        _id,
-        nombre,
-        "slug": coalesce(slug.current, _id),
-        orden,
-        "locale": coalesce(locale, "es")
-      }`,
-      { type },
-    );
-    const bySlug = new Map<string, { slug: string; nombre: string; orden: number; esId?: string; enId?: string }>();
-    for (const row of rows) {
-      const id = row._id.replace(/^drafts\./, '');
-      const key = row.locale === 'en' && id.endsWith('-en') ? id.slice(0, -3) : id;
-      const current = bySlug.get(key) ?? { slug: row.slug, nombre: row.nombre, orden: row.orden ?? 0 };
-      if (row.locale === 'en') current.enId = id;
-      else {
-        current.esId = id;
-        current.nombre = row.nombre;
-        current.orden = row.orden ?? 0;
-        current.slug = row.slug;
-      }
-      bySlug.set(key, current);
+type Pair = {
+  key: string;
+  slug: string;
+  nombre: string;
+  orden: number;
+  esId?: string;
+  enId?: string;
+};
+
+function groupPairs(rows: LocaleDoc[] | null) {
+  const byKey = new Map<string, Pair>();
+  for (const row of rows ?? []) {
+    const id = row._id.replace(/^drafts\./, '');
+    const key = row.locale === 'en' && id.endsWith('-en') ? id.slice(0, -3) : id;
+    const current = byKey.get(key) ?? {
+      key,
+      slug: row.slug,
+      nombre: row.nombre || 'Sin nombre',
+      orden: row.orden ?? 0,
+    };
+    if (row.locale === 'en') current.enId = id;
+    else {
+      current.esId = id;
+      current.nombre = row.nombre || current.nombre;
+      current.orden = row.orden ?? 0;
+      current.slug = row.slug;
     }
-    return [...bySlug.values()].sort((a, b) => a.orden - b.orden || a.nombre.localeCompare(b.nombre));
+    byKey.set(key, current);
   }
+  return [...byKey.values()].sort((a, b) => a.orden - b.orden || a.nombre.localeCompare(b.nombre, 'es'));
+}
+
+function catalogIndex(
+  S: Parameters<StructureResolver>[0],
+  schemaType: 'industriesIndex' | 'servicesIndex',
+) {
+  const esId = schemaType === 'industriesIndex' ? 'industriesIndex' : 'servicesIndex';
+  const paneId = schemaType === 'industriesIndex' ? 'industries-index' : 'services-index';
+  return S.listItem()
+    .title('Índice')
+    .id(paneId)
+    .child(
+      S.list()
+        .title('Índice')
+        .items([
+          S.listItem()
+            .title('Español')
+            .id(`${paneId}-es`)
+            .child(S.document().schemaType(schemaType).documentId(esId).title('Español')),
+          S.listItem()
+            .title('English')
+            .id(`${paneId}-en`)
+            .child(S.document().schemaType(schemaType).documentId(`${esId}-en`).title('English')),
+        ]),
+    );
+}
+
+function catalogList(
+  S: Parameters<StructureResolver>[0],
+  context: Parameters<StructureResolver>[1],
+  schemaType: 'service' | 'industry',
+) {
+  const title = schemaType === 'service' ? 'Servicios' : 'Industrias';
+  const indexType = schemaType === 'service' ? 'servicesIndex' : 'industriesIndex';
+  return context.documentStore
+    .listenQuery<LocaleDoc[]>(PAIR_QUERY, { type: schemaType }, { apiVersion: '2024-01-01', perspective: 'raw' })
+    .pipe(
+      map((rows) =>
+        S.list()
+          .title(title)
+          .menuItems(createMenu(S, schemaType))
+          .items([
+            catalogIndex(S, indexType),
+            ...groupPairs(rows).map((page) =>
+              S.listItem()
+                .title(page.nombre)
+                .id(`${schemaType}-pair-${page.key}`)
+                .child(
+                  S.list()
+                    .title(page.nombre)
+                    .items(languageItems(S, schemaType, page.esId, page.enId)),
+                ),
+            ),
+          ]),
+      ),
+    );
+}
+
+const CASE_QUERY = /* groq */ `*[_type == "caseStudy"]{
+  _id,
+  "nombre": coalesce(cliente, titulo, "Sin nombre"),
+  "slug": coalesce(slug.current, _id),
+  "orden": 0,
+  "locale": coalesce(locale, "es")
+}`;
+
+function caseList(S: Parameters<StructureResolver>[0], context: Parameters<StructureResolver>[1]) {
+  return context.documentStore
+    .listenQuery<LocaleDoc[]>(CASE_QUERY, {}, { apiVersion: '2024-01-01', perspective: 'raw' })
+    .pipe(
+      map((rows) =>
+        S.list()
+          .title('Casos')
+          .menuItems([
+            S.menuItem()
+              .title('Nuevo caso')
+              .intent({ type: 'create', params: { type: 'caseStudy', template: 'case-es' } }),
+          ])
+          .items([
+            S.listItem()
+              .title('Índice')
+              .id('cases-index')
+              .child(
+                S.list()
+                  .title('Índice')
+                  .items([
+                    S.listItem()
+                      .title('Español')
+                      .id('cases-index-es')
+                      .child(S.document().schemaType('casesIndex').documentId('casesIndex').title('Español')),
+                    S.listItem()
+                      .title('English')
+                      .id('cases-index-en')
+                      .child(S.document().schemaType('casesIndex').documentId('casesIndex-en').title('English')),
+                  ]),
+              ),
+            ...groupPairs(rows).map((page) =>
+              S.listItem()
+                .title(page.nombre)
+                .id(`case-pair-${page.key}`)
+                .child(
+                  S.list()
+                    .title(page.nombre)
+                    .items(languageItems(S, 'caseStudy', page.esId, page.enId)),
+                ),
+            ),
+          ]),
+      ),
+    );
+}
+
+export const structure: StructureResolver = (S, context) => {
 
   return S.list()
     .title('Contenido')
@@ -297,110 +414,17 @@ export const structure: StructureResolver = (S, context) => {
         .title('Industrias')
         .id('industrias')
         .icon(CaseIcon)
-        .child(async () => {
-          const pages = await pairs('industry');
-          return S.list()
-            .title('Industrias')
-            .menuItems(createMenu(S, 'industry'))
-            .items([
-              S.listItem()
-                .title('Índice')
-                .id('industries-index')
-                .child(
-                  S.list()
-                    .title('Índice')
-                    .items([
-                      S.listItem()
-                        .title('Español')
-                        .id('industries-index-es')
-                        .child(
-                          S.document()
-                            .schemaType('industriesIndex')
-                            .documentId('industriesIndex')
-                            .title('Español'),
-                        ),
-                      S.listItem()
-                        .title('English')
-                        .id('industries-index-en')
-                        .child(
-                          S.document()
-                            .schemaType('industriesIndex')
-                            .documentId('industriesIndex-en')
-                            .title('English'),
-                        ),
-                    ]),
-                ),
-              ...pages.map((page) =>
-                S.listItem()
-                  .title(page.nombre)
-                  .id(`industry-${page.slug}`)
-                  .child(
-                    S.list()
-                      .title(page.nombre)
-                      .items(languageItems(S, 'industry', page.esId, page.enId)),
-                  ),
-              ),
-            ]);
-        }),
+        .child(() => catalogList(S, context, 'industry')),
       S.listItem()
         .title('Servicios')
         .id('servicios')
         .icon(CaseIcon)
-        .child(async () => {
-          const pages = await pairs('service');
-          return S.list()
-            .title('Servicios')
-            .menuItems(createMenu(S, 'service'))
-            .items([
-              S.listItem()
-                .title('Índice')
-                .id('services-index')
-                .child(
-                  S.list()
-                    .title('Índice')
-                    .items([
-                      S.listItem()
-                        .title('Español')
-                        .id('services-index-es')
-                        .child(S.document().schemaType('servicesIndex').documentId('servicesIndex').title('Español')),
-                      S.listItem()
-                        .title('English')
-                        .id('services-index-en')
-                        .child(
-                          S.document().schemaType('servicesIndex').documentId('servicesIndex-en').title('English'),
-                        ),
-                    ]),
-                ),
-              ...pages.map((page) =>
-                S.listItem()
-                  .title(page.nombre)
-                  .id(`service-${page.slug}`)
-                  .child(
-                    S.list()
-                      .title(page.nombre)
-                      .items(languageItems(S, 'service', page.esId, page.enId)),
-                  ),
-              ),
-            ]);
-        }),
+        .child(() => catalogList(S, context, 'service')),
       S.listItem()
         .title('Casos')
         .id('casos')
         .icon(CaseIcon)
-        .child(
-          S.list()
-            .title('Casos')
-            .items([
-              S.listItem()
-                .title('Índice')
-                .id('cases-index')
-                .child(S.document().schemaType('casesIndex').documentId('casesIndex').title('Índice')),
-              S.listItem()
-                .title('Casos')
-                .id('cases-list')
-                .child(S.documentTypeList('caseStudy').title('Casos')),
-            ]),
-        ),
+        .child(() => caseList(S, context)),
       S.divider(),
       S.listItem()
         .title('Páginas')

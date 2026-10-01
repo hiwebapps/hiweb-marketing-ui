@@ -26,7 +26,7 @@ const PATHS_QUERY = `{
     "locale": coalesce(locale, "es"),
     "slug": slug.current
   },
-  "cases": *[_type == "caseStudy" && defined(slug.current)].slug.current,
+  "cases": *[_type == "caseStudy" && defined(slug.current) && coalesce(locale, "es") == "es"].slug.current,
   "landings": *[_type == "landingPage" && defined(slug.current)].slug.current
 }`;
 

@@ -4,6 +4,7 @@ import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { completeLandingTemplate } from './src/sanity/actions/completeLandingTemplate';
 import { createEnglishVersion } from './src/sanity/actions/createEnglishVersion';
+import { ensureEnglishPair } from './src/sanity/actions/ensureEnglishPair';
 import { createRedirect } from './src/sanity/actions/createRedirect';
 import { viewOnStaging } from './src/sanity/actions/viewOnStaging';
 import { keywordBadge, seoChecklistBadge } from './src/sanity/badges/seoBadges';
@@ -30,7 +31,8 @@ const dataset =
   process.env.PUBLIC_SANITY_DATASET ||
   'web-2026';
 
-const STAGING_ORIGIN = 'https://hiweb-marketing-ui-staging.hiwebapps.workers.dev';
+const STAGING_ORIGIN = 'https://staging.hiweb.com.mx';
+const STAGING_WORKERS_ORIGIN = 'https://hiweb-marketing-ui-staging.hiwebapps.workers.dev';
 
 function previewOrigin() {
   const fromEnv = process.env.SANITY_STUDIO_PREVIEW_URL?.trim();
@@ -56,7 +58,12 @@ export default defineConfig({
     }),
     presentationTool({
       resolve,
-      allowOrigins: [STAGING_ORIGIN, 'http://localhost:4321', 'http://127.0.0.1:4321'],
+      allowOrigins: [
+        STAGING_ORIGIN,
+        STAGING_WORKERS_ORIGIN,
+        'http://localhost:4321',
+        'http://127.0.0.1:4321',
+      ],
       previewUrl: {
         initial: previewOrigin(),
         previewMode: {
@@ -97,9 +104,13 @@ export default defineConfig({
           : context.schemaType === 'post'
             ? [...prev, createEnglishVersion]
             : prev;
+      const withPair =
+        context.schemaType === 'service' || context.schemaType === 'industry' || context.schemaType === 'caseStudy'
+          ? [ensureEnglishPair, ...withTemplate]
+          : withTemplate;
       const withRedirect = ['post', 'service', 'industry', 'caseStudy', 'landingPage'].includes(context.schemaType)
-        ? [...withTemplate, createRedirect]
-        : withTemplate;
+        ? [...withPair, createRedirect]
+        : withPair;
       const stagingTypes = new Set([
         'homePage',
         'aboutPage',
@@ -120,7 +131,8 @@ export default defineConfig({
         (template) =>
           template.schemaType !== 'landingPage' &&
           template.schemaType !== 'service' &&
-          template.schemaType !== 'industry',
+          template.schemaType !== 'industry' &&
+          template.schemaType !== 'caseStudy',
       ),
       {
         id: 'service-es',
@@ -145,6 +157,12 @@ export default defineConfig({
         title: 'Industria en inglés',
         schemaType: 'industry',
         value: industryStarter('en'),
+      },
+      {
+        id: 'case-es',
+        title: 'Caso en español',
+        schemaType: 'caseStudy',
+        value: { locale: 'es' },
       },
       {
         id: 'post-es',

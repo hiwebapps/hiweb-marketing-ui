@@ -1,6 +1,6 @@
 import type { DocumentActionComponent, DocumentActionProps } from 'sanity';
 
-const STAGING_ORIGIN = 'https://hiweb-marketing-ui-staging.hiwebapps.workers.dev';
+const STAGING_ORIGIN = 'https://staging.hiweb.com.mx';
 
 type SlugValue = { current?: string };
 

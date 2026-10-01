@@ -51,7 +51,7 @@ export const PAIRED_TYPES = new Set([
   'blogIndex',
 ]);
 
-export const SINGLE_LOCALE_TYPES = new Set(['caseStudy', 'contactPage', 'landingPage', 'casesIndex', 'legalPage']);
+export const SINGLE_LOCALE_TYPES = new Set(['contactPage', 'landingPage', 'legalPage']);
 
 export type SeoStatus = 'published' | 'changed' | 'draft';
 
@@ -152,7 +152,10 @@ function pairKey(row: SeoSource) {
   if (row._type === 'industriesIndex' || row._type === 'servicesIndex' || row._type === 'blogIndex') {
     return `${row._type}:${id.endsWith('-en') ? id.slice(0, -3) : id}`;
   }
-  if (row._type === 'service' || row._type === 'industry') return id.endsWith('-en') ? id.slice(0, -3) : id;
+  if (row._type === 'service' || row._type === 'industry' || row._type === 'caseStudy') {
+    return id.endsWith('-en') ? id.slice(0, -3) : id;
+  }
+  if (row._type === 'casesIndex') return `casesIndex:${id.endsWith('-en') ? id.slice(0, -3) : id}`;
   if (row._type === 'post') {
     if (isEnglish(id, row.locale)) {
       if (row.esSlug) return `post:${row.esSlug}`;

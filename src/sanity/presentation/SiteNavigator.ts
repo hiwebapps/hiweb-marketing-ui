@@ -36,7 +36,7 @@ const NAV_QUERY = `{
   "industries": *[_type == "industry" && coalesce(locale, "es") == $locale && defined(slug.current)] | order(orden asc) {
     _id, "title": nombre, "slug": slug.current
   },
-  "cases": *[_type == "caseStudy" && defined(slug.current)] | order(cliente asc) {
+  "cases": *[_type == "caseStudy" && defined(slug.current) && coalesce(locale, "es") == $locale] | order(cliente asc) {
     _id, "title": cliente, "slug": slug.current
   },
   "pages": *[_type == "landingPage" && defined(slug.current)] | order(title asc) {

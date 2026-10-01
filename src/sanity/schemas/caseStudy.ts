@@ -32,7 +32,37 @@ export const caseStudy = defineType({
       title: 'Slug',
       type: 'slug',
       group: 'datos',
-      options: { source: 'cliente', maxLength: 96 },
+      options: {
+        source: 'cliente',
+        maxLength: 96,
+        isUnique: async (slug, context) => {
+          const { document, getClient } = context;
+          if (!document || !slug) return true;
+          const id = document._id.replace(/^drafts\./, '');
+          const locale = (document as { locale?: string }).locale ?? 'es';
+          const client = getClient({ apiVersion: '2024-01-01' });
+          const count = await client.fetch(
+            `count(*[_type == "caseStudy" && slug.current == $slug && coalesce(locale, "es") == $locale && !(_id in [$id, $draftId])])`,
+            { slug, locale, id, draftId: `drafts.${id}` },
+          );
+          return count === 0;
+        },
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'locale',
+      title: 'Idioma',
+      type: 'string',
+      group: 'datos',
+      options: {
+        list: [
+          { title: 'Español', value: 'es' },
+          { title: 'English', value: 'en' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'es',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -101,6 +131,10 @@ export const caseStudy = defineType({
     ...seoFields,
   ],
   preview: {
-    select: { title: 'cliente', subtitle: 'titulo' },
+    select: { title: 'cliente', subtitle: 'titulo', locale: 'locale' },
+    prepare: ({ title, subtitle, locale }) => ({
+      title: title || 'Caso',
+      subtitle: [locale === 'en' ? 'English' : 'Español', subtitle].filter(Boolean).join(' · '),
+    }),
   },
 });

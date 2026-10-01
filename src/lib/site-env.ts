@@ -3,4 +3,4 @@ export function isStagingSite() {
   return value === 'staging';
 }
 
-export const STAGING_ORIGIN = 'https://hiweb-marketing-ui-staging.hiwebapps.workers.dev';
+export const STAGING_ORIGIN = 'https://staging.hiweb.com.mx';

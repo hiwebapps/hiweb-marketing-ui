@@ -10,7 +10,7 @@
   },
   "vars": {
     "PUBLIC_SITE_INDEXABLE": "false",
-    "PUBLIC_SITE_URL": "https://hiweb-marketing-ui.hiwebapps.workers.dev",
+    "PUBLIC_SITE_URL": "https://hiweb.com.mx",
     "PUBLIC_SANITY_PROJECT_ID": "fxardjr1",
     "PUBLIC_SANITY_DATASET": "web-2026"
   },
@@ -23,7 +23,7 @@
       "vars": {
         "PUBLIC_SITE_ENV": "staging",
         "PUBLIC_SITE_INDEXABLE": "false",
-        "PUBLIC_SITE_URL": "https://hiweb-marketing-ui-staging.hiwebapps.workers.dev",
+        "PUBLIC_SITE_URL": "https://staging.hiweb.com.mx",
         "PUBLIC_SANITY_PROJECT_ID": "fxardjr1",
         "PUBLIC_SANITY_DATASET": "web-2026"
       }
