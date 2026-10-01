@@ -99,7 +99,7 @@ export function ServiceGrid({
                     <ServiceIcon name={icon} />
                   </span>
                   <div className="service-card__copy">
-                    <h3 className="font-display text-lg font-semibold tracking-tight">{item.nombre}</h3>
+                    <h3 className="font-display text-lg font-medium tracking-tight">{item.nombre}</h3>
                     <p className="mt-1.5 !text-sm !leading-relaxed">{item.tagline}</p>
                   </div>
                 </a>

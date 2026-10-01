@@ -69,7 +69,7 @@ export function PillarGrid({
               <span className="pillar-card__icon">
                 <PillarIcon name={icon} />
               </span>
-              <h3 className="mt-5 font-display text-lg font-semibold tracking-tight text-ink">
+              <h3 className="mt-5 font-display text-lg font-medium tracking-tight text-ink">
                 {pillar.title}
               </h3>
               <p className="mt-2 !text-sm !leading-relaxed">{pillar.description}</p>
