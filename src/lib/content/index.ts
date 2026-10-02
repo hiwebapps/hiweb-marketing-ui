@@ -207,8 +207,12 @@ export async function getPost(slug: string, locale: 'es' | 'en' = 'es'): Promise
   return fromSanity ?? undefined;
 }
 
-export async function getPeople(): Promise<PersonRecord[]> {
-  return withFallback(sanityPeople, collectionsPeople, (items) => items.length === 0);
+export async function getPeople(locale: 'es' | 'en' = 'es'): Promise<PersonRecord[]> {
+  if (locale === 'en') {
+    const english = await sanityPeople('en');
+    if (english.length > 0) return english;
+  }
+  return withFallback(() => sanityPeople('es'), collectionsPeople, (items) => items.length === 0);
 }
 
 export async function getHomeCopy(locale: 'es' | 'en' = 'es'): Promise<HomeCopy> {

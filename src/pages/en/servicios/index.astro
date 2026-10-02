@@ -40,7 +40,12 @@ const intro = {
 	])}
 >
 	<main>
-		<PageHero eyebrow={intro.eyebrow} title={intro.title} description={intro.description} />
+		<PageHero
+			eyebrow={intro.eyebrow}
+			title={intro.title}
+			description={intro.description}
+			headingWidth={page?.headingWidth}
+		/>
 		<ServiceGrid
 			services={services.map((item) => ({
 				slug: item.id,
@@ -50,6 +55,7 @@ const intro = {
 			eyebrow={intro.eyebrow}
 			title={intro.title}
 			description={intro.description}
+			headingWidth={page?.headingWidth ?? home.serviceIntro?.headingWidth}
 			hrefPrefix="/en/servicios"
 		/>
 		<IndustryGrid
@@ -62,6 +68,7 @@ const intro = {
 			}))}
 			eyebrow={industriesIndex?.eyebrow}
 			title={page?.sectionTitle ?? industriesIndex?.title}
+			headingWidth={page?.sectionHeadingWidth}
 			description={industriesIndex?.description}
 			hrefPrefix="/en/industrias"
 			ctaLabel={industriesIndex?.cardCtaLabel}
@@ -78,6 +85,10 @@ const intro = {
 				accent: item.data.accent,
 			}))}
 		/>
-		<FinalCta client:load title={page?.closingTitle ?? 'Elige palanca después del diagnóstico'} />
+		<FinalCta
+			client:load
+			title={page?.closingTitle ?? 'Elige palanca después del diagnóstico'}
+			headingWidth={page?.closingHeadingWidth}
+		/>
 	</main>
 </Layout>

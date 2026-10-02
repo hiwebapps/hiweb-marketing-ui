@@ -39,7 +39,7 @@ export function ContactDetails() {
         <ol className="mt-12 grid gap-4 md:grid-cols-3">
           {CONTACT_NEXT_STEPS.map((step) => (
             <li key={step.title} data-reveal className="rounded-2xl border border-border bg-canvas p-6">
-              <h3 className="font-display text-lg font-semibold tracking-tight text-ink">{step.title}</h3>
+              <h3 className="text-lg tracking-tight text-ink">{step.title}</h3>
               <p className="mt-2 !text-sm">{step.description}</p>
             </li>
           ))}

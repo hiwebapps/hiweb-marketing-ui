@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MOTION } from '../../lib/motion';
 import { Badge, Button } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
+import { HeadingText, headingProps } from './primitives/heading';
 import './MetricsBand.css';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -28,6 +29,7 @@ type MetricsBandProps = {
   primaryHref?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
+  headingWidth?: string;
 };
 
 function prefersReducedMotion() {
@@ -51,7 +53,9 @@ export function MetricsBand({
   primaryHref = '/contacto',
   secondaryLabel = 'Ver más casos',
   secondaryHref = '/portafolio',
+  headingWidth,
 }: MetricsBandProps) {
+  const width = headingProps(headingWidth);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -119,11 +123,17 @@ export function MetricsBand({
   return (
     <SectionBand id="cifras" tone="canvas" className="metrics-band">
       <div ref={rootRef} className="metrics-band__inner">
-        <div className="metrics-band__intro">
+        <div
+          className={['metrics-band__intro', width.className].filter(Boolean).join(' ')}
+          style={width.style}
+          data-heading-width={width['data-heading-width']}
+        >
           <Badge variant="cyan">{eyebrow}</Badge>
 
           <h2 className="metrics-band__title">
-            <span className="metrics-band__title-main">{title}</span>
+            <span className="metrics-band__title-main">
+              <HeadingText text={title} />
+            </span>
             {titleMuted ? (
               <span className="metrics-band__title-muted">{titleMuted}</span>
             ) : null}

@@ -23,6 +23,7 @@ type PillarGridProps = {
   pillars: Pillar[];
   tone?: 'canvas' | 'surface' | 'wash';
   ctaLabel?: string;
+  headingWidth?: string;
 };
 
 const ACCENT_HEX: Record<PillarAccent, string> = {
@@ -42,6 +43,7 @@ export function PillarGrid({
   pillars,
   tone = 'canvas',
   ctaLabel = 'Ver más',
+  headingWidth,
 }: PillarGridProps) {
   const cols =
     pillars.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-2 lg:grid-cols-3';
@@ -57,6 +59,7 @@ export function PillarGrid({
         description={description}
         align="center"
         className="mt-5"
+        headingWidth={headingWidth}
       />
 
       <ul className={['mt-14 grid gap-x-6 gap-y-10', cols].join(' ')}>
@@ -69,7 +72,7 @@ export function PillarGrid({
               <span className="pillar-card__icon">
                 <PillarIcon name={icon} />
               </span>
-              <h3 className="mt-5 font-display text-lg font-medium tracking-tight text-ink">
+              <h3 className="mt-5 font-sans text-lg font-semibold tracking-tight text-ink">
                 {pillar.title}
               </h3>
               <p className="mt-2 !text-sm !leading-relaxed">{pillar.description}</p>

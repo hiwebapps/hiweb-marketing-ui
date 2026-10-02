@@ -31,6 +31,11 @@ export function stagingPath(type: string, id: string, doc: Record<string, unknow
   if (type === 'caseStudy' && slug) return `/portafolio/${slug}`;
   if (type === 'post' && slug) return english ? `/en/blogs/${slug}` : `/blog/${slug}`;
   if (type === 'landingPage' && slug) return `/${slug}`;
+  if (type === 'legalPage') {
+    const terms = published === 'legal-terms' || published === 'legal-terms-en';
+    const path = terms ? '/terminos' : '/aviso-de-privacidad';
+    return english ? `/en${path}` : path;
+  }
   return '';
 }
 

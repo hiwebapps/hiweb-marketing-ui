@@ -18,6 +18,7 @@ type AboutHistoryProps = {
   description?: string;
   images?: [AboutHistoryImage, AboutHistoryImage, AboutHistoryImage];
   columns?: [AboutHistoryColumn, AboutHistoryColumn];
+  headingWidth?: string;
 };
 
 const DEFAULT_IMAGES: [AboutHistoryImage, AboutHistoryImage, AboutHistoryImage] = [
@@ -61,6 +62,7 @@ export function AboutHistory({
   description = 'Hiweb nace de operar cuentas consolidadas donde el catálogo de servicios no bastaba. El comprador no busca “SEO”: busca un resultado en su sector. Reorganizamos oferta, prueba y equipo alrededor de eso.',
   images = DEFAULT_IMAGES,
   columns = DEFAULT_COLUMNS,
+  headingWidth,
 }: AboutHistoryProps) {
   const [hero, top, bottom] = images;
   const [left, right] = columns;
@@ -72,6 +74,7 @@ export function AboutHistory({
         title={title}
         description={description}
         badgeVariant="purple"
+        headingWidth={headingWidth}
       />
 
       <div data-reveal className="about-history__gallery" aria-hidden="true">

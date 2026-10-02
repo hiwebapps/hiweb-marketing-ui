@@ -33,6 +33,9 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
   const baseId = publishedId(props.id);
   const nombre = spanishName(doc, '');
   const cliente = typeof doc?.cliente === 'string' ? doc.cliente.trim() : '';
+  const title = typeof doc?.title === 'string' ? doc.title.trim() : '';
+  const personName = typeof doc?.name === 'string' ? doc.name.trim() : '';
+  const clientName = typeof doc?.client === 'string' ? doc.client.trim() : '';
   const slug = slugOf(doc);
   const locale = typeof doc?.locale === 'string' ? doc.locale : '';
   const orden = typeof doc?.orden === 'number' ? doc.orden : undefined;
@@ -40,11 +43,18 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
   const running = useRef(false);
 
   useEffect(() => {
-    const paired = props.schemaType === 'service' || props.schemaType === 'industry' || props.schemaType === 'caseStudy';
+    const schemaType = props.schemaType;
+    const paired =
+      schemaType === 'service' ||
+      schemaType === 'industry' ||
+      schemaType === 'caseStudy' ||
+      schemaType === 'landingPage' ||
+      schemaType === 'testimonial' ||
+      schemaType === 'person' ||
+      schemaType === 'contactPage' ||
+      schemaType === 'legalPage';
     if (!hasDoc || !paired) return;
     if (baseId.endsWith('-en') || locale === 'en') return;
-
-    const schemaType = props.schemaType;
     const handle = window.setTimeout(() => {
       if (running.current) return;
       running.current = true;
@@ -55,8 +65,22 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
           { id: enId },
         )
         .then(async (existing) => {
-          if (!existing && schemaType === 'caseStudy') {
-            if (!slug && !cliente) return;
+          const copyType =
+            schemaType === 'caseStudy' ||
+            schemaType === 'landingPage' ||
+            schemaType === 'testimonial' ||
+            schemaType === 'person' ||
+            schemaType === 'contactPage' ||
+            schemaType === 'legalPage';
+          if (!existing && copyType) {
+            const ready =
+              schemaType === 'contactPage' ||
+              (schemaType === 'caseStudy' && Boolean(slug || cliente)) ||
+              (schemaType === 'landingPage' && Boolean(slug || title)) ||
+              (schemaType === 'testimonial' && Boolean(clientName || personName)) ||
+              (schemaType === 'person' && Boolean(personName)) ||
+              (schemaType === 'legalPage' && Boolean(title));
+            if (!ready) return;
             const source = await client.fetch<Record<string, unknown> | null>(
               `coalesce(*[_id == "drafts." + $id][0], *[_id == $id][0])`,
               { id: baseId },
@@ -68,7 +92,7 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
             await client.createIfNotExists({
               ...rest,
               _id: `drafts.${enId}`,
-              _type: 'caseStudy',
+              _type: schemaType,
               locale: 'en',
               ...(slug ? { slug: { _type: 'slug', current: slug } } : {}),
             });
@@ -108,7 +132,7 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
     }, 400);
 
     return () => window.clearTimeout(handle);
-  }, [baseId, client, cliente, hasDoc, locale, nombre, orden, props.schemaType, slug, toast]);
+  }, [baseId, client, clientName, cliente, hasDoc, locale, nombre, orden, personName, props.schemaType, slug, title, toast]);
 
   return null;
 };

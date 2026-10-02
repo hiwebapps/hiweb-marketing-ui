@@ -156,7 +156,7 @@ export function DesignSystem() {
                 </p>
                 <h1 className="!text-5xl !leading-[1.2] md:!text-7xl md:!leading-[1.2]">Heading 1</h1>
                 <h2 className="!text-4xl !leading-[1.25] md:!text-5xl md:!leading-[1.25]">Heading 2</h2>
-                <h3 className="font-display text-2xl font-semibold text-ink md:text-3xl">
+                <h3 className="text-2xl text-ink md:text-3xl">
                   Heading 3
                 </h3>
                 <p className="font-display text-xl font-medium text-ink">
@@ -406,7 +406,7 @@ export function DesignSystem() {
             <div className="grid gap-4 md:grid-cols-2">
               <CardGlass className="p-8">
                 <Badge>Default</Badge>
-                <h3 className="mt-4 font-display text-2xl font-semibold text-ink">
+                <h3 className="mt-4 text-2xl text-ink">
                   Card canvas
                 </h3>
                 <p className="mt-3 !text-sm">
@@ -415,7 +415,7 @@ export function DesignSystem() {
               </CardGlass>
               <CardGlass className="bg-surface p-8">
                 <Badge variant="neutral">Surface</Badge>
-                <h3 className="mt-4 font-display text-2xl font-semibold text-ink">
+                <h3 className="mt-4 text-2xl text-ink">
                   Why Less Is More
                 </h3>
                 <p className="mt-3 !text-sm">

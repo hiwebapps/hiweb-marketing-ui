@@ -77,7 +77,7 @@ const caseStories = cases.flatMap((item) => {
 		name: quote.name || item.data.cliente,
 		role: quote.role ?? '',
 		photo: quote.photo,
-		stats: [],
+		stats: quote.stats,
 	}];
 });
 ---

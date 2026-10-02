@@ -21,7 +21,8 @@ import '../components/sections/PresenceMap.css';
 const about = await getAboutCopy();
 const site = await getSiteSettings();
 const home = await getHomeCopy();
-const people = (await getPeople()) as TeamMember[];
+const aboutTeam = about.sections?.find((section) => section._type === 'aboutTeam');
+const people = (await getPeople(aboutTeam?.memberLocale === 'en' ? 'en' : 'es')) as TeamMember[];
 const allSections = about.sections ?? [];
 const pageSections = allSections.filter((section) => !section.hidden);
 const historyColumns =

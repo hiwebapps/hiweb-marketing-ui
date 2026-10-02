@@ -1,4 +1,6 @@
+import { headingPlain } from '../../lib/heading';
 import { Badge, Button, type BadgeVariant } from '../ui';
+import { HeadingText, headingProps } from './primitives/heading';
 import './IndustryHero.css';
 
 export type IndustryHeroBadge = {
@@ -16,6 +18,7 @@ type IndustryHeroProps = {
   badges?: IndustryHeroBadge[];
   ctaLabel?: string;
   ctaHref?: string;
+  headingWidth?: string;
 };
 
 /**
@@ -31,13 +34,15 @@ export function IndustryHero({
   badges = [{ label: 'Industria', variant: 'lime' }],
   ctaLabel = 'Ver casos de éxito',
   ctaHref = '#casos',
+  headingWidth,
 }: IndustryHeroProps) {
+  const width = headingProps(headingWidth);
   return (
     <section
       id="inicio"
       data-scroll-section="inicio"
       className="industry-hero"
-      aria-label={title}
+      aria-label={headingPlain(title)}
     >
       <div className="industry-hero__media" aria-hidden={imageAlt ? undefined : true}>
         <img
@@ -62,7 +67,11 @@ export function IndustryHero({
       </div>
 
       <div className="industry-hero__inner">
-        <div className="industry-hero__copy">
+        <div
+        className={['industry-hero__copy', width.className].filter(Boolean).join(' ')}
+        style={width.style}
+        data-heading-width={width['data-heading-width']}
+      >
           {badges.length > 0 ? (
             <div className="industry-hero__badges">
               {badges.map((badge) => (
@@ -72,7 +81,9 @@ export function IndustryHero({
               ))}
             </div>
           ) : null}
-          <h1 data-split className="industry-hero__title">{title}</h1>
+          <h1 data-split className="industry-hero__title">
+            <HeadingText text={title} />
+          </h1>
           <p className="industry-hero__lead">{description}</p>
           <div className="industry-hero__actions">
             <Button href={ctaHref} variant="primary" size="md" className="no-underline">

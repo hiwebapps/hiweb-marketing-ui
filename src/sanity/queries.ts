@@ -10,11 +10,14 @@ const imageProjection = /* groq */ `{
   }
 }`;
 
+const storyStatProjection = /* groq */ `{ value, label }`;
+
 const testimonialFields = /* groq */ `{
   "client": coalesce(testimonial->client, client),
   "quote": coalesce(testimonial->quote, quote),
   "name": coalesce(testimonial->name, name),
   "role": coalesce(testimonial->role, role),
+  "stats": testimonial->stats[] ${storyStatProjection},
   "photo": testimonial->photo ${imageProjection}
 }`;
 
@@ -31,6 +34,7 @@ const serviceSectionsProjection = /* groq */ `
     _type,
     _key,
     hidden,
+    headingWidth,
     _type == "serviceHero" => {
       title,
       description,
@@ -65,6 +69,7 @@ const serviceSectionsProjection = /* groq */ `
       description,
       ctaLabel,
       ctaHref,
+      stats[]{ valor, prefix, suffix, label },
       cards[]{ title, description, icon, accent }
     },
     _type == "servicePlans" => {
@@ -76,7 +81,7 @@ const serviceSectionsProjection = /* groq */ `
       noteHref,
       ctaLabel,
       ctaHref,
-      plans[]{ name, price, period, featured, includes }
+      plans[]{ name, badge, price, period, featured, includes }
     },
     _type == "serviceIndustries" => {
       title,
@@ -101,7 +106,7 @@ const serviceSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      items[]->{ client, quote, name, role, photo ${imageProjection} }
+      items[]->{ client, quote, name, role, stats[] ${storyStatProjection}, photo ${imageProjection} }
     },
     _type == "serviceFaq" => {
       eyebrow,
@@ -178,23 +183,48 @@ export const siteIdentityQuery = defineQuery(`*[_type == "siteSettings" && _id =
 export const catalogIndexQuery = defineQuery(`*[_id == $id][0]{
   eyebrow,
   title,
+  headingWidth,
   description,
   label,
   sectionTitle,
+  sectionHeadingWidth,
   listTitle,
+  listHeadingWidth,
   listDescription,
   allLabel,
   filterLabel,
   featuredCta,
   readingSuffix,
   closingTitle,
+  closingHeadingWidth,
   ${seoProjection}
 }`);
+
+const legalLeafProjection = /* groq */ `
+  _type,
+  _type == "legalParagraph" => { text },
+  _type == "legalBullets" => { items },
+  _type == "legalTerms" => { items[]{ term, text } },
+  _type == "legalLines" => { items[]{ label, value } }
+`;
 
 export const legalPageQuery = defineQuery(`*[_id == $id][0]{
   eyebrow,
   title,
-  body,
+  headingWidth,
+  updatedLabel,
+  updatedOn,
+  intro,
+  sections[]{
+    title,
+    blocks[]{
+      ${legalLeafProjection},
+      _type == "legalSubsection" => {
+        title,
+        blocks[]{ ${legalLeafProjection} }
+      }
+    }
+  },
   ${seoProjection}
 }`);
 
@@ -217,12 +247,13 @@ export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id =
   ${seoProjection}
 }`);
 
-const introProjection = /* groq */ `{ eyebrow, title, titleMuted, description }`;
+const introProjection = /* groq */ `{ eyebrow, title, titleMuted, description, headingWidth }`;
 
 export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "homePage-en"][0]{
   sections[]{
     _type,
     hidden,
+    headingWidth,
     _type == "homeHero" => {
       title,
       lead,
@@ -259,7 +290,7 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
     },
     _type == "homeStories" => {
       intro ${introProjection},
-      items[]->{ client, quote, name, role, photo ${imageProjection} }
+      items[]->{ client, quote, name, role, stats[] ${storyStatProjection}, photo ${imageProjection} }
     },
     _type == "homeProcess" => {
       intro ${introProjection},
@@ -273,6 +304,7 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
       eyebrow,
       title,
       description,
+      memberLocale,
       ctaLabel,
       ctaHref
     },
@@ -294,6 +326,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
   sections[]{
     _type,
     hidden,
+    headingWidth,
     _type == "homeHero" => {
       title,
       lead,
@@ -330,7 +363,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
     },
     _type == "homeStories" => {
       intro ${introProjection},
-      items[]->{ client, quote, name, role, photo ${imageProjection} }
+      items[]->{ client, quote, name, role, stats[] ${storyStatProjection}, photo ${imageProjection} }
     },
     _type == "homeProcess" => {
       intro ${introProjection},
@@ -344,6 +377,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
       eyebrow,
       title,
       description,
+      memberLocale,
       ctaLabel,
       ctaHref
     },
@@ -366,6 +400,7 @@ const aboutSectionsProjection = /* groq */ `
     _type,
     _key,
     hidden,
+    headingWidth,
     _type == "aboutHero" => {
       badges[]{ label, variant },
       title,
@@ -399,6 +434,7 @@ const aboutSectionsProjection = /* groq */ `
       description,
       ctaLabel,
       ctaHref,
+      memberLocale,
       filterLabel,
       filters[]{ id, label }
     },
@@ -460,6 +496,7 @@ const industrySectionsProjection = /* groq */ `
     _type,
     _key,
     hidden,
+    headingWidth,
     _type == "industryHero" => {
       badge,
       title,
@@ -574,10 +611,13 @@ export const industriesIndexQuery = defineQuery(`*[
 ][0]{
   eyebrow,
   title,
+  headingWidth,
   description,
   whyEyebrow,
   whyTitle,
+  whyHeadingWidth,
   closingTitle,
+  closingHeadingWidth,
   cardCtaLabel,
   pillars[]{ title, description },
   ${seoProjection}
@@ -650,6 +690,7 @@ sections[]{
   _key,
   _type,
   hidden,
+  headingWidth,
   _type == "caseHero" => {
     anio,
     imagenesProyecto[] ${imageProjection}
@@ -686,6 +727,7 @@ sections[]{
     "quote": coalesce(testimonial->quote, quote),
     "name": coalesce(testimonial->name, name),
     "role": coalesce(testimonial->role, role),
+    "stats": testimonial->stats[] ${storyStatProjection},
     "photo": testimonial->photo ${imageProjection}
   },
   _type == "caseRelated" => {
@@ -786,7 +828,7 @@ export const postBySlugQuery = defineQuery(`*[
 }`);
 
 export const peopleQuery = defineQuery(`*[
-  _type == "person" && defined(name)
+  _type == "person" && defined(name) && coalesce(locale, "es") == $locale
 ] | order(orden asc) {
   name,
   role,
@@ -824,7 +866,7 @@ const landingPersonProjection = /* groq */ `{
 }`;
 
 export const landingsQuery = defineQuery(`*[
-  _type == "landingPage" && defined(slug.current)
+  _type == "landingPage" && defined(slug.current) && coalesce(locale, "es") == "es"
 ] | order(title asc) {
   "id": slug.current,
   title,
@@ -832,7 +874,7 @@ export const landingsQuery = defineQuery(`*[
 }`);
 
 export const landingBySlugQuery = defineQuery(`*[
-  _type == "landingPage" && slug.current == $slug
+  _type == "landingPage" && slug.current == $slug && coalesce(locale, "es") == "es"
 ][0]{
   "id": slug.current,
   title,
@@ -893,5 +935,5 @@ export const sitemapEntriesQuery = defineQuery(`{
   "services": *[_type == "service" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
   "cases": *[_type == "caseStudy" && defined(slug.current) && coalesce(locale, "es") == "es"]{ "slug": slug.current, _updatedAt },
   "posts": *[_type == "post" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
-  "landings": *[_type == "landingPage" && defined(slug.current)]{ "slug": slug.current, _updatedAt }
+  "landings": *[_type == "landingPage" && defined(slug.current) && coalesce(locale, "es") == "es"]{ "slug": slug.current, _updatedAt }
 }`);

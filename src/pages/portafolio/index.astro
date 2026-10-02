@@ -50,6 +50,7 @@ const cards = cases.map((item) => ({
 			eyebrow={page?.eyebrow ?? WEBFLOW_CASES_INDEX.eyebrow}
 			title={page?.title ?? WEBFLOW_CASES_INDEX.title}
 			description={page?.description ?? WEBFLOW_CASES_INDEX.description}
+			headingWidth={page?.headingWidth}
 		/>
 		<SectionBand tone="canvas">
 			<CasesIndex
@@ -61,6 +62,10 @@ const cards = cases.map((item) => ({
 				}))}
 			/>
 		</SectionBand>
-		<FinalCta client:load title={page?.closingTitle ?? '¿Un diagnóstico similar al de tu industria?'} />
+		<FinalCta
+			client:load
+			title={page?.closingTitle ?? '¿Un diagnóstico similar al de tu industria?'}
+			headingWidth={page?.closingHeadingWidth}
+		/>
 	</main>
 </Layout>

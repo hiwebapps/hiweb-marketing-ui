@@ -84,6 +84,7 @@ function previewsFrom(cases: CaseRecord[]) {
 		badges={section.badges?.map((badge) => ({ label: badge.label, variant: asBadge(badge.variant) }))}
 		ctaLabel={section.cta?.label}
 		ctaHref={section.cta?.href}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -93,6 +94,7 @@ function previewsFrom(cases: CaseRecord[]) {
 		title={section.title}
 		description={section.description}
 		atmosphere={asAtmosphere(section.atmosphere)}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -110,6 +112,7 @@ function previewsFrom(cases: CaseRecord[]) {
 			accent: asPillarAccent(pillar.accent),
 			href: pillar.href,
 		})) as Pillar[]}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -125,6 +128,7 @@ function previewsFrom(cases: CaseRecord[]) {
 			nombre: item.nombre,
 			description: item.tagline,
 		}))}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -139,6 +143,7 @@ function previewsFrom(cases: CaseRecord[]) {
 			nombre: item.nombre,
 			tagline: item.tagline,
 		}))}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -155,6 +160,7 @@ function previewsFrom(cases: CaseRecord[]) {
 			tagline: item.tagline,
 			puntos: item.puntos,
 		}))}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -166,6 +172,7 @@ function previewsFrom(cases: CaseRecord[]) {
 		description={section.description}
 		tone={section.tone}
 		phases={section.phases}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -176,6 +183,7 @@ function previewsFrom(cases: CaseRecord[]) {
 		title={section.title}
 		description={section.description}
 		stories={storiesFrom(section.cases)}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -186,6 +194,7 @@ function previewsFrom(cases: CaseRecord[]) {
 		description={section.description}
 		tone={section.tone}
 		cases={previewsFrom(section.cases)}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -198,6 +207,7 @@ function previewsFrom(cases: CaseRecord[]) {
 		tone={section.tone}
 		items={section.items}
 		withSchema={false}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -211,6 +221,7 @@ function previewsFrom(cases: CaseRecord[]) {
 		primaryHref={section.primaryCta?.href}
 		secondaryLabel={section.secondaryCta?.label}
 		secondaryHref={section.secondaryCta?.href}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -225,6 +236,7 @@ function previewsFrom(cases: CaseRecord[]) {
 		ctaLabel={section.cta?.label}
 		ctaHref={section.cta?.href}
 		members={section.people as TeamMember[]}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -247,6 +259,7 @@ function previewsFrom(cases: CaseRecord[]) {
 			decimals: metric.decimals,
 			detail: metric.antes && metric.despues ? `${metric.antes} → ${metric.despues}` : undefined,
 		}))}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}
 
@@ -258,5 +271,6 @@ function previewsFrom(cases: CaseRecord[]) {
 		description={section.description}
 		ctaLabel={section.cta?.label}
 		ctaHref={section.cta?.href}
+		headingWidth={section.headingWidth}
 	/>
 ) : null}

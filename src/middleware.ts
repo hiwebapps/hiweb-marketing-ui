@@ -40,16 +40,19 @@ function credentialsMatch(header: string | null, user: string, password: string)
 /** Belt-and-suspenders: X-Robots-Tag while PUBLIC_SITE_INDEXABLE is off (and always on non-live hosts). */
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
+  const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
   const englishSection =
-    pathname === '/en/servicios' ||
-    pathname.startsWith('/en/servicios/') ||
-    pathname === '/en/industrias' ||
-    pathname.startsWith('/en/industrias/') ||
-    pathname === '/en/nosotros' ||
-    pathname.startsWith('/en/nosotros/') ||
-    pathname === '/en/blogs' ||
-    pathname.startsWith('/en/blogs/');
-  if (pathname.startsWith('/en/') && pathname !== '/en/' && !englishSection) {
+    path === '/en/servicios' ||
+    path.startsWith('/en/servicios/') ||
+    path === '/en/industrias' ||
+    path.startsWith('/en/industrias/') ||
+    path === '/en/nosotros' ||
+    path.startsWith('/en/nosotros/') ||
+    path === '/en/blogs' ||
+    path.startsWith('/en/blogs/') ||
+    path === '/en/terminos' ||
+    path === '/en/aviso-de-privacidad';
+  if (path.startsWith('/en/') && path !== '/en' && !englishSection) {
     return context.redirect('/en');
   }
 

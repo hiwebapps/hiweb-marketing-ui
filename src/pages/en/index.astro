@@ -23,7 +23,7 @@ import type { TeamMember } from '../../components/sections/TeamGrid';
 
 const home = await getHomeCopy('en');
 const site = await getSiteSettings();
-const people = (await getPeople()) as TeamMember[];
+const people = (await getPeople(home.team?.memberLocale === 'es' ? 'es' : 'en')) as TeamMember[];
 const industriesIndex = await getIndustriesIndex();
 const industryCards = (await getIndustries('en')).map((item) => ({
 	slug: item.id,
@@ -36,22 +36,12 @@ const services = (await getServices('en')).map((item) => ({
 	nombre: item.data.nombre,
 	tagline: item.data.tagline,
 }));
-const industryLabel: Record<string, string> = {
-	'turismo-hoteleria': 'Turismo',
-	saas: 'SaaS',
-	salud: 'Salud',
-	manufactura: 'Manufactura',
-	restaurantes: 'Restaurantes',
-	inmobiliarias: 'Inmobiliarias',
-};
 const heroSlides = (home.heroCases?.length
 	? home.heroCases
 			.filter((item) => item.image)
 			.map((item) => ({
 				image: item.image as string,
-				title: item.industriaId && industryLabel[item.industriaId]
-					? `${item.cliente} · ${industryLabel[item.industriaId]}`
-					: item.cliente,
+				title: item.cliente,
 				href: `/portafolio/${item.id}`,
 			}))
 	: (await getCases())
@@ -60,14 +50,11 @@ const heroSlides = (home.heroCases?.length
 				if (a.data.destacado !== b.data.destacado) return a.data.destacado ? -1 : 1;
 				return a.data.cliente.localeCompare(b.data.cliente, 'es');
 			})
-			.map((item) => {
-				const industry = industryLabel[item.data.industria.id];
-				return {
-					image: item.data.seo?.ogImage as string,
-					title: industry ? `${item.data.cliente} · ${industry}` : item.data.cliente,
-					href: `/portafolio/${item.id}`,
-				};
-			}));
+			.map((item) => ({
+				image: item.data.seo?.ogImage as string,
+				title: item.data.cliente,
+				href: `/portafolio/${item.id}`,
+			})));
 const faqCategories = home.faqCategories ?? [];
 const faqs = faqCategories.flatMap((category) => category.items);
 const stories = (home.testimonials ?? []).map((item) => ({
@@ -76,7 +63,7 @@ const stories = (home.testimonials ?? []).map((item) => ({
 	name: item.name,
 	role: item.role ?? '',
 	photo: item.photo,
-	stats: [],
+	stats: item.stats,
 }));
 const metrics = (home.metrics ?? []).map((item) => ({
 	valor: item.valor,
@@ -124,8 +111,11 @@ const sectionOrder = home.hasSections
 						primaryHref={home.primaryCta?.href}
 						secondaryLabel={home.secondaryCta?.label}
 						secondaryHref={home.secondaryCta?.href}
-						cardCta="see project"
+						cardCta="See project"
+						pauseLabel="Pause carousel"
+						playLabel="Play carousel"
 						slides={heroSlides}
+						headingWidth={home.heroHeadingWidth}
 					/>
 				);
 			}
@@ -139,6 +129,7 @@ const sectionOrder = home.hasSections
 						title={home.pillarIntro?.title}
 						description={home.pillarIntro?.description}
 						ctaLabel={home.pillarCtaLabel}
+						headingWidth={home.pillarIntro?.headingWidth}
 					/>
 				);
 			}
@@ -154,6 +145,7 @@ const sectionOrder = home.hasSections
 						eyebrow={home.serviceIntro?.eyebrow}
 						title={home.serviceIntro?.title}
 						description={home.serviceIntro?.description}
+						headingWidth={home.serviceIntro?.headingWidth}
 						hrefPrefix="/en/servicios"
 					/>
 				);
@@ -167,6 +159,7 @@ const sectionOrder = home.hasSections
 						eyebrow={home.industryIntro?.eyebrow}
 						title={home.industryIntro?.title}
 						description={home.industryIntro?.description}
+						headingWidth={home.industryIntro?.headingWidth}
 						industries={industryCards}
 						hrefPrefix="/en/industrias"
 						ctaLabel={industriesIndex?.cardCtaLabel}
@@ -182,6 +175,7 @@ const sectionOrder = home.hasSections
 						eyebrow={home.storiesIntro?.eyebrow}
 						title={home.storiesIntro?.title}
 						description={home.storiesIntro?.description}
+						headingWidth={home.storiesIntro?.headingWidth}
 					/>
 				);
 			}
@@ -195,6 +189,7 @@ const sectionOrder = home.hasSections
 						eyebrow={home.processIntro?.eyebrow}
 						title={home.processIntro?.title}
 						description={home.processIntro?.description}
+						headingWidth={home.processIntro?.headingWidth}
 					/>
 				);
 			}
@@ -212,6 +207,7 @@ const sectionOrder = home.hasSections
 						primaryHref={home.primaryCta?.href}
 						secondaryLabel={home.secondaryCta?.label}
 						secondaryHref={home.secondaryCta?.href}
+						headingWidth={home.metricsIntro?.headingWidth}
 					/>
 				);
 			}
@@ -227,6 +223,7 @@ const sectionOrder = home.hasSections
 						description={home.team?.description}
 						ctaLabel={home.team?.ctaLabel ?? 'Conoce a todo el equipo'}
 						ctaHref={home.team?.ctaHref ?? '/nosotros#nosotros'}
+						headingWidth={home.team?.headingWidth}
 					/>
 				);
 			}
@@ -239,6 +236,7 @@ const sectionOrder = home.hasSections
 						eyebrow={home.faqIntro?.eyebrow}
 						title={home.faqIntro?.title}
 						description={home.faqIntro?.description}
+						headingWidth={home.faqIntro?.headingWidth}
 					/>
 				);
 			}
@@ -252,6 +250,7 @@ const sectionOrder = home.hasSections
 						description={home.closing?.description}
 						primaryLabel={home.closing?.primaryCta?.label}
 						primaryHref={home.closing?.primaryCta?.href}
+						headingWidth={home.closing?.headingWidth}
 					/>
 				);
 			}

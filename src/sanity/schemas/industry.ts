@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { industrySectionMembers } from './industrySections';
-import { seoFields, seoGroups } from './shared';
+import { headingTitleField, headingWidthField, seoFields, seoGroups } from './shared';
 
 export const industry = defineType({
   name: 'industry',
@@ -115,17 +115,20 @@ export const industriesIndex = defineType({
   groups: seoGroups,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
+    headingTitleField({ required: true }),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({ name: 'whyEyebrow', title: 'Badge de pilares', type: 'string' }),
-    defineField({ name: 'whyTitle', title: 'Título de pilares', type: 'string' }),
+    headingTitleField({ name: 'whyTitle', title: 'Título de pilares' }),
+    headingWidthField({ name: 'whyHeadingWidth', title: 'Ancho de pilares' }),
     defineField({
       name: 'pillars',
       title: 'Pilares',
       type: 'array',
       of: [defineArrayMember({ type: 'titledBlock' })],
     }),
-    defineField({ name: 'closingTitle', title: 'Título de cierre', type: 'string' }),
+    headingTitleField({ name: 'closingTitle', title: 'Título de cierre' }),
+    headingWidthField({ name: 'closingHeadingWidth', title: 'Ancho del cierre' }),
     defineField({ name: 'cardCtaLabel', title: 'Texto del botón en cada card', type: 'string' }),
     ...seoFields,
   ],

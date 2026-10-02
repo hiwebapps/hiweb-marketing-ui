@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { BLOG_READING_MINUTES } from '../../lib/blog';
 import { Badge } from '../ui';
+import { HeadingText, headingProps } from './primitives/heading';
 import './BlogHero.css';
 
 export type BlogFeaturedPost = {
@@ -22,6 +23,7 @@ type BlogHeroProps = {
   label?: string;
   readingSuffix?: string;
   featured?: BlogFeaturedPost;
+  headingWidth?: string;
 };
 
 /**
@@ -34,7 +36,9 @@ export function BlogHero({
   label = 'Blog',
   readingSuffix = 'minutos',
   featured,
+  headingWidth,
 }: BlogHeroProps) {
+  const width = headingProps(headingWidth);
   const image = featured
     ? (featured.image ?? `https://picsum.photos/seed/${encodeURIComponent(featured.id)}/720/480`)
     : null;
@@ -54,10 +58,14 @@ export function BlogHero({
       </div>
 
       <div className="blog-hero__inner">
-        <div className="blog-hero__copy">
+        <div
+          className={['blog-hero__copy', width.className].filter(Boolean).join(' ')}
+          style={width.style}
+          data-heading-width={width['data-heading-width']}
+        >
           <p className="blog-hero__crumb">{eyebrow}</p>
           <h1 data-split className="blog-hero__title">
-            {title}
+            {typeof title === 'string' ? <HeadingText text={title} /> : title}
           </h1>
           <p data-reveal className="blog-hero__lead">
             {description}

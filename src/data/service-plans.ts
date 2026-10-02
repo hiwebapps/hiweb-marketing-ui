@@ -1,5 +1,6 @@
 export type ServicePlan = {
-  name: string;
+  name?: string;
+  badge?: string;
   price: string;
   period?: string;
   featured?: boolean;

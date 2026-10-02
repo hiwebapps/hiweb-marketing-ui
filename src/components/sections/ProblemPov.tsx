@@ -46,7 +46,7 @@ export function ProblemPov({
       <ul className="mt-12 grid gap-8 md:grid-cols-3">
         {pains.map((pain) => (
           <li key={pain.title}>
-            <h3 className="font-display text-base font-semibold tracking-tight text-ink">
+            <h3 className="text-base tracking-tight text-ink">
               {pain.title}
             </h3>
             <p className="mt-2 !text-sm !leading-relaxed text-ink-soft">{pain.description}</p>

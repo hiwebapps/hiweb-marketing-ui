@@ -56,7 +56,11 @@ export function pagePath(type: string, id: string, doc: { locale?: string; slug?
   if (type === 'servicesIndex') return english ? '/en/servicios' : '/servicios';
   if (type === 'blogIndex') return english ? '/en/blogs' : '/blog';
   if (type === 'casesIndex') return '/portafolio';
-  if (type === 'legalPage') return published === 'legal-terms' ? '/terminos' : '/aviso-de-privacidad';
+  if (type === 'legalPage') {
+    const terms = published === 'legal-terms' || published === 'legal-terms-en';
+    const path = terms ? '/terminos' : '/aviso-de-privacidad';
+    return english ? `/en${path}` : path;
+  }
   return '';
 }
 

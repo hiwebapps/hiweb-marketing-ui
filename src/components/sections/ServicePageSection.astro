@@ -45,6 +45,7 @@ const nombre = entry.data.nombre;
 			badges={[{ label: section.badge || entry.data.heroBadge || nombre, variant: 'lime' }]}
 			ctaLabel={section.ctaLabel || 'Cotiza tu proyecto'}
 			ctaHref={section.ctaHref || '/contacto'}
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -61,6 +62,7 @@ const nombre = entry.data.nombre;
 				icon: iconForServiceOverviewCard(card.title, index),
 			}))}
 			tone="canvas"
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -86,6 +88,7 @@ const nombre = entry.data.nombre;
 			title={section.title}
 			description={section.description}
 			tone="canvas"
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -101,6 +104,7 @@ const nombre = entry.data.nombre;
 				ctaLabel={section.ctaLabel || 'Agenda un diagnóstico'}
 				ctaHref={section.ctaHref || '/contacto'}
 				tone="canvas"
+				headingWidth={section.headingWidth}
 			/>
 		) : pitch ? (
 			<ServicePitch {...pitch} tone="canvas" />
@@ -121,6 +125,8 @@ const nombre = entry.data.nombre;
 				icon: card.icon as ServiceIconName,
 				accent: card.accent,
 			}))}
+			stats={section.stats}
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -137,6 +143,7 @@ const nombre = entry.data.nombre;
 			ctaHref={section.ctaHref || '/contacto'}
 			plans={section.plans}
 			tone="canvas"
+			headingWidth={section.headingWidth}
 		/>
 	) : null
 }
@@ -158,6 +165,7 @@ const nombre = entry.data.nombre;
 			title={section.title || 'Cómo se lee este servicio en cada industria'}
 			description={section.description}
 			tone="canvas"
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -180,6 +188,7 @@ const nombre = entry.data.nombre;
 			title={section.title || `Proceso de ${nombre}`}
 			description={section.description || 'De la auditoría al reporte. Un sistema medible, no un paquete suelto de tácticas.'}
 			tone="canvas"
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -204,11 +213,12 @@ const nombre = entry.data.nombre;
 								name: item.name,
 								role: item.role ?? '',
 								photo: item.photo,
-								stats: [],
+								stats: item.stats,
 							}),
 						)
 					: stories
 			}
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -221,6 +231,7 @@ const nombre = entry.data.nombre;
 			title={section.title}
 			withSchema={false}
 			columns={section.columns === 1 ? 1 : 2}
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -231,6 +242,7 @@ const nombre = entry.data.nombre;
 			badge={section.badge}
 			title={section.title || `Agenda un diagnóstico de ${nombre}`}
 			description={section.description}
+			headingWidth={section.headingWidth}
 		/>
 	)
 }

@@ -1,0 +1,44 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { PageHero } from '../../components/sections/PageHero';
+import { SectionBand } from '../../components/sections/primitives/SectionBand';
+import { LegalDocument } from '../../components/sections/LegalDocument';
+import { getLegalPage } from '../../lib/content';
+import { breadcrumbSchema } from '../../lib/schema';
+import '../../components/sections/LegalDocument.css';
+
+const page = await getLegalPage('legal-terms-en');
+const title = page?.title || 'Hiweb Terms and Conditions';
+---
+
+<Layout
+	lang="en"
+	title={page?.seo?.metaTitle ?? `${title} — Hiweb Marketing`}
+	description={page?.seo?.metaDescription ?? 'Terms of use for hiwebmarketing.com and for hiring Hiweb Marketing services.'}
+	noindex={page?.seo?.noindex ?? true}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/terminos', en: '/en/terminos' }}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: title, href: '/en/terminos' },
+	])}
+>
+	<main>
+		<PageHero
+			eyebrow={page?.eyebrow || 'Legal'}
+			title={title}
+			description={page?.intro}
+			fullWidth
+			headingWidth={page?.headingWidth}
+		/>
+		<SectionBand>
+			<LegalDocument
+				updatedLabel={page?.updatedLabel}
+				updatedOn={page?.updatedOn}
+				sections={page?.sections ?? []}
+			/>
+		</SectionBand>
+	</main>
+</Layout>

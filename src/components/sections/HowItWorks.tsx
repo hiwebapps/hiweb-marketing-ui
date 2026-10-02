@@ -65,7 +65,7 @@ export function HowItWorks({ steps = DEFAULT_STEPS }: HowItWorksProps) {
             <span className="font-display text-xs font-semibold tracking-[0.16em] text-muted tabular-nums">
               {step.index}
             </span>
-            <h3 className="mt-4 font-display text-xl font-semibold tracking-tight text-ink">
+            <h3 className="mt-4 text-xl tracking-tight text-ink">
               {step.title}
             </h3>
             <p className="mt-3 !text-sm !leading-relaxed">{step.description}</p>

@@ -30,6 +30,7 @@ type CaseStoriesProps = {
   title?: string;
   description?: string;
   id?: string;
+  headingWidth?: string;
 };
 
 const PHOTO_FALLBACKS: Record<string, string> = {
@@ -159,6 +160,7 @@ export function CaseStories({
   title = 'Resultados propios, solo con empresas consolidadas',
   description = 'Cliente, industria y outcome. Sin portfolio ornamental.',
   id = 'casos',
+  headingWidth,
 }: CaseStoriesProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
@@ -335,6 +337,7 @@ export function CaseStories({
           align="center"
           tone="on-ink"
           badgeVariant="lime"
+          headingWidth={headingWidth}
         />
 
         <div

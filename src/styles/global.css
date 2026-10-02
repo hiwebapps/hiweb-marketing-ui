@@ -157,22 +157,30 @@
   }
 
   h1,
-  h2,
+  h2 {
+    @apply font-display tracking-tight text-ink;
+    overflow: visible;
+  }
+
   h3,
-  h4 {
-    @apply font-display font-semibold tracking-tight text-ink;
+  h4,
+  h5 {
+    @apply font-sans tracking-tight text-ink;
+    font-weight: 500;
     overflow: visible;
   }
 
   h1 {
     /* text-* de Tailwind trae line-height ~1 y pisa leading-* en @apply */
     @apply text-4xl tracking-[-0.02em] sm:text-5xl md:text-6xl lg:text-7xl;
+    font-weight: 700;
     line-height: 1.2;
     padding-bottom: 0.08em;
   }
 
   h2 {
     @apply text-3xl tracking-[-0.015em] sm:text-4xl md:text-5xl;
+    font-weight: 600;
     line-height: 1.25;
     padding-bottom: 0.06em;
   }
@@ -180,6 +188,11 @@
   h3 {
     line-height: 1.3;
     padding-bottom: 0.04em;
+  }
+
+  h4,
+  h5 {
+    line-height: 1.35;
   }
 
   p {
@@ -288,5 +301,19 @@
 html.motion-ready [data-reveal]:not([data-motion]),
 html.motion-ready [data-split]:not([data-motion]) {
   opacity: 0;
+}
+
+/* Ancho elegido en Studio: el bloque manda, y el título o el párrafo no conservan su tope anterior. */
+.hw-heading-block[data-heading-width] > :is(h1, h2, p) {
+  max-width: none;
+}
+
+/* Card CTAs — Inter Semibold. The shared button still uses Clash Display elsewhere. */
+.pillar-card__cta,
+.blog-card__cta,
+.industry-slide__cta .border-glow-inner,
+.industry-service-card__foot .border-glow-inner {
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-weight: 600;
 }
 

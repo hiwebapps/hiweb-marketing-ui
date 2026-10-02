@@ -27,6 +27,7 @@ type FaqSectionProps = {
   description?: string;
   tone?: 'canvas' | 'surface';
   withSchema?: boolean;
+  headingWidth?: string;
   /** Dos columnas solo en escritorio. En móvil vuelve a una. */
   columns?: 1 | 2;
 };
@@ -189,6 +190,7 @@ export function FaqSection({
   tone = 'canvas',
   withSchema = false,
   columns = 1,
+  headingWidth,
 }: FaqSectionProps) {
   const groups: readonly FaqCategory[] =
     categories ??
@@ -219,7 +221,13 @@ export function FaqSection({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       ) : null}
 
-      <SectionHeader eyebrow={eyebrow} title={title} description={description} badgeVariant="orange" />
+      <SectionHeader
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+        badgeVariant="orange"
+        headingWidth={headingWidth}
+      />
 
       <div className={showNav ? 'faq faq--split' : 'faq'}>
         {showNav ? (

@@ -105,7 +105,13 @@ export default defineConfig({
             ? [...prev, createEnglishVersion]
             : prev;
       const withPair =
-        context.schemaType === 'service' || context.schemaType === 'industry' || context.schemaType === 'caseStudy'
+        context.schemaType === 'service' ||
+        context.schemaType === 'industry' ||
+        context.schemaType === 'caseStudy' ||
+        context.schemaType === 'landingPage' ||
+        context.schemaType === 'testimonial' ||
+        context.schemaType === 'person' ||
+        context.schemaType === 'contactPage'
           ? [ensureEnglishPair, ...withTemplate]
           : withTemplate;
       const withRedirect = ['post', 'service', 'industry', 'caseStudy', 'landingPage'].includes(context.schemaType)
@@ -132,7 +138,9 @@ export default defineConfig({
           template.schemaType !== 'landingPage' &&
           template.schemaType !== 'service' &&
           template.schemaType !== 'industry' &&
-          template.schemaType !== 'caseStudy',
+          template.schemaType !== 'caseStudy' &&
+          template.schemaType !== 'testimonial' &&
+          template.schemaType !== 'person',
       ),
       {
         id: 'service-es',
@@ -165,6 +173,18 @@ export default defineConfig({
         value: { locale: 'es' },
       },
       {
+        id: 'testimonial-es',
+        title: 'Testimonio en español',
+        schemaType: 'testimonial',
+        value: { locale: 'es' },
+      },
+      {
+        id: 'person-es',
+        title: 'Persona en español',
+        schemaType: 'person',
+        value: { locale: 'es' },
+      },
+      {
         id: 'post-es',
         title: 'Artículo en español',
         schemaType: 'post',
@@ -186,6 +206,7 @@ export default defineConfig({
               : 'Página — Campaña / CTA',
         schemaType: 'landingPage',
         value: () => ({
+          locale: 'es',
           templateKind: kind,
           sections: landingTemplateSections(kind),
         }),

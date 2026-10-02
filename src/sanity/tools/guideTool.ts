@@ -130,7 +130,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Ajustes es la identidad del sitio: favicon, nombre corto, nombre legal, tagline, email, teléfono, WhatsApp, ciudades y redes. El favicon es el icono de la pestaña. El email y el teléfono salen en Contacto. Las redes y el nombre corto salen en el pie. El tagline es la descripción de respaldo cuando una página no tiene la suya. Aviso de privacidad y Términos son el texto de esas páginas. Redirecciones es la lista de rutas viejas. El grupo SEO de cada índice y de las páginas legales está en su propio documento, no aquí.',
+        text: 'Ajustes es la identidad del sitio: favicon, nombre corto, nombre legal, tagline, email, teléfono, WhatsApp, ciudades y redes. El favicon es el icono de la pestaña. El email y el teléfono salen en Contacto. Las redes y el nombre corto salen en el pie. El tagline es la descripción de respaldo cuando una página no tiene la suya. Redirecciones es la lista de rutas viejas. El grupo SEO de cada índice está en su propio documento, no aquí.',
       },
       {
         kind: 'h',
@@ -160,7 +160,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Cada una tiene Español y English. Son páginas armadas por secciones: se añaden, se reordenan y se pueden ocultar. Ocultar sección la deja en el Studio y la quita del sitio. El grupo SEO está al final del formulario.',
+        text: 'Cada una tiene Español y English. Son páginas armadas por secciones: se añaden, se reordenan y se pueden ocultar. Ocultar sección la deja en el Studio y la quita del sitio. El grupo SEO está al final del formulario. En el título de cada sección, Enter parte el encabezado en otra línea. Ancho máximo elige el tope del título y del párrafo: Chico 640px, Mediano 768px, Grande 960px o Extra grande 1300px. Si el ancho se deja vacío, la sección conserva el que ya tiene.',
       },
       {
         kind: 'h',
@@ -188,7 +188,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Contacto y las landings. Contacto es un solo documento, en /contacto. Una landing vive en /su-slug y se crea con una plantilla: Servicio lite, Industria lite o Campaña / CTA. Si la plantilla quedó a medias, la acción Completar plantilla rellena los bloques que faltan.',
+        text: 'Contacto, Términos y condiciones, Aviso de privacidad y las landings. Cada una abre Español e English. Contacto sigue publicado en /contacto. Términos está en /terminos y el aviso en /aviso-de-privacidad; en inglés, las mismas rutas bajo /en. Cada sección legal se arma con párrafos, listas, definiciones, datos de contacto y subsecciones. Una landing vive en /su-slug y se crea con una plantilla: Servicio lite, Industria lite o Campaña / CTA. Al crearla también queda el borrador en inglés. Si la plantilla quedó a medias, la acción Completar plantilla rellena los bloques que faltan.',
       },
       {
         kind: 'h',
@@ -196,7 +196,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'FAQs reutilizables, ordenadas por el campo Orden. Sirven para armar bloques de preguntas en las páginas. Testimonios es la biblioteca de citas: cliente, cita, nombre, cargo y foto. Home, cada caso y la sección Testimonios de cada servicio eligen de esa lista. En un servicio se ve igual que en la home: foto, cita y persona, sin las cifras del caso.',
+        text: 'FAQs reutilizables, ordenadas por el campo Orden. Sirven para armar bloques de preguntas en las páginas. Testimonios es la biblioteca de citas: cliente, cita, nombre, cargo y foto. Cada testimonio abre Español e English. Home, cada caso y la sección Testimonios de cada servicio eligen de esa lista. En un servicio y en la home se ve la foto, la cita, la persona y hasta dos cifras si las escribes en el testimonio.',
       },
       {
         kind: 'h',
@@ -212,7 +212,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Las personas que salen en la página de Nosotros y en bloques de equipo. El campo Orden define la posición.',
+        text: 'Las personas que salen en Home y en Nosotros. Cada persona abre Español e English. En la sección Equipo de esas páginas, Idioma del equipo elige cuál versión se muestra. El campo Orden define la posición.',
       },
     ],
   },

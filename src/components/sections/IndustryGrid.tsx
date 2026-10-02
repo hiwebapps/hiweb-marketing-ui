@@ -8,6 +8,7 @@ import {
 } from '../icons/IndustryIcons';
 import { Badge, Button } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
+import { HeadingText, headingProps } from './primitives/heading';
 import './IndustryGrid.css';
 
 gsap.registerPlugin(useGSAP);
@@ -30,6 +31,7 @@ type IndustryGridProps = {
   tone?: 'canvas' | 'surface';
   hrefPrefix?: string;
   ctaLabel?: string;
+  headingWidth?: string;
 };
 
 const ACCENT_HEX: Record<IndustryAccent, string> = {
@@ -81,7 +83,9 @@ export function IndustryGrid({
   tone = 'canvas',
   hrefPrefix = '/industrias',
   ctaLabel = 'Ver el sector',
+  headingWidth,
 }: IndustryGridProps) {
+  const width = headingProps(headingWidth);
   const [activeIndex, setActiveIndex] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -206,10 +210,14 @@ export function IndustryGrid({
           .join(' ')}
       >
         <div className="industry-slider__layout">
-          <header className="industry-slider__intro">
+          <header
+            className={['industry-slider__intro', width.className].filter(Boolean).join(' ')}
+            style={width.style}
+            data-heading-width={width['data-heading-width']}
+          >
             <Badge variant="purple">{eyebrow}</Badge>
             <h2 data-split className="mt-3 max-w-sm !text-3xl !leading-[1.15] tracking-[-0.03em] text-ink md:!text-[2.65rem]">
-              {title}
+              <HeadingText text={title} />
             </h2>
             {description ? <p className="mt-4 max-w-sm !text-sm !leading-relaxed md:!text-base">{description}</p> : null}
           </header>

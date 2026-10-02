@@ -104,7 +104,7 @@
 }
 
 .service-focus__tab-title {
-  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.02em;

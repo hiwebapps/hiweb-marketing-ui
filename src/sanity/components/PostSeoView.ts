@@ -27,7 +27,7 @@ const PATHS_QUERY = `{
     "slug": slug.current
   },
   "cases": *[_type == "caseStudy" && defined(slug.current) && coalesce(locale, "es") == "es"].slug.current,
-  "landings": *[_type == "landingPage" && defined(slug.current)].slug.current
+  "landings": *[_type == "landingPage" && defined(slug.current) && coalesce(locale, "es") == "es"].slug.current
 }`;
 
 type PathRows = {

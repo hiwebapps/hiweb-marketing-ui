@@ -67,6 +67,7 @@ const serviceFilters = services
 				eyebrow={page?.eyebrow ?? 'Recursos / Blog'}
 				title={page?.title ?? 'Artículos para decidir, no para rellenar'}
 				description={page?.description ?? 'Contenido por industria y servicio: respuestas directas, keywords reales y enlaces a lo que sí ejecutamos.'}
+				headingWidth={page?.headingWidth}
 				readingSuffix={page?.readingSuffix}
 				featured={{
 					id: featured.id,
@@ -85,11 +86,16 @@ const serviceFilters = services
 				posts={cards}
 				services={serviceFilters}
 				title={page?.listTitle}
+				headingWidth={page?.listHeadingWidth}
 				description={page?.listDescription}
 				allLabel={page?.allLabel}
 				filterLabel={page?.filterLabel}
 			/>
 		</SectionBand>
-		<FinalCta client:load title={page?.closingTitle ?? '¿Lo aplicamos a tu industria?'} />
+		<FinalCta
+			client:load
+			title={page?.closingTitle ?? '¿Lo aplicamos a tu industria?'}
+			headingWidth={page?.closingHeadingWidth}
+		/>
 	</main>
 </Layout>

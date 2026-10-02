@@ -9,7 +9,7 @@ import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { withVisibility } from './shared';
+import { headingTitleField, headingWidthField, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -64,12 +64,8 @@ export const homeHero = defineType({
   type: 'object',
   icon: ImageIcon,
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Título',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
+    headingTitleField({ required: true }),
+    headingWidthField(),
     defineField({ name: 'lead', title: 'Lead', type: 'text', rows: 3 }),
     defineField({ name: 'primaryCta', title: 'CTA principal', type: 'cta' }),
     defineField({ name: 'secondaryCta', title: 'CTA secundario', type: 'cta' }),
@@ -166,7 +162,7 @@ export const homeStories = defineType({
       name: 'items',
       title: 'Testimonios',
       type: 'array',
-      description: 'Elige de la biblioteca y arrastra para el orden.',
+      description: 'Elige de la biblioteca y arrastra para el orden. Las dos cifras se editan en cada testimonio.',
       of: [defineArrayMember({ type: 'reference', to: [{ type: 'testimonial' }] })],
       validation: (rule) => rule.unique(),
     }),
@@ -224,12 +220,34 @@ export const homeTeam = defineType({
   icon: UsersIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
+    defineField({
+      name: 'memberLocale',
+      title: 'Idioma del equipo',
+      type: 'string',
+      description: 'Qué fichas de Equipo se muestran. Español usa cargo y bio en español. English usa la versión en inglés.',
+      options: {
+        list: [
+          { title: 'Español', value: 'es' },
+          { title: 'English', value: 'en' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'es',
+      validation: (rule) => rule.required(),
+    }),
     defineField({ name: 'ctaLabel', title: 'Texto del enlace', type: 'string' }),
     defineField({ name: 'ctaHref', title: 'URL del enlace', type: 'string' }),
   ],
-  preview: sectionPreview('Sección Equipo'),
+  preview: {
+    select: { title: 'title', memberLocale: 'memberLocale' },
+    prepare: ({ title, memberLocale }) => ({
+      title: title || 'Equipo',
+      subtitle: memberLocale === 'en' ? 'English' : 'Español',
+    }),
+  },
 });
 
 export const homeFaq = defineType({
@@ -259,7 +277,8 @@ export const homeCta = defineType({
   icon: RocketIcon,
   fields: [
     defineField({ name: 'badge', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({ name: 'primaryCta', title: 'CTA', type: 'cta' }),
   ],

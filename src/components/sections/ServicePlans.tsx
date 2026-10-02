@@ -7,6 +7,7 @@ import './ServicePlans.css';
 
 type ServicePlansProps = ServicePlansContent & {
   tone?: 'canvas' | 'surface';
+  headingWidth?: string;
 };
 
 export function ServicePlans({
@@ -20,6 +21,7 @@ export function ServicePlans({
   ctaHref,
   plans,
   tone = 'canvas',
+  headingWidth,
 }: ServicePlansProps) {
   const noteBody = noteLabel && noteHref ? note.split(noteLabel) : null;
 
@@ -31,17 +33,22 @@ export function ServicePlans({
         description={description}
         badgeVariant="lime"
         align="center"
+        headingWidth={headingWidth}
       />
-      <ul className="service-plans">
-        {plans.map((plan) => (
+      <ul className={`service-plans is-${plans.length === 1 ? 'one' : plans.length === 2 ? 'two' : 'many'}`}>
+        {plans.map((plan, index) => {
+          const badge = plan.badge?.trim();
+          return (
           <li
-            key={plan.name}
+            key={`${plan.name ?? plan.price}-${index}`}
             className={plan.featured ? 'service-plans__card is-featured' : 'service-plans__card'}
           >
-            <div className="service-plans__head">
-              <h3>{plan.name}</h3>
-              {plan.featured ? <Badge variant="lime">Recomendado</Badge> : null}
-            </div>
+            {plan.name || badge ? (
+              <div className={plan.name ? 'service-plans__head' : 'service-plans__head is-badge-only'}>
+                {plan.name ? <h3>{plan.name}</h3> : null}
+                {badge ? <Badge variant="lime">{badge}</Badge> : null}
+              </div>
+            ) : null}
             <p className="service-plans__price">
               {plan.price}
               {plan.period ? <span>{plan.period}</span> : null}
@@ -64,7 +71,8 @@ export function ServicePlans({
               {ctaLabel}
             </Button>
           </li>
-        ))}
+          );
+        })}
       </ul>
       {noteBody && noteHref && noteLabel ? (
         <p className="service-plans__note">

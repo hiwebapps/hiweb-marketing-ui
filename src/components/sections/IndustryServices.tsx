@@ -26,6 +26,7 @@ type IndustryServicesProps = {
   tagLabel?: string;
   catalogLabel?: string;
   catalogHref?: string;
+  headingWidth?: string;
 };
 
 const ACCENT_HEX: Record<ServiceAccent, string> = {
@@ -65,6 +66,7 @@ export function IndustryServices({
   tagLabel = 'Servicio',
   catalogLabel = 'Ver todos los servicios',
   catalogHref = '/servicios',
+  headingWidth,
 }: IndustryServicesProps) {
   return (
     <SectionBand id="servicios" tone={tone}>
@@ -74,7 +76,7 @@ export function IndustryServices({
             <Badge variant="cyan">{eyebrow}</Badge>
           </div>
           <div className="industry-services__header">
-            <SectionHeader title={title} description={description} className="mt-4" />
+            <SectionHeader title={title} description={description} className="mt-4" headingWidth={headingWidth} />
             <div className="industry-services__header-cta">
               <Button href={catalogHref} variant="primary" size="sm" className="no-underline">
                 {catalogLabel}

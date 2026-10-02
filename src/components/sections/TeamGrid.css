@@ -122,9 +122,9 @@
 .team-card__name {
   margin: 0.85rem 0 0;
   color: var(--color-ink);
-  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
   font-size: 1.35rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.2;
 }

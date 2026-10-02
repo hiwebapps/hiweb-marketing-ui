@@ -1,7 +1,44 @@
 import { EyeClosedIcon } from '@sanity/icons/EyeClosed';
 import { defineArrayMember, defineField, defineType, type ObjectDefinition, type PreviewConfig } from 'sanity';
+import { HEADING_WIDTH_OPTIONS } from '../../lib/heading';
 import { charCountInput } from '../components/CharCountInput';
 import { serpTitleInput } from '../components/SerpPreview';
+
+const headingTitleDescription =
+  'Enter parte el título en otra línea. Así decides si queda en 1, 2, 3 o 4 renglones.';
+
+export function headingTitleField(options?: {
+  required?: boolean;
+  title?: string;
+  group?: string;
+  initialValue?: string;
+  name?: string;
+}) {
+  return defineField({
+    name: options?.name ?? 'title',
+    title: options?.title ?? 'Título',
+    type: 'text',
+    rows: 4,
+    ...(options?.group ? { group: options.group } : {}),
+    description: headingTitleDescription,
+    ...(options?.initialValue ? { initialValue: options.initialValue } : {}),
+    validation: (rule) => (options?.required ? rule.required() : rule),
+  });
+}
+
+export function headingWidthField(options?: { name?: string; group?: string; title?: string }) {
+  return defineField({
+    name: options?.name ?? 'headingWidth',
+    title: options?.title ?? 'Ancho máximo',
+    type: 'string',
+    ...(options?.group ? { group: options.group } : {}),
+    description: 'Tope del título y del párrafo. Si lo dejas vacío, la sección conserva el ancho actual.',
+    options: {
+      list: HEADING_WIDTH_OPTIONS.map((item) => ({ title: item.title, value: item.value })),
+      layout: 'dropdown',
+    },
+  });
+}
 
 export const seoFields = [
   defineField({
@@ -129,28 +166,34 @@ export const servicePlan = defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Nombre',
+      title: 'Texto superior',
       type: 'string',
-      validation: (rule) => rule.required(),
+      description: 'El texto pequeño arriba del título, por ejemplo Cotiza. Déjalo vacío para ocultarlo.',
+    }),
+    defineField({
+      name: 'badge',
+      title: 'Badge',
+      type: 'string',
+      description: 'Texto del badge, por ejemplo Recomendado. Déjalo vacío para no mostrarlo.',
     }),
     defineField({
       name: 'price',
-      title: 'Precio',
+      title: 'Título',
       type: 'string',
-      description: 'Ejemplo: $8,000 o A cotizar.',
+      description: 'El texto grande de la card. Ejemplo: $8,000, Incluye: o Alcance:.',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'period',
       title: 'Periodo',
       type: 'string',
-      description: 'Opcional. Ejemplo: /mes.',
+      description: 'Opcional. Se pega al título. Ejemplo: /mes.',
     }),
     defineField({
       name: 'featured',
-      title: 'Destacado',
+      title: 'Destacada',
       type: 'boolean',
-      description: 'Marca una sola card. Se muestra con el badge Recomendado.',
+      description: 'Resalta la card con borde y botón principal. El badge se controla en el campo Badge.',
       initialValue: false,
     }),
     defineField({
@@ -162,7 +205,11 @@ export const servicePlan = defineType({
     }),
   ],
   preview: {
-    select: { title: 'name', subtitle: 'price' },
+    select: { name: 'name', price: 'price', badge: 'badge' },
+    prepare: ({ name, price, badge }: { name?: string; price?: string; badge?: string }) => ({
+      title: name || price || 'Plan',
+      subtitle: [badge, price && name ? price : ''].filter(Boolean).join(' · '),
+    }),
   },
 });
 
@@ -254,7 +301,8 @@ export const sectionIntro = defineType({
   type: 'object',
   fields: [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'titleMuted', title: 'Título muted', type: 'string' }),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
   ],

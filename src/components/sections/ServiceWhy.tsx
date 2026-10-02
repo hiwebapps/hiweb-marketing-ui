@@ -6,6 +6,7 @@ import { MOTION } from '../../lib/motion';
 import { Button } from '../ui';
 import { ServiceIcon, type ServiceIconName } from '../icons/ServiceIcons';
 import { SectionBand } from './primitives/SectionBand';
+import { HeadingText, headingProps } from './primitives/heading';
 import './ServiceWhy.css';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -76,6 +77,8 @@ type ServiceWhyProps = {
   ctaLabel?: string;
   ctaHref?: string;
   cards?: WhyCard[];
+  stats?: WhyStat[];
+  headingWidth?: string;
 };
 
 export function ServiceWhy({
@@ -85,7 +88,10 @@ export function ServiceWhy({
   ctaLabel = 'Agenda un diagnóstico',
   ctaHref = '/contacto',
   cards,
+  stats,
+  headingWidth,
 }: ServiceWhyProps) {
+  const width = headingProps(headingWidth);
   const rootRef = useRef<HTMLDivElement>(null);
   const source = (cards?.length ? cards : CARDS).map((card) => ({
     ...card,
@@ -135,14 +141,20 @@ export function ServiceWhy({
   return (
     <SectionBand id="por-que" tone={tone}>
       <div ref={rootRef} className="service-why">
-        <div className="service-why__copy">
-          <h2 className="service-why__title">{title}</h2>
+        <div
+          className={['service-why__copy', width.className].filter(Boolean).join(' ')}
+          style={width.style}
+          data-heading-width={width['data-heading-width']}
+        >
+          <h2 className="service-why__title">
+            <HeadingText text={title} />
+          </h2>
           <p className="service-why__lead">{description}</p>
           <Button href={ctaHref} variant="primary" size="md">
             {ctaLabel}
           </Button>
           <ul className="service-why__stats">
-            {STATS.map((stat) => (
+            {(stats ?? STATS).map((stat) => (
               <li key={stat.label}>
                 <p
                   className="service-why__stat-value"

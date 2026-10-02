@@ -28,6 +28,21 @@ export const landingPage = defineType({
   groups: seoGroups,
   fields: [
     defineField({
+      name: 'locale',
+      title: 'Idioma',
+      type: 'string',
+      group: 'content',
+      hidden: true,
+      options: {
+        list: [
+          { title: 'Español', value: 'es' },
+          { title: 'English', value: 'en' },
+        ],
+      },
+      initialValue: 'es',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'title',
       title: 'Nombre interno',
       type: 'string',
@@ -41,13 +56,22 @@ export const landingPage = defineType({
       group: 'content',
       options: { source: 'title', maxLength: 96 },
       validation: (rule) =>
-        rule.required().custom((value) => {
+        rule.required().custom(async (value, context) => {
           const current = value?.current;
           if (!current) return 'El slug es obligatorio';
           if (isReservedSlug(current)) {
             return `“${current}” está reservado por una ruta del sitio`;
           }
-          return true;
+          const document = context.document;
+          if (!document) return true;
+          const id = document._id.replace(/^drafts\./, '');
+          const locale = (document as { locale?: string }).locale ?? 'es';
+          const client = context.getClient({ apiVersion: '2024-01-01' });
+          const count = await client.fetch(
+            `count(*[_type == "landingPage" && slug.current == $slug && coalesce(locale, "es") == $locale && !(_id in [$id, $draftId])])`,
+            { slug: current, locale, id, draftId: `drafts.${id}` },
+          );
+          return count === 0 || 'Ya hay una página con este slug en este idioma';
         }),
     }),
     defineField({
@@ -78,10 +102,10 @@ export const landingPage = defineType({
     ...seoFields,
   ],
   preview: {
-    select: { title: 'title', slug: 'slug.current' },
-    prepare: ({ title, slug }) => ({
+    select: { title: 'title', slug: 'slug.current', locale: 'locale' },
+    prepare: ({ title, slug, locale }) => ({
       title: title || 'Página',
-      subtitle: slug ? `/${slug}` : 'Sin slug',
+      subtitle: [locale === 'en' ? 'English' : 'Español', slug ? `/${slug}` : 'Sin slug'].join(' · '),
     }),
   },
 });

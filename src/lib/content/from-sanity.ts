@@ -1,3 +1,4 @@
+import { asHeadingWidth } from '../heading';
 import { loadQuery } from '../../sanity/lib/load-query';
 import {
   aboutPageQuery,
@@ -81,7 +82,10 @@ export type IndustriesIndexCopy = {
   description?: string;
   whyEyebrow?: string;
   whyTitle?: string;
+  headingWidth?: ReturnType<typeof asHeadingWidth>;
+  whyHeadingWidth?: ReturnType<typeof asHeadingWidth>;
   closingTitle?: string;
+  closingHeadingWidth?: ReturnType<typeof asHeadingWidth>;
   cardCtaLabel?: string;
   pillars?: { title: string; description: string }[];
   seo?: SeoFields;
@@ -96,10 +100,13 @@ export async function sanityIndustriesIndex(id = 'industriesIndex-en'): Promise<
   return {
     eyebrow: data.eyebrow ? String(data.eyebrow) : undefined,
     title: data.title ? String(data.title) : undefined,
+    headingWidth: asHeadingWidth(data.headingWidth),
     description: data.description ? String(data.description) : undefined,
     whyEyebrow: data.whyEyebrow ? String(data.whyEyebrow) : undefined,
     whyTitle: data.whyTitle ? String(data.whyTitle) : undefined,
+    whyHeadingWidth: asHeadingWidth(data.whyHeadingWidth),
     closingTitle: data.closingTitle ? String(data.closingTitle) : undefined,
+    closingHeadingWidth: asHeadingWidth(data.closingHeadingWidth),
     cardCtaLabel: data.cardCtaLabel ? String(data.cardCtaLabel) : undefined,
     pillars: Array.isArray(data.pillars)
       ? (data.pillars as { title?: string; description?: string }[])
@@ -150,8 +157,13 @@ export async function sanityPost(slug: string, locale: 'es' | 'en' = 'es'): Prom
   return fetchOne(postBySlugQuery, { slug, locale }, mapPost);
 }
 
-export async function sanityPeople(): Promise<PersonRecord[]> {
-  return fetchList(peopleQuery, mapPerson);
+export async function sanityPeople(locale: 'es' | 'en' = 'es'): Promise<PersonRecord[]> {
+  const { data } = await loadQuery<Record<string, unknown>[]>({
+    query: peopleQuery,
+    params: { locale },
+  });
+  if (!Array.isArray(data) || data.length === 0) return [];
+  return data.filter((item) => item?.name).map(mapPerson);
 }
 
 export async function sanityHome(locale: 'es' | 'en' = 'es'): Promise<HomeCopy | null> {
@@ -337,16 +349,20 @@ export async function sanitySiteIdentity(): Promise<SiteIdentity> {
 export type CatalogIndexCopy = {
   eyebrow?: string;
   title?: string;
+  headingWidth?: ReturnType<typeof asHeadingWidth>;
   description?: string;
   label?: string;
   sectionTitle?: string;
+  sectionHeadingWidth?: ReturnType<typeof asHeadingWidth>;
   listTitle?: string;
+  listHeadingWidth?: ReturnType<typeof asHeadingWidth>;
   listDescription?: string;
   allLabel?: string;
   filterLabel?: string;
   featuredCta?: string;
   readingSuffix?: string;
   closingTitle?: string;
+  closingHeadingWidth?: ReturnType<typeof asHeadingWidth>;
   seo?: SeoFields;
 };
 
@@ -364,16 +380,20 @@ export async function sanityCatalogIndex(id: string): Promise<CatalogIndexCopy |
   return {
     eyebrow: optionalText(data.eyebrow),
     title: optionalText(data.title),
+    headingWidth: asHeadingWidth(data.headingWidth),
     description: optionalText(data.description),
     label: optionalText(data.label),
     sectionTitle: optionalText(data.sectionTitle),
+    sectionHeadingWidth: asHeadingWidth(data.sectionHeadingWidth),
     listTitle: optionalText(data.listTitle),
+    listHeadingWidth: asHeadingWidth(data.listHeadingWidth),
     listDescription: optionalText(data.listDescription),
     allLabel: optionalText(data.allLabel),
     filterLabel: optionalText(data.filterLabel),
     featuredCta: optionalText(data.featuredCta),
     readingSuffix: optionalText(data.readingSuffix),
     closingTitle: optionalText(data.closingTitle),
+    closingHeadingWidth: asHeadingWidth(data.closingHeadingWidth),
     seo: {
       metaTitle: optionalText(data.metaTitle),
       metaDescription: optionalText(data.metaDescription),
@@ -383,26 +403,99 @@ export async function sanityCatalogIndex(id: string): Promise<CatalogIndexCopy |
   };
 }
 
+export type LegalBlock =
+  | { _type: 'legalParagraph'; text: string }
+  | { _type: 'legalBullets'; items: string[] }
+  | { _type: 'legalTerms'; items: { term: string; text: string }[] }
+  | { _type: 'legalLines'; items: { label: string; value: string }[] }
+  | { _type: 'legalSubsection'; title: string; blocks: LegalBlock[] };
+
+export type LegalSection = {
+  title: string;
+  blocks: LegalBlock[];
+};
+
 export type LegalCopy = {
   eyebrow?: string;
   title?: string;
-  body?: string;
+  headingWidth?: ReturnType<typeof asHeadingWidth>;
+  updatedLabel?: string;
+  updatedOn?: string;
+  intro?: string;
+  sections?: LegalSection[];
   seo?: SeoFields;
 };
+
+function asLegalBlocks(value: unknown): LegalBlock[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((item) => {
+    const block = item as Record<string, unknown>;
+    const type = String(block._type ?? '');
+    if (type === 'legalParagraph') {
+      const text = optionalText(block.text);
+      return text ? [{ _type: 'legalParagraph' as const, text }] : [];
+    }
+    if (type === 'legalBullets') {
+      const items = Array.isArray(block.items) ? block.items.map(String).map((entry) => entry.trim()).filter(Boolean) : [];
+      return items.length ? [{ _type: 'legalBullets' as const, items }] : [];
+    }
+    if (type === 'legalTerms') {
+      const items = Array.isArray(block.items)
+        ? block.items.flatMap((entry) => {
+            const row = entry as { term?: unknown; text?: unknown };
+            const term = optionalText(row.term);
+            const text = optionalText(row.text);
+            return term && text ? [{ term, text }] : [];
+          })
+        : [];
+      return items.length ? [{ _type: 'legalTerms' as const, items }] : [];
+    }
+    if (type === 'legalLines') {
+      const items = Array.isArray(block.items)
+        ? block.items.flatMap((entry) => {
+            const row = entry as { label?: unknown; value?: unknown };
+            const label = optionalText(row.label);
+            const value = optionalText(row.value);
+            return label && value ? [{ label, value }] : [];
+          })
+        : [];
+      return items.length ? [{ _type: 'legalLines' as const, items }] : [];
+    }
+    if (type === 'legalSubsection') {
+      const title = optionalText(block.title);
+      const blocks = asLegalBlocks(block.blocks).filter((entry) => entry._type !== 'legalSubsection');
+      return title ? [{ _type: 'legalSubsection' as const, title, blocks }] : [];
+    }
+    return [];
+  });
+}
 
 export async function sanityLegalPage(id: string): Promise<LegalCopy | null> {
   const { data } = await loadQuery<Record<string, unknown> | null>({
     query: legalPageQuery,
     params: { id },
   });
-  if (!data || (!data.title && !data.body)) return null;
+  if (!data?.title) return null;
+  const sections = Array.isArray(data.sections)
+    ? data.sections.flatMap((item) => {
+        const section = item as { title?: unknown; blocks?: unknown };
+        const title = optionalText(section.title);
+        if (!title) return [];
+        return [{ title, blocks: asLegalBlocks(section.blocks) }];
+      })
+    : [];
   return {
     eyebrow: optionalText(data.eyebrow),
     title: optionalText(data.title),
-    body: optionalText(data.body),
+    headingWidth: asHeadingWidth(data.headingWidth),
+    updatedLabel: optionalText(data.updatedLabel),
+    updatedOn: optionalText(data.updatedOn),
+    intro: optionalText(data.intro),
+    sections,
     seo: {
       metaTitle: optionalText(data.metaTitle),
       metaDescription: optionalText(data.metaDescription),
+      noindex: data.noindex === true || undefined,
       canonicalPath: optionalText(data.canonicalPath),
     },
   };

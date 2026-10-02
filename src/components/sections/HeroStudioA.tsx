@@ -1,8 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
 import { Button } from '../ui';
+import { HeadingText, headingProps } from './primitives/heading';
 import './HeroStudioA.css';
 
 gsap.registerPlugin(useGSAP);
@@ -26,6 +27,9 @@ type HeroStudioAProps = {
   secondaryHref?: string;
   slides?: HeroStudioSlide[];
   cardCta?: string;
+  pauseLabel?: string;
+  playLabel?: string;
+  headingWidth?: string;
 };
 
 function wrap(index: number, length: number) {
@@ -65,13 +69,20 @@ export function HeroStudioA({
   secondaryLabel = 'Ver Casos de Éxito',
   secondaryHref = '/portafolio',
   slides = [],
-  cardCta = 'ver proyecto',
+  cardCta = 'Ver proyecto',
+  pauseLabel = 'Pausar carrusel',
+  playLabel = 'Reanudar carrusel',
+  headingWidth,
 }: HeroStudioAProps) {
+  const width = headingProps(headingWidth);
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const liveRef = useRef<HTMLParagraphElement>(null);
   const indexRef = useRef(0);
   const pausedRef = useRef(false);
+  const userPausedRef = useRef(false);
+  const hoverPausedRef = useRef(false);
+  const [userPaused, setUserPaused] = useState(false);
 
   useGSAP(
     (context, contextSafe) => {
@@ -181,16 +192,28 @@ export function HeroStudioA({
         layout(true);
       });
 
+      const applyPause = () => {
+        pausedRef.current = userPausedRef.current || hoverPausedRef.current;
+      };
+
+      if (prefersReducedMotion()) {
+        userPausedRef.current = true;
+        applyPause();
+        setUserPaused(true);
+      }
+
       const timer = window.setInterval(() => {
-        if (pausedRef.current || prefersReducedMotion()) return;
+        if (pausedRef.current) return;
         step(1);
       }, AUTO_MS);
 
       const pause = () => {
-        pausedRef.current = true;
+        hoverPausedRef.current = true;
+        applyPause();
       };
       const resume = () => {
-        pausedRef.current = false;
+        hoverPausedRef.current = false;
+        applyPause();
       };
 
       const onKey = contextSafe((event: KeyboardEvent) => {
@@ -217,13 +240,15 @@ export function HeroStudioA({
       let resumeTimer = 0;
 
       const hold = () => {
-        pausedRef.current = true;
+        hoverPausedRef.current = true;
+        applyPause();
         window.clearTimeout(resumeTimer);
       };
       const release = () => {
         window.clearTimeout(resumeTimer);
         resumeTimer = window.setTimeout(() => {
-          pausedRef.current = false;
+          hoverPausedRef.current = false;
+          applyPause();
         }, AUTO_MS);
       };
 
@@ -343,8 +368,14 @@ export function HeroStudioA({
       </div>
 
       <div className="hero-studio-a__inner">
-        <div className="hero-studio-a__copy">
-          <h2 className="hero-studio-a__title">{title}</h2>
+        <div
+          className={['hero-studio-a__copy', width.className].filter(Boolean).join(' ')}
+          style={width.style}
+          data-heading-width={width['data-heading-width']}
+        >
+          <h2 className="hero-studio-a__title">
+            <HeadingText text={title} />
+          </h2>
           <p className="hero-studio-a__lead">{description}</p>
           <div className="hero-studio-a__actions">
             <Button href={primaryHref} variant="primary" size="md" className="no-underline">
@@ -375,18 +406,46 @@ export function HeroStudioA({
                 </a>
                 <span className="hero-studio-a__card-label">{slide.title}</span>
                 <div className="hero-studio-a__card-cta-wrap">
-                  <Button
-                    href={slide.href}
-                    variant="secondary"
-                    size="sm"
-                    className="hero-studio-a__card-cta no-underline !h-8 !px-3 !text-xs"
-                  >
+                  <a href={slide.href} className="hero-studio-a__card-cta">
                     {cardCta}
-                  </Button>
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path
+                        d="M3 8h10M9 4l4 4-4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </a>
                 </div>
               </div>
             ))}
           </div>
+        </div>
+        <div className="hero-studio-a__transport">
+          <button
+            type="button"
+            className="hero-studio-a__play"
+            aria-pressed={userPaused}
+            aria-label={userPaused ? playLabel : pauseLabel}
+            onClick={() => {
+              userPausedRef.current = !userPausedRef.current;
+              hoverPausedRef.current = false;
+              pausedRef.current = userPausedRef.current;
+              setUserPaused(userPausedRef.current);
+            }}
+          >
+            {userPaused ? (
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path d="M5.2 3.4c0-.5.5-.8.9-.5l6.2 4.1c.4.3.4.9 0 1.1L6.1 13.2c-.4.3-.9 0-.9-.5V3.4Z" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path d="M4.5 3.2h2.2v9.6H4.5V3.2Zm4.8 0h2.2v9.6H9.3V3.2Z" />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
 

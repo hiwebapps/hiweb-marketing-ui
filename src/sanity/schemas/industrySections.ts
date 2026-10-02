@@ -5,7 +5,7 @@ import { ImageIcon } from '@sanity/icons/Image';
 import { RocketIcon } from '@sanity/icons/Rocket';
 import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { imageWithAlt, withVisibility } from './shared';
+import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -26,7 +26,8 @@ export const industryHero = defineType({
   icon: ImageIcon,
   fields: [
     defineField({ name: 'badge', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
+    headingTitleField({ required: true }),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
     imageWithAlt({ name: 'image', title: 'Imagen' }),
     defineField({
@@ -52,7 +53,8 @@ export const industryWhy = defineType({
   icon: BlockElementIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Por qué Hiweb' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({
       name: 'pillars',
       title: 'Pilares',
@@ -76,7 +78,8 @@ export const industryServices = defineType({
   icon: ThLargeIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Servicios' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 2 }),
     defineField({
       name: 'catalogLabel',
@@ -110,7 +113,8 @@ export const industryCases = defineType({
   icon: CaseIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Casos' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({
       name: 'description',
       title: 'Descripción',
@@ -135,7 +139,8 @@ export const industryFaq = defineType({
   icon: HelpCircleIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'FAQ' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({
       name: 'items',
       title: 'Preguntas',
@@ -151,7 +156,7 @@ export const industryCta = defineType({
   title: 'Cierre',
   type: 'object',
   icon: RocketIcon,
-  fields: [defineField({ name: 'title', title: 'Título', type: 'string' })],
+  fields: [headingTitleField(), headingWidthField()],
   preview: sectionPreview('Sección Cierre'),
 });
 

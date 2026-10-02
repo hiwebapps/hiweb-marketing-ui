@@ -15,6 +15,7 @@ type ServiceFocusProps = {
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
+  headingWidth?: string;
 };
 
 function IconChevron({ className = '' }: { className?: string }) {
@@ -111,6 +112,7 @@ export function ServiceFocus({
   title = 'Cuatro frentes del mismo servicio',
   description = 'Elige un frente. A la derecha está lo que hacemos en concreto, no el nombre del paquete.',
   tone = 'canvas',
+  headingWidth,
 }: ServiceFocusProps) {
   const [active, setActive] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -170,6 +172,7 @@ export function ServiceFocus({
         badgeVariant="purple"
         align="center"
         constrained={false}
+        headingWidth={headingWidth}
       />
       <div ref={rootRef} className="service-focus">
         <div className="service-focus__board">

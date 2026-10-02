@@ -1,3 +1,4 @@
+import { asHeadingWidth } from '../heading';
 import { urlForWidth } from '../../sanity/image';
 import type {
   AboutCopy,
@@ -166,7 +167,7 @@ function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data
     }
     return [];
     })();
-    return section.hidden === true ? mapped.map((entry) => ({ ...entry, hidden: true })) : mapped;
+    return mapped.map((entry) => withHeading(section, entry));
   });
   return sections.length ? sections : undefined;
 }
@@ -175,19 +176,27 @@ function mapServicePlans(doc: Record<string, unknown>): ServiceRecord['data']['p
   const raw = Array.isArray(doc.planes) ? doc.planes : [];
   const plans = raw
     .map((item) => {
-      const plan = item as { name?: string; price?: string; period?: string; featured?: boolean; includes?: string[] };
+      const plan = item as {
+        name?: string;
+        badge?: string;
+        price?: string;
+        period?: string;
+        featured?: boolean;
+        includes?: string[];
+      };
       const includes = Array.isArray(plan.includes) ? plan.includes.map(String).filter(Boolean) : [];
-      if (!plan.name || !plan.price || !includes.length) return null;
+      if (!plan.price || !includes.length) return null;
+      const badge = plan.badge?.trim();
       return {
-        name: String(plan.name),
+        name: plan.name?.trim() || undefined,
+        badge: badge || undefined,
         price: String(plan.price),
         period: plan.period ? String(plan.period) : undefined,
         featured: Boolean(plan.featured),
         includes,
       };
     })
-    .filter((item): item is NonNullable<typeof item> => item !== null)
-    .slice(0, 3);
+    .filter((item): item is NonNullable<typeof item> => item !== null);
 
   if (!plans.length || !doc.planesTitle) return undefined;
 
@@ -311,12 +320,23 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
                 accent: String(card.accent ?? 'purple'),
               }))
           : [];
+        const stats = Array.isArray(section.stats)
+          ? (section.stats as { valor?: number; prefix?: string; suffix?: string; label?: string }[])
+              .filter((stat) => stat.label && typeof stat.valor === 'number')
+              .map((stat) => ({
+                valor: stat.valor as number,
+                prefix: stat.prefix ? String(stat.prefix) : undefined,
+                suffix: stat.suffix ? String(stat.suffix) : undefined,
+                label: String(stat.label),
+              }))
+          : undefined;
         return {
           _type: 'serviceWhy' as const,
           title: section.title ? String(section.title) : undefined,
           description: section.description ? String(section.description) : undefined,
           ctaLabel: section.ctaLabel ? String(section.ctaLabel) : undefined,
           ctaHref: section.ctaHref ? String(section.ctaHref) : undefined,
+          stats,
           cards,
         };
       }
@@ -344,7 +364,7 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
           ? section.items.flatMap((item) => {
               const quote = asTestimonial(item);
               if (!quote?.client) return [];
-              return [{ client: quote.client, quote: quote.quote, name: quote.name, role: quote.role, photo: quote.photo }];
+              return [{ client: quote.client, quote: quote.quote, name: quote.name, role: quote.role, photo: quote.photo, stats: quote.stats }];
             })
           : [];
         return {
@@ -377,8 +397,8 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
       }
       return null;
       })();
-      if (!mapped || section.hidden !== true) return mapped;
-      return { ...mapped, hidden: true };
+      if (!mapped) return null;
+      return withHeading(section, mapped);
     })
     .filter((item): item is ServiceSection => item !== null);
 
@@ -441,19 +461,42 @@ function asText(value: unknown) {
   return typeof value === 'string' && value.trim() ? value.trim() : undefined;
 }
 
+function asStoryStats(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .flatMap((item) => {
+      if (!item || typeof item !== 'object') return [];
+      const row = item as { value?: unknown; label?: unknown };
+      const statValue = asText(row.value);
+      const label = asText(row.label);
+      if (!statValue || !label) return [];
+      return [{ value: statValue, label }];
+    })
+    .slice(0, 2);
+}
+
 function asTestimonial(value: unknown) {
   if (!value || typeof value !== 'object') return undefined;
-  const row = value as { quote?: unknown; name?: unknown; role?: unknown; client?: unknown; photo?: CmsImage | string };
+  const row = value as {
+    quote?: unknown;
+    name?: unknown;
+    role?: unknown;
+    client?: unknown;
+    photo?: CmsImage | string;
+    stats?: unknown;
+  };
   const quote = asText(row.quote);
   if (!quote) return undefined;
   const photo =
     typeof row.photo === 'string' && row.photo.startsWith('http') ? row.photo : imageUrl(row.photo as CmsImage, 900);
+  const stats = asStoryStats(row.stats);
   return {
     quote,
     name: asText(row.name) ?? '',
     role: asText(row.role) ?? '',
     client: asText(row.client),
     photo,
+    stats: stats.length ? stats : undefined,
   };
 }
 
@@ -544,6 +587,7 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
           role: quote?.role,
           client: quote?.client,
           photo: quote?.photo,
+          stats: quote?.stats,
         },
       ];
     }
@@ -572,7 +616,7 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
     }
     return [];
     })();
-    return section.hidden === true ? mapped.map((entry) => ({ ...entry, hidden: true })) : mapped;
+    return mapped.map((entry) => withHeading(section, entry));
   });
 }
 
@@ -623,6 +667,7 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
               role: testimonial.role ?? '',
               client: testimonial.client,
               photo: testimonial.photo,
+              stats: asStoryStats(testimonial.stats),
             }
           : asTestimonial(legacyQuote) ?? legacyQuote,
       anio: hero?._type === 'caseHero' ? hero.anio : asText(doc.anio),
@@ -711,6 +756,16 @@ function asIntro(value: unknown): HomeCopy['pillarIntro'] {
     title: item.title ? String(item.title) : undefined,
     titleMuted: item.titleMuted ? String(item.titleMuted) : undefined,
     description: item.description ? String(item.description) : undefined,
+    headingWidth: asHeadingWidth(item.headingWidth),
+  };
+}
+
+function withHeading<T extends object>(section: Record<string, unknown>, entry: T): T {
+  const headingWidth = asHeadingWidth(section.headingWidth);
+  return {
+    ...entry,
+    ...(headingWidth ? { headingWidth } : {}),
+    ...(section.hidden === true ? { hidden: true } : {}),
   };
 }
 
@@ -767,6 +822,7 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
     const type = String(section._type ?? '');
     if (type === 'homeHero') {
       copy.heroTitle = section.title ? String(section.title) : undefined;
+      copy.heroHeadingWidth = asHeadingWidth(section.headingWidth);
       copy.heroLead = section.lead ? String(section.lead) : undefined;
       copy.primaryCta = section.primaryCta as HomeCopy['primaryCta'];
       copy.secondaryCta = section.secondaryCta as HomeCopy['secondaryCta'];
@@ -787,7 +843,7 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
         ? section.items.flatMap((item) => {
             const quote = asTestimonial(item);
             if (!quote?.client) return [];
-            return [{ client: quote.client, quote: quote.quote, name: quote.name, role: quote.role, photo: quote.photo }];
+            return [{ client: quote.client, quote: quote.quote, name: quote.name, role: quote.role, photo: quote.photo, stats: quote.stats }];
           })
         : undefined;
     } else if (type === 'homeProcess') {
@@ -801,8 +857,10 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
         eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
         title: section.title ? String(section.title) : undefined,
         description: section.description ? String(section.description) : undefined,
+        memberLocale: section.memberLocale === 'en' ? 'en' : section.memberLocale === 'es' ? 'es' : undefined,
         ctaLabel: section.ctaLabel ? String(section.ctaLabel) : undefined,
         ctaHref: section.ctaHref ? String(section.ctaHref) : undefined,
+        headingWidth: asHeadingWidth(section.headingWidth),
       };
     } else if (type === 'homeFaq') {
       copy.faqIntro = asIntro(section.intro);
@@ -815,6 +873,7 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
         title: section.title ? String(section.title) : undefined,
         description: section.description ? String(section.description) : undefined,
         primaryCta: section.primaryCta as HomeCopy['primaryCta'],
+        headingWidth: asHeadingWidth(section.headingWidth),
       };
     }
   }
@@ -945,6 +1004,7 @@ function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
         description: text(section.description),
         ctaLabel: text(section.ctaLabel),
         ctaHref: text(section.ctaHref),
+        memberLocale: section.memberLocale === 'en' ? 'en' : section.memberLocale === 'es' ? 'es' : undefined,
         filterLabel: text(section.filterLabel),
         filters: Array.isArray(section.filters) ? (section.filters as AboutCopy['teamFilters']) : [],
       }];
@@ -973,7 +1033,7 @@ function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
     }
     return [];
     })();
-    return section.hidden === true ? mapped.map((entry) => ({ ...entry, hidden: true })) : mapped;
+    return mapped.map((entry) => withHeading(section, entry));
   });
   return sections.length ? sections : undefined;
 }
@@ -1218,7 +1278,7 @@ export function mapLanding(doc: Record<string, unknown>): LandingPage {
           const raw = section as Record<string, unknown>;
           const mapped = mapLandingSection(raw);
           if (!mapped) return null;
-          return raw.hidden === true ? { ...mapped, hidden: true } : mapped;
+          return withHeading(raw, mapped);
         })
         .filter((section): section is LandingSection => Boolean(section))
     : [];

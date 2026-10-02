@@ -26,6 +26,12 @@ const HIDDEN_FROM_FALLBACK = [
   'blogIndex',
   'casesIndex',
   'legalPage',
+  'legalSection',
+  'legalSubsection',
+  'legalParagraph',
+  'legalBullets',
+  'legalTerms',
+  'legalLines',
   'service',
   'caseStudy',
   'post',
@@ -108,6 +114,7 @@ type LocaleDoc = {
   slug: string;
   orden: number;
   locale: string;
+  role?: string;
 };
 
 function createMenu(
@@ -170,6 +177,7 @@ type Pair = {
   slug: string;
   nombre: string;
   orden: number;
+  role?: string;
   esId?: string;
   enId?: string;
 };
@@ -184,13 +192,17 @@ function groupPairs(rows: LocaleDoc[] | null) {
       slug: row.slug,
       nombre: row.nombre || 'Sin nombre',
       orden: row.orden ?? 0,
+      role: row.role,
     };
-    if (row.locale === 'en') current.enId = id;
-    else {
+    if (row.locale === 'en') {
+      current.enId = id;
+      current.role = current.role || row.role;
+    } else {
       current.esId = id;
       current.nombre = row.nombre || current.nombre;
       current.orden = row.orden ?? 0;
       current.slug = row.slug;
+      current.role = row.role || current.role;
     }
     byKey.set(key, current);
   }
@@ -306,6 +318,74 @@ function caseList(S: Parameters<StructureResolver>[0], context: Parameters<Struc
     );
 }
 
+function pairedDocuments(
+  S: Parameters<StructureResolver>[0],
+  context: Parameters<StructureResolver>[1],
+  options: {
+    title: string;
+    schemaType: string;
+    query: string;
+    idPrefix: string;
+    menuItems?: ReturnType<Parameters<StructureResolver>[0]['menuItem']>[];
+    leading?: ReturnType<Parameters<StructureResolver>[0]['listItem']>[];
+  },
+) {
+  return context.documentStore
+    .listenQuery<LocaleDoc[]>(options.query, {}, { apiVersion: '2024-01-01', perspective: 'raw' })
+    .pipe(
+      map((rows) =>
+        S.list()
+          .title(options.title)
+          .menuItems(options.menuItems ?? [])
+          .items([
+            ...(options.leading ?? []),
+            ...groupPairs(rows).map((page) => {
+              const title =
+                options.schemaType === 'testimonial' && page.role?.trim()
+                  ? `${page.nombre} · ${page.role.trim()}`
+                  : page.nombre;
+              const onlyId = page.esId && !page.enId ? page.esId : page.enId && !page.esId ? page.enId : '';
+              return S.listItem()
+                .title(title)
+                .id(`${options.idPrefix}-${page.key}`)
+                .child(
+                  onlyId
+                    ? S.document().schemaType(options.schemaType).documentId(onlyId).title(title)
+                    : S.list()
+                        .title(title)
+                        .items(languageItems(S, options.schemaType, page.esId, page.enId)),
+                );
+            }),
+          ]),
+      ),
+    );
+}
+
+const LANDING_QUERY = /* groq */ `*[_type == "landingPage"]{
+  _id,
+  "nombre": coalesce(title, "Sin nombre"),
+  "slug": coalesce(slug.current, _id),
+  "orden": 0,
+  "locale": coalesce(locale, "es")
+}`;
+
+const TESTIMONIAL_QUERY = /* groq */ `*[_type == "testimonial"]{
+  _id,
+  "nombre": coalesce(name, "Sin nombre") + " · " + coalesce(client, "Sin cliente"),
+  role,
+  "slug": _id,
+  "orden": 0,
+  "locale": coalesce(locale, "es")
+}`;
+
+const PERSON_QUERY = /* groq */ `*[_type == "person"]{
+  _id,
+  "nombre": coalesce(name, "Sin nombre"),
+  "slug": _id,
+  "orden": coalesce(orden, 0),
+  "locale": coalesce(locale, "es")
+}`;
+
 export const structure: StructureResolver = (S, context) => {
 
   return S.list()
@@ -327,14 +407,6 @@ export const structure: StructureResolver = (S, context) => {
                 .title('Redirecciones')
                 .id('redirects')
                 .child(S.documentTypeList('redirect').title('Redirecciones')),
-              S.listItem()
-                .title('Aviso de privacidad')
-                .id('legal-privacy')
-                .child(S.document().schemaType('legalPage').documentId('legal-privacy').title('Aviso de privacidad')),
-              S.listItem()
-                .title('Términos')
-                .id('legal-terms')
-                .child(S.document().schemaType('legalPage').documentId('legal-terms').title('Términos')),
             ]),
         ),
       S.listItem()
@@ -430,11 +502,50 @@ export const structure: StructureResolver = (S, context) => {
         .title('Páginas')
         .id('paginas')
         .icon(DocumentIcon)
-        .child(
-          S.documentList()
-            .title('Páginas')
-            .filter('_type in ["contactPage", "landingPage"]')
-            .defaultOrdering([{ field: 'title', direction: 'asc' }]),
+        .child(() =>
+          pairedDocuments(S, context, {
+            title: 'Páginas',
+            schemaType: 'landingPage',
+            query: LANDING_QUERY,
+            idPrefix: 'landing-pair',
+            menuItems: [
+              S.menuItem()
+                .title('Nueva página — Servicio lite')
+                .intent({ type: 'create', params: { type: 'landingPage', template: 'landing-serviceLite' } }),
+              S.menuItem()
+                .title('Nueva página — Industria lite')
+                .intent({ type: 'create', params: { type: 'landingPage', template: 'landing-industryLite' } }),
+              S.menuItem()
+                .title('Nueva página — Campaña / CTA')
+                .intent({ type: 'create', params: { type: 'landingPage', template: 'landing-campaign' } }),
+            ],
+            leading: [
+              S.listItem()
+                .title('Contacto')
+                .id('contacto-pair')
+                .child(
+                  S.list()
+                    .title('Contacto')
+                    .items(languageItems(S, 'contactPage', 'contactPage', 'contactPage-en')),
+                ),
+              S.listItem()
+                .title('Términos y condiciones')
+                .id('legal-terms-pair')
+                .child(
+                  S.list()
+                    .title('Términos y condiciones')
+                    .items(languageItems(S, 'legalPage', 'legal-terms', 'legal-terms-en')),
+                ),
+              S.listItem()
+                .title('Aviso de privacidad')
+                .id('legal-privacy-pair')
+                .child(
+                  S.list()
+                    .title('Aviso de privacidad')
+                    .items(languageItems(S, 'legalPage', 'legal-privacy', 'legal-privacy-en')),
+                ),
+            ],
+          }),
         ),
       S.listItem()
         .title('Biblioteca')
@@ -457,7 +568,19 @@ export const structure: StructureResolver = (S, context) => {
                 .title('Testimonios')
                 .id('testimonials')
                 .icon(CommentIcon)
-                .child(S.documentTypeList('testimonial').title('Testimonios')),
+                .child(() =>
+                  pairedDocuments(S, context, {
+                    title: 'Testimonios',
+                    schemaType: 'testimonial',
+                    query: TESTIMONIAL_QUERY,
+                    idPrefix: 'testimonial-pair',
+                    menuItems: [
+                      S.menuItem()
+                        .title('Nuevo testimonio')
+                        .intent({ type: 'create', params: { type: 'testimonial', template: 'testimonial-es' } }),
+                    ],
+                  }),
+                ),
             ]),
         ),
       S.divider(),
@@ -501,7 +624,19 @@ export const structure: StructureResolver = (S, context) => {
         .title('Equipo')
         .id('equipo')
         .icon(UsersIcon)
-        .child(S.documentTypeList('person').title('Equipo').defaultOrdering([{ field: 'orden', direction: 'asc' }])),
+        .child(() =>
+          pairedDocuments(S, context, {
+            title: 'Equipo',
+            schemaType: 'person',
+            query: PERSON_QUERY,
+            idPrefix: 'person-pair',
+            menuItems: [
+              S.menuItem()
+                .title('Nueva persona')
+                .intent({ type: 'create', params: { type: 'person', template: 'person-es' } }),
+            ],
+          }),
+        ),
       S.divider(),
       ...S.documentTypeListItems().filter((item) => !HIDDEN_FROM_FALLBACK.includes(item.getId() ?? '')),
     ]);

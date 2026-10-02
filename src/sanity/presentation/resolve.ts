@@ -33,7 +33,23 @@ export const resolve: PresentationPluginOptions['resolve'] = {
     },
     {
       route: '/contacto',
-      filter: `_type == "contactPage"`,
+      filter: `_type == "contactPage" && _id in ["contactPage", "drafts.contactPage"]`,
+    },
+    {
+      route: '/terminos',
+      filter: `_type == "legalPage" && _id in ["legal-terms", "drafts.legal-terms"]`,
+    },
+    {
+      route: '/en/terminos',
+      filter: `_type == "legalPage" && _id in ["legal-terms-en", "drafts.legal-terms-en"]`,
+    },
+    {
+      route: '/aviso-de-privacidad',
+      filter: `_type == "legalPage" && _id in ["legal-privacy", "drafts.legal-privacy"]`,
+    },
+    {
+      route: '/en/aviso-de-privacidad',
+      filter: `_type == "legalPage" && _id in ["legal-privacy-en", "drafts.legal-privacy-en"]`,
     },
     {
       route: '/servicios/:slug',
@@ -69,7 +85,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
     },
     {
       route: '/:slug',
-      filter: `_type == "landingPage" && slug.current == $slug`,
+      filter: `_type == "landingPage" && slug.current == $slug && coalesce(locale, "es") == "es"`,
     },
   ]),
   locations: {

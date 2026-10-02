@@ -26,6 +26,7 @@ type ProcessPhasesProps = {
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
+  headingWidth?: string;
 };
 
 const ACCENTS: ProcessAccent[] = ['purple', 'cyan', 'orange', 'lime'];
@@ -107,6 +108,7 @@ export function ProcessPhases({
   title = 'De la auditoría a la optimización',
   description = 'Cuatro fases. Un sistema. El mismo criterio de evidencia en cada ciclo.',
   tone = 'canvas',
+  headingWidth,
 }: ProcessPhasesProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const count = Math.max(phases.length, 1);
@@ -164,6 +166,7 @@ export function ProcessPhases({
           description={description}
           align="center"
           badgeVariant="purple"
+          headingWidth={headingWidth}
         />
 
         <ol className="proceso__steps">

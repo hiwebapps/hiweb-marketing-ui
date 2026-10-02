@@ -47,6 +47,7 @@ type TeamGridProps = {
   showFilters?: boolean;
   filters?: ReadonlyArray<{ id: FilterId; label: string }>;
   filterLabel?: string;
+  headingWidth?: string;
 };
 
 const ACCENTS: TeamAccent[] = ['cyan', 'purple', 'orange', 'lime'];
@@ -121,6 +122,7 @@ export function TeamGrid({
   showFilters = false,
   filters = FILTERS,
   filterLabel = 'Filtrar por categoría',
+  headingWidth,
 }: TeamGridProps) {
   const [filter, setFilter] = useState<FilterId>('all');
   const gridRef = useRef<HTMLUListElement>(null);
@@ -171,6 +173,7 @@ export function TeamGrid({
             title={title}
             description={description}
             badgeVariant="cyan"
+            headingWidth={headingWidth}
           />
           <div className="team__cta">
             <Button href={ctaHref}>{ctaLabel}</Button>

@@ -136,6 +136,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 									title={section.retoTitle ?? 'Contexto inicial'}
 									description={section.reto}
 									badgeVariant="purple"
+									headingWidth={section.headingWidth}
 								/>
 							</div>
 							<div>
@@ -144,6 +145,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 									title={section.estrategiaTitle ?? 'Servicios aplicados'}
 									description={section.estrategia}
 									badgeVariant="cyan"
+									headingWidth={section.headingWidth}
 								/>
 								<ul class="mt-6 flex-wrap gap-2 flex">
 									{relatedServices.map((service) => (
@@ -174,6 +176,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 						eyebrow={section.eyebrow ?? 'Ejecución'}
 						title={section.title ?? 'Cómo se hizo el trabajo'}
 						description={section.description}
+						headingWidth={section.headingWidth}
 					/>
 				);
 			}
@@ -202,6 +205,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 						primaryHref={section.primaryHref}
 						secondaryLabel={section.secondaryLabel}
 						secondaryHref={section.secondaryHref}
+						headingWidth={section.headingWidth}
 					/>
 				);
 			}
@@ -224,6 +228,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 								href: `/portafolio/${entry.id}`,
 							},
 						]}
+						headingWidth={section.headingWidth}
 					/>
 				);
 			}
@@ -236,6 +241,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 								title={section.title ?? 'Más casos de esta industria'}
 								description={section.description}
 								badgeVariant="lime"
+								headingWidth={section.headingWidth}
 							/>
 							<CaseCards
 								cases={related.map((item) => ({
@@ -262,6 +268,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 						description={section.description}
 						primaryLabel={section.primaryLabel}
 						primaryHref={section.primaryHref}
+						headingWidth={section.headingWidth}
 					/>
 				);
 			}

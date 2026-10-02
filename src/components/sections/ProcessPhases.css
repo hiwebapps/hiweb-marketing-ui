@@ -116,14 +116,17 @@
 }
 
 .proceso__copy {
-  max-width: 16.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
   margin-top: 1.35rem;
+  padding-inline: 0.85rem;
 }
 
 .proceso__title {
   margin: 0;
   color: var(--color-ink);
-  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
   font-size: 1.15rem;
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -131,10 +134,11 @@
 }
 
 .proceso__desc {
-  margin: 0.55rem 0 0;
+  margin: 0.95rem 0 0;
   color: var(--color-muted);
   font-size: 0.875rem;
-  line-height: 1.55;
+  line-height: 1.7;
+  text-wrap: pretty;
 }
 
 @keyframes proceso-dash {
@@ -197,6 +201,7 @@
   .proceso__copy {
     max-width: none;
     margin-top: 0.35rem;
+    padding-inline: 0;
   }
 }
 

@@ -1,4 +1,5 @@
 import { Badge, Button } from '../ui';
+import { HeadingText, headingProps } from './primitives/heading';
 import './FinalCta.css';
 
 type FinalCtaProps = {
@@ -9,6 +10,7 @@ type FinalCtaProps = {
   primaryHref?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
+  headingWidth?: string;
 };
 
 type MarqueeCard = {
@@ -79,7 +81,9 @@ export function FinalCta({
   description = 'Cuéntanos industria, objetivo e ICP. Te devolvemos un diagnóstico claro y el siguiente paso.',
   primaryLabel = 'Agenda tu auditoría',
   primaryHref = '/contacto',
+  headingWidth,
 }: FinalCtaProps) {
+  const width = headingProps(headingWidth);
   return (
     <section id="contacto" className="final-cta" data-scroll-section="contacto">
       <div className="final-cta__panel">
@@ -91,11 +95,17 @@ export function FinalCta({
 
         <div className="final-cta__veil" />
 
-        <div className="final-cta__content">
+        <div
+          className={['final-cta__content', width.className].filter(Boolean).join(' ')}
+          style={width.style}
+          data-heading-width={width['data-heading-width']}
+        >
           <Badge variant="lime" tone="on-ink">
             {badge}
           </Badge>
-          <h2 data-split className="final-cta__title">{title}</h2>
+          <h2 data-split className="final-cta__title">
+            <HeadingText text={title} />
+          </h2>
           <p className="final-cta__lead">{description}</p>
           <Button href={primaryHref} variant="primary" size="md" className="final-cta__btn no-underline">
             {primaryLabel}

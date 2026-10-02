@@ -69,6 +69,7 @@ const serviceFilters = services
 				eyebrow={page?.eyebrow ?? 'Resources / Blog'}
 				title={page?.title ?? 'Latest blogs'}
 				description={page?.description ?? 'Discover the latest news and trends in the world of digital marketing. Learn about SEO, Design, Web Development, and more!'}
+				headingWidth={page?.headingWidth}
 				readingSuffix={page?.readingSuffix ?? 'min read'}
 				featured={{
 					id: featured.id,
@@ -88,6 +89,7 @@ const serviceFilters = services
 				posts={cards}
 				services={serviceFilters}
 				title={page?.listTitle ?? 'All articles'}
+				headingWidth={page?.listHeadingWidth}
 				description={page?.listDescription ?? 'Filter by service. Each piece links to work we actually deliver.'}
 				hrefPrefix="/en/blogs"
 				allLabel={page?.allLabel ?? 'All'}
@@ -95,6 +97,10 @@ const serviceFilters = services
 				readingSuffix={page?.readingSuffix ?? 'min read'}
 			/>
 		</SectionBand>
-		<FinalCta client:load title={page?.closingTitle ?? 'Want to apply this to your business?'} />
+		<FinalCta
+			client:load
+			title={page?.closingTitle ?? 'Want to apply this to your business?'}
+			headingWidth={page?.closingHeadingWidth}
+		/>
 	</main>
 </Layout>

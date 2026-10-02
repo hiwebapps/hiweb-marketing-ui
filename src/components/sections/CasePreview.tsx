@@ -54,6 +54,7 @@ type CasePreviewProps = {
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
+  headingWidth?: string;
 };
 
 export function CaseCard({ item }: { item: CaseItem }) {
@@ -74,11 +75,11 @@ export function CaseCard({ item }: { item: CaseItem }) {
             {item.client}
             {item.outcome ? <span className="text-muted"> · {item.outcome}</span> : null}
           </p>
-          <h3 className="mt-3 font-display text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-ink-soft">
+          <h3 className="mt-3 font-sans text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-ink-soft">
             {item.title}
           </h3>
           <p className="mt-2 !text-sm !leading-relaxed text-ink-soft">{item.summary}</p>
-          <p className="mt-4 font-display text-xs font-medium tracking-wide text-ink">
+          <p className="mt-4 font-sans text-xs font-semibold tracking-wide text-ink">
             Ver caso →
           </p>
         </div>
@@ -93,6 +94,7 @@ export function CasePreview({
   title = 'Resultados propios, solo con empresas consolidadas',
   description = 'Cliente, industria y outcome. Sin portfolio ornamental.',
   tone = 'canvas',
+  headingWidth,
 }: CasePreviewProps) {
   return (
     <SectionBand id="casos" tone={tone}>
@@ -101,6 +103,7 @@ export function CasePreview({
         title={title}
         description={description}
         badgeVariant="lime"
+        headingWidth={headingWidth}
         actions={
           <a
             href="/portafolio"

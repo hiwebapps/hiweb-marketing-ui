@@ -7,6 +7,20 @@ export const person = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'locale',
+      title: 'Idioma',
+      type: 'string',
+      hidden: true,
+      options: {
+        list: [
+          { title: 'Español', value: 'es' },
+          { title: 'English', value: 'en' },
+        ],
+      },
+      initialValue: 'es',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'name',
       title: 'Nombre',
       type: 'string',
@@ -77,6 +91,11 @@ export const person = defineType({
     },
   ],
   preview: {
-    select: { title: 'name', subtitle: 'role', media: 'photo' },
+    select: { title: 'name', role: 'role', locale: 'locale', media: 'photo' },
+    prepare: ({ title, role, locale, media }) => ({
+      title: title || 'Persona',
+      subtitle: [locale === 'en' ? 'English' : 'Español', role].filter(Boolean).join(' · '),
+      media,
+    }),
   },
 });

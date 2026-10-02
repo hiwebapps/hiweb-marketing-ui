@@ -130,6 +130,7 @@ type BlogIndexProps = {
   allLabel?: string;
   filterLabel?: string;
   readingSuffix?: string;
+  headingWidth?: string;
 };
 
 function postHref(post: BlogCard, hrefPrefix: string) {
@@ -154,6 +155,7 @@ export function BlogIndex({
   allLabel = 'Todos',
   filterLabel = 'Filtrar por servicio',
   readingSuffix = 'minutos',
+  headingWidth,
 }: BlogIndexProps) {
   const [filter, setFilter] = useState<FilterId>('all');
   const gridRef = useRef<HTMLUListElement>(null);
@@ -212,6 +214,7 @@ export function BlogIndex({
         title={title}
         description={description}
         badgeVariant="purple"
+        headingWidth={headingWidth}
       />
 
       <div className="blog-filters" role="radiogroup" aria-label={filterLabel}>

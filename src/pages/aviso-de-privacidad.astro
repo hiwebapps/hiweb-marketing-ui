@@ -4,29 +4,40 @@ export const prerender = true;
 import Layout from '../layouts/Layout.astro';
 import { PageHero } from '../components/sections/PageHero';
 import { SectionBand } from '../components/sections/primitives/SectionBand';
+import { LegalDocument } from '../components/sections/LegalDocument';
 import { getLegalPage } from '../lib/content';
+import { breadcrumbSchema } from '../lib/schema';
+import '../components/sections/LegalDocument.css';
 
-const fallback = {
-	eyebrow: 'Legal',
-	title: 'Aviso de privacidad',
-	body: 'Documento de trabajo. Hiweb Marketing recaba los datos del formulario de contacto (nombre, email, empresa y contexto) únicamente para responder la solicitud de auditoría. No vendemos bases. Puedes escribir a hola@hiweb.marketing para ejercer tus derechos.',
-	description: 'Privacidad de datos de contacto de Hiweb Marketing.',
-};
 const page = await getLegalPage('legal-privacy');
-const title = page?.title || fallback.title;
-const body = page?.body || fallback.body;
+const title = page?.title || 'Aviso de privacidad Hiweb';
 ---
 
 <Layout
 	title={page?.seo?.metaTitle ?? `${title} — Hiweb Marketing`}
-	description={page?.seo?.metaDescription ?? fallback.description}
+	description={page?.seo?.metaDescription ?? 'Cómo Hiweb Marketing recaba, utiliza y protege los datos personales, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.'}
 	noindex={page?.seo?.noindex ?? true}
 	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/aviso-de-privacidad', en: '/en/aviso-de-privacidad' }}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Inicio', href: '/' },
+		{ name: title, href: '/aviso-de-privacidad' },
+	])}
 >
 	<main>
-		<PageHero eyebrow={page?.eyebrow || fallback.eyebrow} title={title} />
+		<PageHero
+			eyebrow={page?.eyebrow || 'Legal'}
+			title={title}
+			description={page?.intro}
+			fullWidth
+			headingWidth={page?.headingWidth}
+		/>
 		<SectionBand>
-			<p class="max-w-2xl !text-base">{body}</p>
+			<LegalDocument
+				updatedLabel={page?.updatedLabel}
+				updatedOn={page?.updatedOn}
+				sections={page?.sections ?? []}
+			/>
 		</SectionBand>
 	</main>
 </Layout>

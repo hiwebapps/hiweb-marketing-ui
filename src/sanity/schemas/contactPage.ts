@@ -29,6 +29,21 @@ export const contactPage = defineType({
   ],
   fields: [
     defineField({
+      name: 'locale',
+      title: 'Idioma',
+      type: 'string',
+      group: 'content',
+      hidden: true,
+      options: {
+        list: [
+          { title: 'Español', value: 'es' },
+          { title: 'English', value: 'en' },
+        ],
+      },
+      initialValue: 'es',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'title',
       title: 'Nombre interno',
       type: 'string',

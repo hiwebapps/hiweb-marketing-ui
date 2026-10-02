@@ -28,6 +28,7 @@ type CasesIndexProps = {
   industries: ReadonlyArray<{ slug: string; nombre: string }>;
   title?: string;
   description?: string;
+  headingWidth?: string;
 };
 
 function caseHref(item: CaseIndexCard) {
@@ -80,6 +81,7 @@ export function CasesIndex({
   industries,
   title = 'Todos los casos',
   description = 'Filtra por industria. Cada caso muestra el cliente y el trabajo real.',
+  headingWidth,
 }: CasesIndexProps) {
   const [filter, setFilter] = useState<FilterId>('all');
   const gridRef = useRef<HTMLUListElement>(null);
@@ -134,6 +136,7 @@ export function CasesIndex({
         title={title}
         description={description}
         badgeVariant="lime"
+        headingWidth={headingWidth}
       />
 
       <div className="blog-filters" role="radiogroup" aria-label="Filtrar por industria">

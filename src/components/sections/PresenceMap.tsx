@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import createGlobe from 'cobe';
+import { headingProps } from './primitives/heading';
 import './PresenceMap.css';
 
 type PresenceMapProps = {
@@ -10,6 +11,7 @@ type PresenceMapProps = {
   globeLabel?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  headingWidth?: string;
 };
 
 type MarkerDef = {
@@ -58,8 +60,10 @@ export function PresenceMap({
   ctaHref = '/contacto',
   sectionLabel = 'Presencia global',
   globeLabel = 'Globo interactivo con México, Estados Unidos y Canadá',
+  headingWidth,
 }: PresenceMapProps) {
-  const titleParts = title.split(/(Norteamérica|North America)/i);
+  const width = headingProps(headingWidth);
+  const titleLines = title.replace(/\n+$/, '').split(/\r?\n/);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const phiRef = useRef(2.55);
@@ -191,18 +195,27 @@ export function PresenceMap({
       <div className="presence-map__grid" aria-hidden="true" />
 
       <div className="presence-map__inner">
-        <header className="presence-map__header">
+        <header
+          className={['presence-map__header', width.className].filter(Boolean).join(' ')}
+          style={width.style}
+          data-heading-width={width['data-heading-width']}
+        >
           <p className="presence-map__badge">{eyebrow}</p>
           <h2 className="presence-map__title">
-            {titleParts.map((part, index) =>
-              /norteamérica|north america/i.test(part) ? (
-                <span key={index} className="presence-map__accent">
-                  {part}
-                </span>
-              ) : (
-                <span key={index}>{part}</span>
-              ),
-            )}
+            {titleLines.map((line, lineIndex) => (
+              <Fragment key={lineIndex}>
+                {lineIndex > 0 ? <br /> : null}
+                {line.split(/(Norteamérica|North America)/i).map((part, index) =>
+                  /norteamérica|north america/i.test(part) ? (
+                    <span key={index} className="presence-map__accent">
+                      {part}
+                    </span>
+                  ) : (
+                    <span key={index}>{part}</span>
+                  ),
+                )}
+              </Fragment>
+            ))}
           </h2>
           <p className="presence-map__lead">{description}</p>
         </header>

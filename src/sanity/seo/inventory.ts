@@ -49,9 +49,12 @@ export const PAIRED_TYPES = new Set([
   'industriesIndex',
   'servicesIndex',
   'blogIndex',
+  'contactPage',
+  'landingPage',
+  'legalPage',
 ]);
 
-export const SINGLE_LOCALE_TYPES = new Set(['contactPage', 'landingPage', 'legalPage']);
+export const SINGLE_LOCALE_TYPES = new Set<string>();
 
 export type SeoStatus = 'published' | 'changed' | 'draft';
 
@@ -101,7 +104,7 @@ export const SEO_QUERY = `*[_type in ["homePage","aboutPage","service","industry
   esSlug,
   metaTitle,
   metaDescription,
-  description,
+  "description": coalesce(description, intro),
   tagline,
   resumen,
   heroDescription,
@@ -148,7 +151,9 @@ function linksTo(hrefs: string[], path: string) {
 
 function pairKey(row: SeoSource) {
   const id = publishedId(row._id);
-  if (row._type === 'homePage' || row._type === 'aboutPage') return row._type;
+  if (row._type === 'homePage' || row._type === 'aboutPage' || row._type === 'contactPage') return row._type;
+  if (row._type === 'legalPage') return id.endsWith('-en') ? id.slice(0, -3) : id;
+  if (row._type === 'landingPage') return id.endsWith('-en') ? id.slice(0, -3) : id;
   if (row._type === 'industriesIndex' || row._type === 'servicesIndex' || row._type === 'blogIndex') {
     return `${row._type}:${id.endsWith('-en') ? id.slice(0, -3) : id}`;
   }

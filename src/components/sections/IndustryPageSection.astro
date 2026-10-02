@@ -31,6 +31,7 @@ const lower = nombre.toLowerCase();
 			badges={[{ label: section.badge || nombre, variant: 'lime' }]}
 			ctaLabel={section.ctaLabel || 'Ver casos de éxito'}
 			ctaHref={section.ctaHref || '#casos'}
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -41,6 +42,7 @@ const lower = nombre.toLowerCase();
 			title={section.title || `Por qué Hiweb en ${lower}`}
 			pillars={section.pillars ?? []}
 			tone="canvas"
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -58,6 +60,7 @@ const lower = nombre.toLowerCase();
 			catalogLabel={section.catalogLabel}
 			catalogHref={section.catalogHref}
 			tone="canvas"
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -74,6 +77,7 @@ const lower = nombre.toLowerCase();
 						'Estamos documentando más casos de este sector. El diagnóstico sigue abierto.'
 			}
 			stories={stories}
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
@@ -85,11 +89,16 @@ const lower = nombre.toLowerCase();
 			eyebrow={section.eyebrow}
 			title={section.title || `Preguntas de ${lower}`}
 			withSchema={false}
+			headingWidth={section.headingWidth}
 		/>
 	)
 }
 {
 	section._type === 'industryCta' && (
-		<FinalCta client:load title={section.title || `Agenda un diagnóstico para ${lower}`} />
+		<FinalCta
+			client:load
+			title={section.title || `Agenda un diagnóstico para ${lower}`}
+			headingWidth={section.headingWidth}
+		/>
 	)
 }

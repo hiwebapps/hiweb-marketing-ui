@@ -31,7 +31,8 @@ import {
 import { footer, footerLink } from './footer';
 import { navBarItem, navGroup, navLink, navigation } from './navigation';
 import { redirect } from './redirect';
-import { blogIndex, casesIndex, legalPage, servicesIndex } from './catalogIndex';
+import { blogIndex, casesIndex, servicesIndex } from './catalogIndex';
+import { legalObjectTypes, legalPage } from './legalPage';
 import { siteSettings } from './siteSettings';
 
 export const schemaTypes = [
@@ -64,6 +65,7 @@ export const schemaTypes = [
   servicesIndex,
   blogIndex,
   casesIndex,
+  ...legalObjectTypes,
   legalPage,
   homePage,
   aboutPage,

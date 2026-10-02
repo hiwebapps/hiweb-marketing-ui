@@ -43,6 +43,7 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 			eyebrow={page?.eyebrow ?? 'Industrias'}
 			title={page?.title ?? 'De lista de servicios a arquitectura por industria'}
 			description={page?.description ?? 'Casos, retos y palancas propias de tu sector. El catálogo existe; el playbook cambia.'}
+			headingWidth={page?.headingWidth}
 		/>
 		<IndustryGrid
 			client:visible
@@ -58,6 +59,7 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 			title={page?.whyTitle ?? 'Un partner que ya operó en tu mesa de decisiones'}
 			pillars={pillars}
 			tone="surface"
+			headingWidth={page?.whyHeadingWidth}
 		/>
 		<CasePreview
 			cases={cases.slice(0, 3).map((item) => ({
@@ -69,6 +71,10 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				accent: item.data.accent,
 			}))}
 		/>
-		<FinalCta client:load title={page?.closingTitle ?? 'Agenda un diagnóstico por industria'} />
+		<FinalCta
+			client:load
+			title={page?.closingTitle ?? 'Agenda un diagnóstico por industria'}
+			headingWidth={page?.closingHeadingWidth}
+		/>
 	</main>
 </Layout>

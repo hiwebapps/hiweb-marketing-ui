@@ -21,6 +21,7 @@ type ServiceGridProps = {
   description?: string;
   tone?: 'canvas' | 'surface';
   hrefPrefix?: string;
+  headingWidth?: string;
 };
 
 const ACCENT_HEX: Record<ServiceAccent, string> = {
@@ -64,13 +65,14 @@ export function ServiceGrid({
   description = 'Cada servicio se conecta a un resultado de negocio — no a una táctica aislada.',
   tone = 'canvas',
   hrefPrefix = '/servicios',
+  headingWidth,
 }: ServiceGridProps) {
   return (
     <SectionBand id="servicios" tone={tone}>
       <div className="flex justify-center">
         <Badge variant="cyan">{eyebrow}</Badge>
       </div>
-      <SectionHeader title={title} description={description} align="center" className="mt-5" />
+      <SectionHeader title={title} description={description} align="center" className="mt-5" headingWidth={headingWidth} />
 
       <ul className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((item, index) => {
@@ -99,7 +101,7 @@ export function ServiceGrid({
                     <ServiceIcon name={icon} />
                   </span>
                   <div className="service-card__copy">
-                    <h3 className="font-display text-lg font-medium tracking-tight">{item.nombre}</h3>
+                    <h3 className="font-sans text-lg font-semibold tracking-tight">{item.nombre}</h3>
                     <p className="mt-1.5 !text-sm !leading-relaxed">{item.tagline}</p>
                   </div>
                 </a>

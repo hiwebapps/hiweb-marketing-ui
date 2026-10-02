@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Badge, type BadgeVariant } from '../../ui';
+import { HeadingText, headingProps } from './heading';
 
 type SectionHeaderProps = {
   eyebrow?: string;
@@ -14,6 +15,7 @@ type SectionHeaderProps = {
   className?: string;
   actions?: ReactNode;
   split?: boolean;
+  headingWidth?: string;
 };
 
 /**
@@ -33,19 +35,24 @@ export function SectionHeader({
   className = '',
   actions,
   split = true,
+  headingWidth,
 }: SectionHeaderProps) {
   const titleColor = tone === 'on-ink' ? 'text-canvas' : 'text-ink';
   const descColor = tone === 'on-ink' ? 'text-canvas/65' : 'text-muted';
+  const width = headingProps(headingWidth);
 
   return (
     <div
       className={[
         align === 'center' ? 'mx-auto text-center' : '',
         constrained ? 'max-w-3xl' : 'w-full max-w-none',
+        width.className,
         className,
       ]
         .filter(Boolean)
         .join(' ')}
+      style={width.style}
+      data-heading-width={width['data-heading-width']}
     >
       {eyebrow ? (
         <div className={align === 'center' ? 'flex justify-center' : ''}>
@@ -62,7 +69,7 @@ export function SectionHeader({
           titleColor,
         ].join(' ')}
       >
-        {title}
+        {typeof title === 'string' ? <HeadingText text={title} /> : title}
       </h2>
 
       {description ? (

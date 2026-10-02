@@ -4,7 +4,7 @@ import { ImageIcon } from '@sanity/icons/Image';
 import { RocketIcon } from '@sanity/icons/Rocket';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { imageWithAlt, withVisibility } from './shared';
+import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -68,7 +68,8 @@ export const aboutHero = defineType({
         }),
       ],
     }),
-    defineField({ name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
+    headingTitleField({ required: true }),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     imageWithAlt({ name: 'image', title: 'Imagen' }),
     defineField({
@@ -90,7 +91,8 @@ export const aboutHistory = defineType({
   icon: BlockElementIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Historia' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
     defineField({
       name: 'columns',
@@ -124,7 +126,8 @@ export const aboutPillars = defineType({
   icon: BlockElementIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Diferenciadores' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({
       name: 'pillars',
@@ -155,7 +158,8 @@ export const aboutProcess = defineType({
   icon: BlockElementIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({
       name: 'phases',
@@ -175,8 +179,24 @@ export const aboutTeam = defineType({
   icon: UsersIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Equipo' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
+    defineField({
+      name: 'memberLocale',
+      title: 'Idioma del equipo',
+      type: 'string',
+      description: 'Qué fichas de Equipo se muestran. Español usa cargo y bio en español. English usa la versión en inglés.',
+      options: {
+        list: [
+          { title: 'Español', value: 'es' },
+          { title: 'English', value: 'en' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'es',
+      validation: (rule) => rule.required(),
+    }),
     defineField({ name: 'ctaLabel', title: 'Texto del botón', type: 'string' }),
     defineField({ name: 'ctaHref', title: 'URL del botón', type: 'string', initialValue: '/contacto' }),
     defineField({ name: 'filterLabel', title: 'Etiqueta de los filtros', type: 'string' }),
@@ -184,14 +204,14 @@ export const aboutTeam = defineType({
       name: 'filters',
       title: 'Filtros',
       type: 'array',
-      description: 'Las personas se editan en Equipo. Aquí solo el texto de los filtros.',
+      description: 'El texto es lo que ve el visitante. La categoría solo une el botón con las personas de Equipo.',
       of: [
         defineArrayMember({
           type: 'object',
           fields: [
             defineField({
               name: 'id',
-              title: 'Id',
+              title: 'Categoría',
               type: 'string',
               options: {
                 list: [
@@ -204,12 +224,33 @@ export const aboutTeam = defineType({
             }),
             defineField({ name: 'label', title: 'Texto', type: 'string' }),
           ],
-          preview: { select: { title: 'label', subtitle: 'id' } },
+          preview: {
+            select: { title: 'label', category: 'id' },
+            prepare: ({ title, category }) => ({
+              title: title || 'Filtro',
+              subtitle:
+                category === 'all'
+                  ? 'Todos'
+                  : category === 'web'
+                    ? 'Web'
+                    : category === 'redes'
+                      ? 'Redes'
+                      : category === 'diseno'
+                        ? 'Diseño'
+                        : category,
+            }),
+          },
         }),
       ],
     }),
   ],
-  preview: sectionPreview('Sección Equipo'),
+  preview: {
+    select: { title: 'title', memberLocale: 'memberLocale' },
+    prepare: ({ title, memberLocale }) => ({
+      title: title || 'Equipo',
+      subtitle: memberLocale === 'en' ? 'English' : 'Español',
+    }),
+  },
 });
 
 export const aboutMap = defineType({
@@ -219,7 +260,8 @@ export const aboutMap = defineType({
   icon: EarthGlobeIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Mapa global' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({ name: 'sectionLabel', title: 'Nombre de la sección', type: 'string' }),
     defineField({ name: 'globeLabel', title: 'Descripción del globo', type: 'string' }),
@@ -236,7 +278,8 @@ export const aboutCta = defineType({
   icon: RocketIcon,
   fields: [
     defineField({ name: 'badge', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({ name: 'ctaLabel', title: 'Texto del botón', type: 'string' }),
     defineField({ name: 'ctaHref', title: 'URL del botón', type: 'string', initialValue: '/contacto' }),

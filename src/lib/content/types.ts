@@ -1,4 +1,5 @@
 import type { SanityImageSource } from '@sanity/image-url';
+import type { HeadingWidth } from '../heading';
 
 export type FaqItem = {
   question: string;
@@ -113,7 +114,7 @@ export type IndustrySection = (
       _type: 'industryCta';
       title?: string;
     }
-) & { hidden?: boolean };
+) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type ServiceSection = (
   | {
@@ -164,6 +165,7 @@ export type ServiceSection = (
       description?: string;
       ctaLabel?: string;
       ctaHref?: string;
+      stats?: { valor: number; prefix?: string; suffix?: string; label: string }[];
       cards?: { title: string; description: string; icon: string; accent: string }[];
     }
   | {
@@ -176,7 +178,7 @@ export type ServiceSection = (
       noteHref?: string;
       ctaLabel?: string;
       ctaHref?: string;
-      plans?: { name: string; price: string; period?: string; featured?: boolean; includes: string[] }[];
+      plans?: { name?: string; badge?: string; price: string; period?: string; featured?: boolean; includes: string[] }[];
     }
   | {
       _type: 'serviceIndustries';
@@ -196,7 +198,7 @@ export type ServiceSection = (
       eyebrow?: string;
       title?: string;
       description?: string;
-      items?: { client: string; quote: string; name: string; role?: string; photo?: string }[];
+      items?: { client: string; quote: string; name: string; role?: string; photo?: string; stats?: StoryStat[] }[];
     }
   | {
       _type: 'serviceFaq';
@@ -206,7 +208,7 @@ export type ServiceSection = (
       items?: FaqItem[];
     }
   | { _type: 'serviceCta'; badge?: string; title?: string; description?: string }
-) & { hidden?: boolean };
+) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type ServiceRecord = {
   id: string;
@@ -234,7 +236,8 @@ export type ServiceRecord = {
       ctaLabel: string;
       ctaHref: string;
       plans: {
-        name: string;
+        name?: string;
+        badge?: string;
         price: string;
         period?: string;
         featured?: boolean;
@@ -289,6 +292,7 @@ export type CasePageSection = (
       role?: string;
       client?: string;
       photo?: string;
+      stats?: StoryStat[];
     }
   | {
       _type: 'caseRelated';
@@ -304,7 +308,7 @@ export type CasePageSection = (
       primaryLabel?: string;
       primaryHref?: string;
     }
-) & { hidden?: boolean };
+) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type CaseRecord = {
   id: string;
@@ -321,7 +325,7 @@ export type CaseRecord = {
     reto: string;
     estrategia: string;
     fases: TitledBlock[];
-    testimonio?: { quote: string; name: string; role: string; client?: string; photo?: string };
+    testimonio?: { quote: string; name: string; role: string; client?: string; photo?: string; stats?: StoryStat[] };
     anio?: string;
     imagenesProyecto?: string[];
     sections?: CasePageSection[];
@@ -374,6 +378,12 @@ export type SectionIntro = {
   title?: string;
   titleMuted?: string;
   description?: string;
+  headingWidth?: HeadingWidth;
+};
+
+export type StoryStat = {
+  value: string;
+  label: string;
 };
 
 export type HomeTestimonial = {
@@ -382,6 +392,7 @@ export type HomeTestimonial = {
   name: string;
   role?: string;
   photo?: string;
+  stats?: StoryStat[];
 };
 
 export type HomeHeroCase = {
@@ -406,6 +417,7 @@ export type HomeIndustryCard = {
 
 export type HomeCopy = {
   heroTitle?: string;
+  heroHeadingWidth?: HeadingWidth;
   heroLead?: string;
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
@@ -429,13 +441,16 @@ export type HomeCopy = {
     eyebrow?: string;
     title?: string;
     description?: string;
+    memberLocale?: 'es' | 'en';
     ctaLabel?: string;
     ctaHref?: string;
+    headingWidth?: HeadingWidth;
   };
   closing?: {
     badge?: string;
     title?: string;
     description?: string;
+    headingWidth?: HeadingWidth;
     primaryCta?: { label: string; href: string };
   };
   hasSections?: boolean;
@@ -518,6 +533,7 @@ export type AboutSection = (
       description?: string;
       ctaLabel?: string;
       ctaHref?: string;
+      memberLocale?: 'es' | 'en';
       filterLabel?: string;
       filters?: { id: string; label: string }[];
     }
@@ -539,7 +555,7 @@ export type AboutSection = (
       ctaLabel?: string;
       ctaHref?: string;
     }
-) & { hidden?: boolean };
+) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type CmsImage = SanityImageSource & { alt?: string };
 
@@ -657,7 +673,7 @@ export type LandingSection = (
       description?: string;
       cta?: LandingCta;
     }
-) & { hidden?: boolean };
+) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type LandingPage = {
   id: string;

@@ -1,0 +1,44 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { PageHero } from '../../components/sections/PageHero';
+import { SectionBand } from '../../components/sections/primitives/SectionBand';
+import { LegalDocument } from '../../components/sections/LegalDocument';
+import { getLegalPage } from '../../lib/content';
+import { breadcrumbSchema } from '../../lib/schema';
+import '../../components/sections/LegalDocument.css';
+
+const page = await getLegalPage('legal-privacy-en');
+const title = page?.title || 'Hiweb Privacy Notice';
+---
+
+<Layout
+	lang="en"
+	title={page?.seo?.metaTitle ?? `${title} — Hiweb Marketing`}
+	description={page?.seo?.metaDescription ?? 'How Hiweb Marketing collects, uses, and protects personal data under Mexico’s federal privacy law.'}
+	noindex={page?.seo?.noindex ?? true}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/aviso-de-privacidad', en: '/en/aviso-de-privacidad' }}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: title, href: '/en/aviso-de-privacidad' },
+	])}
+>
+	<main>
+		<PageHero
+			eyebrow={page?.eyebrow || 'Legal'}
+			title={title}
+			description={page?.intro}
+			fullWidth
+			headingWidth={page?.headingWidth}
+		/>
+		<SectionBand>
+			<LegalDocument
+				updatedLabel={page?.updatedLabel}
+				updatedOn={page?.updatedOn}
+				sections={page?.sections ?? []}
+			/>
+		</SectionBand>
+	</main>
+</Layout>

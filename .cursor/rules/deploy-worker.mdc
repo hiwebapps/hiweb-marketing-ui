@@ -1,29 +1,37 @@
 ---
-description: Publish site changes to the Cloudflare Worker after each change
+description: Publish every site change to the live Worker and to staging
 alwaysApply: true
 ---
 
 # Deploy to Cloudflare Workers
 
-Until the user says to stop, publish every completed site change to the Worker `hiweb-marketing-ui`.
+Until the user says to stop, every completed site or UI change is published to both Workers. Deploying only the live site is not done.
 
-From the repo root, in PowerShell:
+They are separate Workers. A live deploy does not update staging.
+
+1. Live Worker `hiweb-marketing-ui` (https://hiweb.com.mx). Unset staging env vars first, or this build is published to the wrong Worker:
 
 ```
-npx astro build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; npx wrangler deploy --keep-vars
+Remove-Item Env:PUBLIC_SITE_ENV, Env:CLOUDFLARE_ENV, Env:PUBLIC_SITE_URL -ErrorAction SilentlyContinue
+$env:PUBLIC_SITE_URL='https://hiweb.com.mx'
+npx astro build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+npx wrangler deploy --keep-vars
+```
+
+2. Staging Worker `hiweb-marketing-ui-staging` (https://staging.hiweb.com.mx). Run this only after the live deploy finishes. `CLOUDFLARE_ENV=staging` has to be set during the Astro build. The adapter writes `dist/server/wrangler.json` for that environment. Without it, `wrangler deploy --env staging` publishes the bundle to the live Worker.
+
+```
+Remove-Item Env:PUBLIC_SITE_ENV, Env:CLOUDFLARE_ENV, Env:PUBLIC_SITE_URL -ErrorAction SilentlyContinue
+$env:PUBLIC_SITE_ENV='staging'; $env:PUBLIC_SITE_URL='https://staging.hiweb.com.mx'; $env:CLOUDFLARE_ENV='staging'
+npx astro build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+npx wrangler deploy --env staging --keep-vars
+Remove-Item Env:PUBLIC_SITE_ENV, Env:CLOUDFLARE_ENV, Env:PUBLIC_SITE_URL -ErrorAction SilentlyContinue
 ```
 
 - Always pass `--keep-vars` so existing Worker secrets stay in place.
-- Staging is a separate Worker, `hiweb-marketing-ui-staging`, at https://hiweb-marketing-ui-staging.hiwebapps.workers.dev. It is SSR, password-protected, and reads Sanity drafts. Deploy it only when the staging code changes:
-
-```
-$env:PUBLIC_SITE_ENV='staging'; $env:PUBLIC_SITE_URL='https://hiweb-marketing-ui-staging.hiwebapps.workers.dev'; $env:CLOUDFLARE_ENV='staging'; npx astro build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; npx wrangler deploy --env staging --keep-vars
-```
-
-`CLOUDFLARE_ENV=staging` has to be set during the Astro build. The Cloudflare adapter writes `dist/server/wrangler.json` for the active environment, and `wrangler deploy --env staging` only matches that file. Without it, the staging bundle is published to the live Worker.
-
 - Do not run the live build, the staging build, and `npx sanity deploy` at the same time. All three write `dist/`.
-- Do not deploy Studio unless the change is a Sanity schema the editors need.
+- Do not deploy Studio unless the change is a Sanity schema or Studio UI the editors need.
 - Do not commit or push unless the user asks.
-- After deploy, confirm the affected public URL returns the new markup. The site is https://hiweb-marketing-ui.hiwebapps.workers.dev
+- Keep `PUBLIC_SITE_INDEXABLE` false.
+- After both deploys, confirm https://hiweb.com.mx and https://staging.hiweb.com.mx. Staging returns 401 until the staging password is sent.
 - If the browser still shows the previous version, tell the user to reload with Ctrl+F5.

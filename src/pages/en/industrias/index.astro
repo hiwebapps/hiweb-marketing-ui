@@ -41,7 +41,12 @@ const pillars = (page?.pillars ?? []).map((pillar, index) => {
 	])}
 >
 	<main>
-		<PageHero eyebrow={page?.eyebrow} title={page?.title} description={page?.description} />
+		<PageHero
+			eyebrow={page?.eyebrow}
+			title={page?.title}
+			description={page?.description}
+			headingWidth={page?.headingWidth}
+		/>
 		<IndustryGrid
 			client:visible
 			eyebrow={page?.eyebrow}
@@ -61,6 +66,7 @@ const pillars = (page?.pillars ?? []).map((pillar, index) => {
 			title={page?.whyTitle}
 			pillars={pillars}
 			tone="surface"
+			headingWidth={page?.whyHeadingWidth}
 		/>
 		<CasePreview
 			cases={cases.slice(0, 3).map((item) => ({
@@ -72,6 +78,6 @@ const pillars = (page?.pillars ?? []).map((pillar, index) => {
 				accent: item.data.accent,
 			}))}
 		/>
-		<FinalCta client:load title={page?.closingTitle} />
+		<FinalCta client:load title={page?.closingTitle} headingWidth={page?.closingHeadingWidth} />
 	</main>
 </Layout>

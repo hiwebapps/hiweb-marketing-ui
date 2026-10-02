@@ -5,7 +5,7 @@ import { RocketIcon } from '@sanity/icons/Rocket';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { withVisibility } from './shared';
+import { headingTitleField, headingWidthField, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -66,7 +66,7 @@ export const caseContext = defineType({
   icon: BlockElementIcon,
   fields: [
     defineField({ name: 'retoEyebrow', title: 'Eyebrow del reto', type: 'string', initialValue: 'Reto' }),
-    defineField({ name: 'retoTitle', title: 'Título del reto', type: 'string', initialValue: 'Contexto inicial' }),
+    headingTitleField({ name: 'retoTitle', title: 'Título del reto', initialValue: 'Contexto inicial' }),
     defineField({ name: 'reto', title: 'Reto', type: 'text', rows: 5 }),
     defineField({
       name: 'estrategiaEyebrow',
@@ -74,12 +74,12 @@ export const caseContext = defineType({
       type: 'string',
       initialValue: 'Estrategia',
     }),
-    defineField({
+    headingTitleField({
       name: 'estrategiaTitle',
       title: 'Título de la estrategia',
-      type: 'string',
       initialValue: 'Servicios aplicados',
     }),
+    headingWidthField(),
     defineField({ name: 'estrategia', title: 'Estrategia', type: 'text', rows: 5 }),
     defineField({
       name: 'servicios',
@@ -99,12 +99,8 @@ export const caseProcess = defineType({
   icon: TrendUpwardIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Ejecución' }),
-    defineField({
-      name: 'title',
-      title: 'Título',
-      type: 'string',
-      initialValue: 'Cómo se hizo el trabajo',
-    }),
+    headingTitleField({ initialValue: 'Cómo se hizo el trabajo' }),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({
       name: 'fases',
@@ -123,7 +119,8 @@ export const caseMetrics = defineType({
   icon: TrendUpwardIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Cifras' }),
-    defineField({ name: 'title', title: 'Título', type: 'string', initialValue: 'Antes y después' }),
+    headingTitleField({ initialValue: 'Antes y después' }),
+    headingWidthField(),
     defineField({
       name: 'titleMuted',
       title: 'Segunda línea del título',
@@ -156,7 +153,8 @@ export const caseTestimonial = defineType({
   icon: UsersIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Testimonio' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 2 }),
     defineField({
       name: 'testimonial',
@@ -183,12 +181,8 @@ export const caseRelated = defineType({
   icon: CaseIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'Casos' }),
-    defineField({
-      name: 'title',
-      title: 'Título',
-      type: 'string',
-      initialValue: 'Más casos de esta industria',
-    }),
+    headingTitleField({ initialValue: 'Más casos de esta industria' }),
+    headingWidthField(),
     defineField({
       name: 'description',
       title: 'Descripción',
@@ -207,12 +201,8 @@ export const caseCta = defineType({
   icon: RocketIcon,
   fields: [
     defineField({ name: 'badge', title: 'Badge', type: 'string', initialValue: 'Siguiente paso' }),
-    defineField({
-      name: 'title',
-      title: 'Título',
-      type: 'string',
-      initialValue: 'Agenda un diagnóstico similar',
-    }),
+    headingTitleField({ initialValue: 'Agenda un diagnóstico similar' }),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({ name: 'primaryCta', title: 'CTA', type: 'cta' }),
   ],

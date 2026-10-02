@@ -9,7 +9,7 @@ import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { imageWithAlt, withVisibility } from '../shared';
+import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from '../shared';
 
 const TONE_OPTIONS = [
   { title: 'Canvas', value: 'canvas' },
@@ -29,7 +29,8 @@ function toneField() {
 function headerFields() {
   return [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
   ];
 }
@@ -71,12 +72,8 @@ export const pageHero = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
-    defineField({
-      name: 'title',
-      title: 'Título (H1)',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
+    headingTitleField({ title: 'Título (H1)', required: true }),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
     imageWithAlt({ name: 'image', title: 'Imagen de fondo' }),
     defineField({
@@ -373,7 +370,8 @@ export const finalCta = defineType({
   icon: RocketIcon,
   fields: [
     defineField({ name: 'badge', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({ name: 'primaryCta', title: 'CTA principal', type: 'cta' }),
     defineField({ name: 'secondaryCta', title: 'CTA secundario', type: 'cta' }),

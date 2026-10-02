@@ -1,5 +1,5 @@
 import { defineField, defineType, type FieldDefinition } from 'sanity';
-import { seoFields, seoGroups } from './shared';
+import { headingTitleField, headingWidthField, seoFields, seoGroups } from './shared';
 
 const catalogFields: FieldDefinition[] = [
   defineField({
@@ -8,13 +8,8 @@ const catalogFields: FieldDefinition[] = [
     type: 'string',
     group: 'content',
   }),
-  defineField({
-    name: 'title',
-    title: 'Título',
-    type: 'string',
-    group: 'content',
-    validation: (rule) => rule.required(),
-  }),
+  headingTitleField({ required: true, group: 'content' }),
+  headingWidthField({ group: 'content' }),
   defineField({
     name: 'description',
     title: 'Descripción',
@@ -29,19 +24,14 @@ const catalogFields: FieldDefinition[] = [
     group: 'content',
     description: 'Texto accesible del hero. En el portafolio también es la etiqueta visible.',
   }),
-  defineField({
+  headingTitleField({
     name: 'sectionTitle',
     title: 'Título de la segunda sección',
-    type: 'string',
-    group: 'content',
-    description: 'En servicios, el título del bloque de industrias.',
-  }),
-  defineField({
-    name: 'listTitle',
-    title: 'Título del listado',
-    type: 'string',
     group: 'content',
   }),
+  headingWidthField({ name: 'sectionHeadingWidth', group: 'content', title: 'Ancho de la segunda sección' }),
+  headingTitleField({ name: 'listTitle', title: 'Título del listado', group: 'content' }),
+  headingWidthField({ name: 'listHeadingWidth', group: 'content', title: 'Ancho del listado' }),
   defineField({
     name: 'listDescription',
     title: 'Descripción del listado',
@@ -74,12 +64,8 @@ const catalogFields: FieldDefinition[] = [
     group: 'content',
     description: 'Por ejemplo “minutos” o “min read”.',
   }),
-  defineField({
-    name: 'closingTitle',
-    title: 'Título de cierre',
-    type: 'string',
-    group: 'content',
-  }),
+  headingTitleField({ name: 'closingTitle', title: 'Título de cierre', group: 'content' }),
+  headingWidthField({ name: 'closingHeadingWidth', group: 'content', title: 'Ancho del cierre' }),
   ...seoFields,
 ];
 
@@ -100,37 +86,3 @@ function catalogType(name: string, title: string) {
 export const servicesIndex = catalogType('servicesIndex', 'Índice de servicios');
 export const blogIndex = catalogType('blogIndex', 'Índice del blog');
 export const casesIndex = catalogType('casesIndex', 'Índice de casos');
-
-export const legalPage = defineType({
-  name: 'legalPage',
-  title: 'Página legal',
-  type: 'document',
-  groups: seoGroups,
-  fields: [
-    defineField({
-      name: 'eyebrow',
-      title: 'Badge',
-      type: 'string',
-      group: 'content',
-    }),
-    defineField({
-      name: 'title',
-      title: 'Título',
-      type: 'string',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'body',
-      title: 'Texto',
-      type: 'text',
-      rows: 8,
-      group: 'content',
-    }),
-    ...seoFields,
-  ],
-  preview: {
-    select: { title: 'title' },
-    prepare: ({ title }) => ({ title: title || 'Página legal' }),
-  },
-});

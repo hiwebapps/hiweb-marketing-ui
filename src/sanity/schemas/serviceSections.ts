@@ -7,8 +7,7 @@ import { RocketIcon } from '@sanity/icons/Rocket';
 import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { withVisibility } from './shared';
-import { imageWithAlt } from './shared';
+import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -152,7 +151,8 @@ export const serviceHero = defineType({
   type: 'object',
   icon: ImageIcon,
   fields: [
-    defineField({ name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
+    headingTitleField({ required: true }),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
     defineField({ name: 'badge', title: 'Badge', type: 'string' }),
     imageWithAlt({ name: 'image', title: 'Imagen' }),
@@ -169,7 +169,8 @@ export const serviceOverview = defineType({
   icon: ThLargeIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 3 }),
     defineField({
       name: 'cards',
@@ -188,7 +189,8 @@ export const serviceFocus = defineType({
   icon: BlockElementIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 3 }),
     defineField({
       name: 'items',
@@ -207,7 +209,8 @@ export const servicePitch = defineType({
   icon: ImageIcon,
   fields: [
     defineField({ name: 'badge', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 3 }),
     defineField({ name: 'image', title: 'Imagen', type: 'string', description: 'Ruta, por ejemplo /images/services/seo.jpg' }),
     defineField({ name: 'imageAlt', title: 'Texto alternativo', type: 'string' }),
@@ -223,10 +226,57 @@ export const serviceWhy = defineType({
   type: 'object',
   icon: TrendUpwardIcon,
   fields: [
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 3 }),
     defineField({ name: 'ctaLabel', title: 'Texto del botón', type: 'string' }),
     defineField({ name: 'ctaHref', title: 'URL del botón', type: 'string' }),
+    defineField({
+      name: 'stats',
+      title: 'Cifras',
+      type: 'array',
+      description:
+        'Las cifras junto al texto. El número se anima. El prefijo y el sufijo van pegados: + 10  años se lee +10 años.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'serviceWhyStat',
+          fields: [
+            defineField({
+              name: 'valor',
+              title: 'Número',
+              type: 'number',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({ name: 'prefix', title: 'Prefijo', type: 'string' }),
+            defineField({ name: 'suffix', title: 'Sufijo', type: 'string' }),
+            defineField({
+              name: 'label',
+              title: 'Texto',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: {
+            select: { prefix: 'prefix', valor: 'valor', suffix: 'suffix', label: 'label' },
+            prepare: ({
+              prefix,
+              valor,
+              suffix,
+              label,
+            }: {
+              prefix?: string;
+              valor?: number;
+              suffix?: string;
+              label?: string;
+            }) => ({
+              title: `${prefix ?? ''}${valor ?? ''}${suffix ?? ''}`,
+              subtitle: label || 'Cifra',
+            }),
+          },
+        }),
+      ],
+    }),
     defineField({
       name: 'cards',
       title: 'Cards',
@@ -244,7 +294,8 @@ export const servicePlansSection = defineType({
   icon: ThLargeIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 3 }),
     defineField({ name: 'note', title: 'Nota al pie', type: 'text', rows: 2 }),
     defineField({ name: 'noteLabel', title: 'Texto del enlace', type: 'string' }),
@@ -255,9 +306,8 @@ export const servicePlansSection = defineType({
       name: 'plans',
       title: 'Cards',
       type: 'array',
-      description: 'De 1 a 3 cards.',
+      description: 'El renglón se acomoda solo: una card centrada, dos a la par o tres en fila.',
       of: [defineArrayMember({ type: 'servicePlan' })],
-      validation: (rule) => rule.max(3),
     }),
   ],
   preview: titled('Sección Planes'),
@@ -269,7 +319,8 @@ export const serviceIndustries = defineType({
   type: 'object',
   icon: CaseIcon,
   fields: [
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 2 }),
     defineField({
       name: 'items',
@@ -289,7 +340,8 @@ export const serviceProcess = defineType({
   icon: BlockElementIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 2 }),
     defineField({
       name: 'steps',
@@ -308,13 +360,14 @@ export const serviceCases = defineType({
   icon: CommentIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 2 }),
     defineField({
       name: 'items',
       title: 'Testimonios',
       type: 'array',
-      description: 'Elige de la biblioteca y arrastra para el orden. La cita, el nombre, el cargo y la foto salen de ahí.',
+      description: 'Elige de la biblioteca y arrastra para el orden. La cita, el nombre, el cargo, la foto y las dos cifras salen de ahí.',
       of: [defineArrayMember({ type: 'reference', to: [{ type: 'testimonial' }] })],
       validation: (rule) => rule.unique(),
     }),
@@ -329,7 +382,8 @@ export const serviceFaq = defineType({
   icon: HelpCircleIcon,
   fields: [
     defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
-    defineField({ name: 'title', title: 'Título', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
     defineField({
       name: 'columns',
       title: 'Columnas',
@@ -361,7 +415,8 @@ export const serviceCta = defineType({
   icon: RocketIcon,
   fields: [
     defineField({ name: 'badge', title: 'Tagline', type: 'string', initialValue: 'Siguiente paso' }),
-    defineField({ name: 'title', title: 'Heading', type: 'string' }),
+    headingTitleField({ title: 'Heading' }),
+    headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 2 }),
   ],
   preview: titled('Sección Cierre'),

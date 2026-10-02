@@ -37,7 +37,12 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 	])}
 >
 	<main>
-		<PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} />
+		<PageHero
+			eyebrow={hero.eyebrow}
+			title={hero.title}
+			description={hero.description}
+			headingWidth={page?.headingWidth}
+		/>
 		<ServiceGrid
 			services={services.map((item) => ({
 				slug: item.id,
@@ -47,6 +52,7 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 			eyebrow={home.serviceIntro?.eyebrow ?? hero.eyebrow}
 			title={home.serviceIntro?.title ?? hero.title}
 			description={home.serviceIntro?.description ?? hero.description}
+			headingWidth={home.serviceIntro?.headingWidth}
 		/>
 		<IndustryGrid
 			client:visible
@@ -57,6 +63,7 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				puntos: item.data.porQue.map((punto) => punto.title),
 			}))}
 			title={page?.sectionTitle ?? 'El mismo servicio, un playbook distinto por industria'}
+			headingWidth={page?.sectionHeadingWidth}
 			tone="surface"
 		/>
 		<ProcessPhases client:visible phases={home.process ?? []} tone="canvas" />
@@ -70,6 +77,10 @@ const industryName = Object.fromEntries(industries.map((item) => [item.id, item.
 				accent: item.data.accent,
 			}))}
 		/>
-		<FinalCta client:load title={page?.closingTitle ?? 'Elige palanca después del diagnóstico'} />
+		<FinalCta
+			client:load
+			title={page?.closingTitle ?? 'Elige palanca después del diagnóstico'}
+			headingWidth={page?.closingHeadingWidth}
+		/>
 	</main>
 </Layout>

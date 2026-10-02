@@ -32,6 +32,10 @@
   gap: 0.75rem;
 }
 
+.service-plans__head.is-badge-only {
+  justify-content: flex-end;
+}
+
 .service-plans__head h3 {
   margin: 0;
   font-size: 1.05rem;
@@ -116,11 +120,30 @@
   text-underline-offset: 0.15em;
 }
 
+@media (min-width: 720px) {
+  .service-plans.is-one {
+    grid-template-columns: minmax(0, 26rem);
+    justify-content: center;
+  }
+
+  .service-plans.is-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 900px) {
   .service-plans {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: stretch;
     gap: 1.15rem;
+  }
+
+  .service-plans.is-many {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  .service-plans.is-two {
+    max-width: 52rem;
+    margin-inline: auto;
   }
 
   .service-plans__card.is-featured {
