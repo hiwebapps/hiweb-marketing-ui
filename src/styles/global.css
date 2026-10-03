@@ -204,19 +204,32 @@
   }
 
   ::selection {
-    @apply bg-ink/10 text-ink;
+    background-color: rgb(17 17 17 / 0.16);
+    color: inherit;
   }
 }
 
-/* Hero dark: selección legible sobre fondo oscuro */
-.hero-contrast ::selection {
-  background-color: rgba(255, 255, 255, 0.28);
-  color: #ffffff;
+/* Mismo corte que el H2 del CTA. El color lo pone la sección: ink en claro, canvas en oscuro. */
+.hw-section-title {
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: clamp(2rem, 4.4vw, 3.35rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
 }
 
-.hero-contrast ::-moz-selection {
-  background-color: rgba(255, 255, 255, 0.28);
-  color: #ffffff;
+/* Sobre fondo oscuro el highlight claro se ve; el texto no pasa a negro. */
+.bg-ink ::selection,
+.final-cta ::selection,
+.hero-studio-a ::selection,
+.industry-hero ::selection,
+.presence-map ::selection,
+.site-footer ::selection,
+.hw-nav ::selection,
+.hw-nav-sheet ::selection,
+.hero-contrast ::selection {
+  background-color: rgb(245 245 245 / 0.32);
+  color: #f5f5f5;
 }
 
 /* Mesh blob drift — motion sutil, no ruido */

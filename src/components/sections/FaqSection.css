@@ -96,7 +96,7 @@
   border: 0;
   background: transparent;
   color: var(--color-ink);
-  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
   font-size: 1.05rem;
   font-weight: 600;
   letter-spacing: -0.025em;

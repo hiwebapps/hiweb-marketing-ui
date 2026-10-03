@@ -15,10 +15,10 @@
 .service-why__title {
   margin: 0;
   max-width: 16ch;
-  font-size: clamp(2rem, 3.6vw, 3.15rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
+  font-size: clamp(2rem, 4.4vw, 3.35rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
 }
 
 .service-why__lead {

@@ -216,7 +216,7 @@ export function IndustryGrid({
             data-heading-width={width['data-heading-width']}
           >
             <Badge variant="purple">{eyebrow}</Badge>
-            <h2 data-split className="mt-3 max-w-sm !text-3xl !leading-[1.15] tracking-[-0.03em] text-ink md:!text-[2.65rem]">
+            <h2 data-split className="hw-section-title mt-3 max-w-sm text-ink">
               <HeadingText text={title} />
             </h2>
             {description ? <p className="mt-4 max-w-sm !text-sm !leading-relaxed md:!text-base">{description}</p> : null}

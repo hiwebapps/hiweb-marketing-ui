@@ -64,10 +64,7 @@ export function SectionHeader({
 
       <h2
         data-split={split ? '' : undefined}
-        className={[
-          'mt-3 !text-3xl !leading-[1.2] tracking-[-0.02em] md:!text-5xl',
-          titleColor,
-        ].join(' ')}
+        className={['hw-section-title mt-3', titleColor].join(' ')}
       >
         {typeof title === 'string' ? <HeadingText text={title} /> : title}
       </h2>
