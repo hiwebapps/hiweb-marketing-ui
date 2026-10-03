@@ -168,7 +168,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Una carpeta por página. Dentro están Español y English, cada uno con su documento. El menú “+” de la lista crea la página en español o en inglés. Las secciones se reordenan y se pueden ocultar, igual que en Home. La URL en español es /industrias/slug o /servicios/slug. En inglés es /en/industrias/slug o /en/servicios/slug.',
+        text: 'Una carpeta por página. Dentro están Español y English, cada uno con su documento. El menú “+” crea la página en español y, al abrirla, también el borrador en inglés. Si English no está, ábrelo en la carpeta: se genera en ese momento. Las secciones se reordenan y se pueden ocultar, igual que en Home. La URL en español es /industrias/slug o /servicios/slug. En inglés es /en/industrias/slug o /en/servicios/slug.',
       },
       {
         kind: 'p',

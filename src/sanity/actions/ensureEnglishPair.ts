@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { type DocumentActionComponent, useClient } from 'sanity';
 import { useToast } from '@sanity/ui/toast';
-import { industryStarter, serviceStarter } from '../starters';
+import { ensureServiceOrIndustryEnglish } from '../englishDraft';
 
 const PLACEHOLDER_NAMES = new Set(['', 'Nueva industria', 'New industry', 'Nuevo servicio', 'New service']);
 
@@ -38,12 +38,10 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
   const clientName = typeof doc?.client === 'string' ? doc.client.trim() : '';
   const slug = slugOf(doc);
   const locale = typeof doc?.locale === 'string' ? doc.locale : '';
-  const orden = typeof doc?.orden === 'number' ? doc.orden : undefined;
   const hasDoc = Boolean(doc);
-  const running = useRef(false);
 
   useEffect(() => {
-    const schemaType = props.schemaType;
+    const schemaType = props.type;
     const paired =
       schemaType === 'service' ||
       schemaType === 'industry' ||
@@ -56,8 +54,6 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
     if (!hasDoc || !paired) return;
     if (baseId.endsWith('-en') || locale === 'en') return;
     const handle = window.setTimeout(() => {
-      if (running.current) return;
-      running.current = true;
       const enId = `${baseId}-en`;
       client
         .fetch<PairDoc | null>(
@@ -98,18 +94,11 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
             });
             return;
           }
-          if (!existing) {
-            const starter = schemaType === 'service' ? serviceStarter('en') : industryStarter('en');
-            await client.createIfNotExists({
-              ...starter,
-              _id: `drafts.${enId}`,
-              _type: schemaType,
-              nombre: nombre || starter.nombre,
-              orden: orden ?? starter.orden,
-              ...(slug ? { slug: { _type: 'slug', current: slug } } : {}),
-            });
+          if (!existing && (schemaType === 'service' || schemaType === 'industry')) {
+            await ensureServiceOrIndustryEnglish(client, schemaType, baseId);
             return;
           }
+          if (!existing) return;
           const patch: Record<string, unknown> = {};
           if (!existing.slug && slug) patch.slug = { _type: 'slug', current: slug };
           if (PLACEHOLDER_NAMES.has(existing.nombre ?? '') && nombre && !PLACEHOLDER_NAMES.has(nombre)) {
@@ -126,13 +115,10 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
             description: error instanceof Error ? error.message : undefined,
           });
         })
-        .finally(() => {
-          running.current = false;
-        });
     }, 400);
 
     return () => window.clearTimeout(handle);
-  }, [baseId, client, clientName, cliente, hasDoc, locale, nombre, orden, personName, props.schemaType, slug, title, toast]);
+  }, [baseId, client, clientName, cliente, hasDoc, locale, nombre, personName, props.type, slug, title, toast]);
 
   return null;
 };

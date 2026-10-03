@@ -9,6 +9,7 @@ import { CommentIcon } from '@sanity/icons/Comment';
 import { UsersIcon } from '@sanity/icons/Users';
 import { map } from 'rxjs';
 import type { StructureResolver } from 'sanity/structure';
+import { CreateEnglishPane } from './components/CreateEnglishPane';
 
 const HIDDEN_FROM_FALLBACK = [
   'siteSettings',
@@ -148,6 +149,8 @@ function languageItems(
   esId?: string,
   enId?: string,
 ) {
+  const englishId = enId || (esId ? `${esId}-en` : '');
+  const canCreateEnglish = (schemaType === 'service' || schemaType === 'industry') && Boolean(esId) && !enId;
   return [
     esId
       ? S.listItem()
@@ -155,11 +158,18 @@ function languageItems(
           .id(`${schemaType}-${esId}-es`)
           .child(S.document().schemaType(schemaType).documentId(esId).title('Español'))
       : null,
-    enId
+    englishId && (enId || canCreateEnglish)
       ? S.listItem()
           .title('English')
-          .id(`${schemaType}-${enId}-en`)
-          .child(S.document().schemaType(schemaType).documentId(enId).title('English'))
+          .id(`${schemaType}-${englishId}-en`)
+          .child(
+            enId
+              ? S.document().schemaType(schemaType).documentId(enId).title('English')
+              : S.component(CreateEnglishPane)
+                  .id(`${schemaType}-${englishId}-create`)
+                  .title('English')
+                  .options({ schemaType, esId }),
+          )
       : null,
   ].filter((item) => item !== null);
 }
