@@ -77,6 +77,8 @@ const caseStories = cases.flatMap((item) => {
 		name: quote.name || item.data.cliente,
 		role: quote.role ?? '',
 		photo: quote.photo,
+		cover: item.data.imagenesProyecto?.[0],
+		href: `/portafolio/${item.id}`,
 		stats: quote.stats,
 	}];
 });

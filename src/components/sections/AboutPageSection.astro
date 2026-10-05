@@ -41,6 +41,8 @@ const historyColumns =
 			])
 		: undefined;
 
+const historyImages = section._type === 'aboutHistory' ? section.images : undefined;
+
 const pillars: Pillar[] =
 	section._type === 'aboutPillars'
 		? (section.pillars ?? []).map((item) => ({
@@ -91,6 +93,7 @@ const phases =
 			eyebrow={section.eyebrow}
 			title={section.title}
 			description={section.description}
+			images={historyImages}
 			columns={historyColumns}
 			headingWidth={section.headingWidth}
 		/>

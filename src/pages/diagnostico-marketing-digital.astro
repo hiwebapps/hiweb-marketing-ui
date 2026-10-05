@@ -1,0 +1,26 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Layout.astro';
+import { PageHero } from '../components/sections/PageHero';
+import { MarketingQuiz } from '../components/growth/MarketingQuiz';
+import { breadcrumbSchema } from '../lib/schema';
+
+const title = 'Diagnóstico de marketing digital';
+const description = 'Ocho preguntas para ver en qué punto está tu marketing y qué servicios conviene trabajar primero.';
+---
+
+<Layout
+	title={`${title} — Hiweb Marketing`}
+	description={description}
+	canonical="/diagnostico-marketing-digital"
+	jsonLd={breadcrumbSchema([
+		{ name: 'Inicio', href: '/' },
+		{ name: title, href: '/diagnostico-marketing-digital' },
+	])}
+>
+	<main>
+		<PageHero eyebrow="Diagnóstico" title={title} description={description} />
+		<MarketingQuiz client:load />
+	</main>
+</Layout>

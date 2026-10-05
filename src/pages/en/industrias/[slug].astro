@@ -61,6 +61,7 @@ const caseStories = cases.map((item) => ({
 	name: item.data.testimonio?.name ?? item.data.cliente,
 	role: item.data.testimonio?.role ?? entry.data.nombre,
 	photo: item.data.testimonio?.photo,
+	cover: item.data.imagenesProyecto?.[0],
 	stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
 	href: `/portafolio/${item.id}`,
 }));
@@ -117,6 +118,7 @@ const caseStories = cases.map((item) => ({
 		<PillarGrid
 			eyebrow={entry.data.whyEyebrow}
 			title={entry.data.whyTitle}
+			description={entry.data.whyDescription}
 			pillars={entry.data.porQue}
 			tone="canvas"
 		/>
@@ -132,6 +134,7 @@ const caseStories = cases.map((item) => ({
 		/>
 		<CaseStories
 			client:visible
+			locale="en"
 			eyebrow={entry.data.casesEyebrow}
 			title={entry.data.casesTitle}
 			description={cases.length ? entry.data.casesDescription : entry.data.casesEmpty}

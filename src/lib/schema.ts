@@ -1,4 +1,6 @@
 import { SITE } from '../data/site';
+import { faqAnswerText } from './content/faq-answer';
+import type { FaqAnswer } from './content/types';
 import type { SiteIdentity } from './site-identity';
 
 export function organizationSchema(site: SiteIdentity) {
@@ -26,14 +28,14 @@ export function breadcrumbSchema(items: { name: string; href: string }[]) {
   };
 }
 
-export function faqSchema(items: { question: string; answer: string }[]) {
+export function faqSchema(items: { question: string; answer: FaqAnswer }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: items.map((item) => ({
       '@type': 'Question',
       name: item.question,
-      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      acceptedAnswer: { '@type': 'Answer', text: faqAnswerText(item.answer) },
     })),
   };
 }

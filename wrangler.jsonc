@@ -17,6 +17,14 @@
   "observability": {
     "enabled": true
   },
+  "d1_databases": [
+    {
+      "binding": "DATABASE",
+      "database_name": "hiweb-marketing-quiz-calendar",
+      "database_id": "282c179c-d35d-4dfa-b631-afaad98d802c",
+      "migrations_dir": "migrations/d1"
+    }
+  ],
   "env": {
     "staging": {
       "name": "hiweb-marketing-ui-staging",
@@ -26,7 +34,15 @@
         "PUBLIC_SITE_URL": "https://staging.hiweb.com.mx",
         "PUBLIC_SANITY_PROJECT_ID": "fxardjr1",
         "PUBLIC_SANITY_DATASET": "web-2026"
-      }
+      },
+      "d1_databases": [
+        {
+          "binding": "DATABASE",
+          "database_name": "hiweb-marketing-quiz-calendar-staging",
+          "database_id": "0391782c-b084-452c-a283-74af9c54451f",
+          "migrations_dir": "migrations/d1"
+        }
+      ]
     }
   }
 }

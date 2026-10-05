@@ -1,9 +1,25 @@
 import type { SanityImageSource } from '@sanity/image-url';
 import type { HeadingWidth } from '../heading';
 
+export type FaqTextSpan = {
+  _type?: 'span';
+  _key?: string;
+  text?: string;
+  marks?: string[];
+};
+
+export type FaqTextBlock = {
+  _type?: 'block';
+  _key?: string;
+  children?: FaqTextSpan[];
+  markDefs?: { _key?: string; _type?: string; href?: string }[];
+};
+
+export type FaqAnswer = string | FaqTextBlock[];
+
 export type FaqItem = {
   question: string;
-  answer: string;
+  answer: FaqAnswer;
 };
 
 export type TitledBlock = {
@@ -54,6 +70,7 @@ export type IndustryRecord = {
     heroCtaLabel?: string;
     whyEyebrow?: string;
     whyTitle?: string;
+    whyDescription?: string;
     servicesTitle?: string;
     servicesDescription?: string;
     servicesCtaLabel?: string;
@@ -84,6 +101,7 @@ export type IndustrySection = (
       _type: 'industryWhy';
       eyebrow?: string;
       title?: string;
+      description?: string;
       pillars?: TitledBlock[];
       retos?: string[];
     }
@@ -198,7 +216,7 @@ export type ServiceSection = (
       eyebrow?: string;
       title?: string;
       description?: string;
-      items?: { client: string; quote: string; name: string; role?: string; photo?: string; stats?: StoryStat[] }[];
+      items?: { client: string; quote: string; name: string; role?: string; photo?: string; cover?: string; href?: string; stats?: StoryStat[] }[];
     }
   | {
       _type: 'serviceFaq';
@@ -392,6 +410,8 @@ export type HomeTestimonial = {
   name: string;
   role?: string;
   photo?: string;
+  cover?: string;
+  href?: string;
   stats?: StoryStat[];
 };
 
@@ -470,6 +490,7 @@ export type AboutCopy = {
   historyTitle?: string;
   historyDescription?: string;
   historyColumns?: { title: string; paragraphs: string[] }[];
+  historyImages?: ({ src: string; alt: string } | undefined)[];
   pillarsEyebrow?: string;
   pillarsTitle?: string;
   pillars?: { title: string; description: string; icon?: string; accent?: string; href?: string }[];
@@ -510,6 +531,7 @@ export type AboutSection = (
       eyebrow?: string;
       title?: string;
       description?: string;
+      images?: ({ src: string; alt: string } | undefined)[];
       columns?: { title: string; paragraphs: string[] }[];
     }
   | {

@@ -56,6 +56,13 @@ export const industryWhy = defineType({
     headingTitleField(),
     headingWidthField(),
     defineField({
+      name: 'description',
+      title: 'Párrafo',
+      type: 'text',
+      rows: 3,
+      description: 'El texto debajo del título.',
+    }),
+    defineField({
       name: 'pillars',
       title: 'Pilares',
       type: 'array',

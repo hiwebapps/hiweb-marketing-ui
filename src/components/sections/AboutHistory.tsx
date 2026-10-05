@@ -16,7 +16,7 @@ type AboutHistoryProps = {
   eyebrow?: string;
   title?: string;
   description?: string;
-  images?: [AboutHistoryImage, AboutHistoryImage, AboutHistoryImage];
+  images?: readonly (AboutHistoryImage | undefined)[];
   columns?: [AboutHistoryColumn, AboutHistoryColumn];
   headingWidth?: string;
 };
@@ -64,7 +64,10 @@ export function AboutHistory({
   columns = DEFAULT_COLUMNS,
   headingWidth,
 }: AboutHistoryProps) {
-  const [hero, top, bottom] = images;
+  const [hero, top, bottom] = DEFAULT_IMAGES.map((fallback, index) => {
+    const image = images[index];
+    return image?.src ? image : fallback;
+  });
   const [left, right] = columns;
 
   return (
@@ -77,16 +80,16 @@ export function AboutHistory({
         headingWidth={headingWidth}
       />
 
-      <div data-reveal className="about-history__gallery" aria-hidden="true">
+      <div data-reveal className="about-history__gallery">
         <figure className="about-history__shot about-history__shot--hero">
-          <img src={hero.src} alt="" width={1200} height={900} decoding="async" loading="lazy" />
+          <img src={hero.src} alt={hero.alt} width={1200} height={900} decoding="async" loading="lazy" />
         </figure>
         <div className="about-history__stack">
           <figure className="about-history__shot">
-            <img src={top.src} alt="" width={800} height={600} decoding="async" loading="lazy" />
+            <img src={top.src} alt={top.alt} width={800} height={600} decoding="async" loading="lazy" />
           </figure>
           <figure className="about-history__shot">
-            <img src={bottom.src} alt="" width={800} height={600} decoding="async" loading="lazy" />
+            <img src={bottom.src} alt={bottom.alt} width={800} height={600} decoding="async" loading="lazy" />
           </figure>
         </div>
       </div>

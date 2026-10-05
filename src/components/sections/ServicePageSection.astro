@@ -28,9 +28,10 @@ interface Props {
 	phases: { index: string; title: string; description: string }[];
 	stories: CaseStory[];
 	hasCases: boolean;
+	locale?: 'es' | 'en';
 }
 
-const { section, entry, pitch, industries, phases, stories, hasCases } = Astro.props;
+const { section, entry, pitch, industries, phases, stories, hasCases, locale = 'es' } = Astro.props;
 const contentKey = serviceContentKey(entry.id);
 const nombre = entry.data.nombre;
 ---
@@ -196,6 +197,7 @@ const nombre = entry.data.nombre;
 	section._type === 'serviceCases' && (
 		<CaseStories
 			client:visible
+			locale={locale}
 			eyebrow={section.eyebrow || 'Casos'}
 			title={section.title || `Casos de ${nombre}`}
 			description={
@@ -213,6 +215,8 @@ const nombre = entry.data.nombre;
 								name: item.name,
 								role: item.role ?? '',
 								photo: item.photo,
+								cover: item.cover,
+								href: item.href,
 								stats: item.stats,
 							}),
 						)

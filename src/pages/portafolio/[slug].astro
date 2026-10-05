@@ -224,6 +224,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 								name: section.name ?? entry.data.cliente,
 								role: section.role ?? '',
 								photo: section.photo,
+								cover: entry.data.imagenesProyecto?.[0],
 								stats: (section.quote ? entry.data.metricas : []).slice(0, 2).map(formatCaseStat),
 								href: `/portafolio/${entry.id}`,
 							},

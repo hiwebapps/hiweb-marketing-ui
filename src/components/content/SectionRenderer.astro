@@ -57,6 +57,7 @@ function storiesFrom(cases: CaseRecord[]) {
 			?? industryName[item.data.industria.id]
 			?? item.data.industria.id,
 		photo: item.data.testimonio?.photo,
+		cover: item.data.imagenesProyecto?.[0],
 		stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
 		href: `/portafolio/${item.id}`,
 	}));

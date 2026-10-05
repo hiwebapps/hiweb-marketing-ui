@@ -1,0 +1,26 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Layout.astro';
+import { PageHero } from '../components/sections/PageHero';
+import { CalendarTool } from '../components/growth/CalendarTool';
+import { breadcrumbSchema } from '../lib/schema';
+
+const title = 'Agenda una cita';
+const description = 'Elige servicio, día y horario. Lunes a viernes, de 9:00 a 17:00, hora de Ciudad de México.';
+---
+
+<Layout
+	title={`${title} — Hiweb Marketing`}
+	description={description}
+	canonical="/calendario"
+	jsonLd={breadcrumbSchema([
+		{ name: 'Inicio', href: '/' },
+		{ name: title, href: '/calendario' },
+	])}
+>
+	<main>
+		<PageHero eyebrow="Calendario" title={title} description={description} />
+		<CalendarTool client:load />
+	</main>
+</Layout>

@@ -6,6 +6,8 @@ export const RESERVED_SLUGS = [
   'blog',
   'nosotros',
   'contacto',
+  'diagnostico-marketing-digital',
+  'calendario',
   'design-system',
   'sections',
   'terminos',

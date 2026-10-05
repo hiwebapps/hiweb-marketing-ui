@@ -79,6 +79,8 @@ const caseStories = cases.flatMap((item) => {
 		name: quote.name || item.data.cliente,
 		role: quote.role ?? '',
 		photo: quote.photo,
+		cover: item.data.imagenesProyecto?.[0],
+		href: `/portafolio/${item.id}`,
 		stats: quote.stats,
 	}];
 });
@@ -111,6 +113,7 @@ const caseStories = cases.flatMap((item) => {
 				<ServicePageSection
 					key={section._type}
 					section={section}
+					locale="en"
 					entry={entry}
 					pitch={pitch}
 					industries={industries.map((item) => ({
@@ -168,6 +171,7 @@ const caseStories = cases.flatMap((item) => {
 				/>
 				<CaseStories
 					client:visible
+					locale="en"
 					eyebrow="Casos"
 					title={`Casos de ${entry.data.nombre}`}
 					description={

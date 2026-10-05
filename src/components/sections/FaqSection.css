@@ -131,13 +131,30 @@
   height: auto;
 }
 
-.faq__answer {
+.faq--constrained .faq__answer {
   max-width: 40rem;
+}
+
+.faq__answer {
   margin: 0;
   padding: 0 2.25rem 1.4rem 0;
   color: var(--color-muted);
   font-size: 0.95rem;
   line-height: 1.6;
+}
+
+.faq__answer p {
+  margin: 0;
+}
+
+.faq__answer p + p {
+  margin-top: 0.75rem;
+}
+
+.faq__answer a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -59,6 +59,7 @@ const caseStories = cases.map((item) => ({
 	name: item.data.testimonio?.name ?? item.data.cliente,
 	role: item.data.testimonio?.role ?? entry.data.nombre,
 	photo: item.data.testimonio?.photo,
+	cover: item.data.imagenesProyecto?.[0],
 	stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
 	href: `/portafolio/${item.id}`,
 }));
@@ -111,8 +112,9 @@ const caseStories = cases.map((item) => ({
 			ctaHref="#casos"
 		/>
 		<PillarGrid
-			eyebrow="Por qué Hiweb"
-			title={`Por qué Hiweb en ${entry.data.nombre.toLowerCase()}`}
+			eyebrow={entry.data.whyEyebrow ?? 'Por qué Hiweb'}
+			title={entry.data.whyTitle ?? `Por qué Hiweb en ${entry.data.nombre.toLowerCase()}`}
+			description={entry.data.whyDescription}
 			pillars={entry.data.porQue}
 			tone="canvas"
 		/>

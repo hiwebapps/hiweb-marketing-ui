@@ -135,6 +135,44 @@ export function imageWithAlt({
   });
 }
 
+export function faqAnswerField() {
+  return defineField({
+    name: 'answer',
+    title: 'Respuesta',
+    type: 'array',
+    of: [
+      defineArrayMember({
+        type: 'block',
+        styles: [{ title: 'Normal', value: 'normal' }],
+        lists: [],
+        marks: {
+          decorators: [
+            { title: 'Negrita', value: 'strong' },
+            { title: 'Cursiva', value: 'em' },
+          ],
+          annotations: [
+            {
+              name: 'link',
+              type: 'object',
+              title: 'Enlace',
+              fields: [
+                defineField({
+                  name: 'href',
+                  title: 'URL',
+                  type: 'string',
+                  description: 'Una ruta del sitio, como /servicios/seo o #casos, o una URL completa.',
+                  validation: (rule) => rule.required(),
+                }),
+              ],
+            },
+          ],
+        },
+      }),
+    ],
+    validation: (rule) => rule.required().min(1),
+  });
+}
+
 export const faqItem = defineType({
   name: 'faqItem',
   title: 'FAQ',
@@ -146,13 +184,7 @@ export const faqItem = defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'answer',
-      title: 'Respuesta',
-      type: 'text',
-      rows: 4,
-      validation: (rule) => rule.required(),
-    }),
+    faqAnswerField(),
   ],
   preview: {
     select: { title: 'question' },

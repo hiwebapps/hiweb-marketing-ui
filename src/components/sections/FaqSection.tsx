@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { HOME_FAQ_CATEGORIES } from '../../data/site';
+import { faqAnswerText, renderFaqAnswer } from '../../lib/content/faq-answer';
+import type { FaqAnswer } from '../../lib/content/types';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
 import './FaqSection.css';
@@ -10,7 +12,7 @@ gsap.registerPlugin(useGSAP);
 
 export type FaqItem = {
   question: string;
-  answer: string;
+  answer: FaqAnswer;
 };
 
 export type FaqCategory = {
@@ -30,6 +32,8 @@ type FaqSectionProps = {
   headingWidth?: string;
   /** Dos columnas solo en escritorio. En móvil vuelve a una. */
   columns?: 1 | 2;
+  /** La homepage mantiene el ancho corto de las respuestas. */
+  constrainAnswers?: boolean;
 };
 
 function IconChevron({ className = '' }: { className?: string }) {
@@ -169,7 +173,7 @@ function FaqAccordion({
               aria-labelledby={questionId}
               aria-hidden={!isOpen}
             >
-              <p className="faq__answer">{item.answer}</p>
+              <div className="faq__answer">{renderFaqAnswer(item.answer)}</div>
             </div>
           </div>
         );
@@ -191,6 +195,7 @@ export function FaqSection({
   withSchema = false,
   columns = 1,
   headingWidth,
+  constrainAnswers = false,
 }: FaqSectionProps) {
   const groups: readonly FaqCategory[] =
     categories ??
@@ -209,7 +214,7 @@ export function FaqSection({
     mainEntity: schemaItems.map((item) => ({
       '@type': 'Question',
       name: item.question,
-      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      acceptedAnswer: { '@type': 'Answer', text: faqAnswerText(item.answer) },
     })),
   };
 
@@ -229,7 +234,7 @@ export function FaqSection({
         headingWidth={headingWidth}
       />
 
-      <div className={showNav ? 'faq faq--split' : 'faq'}>
+      <div className={['faq', showNav ? 'faq--split' : '', constrainAnswers ? 'faq--constrained' : ''].filter(Boolean).join(' ')}>
         {showNav ? (
           <nav className="faq__nav" aria-label="Categorías de preguntas">
             {groups.map((group) => {

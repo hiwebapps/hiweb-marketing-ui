@@ -94,6 +94,9 @@ export const aboutHistory = defineType({
     headingTitleField(),
     headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
+    imageWithAlt({ name: 'imageLarge', title: 'Foto grande, a la izquierda' }),
+    imageWithAlt({ name: 'imageTop', title: 'Foto de arriba, a la derecha' }),
+    imageWithAlt({ name: 'imageBottom', title: 'Foto de abajo, a la derecha' }),
     defineField({
       name: 'columns',
       title: 'Columnas',

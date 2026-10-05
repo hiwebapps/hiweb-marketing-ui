@@ -1,3 +1,4 @@
+import { createElement } from 'react';
 import { defineConfig } from 'sanity';
 import { presentationTool } from 'sanity/presentation';
 import { structureTool } from 'sanity/structure';
@@ -6,10 +7,10 @@ import { completeLandingTemplate } from './src/sanity/actions/completeLandingTem
 import { createEnglishVersion } from './src/sanity/actions/createEnglishVersion';
 import { ensureEnglishPair } from './src/sanity/actions/ensureEnglishPair';
 import { createRedirect } from './src/sanity/actions/createRedirect';
-import { viewOnStaging } from './src/sanity/actions/viewOnStaging';
 import { keywordBadge, seoChecklistBadge } from './src/sanity/badges/seoBadges';
 import { translationBadge, wordsBadge } from './src/sanity/badges/postBadges';
 import { PostSeoView } from './src/sanity/components/PostSeoView';
+import { ViewStagingButton } from './src/sanity/components/ViewStagingButton';
 import { resolve } from './src/sanity/presentation/resolve';
 import { SiteNavigator } from './src/sanity/presentation/SiteNavigator';
 import { landingTemplateSections, type LandingTemplateKind } from './src/sanity/landingTemplate';
@@ -42,6 +43,9 @@ function previewOrigin() {
 
 export default defineConfig({
   name: 'hiweb-web',
+  __internal_tasks: {
+    footerAction: createElement(ViewStagingButton),
+  },
   title: 'Hiweb Web 2026',
   projectId,
   dataset,
@@ -114,20 +118,9 @@ export default defineConfig({
         context.schemaType === 'contactPage'
           ? [ensureEnglishPair, ...withTemplate]
           : withTemplate;
-      const withRedirect = ['post', 'service', 'industry', 'caseStudy', 'landingPage'].includes(context.schemaType)
+      return ['post', 'service', 'industry', 'caseStudy', 'landingPage'].includes(context.schemaType)
         ? [...withPair, createRedirect]
         : withPair;
-      const stagingTypes = new Set([
-        'homePage',
-        'aboutPage',
-        'contactPage',
-        'service',
-        'industry',
-        'caseStudy',
-        'post',
-        'landingPage',
-      ]);
-      return stagingTypes.has(context.schemaType) ? [...withRedirect, viewOnStaging] : withRedirect;
     },
   },
   schema: {

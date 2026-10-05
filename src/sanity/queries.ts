@@ -106,7 +106,15 @@ const serviceSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      items[]->{ client, quote, name, role, stats[] ${storyStatProjection}, photo ${imageProjection} }
+      items[]->{
+        client, quote, name, role,
+        stats[] ${storyStatProjection},
+        photo ${imageProjection},
+        "project": *[_type == "caseStudy" && references(^._id)][0]{
+          "slug": slug.current,
+          "cover": sections[_type == "caseHero"][0].imagenesProyecto[0] ${imageProjection}
+        }
+      }
     },
     _type == "serviceFaq" => {
       eyebrow,
@@ -290,7 +298,15 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
     },
     _type == "homeStories" => {
       intro ${introProjection},
-      items[]->{ client, quote, name, role, stats[] ${storyStatProjection}, photo ${imageProjection} }
+      items[]->{
+        client, quote, name, role,
+        stats[] ${storyStatProjection},
+        photo ${imageProjection},
+        "project": *[_type == "caseStudy" && references(^._id)][0]{
+          "slug": slug.current,
+          "cover": sections[_type == "caseHero"][0].imagenesProyecto[0] ${imageProjection}
+        }
+      }
     },
     _type == "homeProcess" => {
       intro ${introProjection},
@@ -363,7 +379,15 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
     },
     _type == "homeStories" => {
       intro ${introProjection},
-      items[]->{ client, quote, name, role, stats[] ${storyStatProjection}, photo ${imageProjection} }
+      items[]->{
+        client, quote, name, role,
+        stats[] ${storyStatProjection},
+        photo ${imageProjection},
+        "project": *[_type == "caseStudy" && references(^._id)][0]{
+          "slug": slug.current,
+          "cover": sections[_type == "caseHero"][0].imagenesProyecto[0] ${imageProjection}
+        }
+      }
     },
     _type == "homeProcess" => {
       intro ${introProjection},
@@ -414,6 +438,9 @@ const aboutSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
+      imageLarge ${imageProjection},
+      imageTop ${imageProjection},
+      imageBottom ${imageProjection},
       columns[]{ title, paragraphs }
     },
     _type == "aboutPillars" => {
@@ -468,6 +495,9 @@ export const aboutPageQuery = defineQuery(`*[_type == "aboutPage" && _id == $id]
   "historyTitle": coalesce(sections[_type == "aboutHistory"][0].title, historyTitle),
   "historyDescription": coalesce(sections[_type == "aboutHistory"][0].description, historyDescription),
   "historyColumns": coalesce(sections[_type == "aboutHistory"][0].columns[]{ title, paragraphs }, historyColumns[]{ title, paragraphs }),
+  "historyImageLarge": sections[_type == "aboutHistory"][0].imageLarge ${imageProjection},
+  "historyImageTop": sections[_type == "aboutHistory"][0].imageTop ${imageProjection},
+  "historyImageBottom": sections[_type == "aboutHistory"][0].imageBottom ${imageProjection},
   "pillarsEyebrow": coalesce(sections[_type == "aboutPillars"][0].eyebrow, pillarsEyebrow),
   "pillarsTitle": coalesce(sections[_type == "aboutPillars"][0].title, pillarsTitle),
   "pillars": coalesce(sections[_type == "aboutPillars"][0].pillars[]{ title, description, icon, accent, href }, pillars[]{ title, description, icon, accent, href }),
@@ -508,6 +538,7 @@ const industrySectionsProjection = /* groq */ `
     _type == "industryWhy" => {
       eyebrow,
       title,
+      description,
       pillars[]{ title, description },
       retos
     },
@@ -548,6 +579,7 @@ const industryBodyProjection = /* groq */ `
   "porQue": coalesce(sections[_type == "industryWhy"][0].pillars[]{ title, description }, porQue[]{ title, description }),
   "whyEyebrow": coalesce(sections[_type == "industryWhy"][0].eyebrow, whyEyebrow),
   "whyTitle": coalesce(sections[_type == "industryWhy"][0].title, whyTitle),
+  "whyDescription": sections[_type == "industryWhy"][0].description,
   "servicesTitle": coalesce(sections[_type == "industryServices"][0].title, servicesTitle),
   "servicesDescription": coalesce(sections[_type == "industryServices"][0].description, servicesDescription),
   "servicesCtaLabel": coalesce(sections[_type == "industryServices"][0].ctaLabel, servicesCtaLabel),

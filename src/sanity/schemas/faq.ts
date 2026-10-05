@@ -1,5 +1,6 @@
 import { HelpCircleIcon } from '@sanity/icons/HelpCircle';
 import { defineField, defineType } from 'sanity';
+import { faqAnswerField } from './shared';
 
 export const faq = defineType({
   name: 'faq',
@@ -13,13 +14,7 @@ export const faq = defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'answer',
-      title: 'Respuesta',
-      type: 'text',
-      rows: 4,
-      validation: (rule) => rule.required(),
-    }),
+    faqAnswerField(),
     defineField({
       name: 'orden',
       title: 'Orden',
@@ -35,6 +30,6 @@ export const faq = defineType({
     },
   ],
   preview: {
-    select: { title: 'question', subtitle: 'answer' },
+    select: { title: 'question' },
   },
 });

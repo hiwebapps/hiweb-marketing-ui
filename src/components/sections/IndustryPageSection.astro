@@ -18,6 +18,7 @@ interface Props {
 }
 
 const { section, nombre, heroFallback, services, stories, hasCases, hrefPrefix = '/servicios' } = Astro.props;
+const storiesLocale = hrefPrefix.startsWith('/en') ? 'en' : 'es';
 const lower = nombre.toLowerCase();
 ---
 
@@ -40,6 +41,7 @@ const lower = nombre.toLowerCase();
 		<PillarGrid
 			eyebrow={section.eyebrow || 'Por qué Hiweb'}
 			title={section.title || `Por qué Hiweb en ${lower}`}
+			description={section.description}
 			pillars={section.pillars ?? []}
 			tone="canvas"
 			headingWidth={section.headingWidth}
@@ -68,6 +70,7 @@ const lower = nombre.toLowerCase();
 	section._type === 'industryCases' && (
 		<CaseStories
 			client:visible
+			locale={storiesLocale}
 			eyebrow={section.eyebrow || 'Casos'}
 			title={section.title || `Casos en ${lower}`}
 			description={

@@ -63,6 +63,8 @@ const stories = (home.testimonials ?? []).map((item) => ({
 	name: item.name,
 	role: item.role ?? '',
 	photo: item.photo,
+	cover: item.cover,
+	href: item.href,
 	stats: item.stats,
 }));
 const metrics = (home.metrics ?? []).map((item) => ({
@@ -171,6 +173,7 @@ const sectionOrder = home.hasSections
 					<CaseStories
 						key={type}
 						client:visible
+						locale="en"
 						stories={stories}
 						eyebrow={home.storiesIntro?.eyebrow}
 						title={home.storiesIntro?.title}
@@ -232,6 +235,7 @@ const sectionOrder = home.hasSections
 					<FaqSection
 						key={type}
 						client:visible
+						constrainAnswers
 						categories={faqCategories}
 						eyebrow={home.faqIntro?.eyebrow}
 						title={home.faqIntro?.title}
