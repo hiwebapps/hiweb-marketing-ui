@@ -49,6 +49,7 @@ export function articleSchema(input: {
     role?: string;
     company?: string;
     linkedin?: string;
+    photo?: string;
   };
   date: Date;
   publisher?: string;
@@ -65,6 +66,7 @@ export function articleSchema(input: {
     person.url = input.authorProfile.linkedin;
     person.sameAs = [input.authorProfile.linkedin];
   }
+  if (input.authorProfile?.photo) person.image = input.authorProfile.photo;
 
   return {
     '@context': 'https://schema.org',

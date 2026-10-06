@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../../layouts/Layout.astro';
+import BlogAuthorCard from '../../../components/content/BlogAuthorCard.astro';
 import BlogBody from '../../../components/content/BlogBody.astro';
 import { getPost, getPosts, getSiteSettings, postStaticPaths } from '../../../lib/content';
 import { BlogPostToc } from '../../../components/sections/BlogPostToc';
@@ -60,7 +61,7 @@ const schemas = [
 		href: `/en/blogs/${entry.id}`,
 		author: authorName,
 		authorProfile: author
-			? { role: author.role, company: author.company, linkedin: author.linkedin }
+			? { role: author.role, company: author.company, linkedin: author.linkedin, photo: author.photo }
 			: undefined,
 		date: entry.data.fecha,
 		publisher: site.legalName,
@@ -126,40 +127,21 @@ const schemas = [
 					<div class="blog-post__body" data-blog-body>
 						<BlogBody post={entry} />
 					</div>
-					{
-						author ? (
-							<aside class="blog-post__author" aria-label="Author">
-								<span class="blog-post__avatar blog-post__avatar--lg" aria-hidden="true">
-									{initials || 'HW'}
-								</span>
-								<div class="blog-post__author-copy">
-									<p class="blog-post__author-name">{author.name}</p>
-									{
-										author.role || author.company ? (
-											<p class="blog-post__author-role">
-												{[author.role, author.company].filter(Boolean).join(' · ')}
-											</p>
-										) : null
-									}
-									{
-										author.linkedin ? (
-											<a
-												class="blog-post__author-link"
-												href={author.linkedin}
-												target="_blank"
-												rel="noreferrer"
-											>
-												LinkedIn
-											</a>
-										) : null
-									}
-								</div>
-							</aside>
-						) : null
-					}
 				</article>
 
 				<aside class="blog-post__related" aria-label="Related articles">
+					{
+						author ? (
+							<BlogAuthorCard
+								name={author.name}
+								role={author.role}
+								company={author.company}
+								linkedin={author.linkedin}
+								photo={author.photo}
+								label="Author"
+							/>
+						) : null
+					}
 					<div class="blog-post__related-card">
 						<p class="blog-post__related-title">Related</p>
 						{

@@ -707,16 +707,23 @@ export function mapPost(doc: Record<string, unknown>): PostRecord {
       ? fechaRaw
       : new Date(typeof fechaRaw === 'string' ? fechaRaw : Date.now());
 
-  const card = doc.authorCard as { name?: string; role?: string; company?: string; linkedin?: string } | null;
-  const author =
-    card?.name && (card.role || card.linkedin)
-      ? {
-          name: String(card.name),
-          role: card.role ? String(card.role) : undefined,
-          company: card.company ? String(card.company) : undefined,
-          linkedin: card.linkedin ? String(card.linkedin) : undefined,
-        }
-      : undefined;
+  const card = doc.authorCard as {
+    name?: string;
+    role?: string;
+    company?: string;
+    linkedin?: string;
+    photo?: CmsImage;
+  } | null;
+  const authorName = card?.name ? String(card.name) : String(doc.authorName ?? doc.autor ?? '');
+  const author = authorName
+    ? {
+        name: authorName,
+        role: card?.role ? String(card.role) : undefined,
+        company: card?.company ? String(card.company) : undefined,
+        linkedin: card?.linkedin ? String(card.linkedin) : undefined,
+        photo: card?.photo ? urlForWidth(card.photo, 240) : undefined,
+      }
+    : undefined;
 
   return {
     id: String(doc.id),
@@ -725,7 +732,7 @@ export function mapPost(doc: Record<string, unknown>): PostRecord {
       title: String(doc.title ?? ''),
       description: String(doc.description ?? ''),
       keyword: String(doc.keyword ?? ''),
-      autor: String(doc.authorName ?? doc.autor ?? author?.name ?? 'Hiweb'),
+      autor: authorName || 'Hiweb',
       author,
       fecha,
       featured: Boolean(doc.featured),

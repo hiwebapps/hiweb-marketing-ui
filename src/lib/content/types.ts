@@ -364,6 +364,7 @@ export type PostRecord = {
       role?: string;
       company?: string;
       linkedin?: string;
+      photo?: string;
     };
     fecha: Date;
     featured: boolean;

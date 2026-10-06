@@ -33,6 +33,10 @@ export const author = defineType({
       validation: (rule) =>
         rule.required().uri({ scheme: ['http', 'https'] }),
     }),
+    imageWithAlt({
+      name: 'photo',
+      title: 'Foto de perfil',
+    }),
     defineField({
       name: 'slug',
       title: 'Slug',
@@ -41,7 +45,7 @@ export const author = defineType({
     }),
   ],
   preview: {
-    select: { title: 'name', role: 'role', company: 'company' },
+    select: { title: 'name', role: 'role', company: 'company', media: 'photo' },
     prepare: ({ title, role, company }) => ({
       title,
       subtitle: [role, company].filter(Boolean).join(' · '),

@@ -1,0 +1,42 @@
+---
+interface Props {
+	name: string;
+	role?: string;
+	company?: string;
+	linkedin?: string;
+	photo?: string;
+	label: string;
+}
+
+const { name, role, company, linkedin, photo, label } = Astro.props;
+const initials = name
+	.split(/\s+/)
+	.filter(Boolean)
+	.slice(0, 2)
+	.map((part) => part[0]?.toUpperCase() ?? '')
+	.join('');
+---
+
+<aside class="blog-post__author" aria-label={label}>
+	{
+		photo ? (
+			<img class="blog-post__author-photo" src={photo} alt="" width="96" height="96" />
+		) : (
+			<span class="blog-post__avatar blog-post__avatar--lg" aria-hidden="true">
+				{initials || 'HW'}
+			</span>
+		)
+	}
+	<div class="blog-post__author-copy">
+		<p class="blog-post__author-name">{name}</p>
+		{role ? <p class="blog-post__author-role">{role}</p> : null}
+		{company ? <p class="blog-post__author-company">{company}</p> : null}
+		{
+			linkedin ? (
+				<a class="blog-post__author-link" href={linkedin} target="_blank" rel="noreferrer">
+					LinkedIn
+				</a>
+			) : null
+		}
+	</div>
+</aside>
