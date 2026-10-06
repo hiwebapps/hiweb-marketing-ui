@@ -3,7 +3,7 @@
   "name": "hiweb-marketing-ui",
   "compatibility_date": "2026-09-18",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  "main": "./src/worker.ts",
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist"
@@ -16,6 +16,9 @@
   },
   "observability": {
     "enabled": true
+  },
+  "triggers": {
+    "crons": ["* * * * *"]
   },
   "d1_databases": [
     {
@@ -42,7 +45,10 @@
           "database_id": "0391782c-b084-452c-a283-74af9c54451f",
           "migrations_dir": "migrations/d1"
         }
-      ]
+      ],
+      "triggers": {
+        "crons": []
+      }
     }
   }
 }

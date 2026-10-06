@@ -47,6 +47,8 @@ export function pagePath(type: string, id: string, doc: { locale?: string; slug?
   if (type === 'homePage') return english ? '/en' : '/';
   if (type === 'aboutPage') return english ? '/en/nosotros' : '/nosotros';
   if (type === 'contactPage') return '/contacto';
+  if (type === 'calendarPage') return english ? '/en/calendario' : '/calendario';
+  if (type === 'sitePage' && slug) return `/${slug}`;
   if (type === 'service' && slug) return english ? `/en/servicios/${slug}` : `/servicios/${slug}`;
   if (type === 'industry' && slug) return english ? `/en/industrias/${slug}` : `/industrias/${slug}`;
   if (type === 'caseStudy' && slug) return `/portafolio/${slug}`;
@@ -72,6 +74,7 @@ export function fallbackTitle(type: string, doc: PageMetaDoc) {
   if (type === 'service' || type === 'industry') return name ? `${name} — Hiweb Marketing` : 'Hiweb Marketing';
   if (type === 'caseStudy') return (doc.titulo || doc.cliente || 'Hiweb Marketing').trim();
   if (type === 'contactPage') return 'Contacto — Hiweb Marketing';
+  if (type === 'calendarPage') return english ? 'Schedule a meeting — Hiweb Marketing' : 'Agenda una cita — Hiweb Marketing';
   if (type === 'landingPage') return name ? `${name} — Hiweb Marketing` : 'Hiweb Marketing';
   if (type === 'post') return name ? `${name} — Hiweb` : 'Hiweb';
   if (type === 'industriesIndex') return name || (english ? 'Industries — Hiweb Marketing' : 'Industrias — Hiweb Marketing');
@@ -94,7 +97,7 @@ export function publishedDescription(type: string, doc: PageMetaDoc) {
   if (type === 'industry') return doc.heroDescription?.trim() || doc.tagline?.trim() || '';
   if (type === 'caseStudy') return doc.resumen?.trim() || '';
   if (type === 'landingPage') return doc.title?.trim() || '';
-  if (type === 'contactPage') return doc.description?.trim() || '';
+  if (type === 'contactPage' || type === 'sitePage' || type === 'calendarPage') return doc.description?.trim() || '';
   if (type === 'homePage') return DEFAULT_DESCRIPTION;
   if (type === 'aboutPage') return doc.heroDescription?.trim() || DEFAULT_DESCRIPTION;
   if (type === 'industriesIndex' || type === 'servicesIndex' || type === 'blogIndex' || type === 'casesIndex' || type === 'legalPage') {

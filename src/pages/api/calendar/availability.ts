@@ -15,14 +15,10 @@ export const GET: APIRoute = async ({ url }) => {
       throw new AppError('Parámetro date inválido.', { statusCode: 400, code: 'INVALID_DATE' });
     }
 
-    if (!service) {
-      throw new AppError('Parámetro service requerido.', { statusCode: 400, code: 'INVALID_SERVICE' });
-    }
-
     const slots = await getAvailabilityForDate(date);
     return Response.json({
       date,
-      service: getServiceLabel(service),
+      service: service ? getServiceLabel(service) : '',
       slots,
     });
   } catch (error) {

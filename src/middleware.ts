@@ -51,7 +51,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     path === '/en/blogs' ||
     path.startsWith('/en/blogs/') ||
     path === '/en/terminos' ||
-    path === '/en/aviso-de-privacidad';
+    path === '/en/aviso-de-privacidad' ||
+    path === '/en/calendario';
   if (path.startsWith('/en/') && path !== '/en' && !englishSection) {
     return context.redirect('/en');
   }

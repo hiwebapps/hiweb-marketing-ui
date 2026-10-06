@@ -935,6 +935,40 @@ export const landingBySlugQuery = defineQuery(`*[
   ${seoProjection}
 }`);
 
+export const calendarPageQuery = defineQuery(`*[_id == $id && _type == "calendarPage"][0]{
+  title,
+  bannerTitle,
+  bannerSubtitle,
+  fields[]{ _key, kind, label, placeholder, hint },
+  services[]{ _key, label, serviceId, asksForWebsite },
+  servicesError,
+  servicesEmpty,
+  weekdays,
+  previousLabel,
+  nextLabel,
+  scheduleLabel,
+  scheduleHint,
+  loadingLabel,
+  fullDayLabel,
+  confirmLabel,
+  pendingLabel,
+  confirmedLabel,
+  cancelledLabel,
+  timezoneNote,
+  cancelLabel,
+  cancellingLabel,
+  metaTitle,
+  metaDescription
+}`);
+
+export const sitePageQuery = defineQuery(`*[_id == $id && _type == "sitePage"][0]{
+  title,
+  eyebrow,
+  description,
+  metaTitle,
+  metaDescription
+}`);
+
 export const contactPageQuery = defineQuery(`*[_type == "contactPage" && _id == "contactPage"][0]{
   title,
   bannerTitle,

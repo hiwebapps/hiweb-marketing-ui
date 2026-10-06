@@ -40,6 +40,7 @@ export const GET: APIRoute = async ({ url, site }) => {
     '/contacto',
     '/diagnostico-marketing-digital',
     '/calendario',
+    '/en/calendario',
     ...services.map((item) => `/servicios/${item.id}`),
     ...industries.map((item) => `/industrias/${item.id}`),
     ...cases.map((item) => `/portafolio/${item.id}`),

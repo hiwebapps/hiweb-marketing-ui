@@ -115,7 +115,8 @@ export default defineConfig({
         context.schemaType === 'landingPage' ||
         context.schemaType === 'testimonial' ||
         context.schemaType === 'person' ||
-        context.schemaType === 'contactPage'
+        context.schemaType === 'contactPage' ||
+        context.schemaType === 'calendarPage'
           ? [ensureEnglishPair, ...withTemplate]
           : withTemplate;
       return ['post', 'service', 'industry', 'caseStudy', 'landingPage'].includes(context.schemaType)

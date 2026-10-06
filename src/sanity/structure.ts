@@ -42,6 +42,8 @@ const HIDDEN_FROM_FALLBACK = [
   'testimonial',
   'landingPage',
   'contactPage',
+  'calendarPage',
+  'sitePage',
   'faqItem',
   'titledBlock',
   'processStep',
@@ -553,6 +555,20 @@ export const structure: StructureResolver = (S, context) => {
                   S.list()
                     .title('Aviso de privacidad')
                     .items(languageItems(S, 'legalPage', 'legal-privacy', 'legal-privacy-en')),
+                ),
+              S.listItem()
+                .title('Calendario')
+                .id('calendario-pair')
+                .child(
+                  S.list()
+                    .title('Calendario')
+                    .items(languageItems(S, 'calendarPage', 'calendarPage', 'calendarPage-en')),
+                ),
+              S.listItem()
+                .title('Diagnóstico de marketing digital')
+                .id('page-diagnostico')
+                .child(
+                  S.document().schemaType('sitePage').documentId('page-diagnostico').title('Diagnóstico de marketing digital'),
                 ),
             ],
           }),

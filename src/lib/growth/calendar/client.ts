@@ -1,8 +1,8 @@
 import { apiRequest } from '../shared/api-request';
 import type { AvailabilityResponse, BookResponse, BookingInput, BookingRecord } from './types';
 
-export async function fetchAvailability(date: string, service: string) {
-  const params = new URLSearchParams({ date, service });
+export async function fetchAvailability(date: string) {
+  const params = new URLSearchParams({ date });
   return apiRequest<AvailabilityResponse>(`/api/calendar/availability?${params.toString()}`);
 }
 

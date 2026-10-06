@@ -4,15 +4,17 @@ export const prerender = true;
 import Layout from '../layouts/Layout.astro';
 import { PageHero } from '../components/sections/PageHero';
 import { MarketingQuiz } from '../components/growth/MarketingQuiz';
+import { getSitePage } from '../lib/content';
 import { breadcrumbSchema } from '../lib/schema';
 
-const title = 'Diagnóstico de marketing digital';
-const description = 'Ocho preguntas para ver en qué punto está tu marketing y qué servicios conviene trabajar primero.';
+const page = await getSitePage('page-diagnostico');
+const title = page.title;
+const description = page.description;
 ---
 
 <Layout
-	title={`${title} — Hiweb Marketing`}
-	description={description}
+	title={page.metaTitle || `${title} — Hiweb Marketing`}
+	description={page.metaDescription || description}
 	canonical="/diagnostico-marketing-digital"
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
@@ -20,7 +22,7 @@ const description = 'Ocho preguntas para ver en qué punto está tu marketing y 
 	])}
 >
 	<main>
-		<PageHero eyebrow="Diagnóstico" title={title} description={description} />
+		<PageHero eyebrow={page.eyebrow} title={title} description={description} />
 		<MarketingQuiz client:load />
 	</main>
 </Layout>

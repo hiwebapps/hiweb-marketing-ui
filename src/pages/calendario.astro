@@ -2,25 +2,26 @@
 export const prerender = true;
 
 import Layout from '../layouts/Layout.astro';
-import { PageHero } from '../components/sections/PageHero';
 import { CalendarTool } from '../components/growth/CalendarTool';
+import { getCalendarPage, getSiteSettings } from '../lib/content';
 import { breadcrumbSchema } from '../lib/schema';
 
-const title = 'Agenda una cita';
-const description = 'Elige servicio, día y horario. Lunes a viernes, de 9:00 a 17:00, hora de Ciudad de México.';
+const page = await getCalendarPage('es');
+const site = await getSiteSettings();
 ---
 
 <Layout
-	title={`${title} — Hiweb Marketing`}
-	description={description}
+	title={page.metaTitle || `${page.title} — Hiweb Marketing`}
+	description={page.metaDescription}
 	canonical="/calendario"
+	lang="es"
+	alternates={{ es: '/calendario', en: '/en/calendario' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
-		{ name: title, href: '/calendario' },
+		{ name: page.title, href: '/calendario' },
 	])}
 >
 	<main>
-		<PageHero eyebrow="Calendario" title={title} description={description} />
-		<CalendarTool client:load />
+		<CalendarTool client:load copy={page} site={site} />
 	</main>
 </Layout>

@@ -1,0 +1,27 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { CalendarTool } from '../../components/growth/CalendarTool';
+import { getCalendarPage, getSiteSettings } from '../../lib/content';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const page = await getCalendarPage('en');
+const site = await getSiteSettings();
+---
+
+<Layout
+	title={page.metaTitle || `${page.title} — Hiweb Marketing`}
+	description={page.metaDescription}
+	canonical="/en/calendario"
+	lang="en"
+	alternates={{ es: '/calendario', en: '/en/calendario' }}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: page.title, href: '/en/calendario' },
+	])}
+>
+	<main>
+		<CalendarTool client:load copy={page} site={site} />
+	</main>
+</Layout>

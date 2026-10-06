@@ -1,5 +1,6 @@
 import { aboutPage } from './aboutPage';
 import { aboutSectionTypes } from './aboutSections';
+import { calendarPage } from './calendarPage';
 import { contactPage } from './contactPage';
 import { landingSectionTypes } from './blocks/pageSections';
 import { blogTable } from './blogTable';
@@ -34,6 +35,7 @@ import { redirect } from './redirect';
 import { blogIndex, casesIndex, servicesIndex } from './catalogIndex';
 import { legalObjectTypes, legalPage } from './legalPage';
 import { siteSettings } from './siteSettings';
+import { sitePage } from './sitePage';
 
 export const schemaTypes = [
   faqItem,
@@ -70,6 +72,8 @@ export const schemaTypes = [
   homePage,
   aboutPage,
   contactPage,
+  calendarPage,
+  sitePage,
   industry,
   industriesIndex,
   service,

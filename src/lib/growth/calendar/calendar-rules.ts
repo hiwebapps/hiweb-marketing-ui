@@ -1,6 +1,7 @@
-import type { CalendarService } from "./types";
+import type { CalendarServiceOption } from "./types";
 
-export const CALENDAR_SERVICES: CalendarService[] = [
+/** Ids antiguos, solo para mostrar reservas hechas antes del catálogo de Sanity. */
+export const CALENDAR_SERVICES: CalendarServiceOption[] = [
   { id: "consulting", label: "Consultoría de marketing digital" },
   { id: "seo-audit", label: "Auditoría SEO" },
   { id: "website-audit", label: "Auditoría de sitio web" },
@@ -40,17 +41,9 @@ export function getServiceLabel(serviceIdOrLabel: string): string {
   return match?.label ?? serviceIdOrLabel;
 }
 
-export function resolveServiceId(serviceIdOrLabel: string): string {
-  const match = CALENDAR_SERVICES.find(
-    (s) => s.id === serviceIdOrLabel || s.label === serviceIdOrLabel,
-  );
-  return match?.id ?? serviceIdOrLabel;
-}
-
-export const WEBSITE_AUDIT_SERVICE_ID = "website-audit" as const;
-
-export function serviceRequiresWebsite(serviceIdOrLabel: string): boolean {
-  return resolveServiceId(serviceIdOrLabel) === WEBSITE_AUDIT_SERVICE_ID;
+export function serviceRequiresWebsite(service: CalendarServiceOption): boolean {
+  if (typeof service.asksForWebsite === "boolean") return service.asksForWebsite;
+  return `${service.id} ${service.label}`.toLowerCase().includes("web");
 }
 
 export function isWeekday(date: Date): boolean {
@@ -157,17 +150,17 @@ export function getMonthCells(year: number, month: number): CalendarMonthCell[] 
   return cells;
 }
 
-export function formatMonthYear(year: number, month: number): string {
-  const label = new Date(year, month, 1, 12).toLocaleDateString("es-MX", {
+export function formatMonthYear(year: number, month: number, locale: "es" | "en" = "es"): string {
+  const label = new Date(year, month, 1, 12).toLocaleDateString(locale === "en" ? "en-US" : "es-MX", {
     month: "long",
     year: "numeric",
   });
   return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
-export function formatTime12h(time24: string): string {
+export function formatTime12h(time24: string, locale: "es" | "en" = "es"): string {
   const [h, m] = time24.split(":").map(Number);
-  const period = h >= 12 ? "p. m." : "a. m.";
+  const period = locale === "en" ? (h >= 12 ? "p.m." : "a.m.") : h >= 12 ? "p. m." : "a. m.";
   const hour12 = h % 12 || 12;
   return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
 }
@@ -207,8 +200,8 @@ export function splitPersonName(fullName: string): {
   };
 }
 
-export function formatScheduleSummary(dateIso: string, time?: string): string {
-  const datePart = parseDateIso(dateIso).toLocaleDateString("es-MX", {
+export function formatScheduleSummary(dateIso: string, time?: string, locale: "es" | "en" = "es"): string {
+  const datePart = parseDateIso(dateIso).toLocaleDateString(locale === "en" ? "en-US" : "es-MX", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -216,7 +209,7 @@ export function formatScheduleSummary(dateIso: string, time?: string): string {
   if (!time) {
     return datePart;
   }
-  return `${datePart} ${formatTime12h(time)}`;
+  return `${datePart} ${formatTime12h(time, locale)}`;
 }
 
 export function getBookableMonthBounds(): {

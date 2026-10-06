@@ -11,7 +11,9 @@ import {
 } from './from-collections';
 import {
   sanityAbout,
+  sanityCalendarPage,
   sanityContactPage,
+  sanitySitePage,
   sanityCase,
   sanityCases,
   sanityCatalogIndex,
@@ -33,6 +35,7 @@ import {
   sanityServices,
 } from './from-sanity';
 import { hydrateLanding, landingNeedsCatalogs } from './hydrate-landing';
+import { DEFAULT_CALENDAR, type CalendarPageCopy } from './calendar-page';
 import { DEFAULT_CONTACT, type ContactPageCopy } from './contact';
 import type {
   AboutCopy,
@@ -235,6 +238,43 @@ export async function getHomeCopy(locale: 'es' | 'en' = 'es'): Promise<HomeCopy>
     faqCategories: next.faqCategories?.length ? next.faqCategories : fallback.faqCategories,
     seo: { ...fallback.seo, ...next.seo },
   };
+}
+
+const SITE_PAGES = {
+  'page-calendario': {
+    title: 'Agenda una cita',
+    eyebrow: '',
+    description: 'Elige servicio, día y horario. Lunes a viernes, de 9:00 a 17:00, hora de Ciudad de México.',
+    metaTitle: 'Agenda una cita — Hiweb Marketing',
+    metaDescription: 'Elige servicio, día y horario. Lunes a viernes, de 9:00 a 17:00, hora de Ciudad de México.',
+  },
+  'page-diagnostico': {
+    title: 'Diagnóstico de marketing digital',
+    eyebrow: 'Diagnóstico',
+    description: 'Ocho preguntas para ver en qué punto está tu marketing y qué servicios conviene trabajar primero.',
+    metaTitle: 'Diagnóstico de marketing digital — Hiweb Marketing',
+    metaDescription: 'Ocho preguntas para ver en qué punto está tu marketing y qué servicios conviene trabajar primero.',
+  },
+} as const;
+
+export async function getSitePage(id: keyof typeof SITE_PAGES) {
+  const fallback = SITE_PAGES[id];
+  if (!isSanityConfigured()) return fallback;
+  try {
+    return (await sanitySitePage(id)) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export async function getCalendarPage(locale: 'es' | 'en' = 'es'): Promise<CalendarPageCopy> {
+  const fallback = DEFAULT_CALENDAR[locale];
+  if (!isSanityConfigured()) return fallback;
+  try {
+    return (await sanityCalendarPage(locale)) ?? fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 export async function getContactPage(): Promise<ContactPageCopy> {

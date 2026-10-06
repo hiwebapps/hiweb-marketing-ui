@@ -36,6 +36,18 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "contactPage" && _id in ["contactPage", "drafts.contactPage"]`,
     },
     {
+      route: '/calendario',
+      filter: `_type == "calendarPage" && _id in ["calendarPage", "drafts.calendarPage"]`,
+    },
+    {
+      route: '/en/calendario',
+      filter: `_type == "calendarPage" && _id in ["calendarPage-en", "drafts.calendarPage-en"]`,
+    },
+    {
+      route: '/diagnostico-marketing-digital',
+      filter: `_type == "sitePage" && _id in ["page-diagnostico", "drafts.page-diagnostico"]`,
+    },
+    {
       route: '/terminos',
       filter: `_type == "legalPage" && _id in ["legal-terms", "drafts.legal-terms"]`,
     },
@@ -111,6 +123,21 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       select: { title: 'title' },
       resolve: (doc) => ({
         locations: [{ title: doc?.title || 'Contacto', href: '/contacto' }],
+      }),
+    }),
+    calendarPage: defineLocations({
+      select: { title: 'title', locale: 'locale', id: '_id' },
+      resolve: (doc) => {
+        const english = doc?.locale === 'en' || englishId(doc?.id);
+        return {
+          locations: [{ title: doc?.title || 'Calendario', href: english ? '/en/calendario' : '/calendario' }],
+        };
+      },
+    }),
+    sitePage: defineLocations({
+      select: { title: 'title', slug: 'slug.current' },
+      resolve: (doc) => ({
+        locations: [{ title: doc?.title || 'Página', href: doc?.slug ? `/${doc.slug}` : '/' }],
       }),
     }),
     service: defineLocations({

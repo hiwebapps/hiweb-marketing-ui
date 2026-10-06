@@ -50,6 +50,7 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
       schemaType === 'testimonial' ||
       schemaType === 'person' ||
       schemaType === 'contactPage' ||
+      schemaType === 'calendarPage' ||
       schemaType === 'legalPage';
     if (!hasDoc || !paired) return;
     if (baseId.endsWith('-en') || locale === 'en') return;
@@ -67,10 +68,12 @@ export const ensureEnglishPair: DocumentActionComponent = (props) => {
             schemaType === 'testimonial' ||
             schemaType === 'person' ||
             schemaType === 'contactPage' ||
+            schemaType === 'calendarPage' ||
             schemaType === 'legalPage';
           if (!existing && copyType) {
             const ready =
               schemaType === 'contactPage' ||
+              schemaType === 'calendarPage' ||
               (schemaType === 'caseStudy' && Boolean(slug || cliente)) ||
               (schemaType === 'landingPage' && Boolean(slug || title)) ||
               (schemaType === 'testimonial' && Boolean(clientName || personName)) ||

@@ -2,7 +2,9 @@ import { asHeadingWidth } from '../heading';
 import { loadQuery } from '../../sanity/lib/load-query';
 import {
   aboutPageQuery,
+  calendarPageQuery,
   contactPageQuery,
+  sitePageQuery,
   caseBySlugQuery,
   casesQuery,
   homePageEnQuery,
@@ -24,6 +26,7 @@ import {
   serviceBySlugQuery,
   servicesQuery,
 } from '../../sanity/queries';
+import { mapCalendarPage, type CalendarPageCopy } from './calendar-page';
 import { mapContactPage, type ContactPageCopy } from './contact';
 import {
   mapAbout,
@@ -173,6 +176,32 @@ export async function sanityHome(locale: 'es' | 'en' = 'es'): Promise<HomeCopy |
   return mapHome(data);
 }
 
+export async function sanitySitePage(id: string): Promise<{
+  title: string;
+  eyebrow: string;
+  description: string;
+  metaTitle: string;
+  metaDescription: string;
+} | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({ query: sitePageQuery, params: { id } });
+  if (!data || typeof data.title !== 'string' || !data.title.trim()) return null;
+  return {
+    title: data.title.trim(),
+    eyebrow: typeof data.eyebrow === 'string' ? data.eyebrow.trim() : '',
+    description: typeof data.description === 'string' ? data.description.trim() : '',
+    metaTitle: typeof data.metaTitle === 'string' ? data.metaTitle.trim() : '',
+    metaDescription: typeof data.metaDescription === 'string' ? data.metaDescription.trim() : '',
+  };
+}
+
+export async function sanityCalendarPage(locale: 'es' | 'en' = 'es'): Promise<CalendarPageCopy | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: calendarPageQuery,
+    params: { id: locale === 'en' ? 'calendarPage-en' : 'calendarPage' },
+  });
+  return mapCalendarPage(data, locale);
+}
+
 export async function sanityContactPage(): Promise<ContactPageCopy | null> {
   const { data } = await loadQuery<Record<string, unknown> | null>({ query: contactPageQuery });
   return mapContactPage(data);
@@ -208,8 +237,10 @@ function asGroups(value: unknown): NavGroup[] {
   return value.flatMap((group) => {
     if (!group || typeof group !== 'object') return [];
     const row = group as Record<string, unknown>;
-    if (typeof row.heading !== 'string') return [];
-    return [{ heading: row.heading, links: asLinks(row.links) }];
+    const links = asLinks(row.links);
+    const heading = typeof row.heading === 'string' ? row.heading : '';
+    if (!heading && links.length === 0) return [];
+    return [{ heading, links }];
   });
 }
 

@@ -80,7 +80,7 @@ function SeoTool(_props: { tool: Tool }) {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     const subscription = client
-      .listen('*[_type in ["homePage","aboutPage","service","industry","caseStudy","contactPage","landingPage","post","industriesIndex","servicesIndex","blogIndex","casesIndex","legalPage"]]', {}, { includeResult: false, visibility: 'query' })
+      .listen('*[_type in ["homePage","aboutPage","service","industry","caseStudy","contactPage","calendarPage","landingPage","post","industriesIndex","servicesIndex","blogIndex","casesIndex","legalPage"]]', {}, { includeResult: false, visibility: 'query' })
       .subscribe(() => {
         clearTimeout(timer);
         timer = setTimeout(() => setReloadToken((token) => token + 1), 800);

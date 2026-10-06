@@ -12,6 +12,7 @@ const CHECKLIST_TYPES = new Set([
   'industry',
   'caseStudy',
   'contactPage',
+  'calendarPage',
   'landingPage',
   'post',
   'industriesIndex',
