@@ -5,6 +5,7 @@ type ScrollIndicatorProps = {
   className?: string;
   /** Track a parent `[data-scroll-demo]` instead of the document. */
   contained?: boolean;
+  locale?: 'es' | 'en';
 };
 
 type Mark = {
@@ -36,6 +37,30 @@ const SECTION_LABELS: Record<string, string> = {
   directo: 'Directo',
   despues: 'Después',
   ubicacion: 'Ubicación',
+  primitives: 'Base',
+};
+
+const SECTION_LABELS_EN: Record<string, string> = {
+  inicio: 'Home',
+  diferenciadores: 'Pillars',
+  servicios: 'Services',
+  industrias: 'Industries',
+  casos: 'Stories',
+  testimonio: 'Testimonial',
+  proceso: 'Process',
+  'como-trabajamos': 'Method',
+  nosotros: 'About',
+  faq: 'FAQ',
+  ejecucion: 'Execution',
+  propuesta: 'Proposal',
+  'por-que': 'Why',
+  precios: 'Pricing',
+  contacto: 'Contact',
+  problema: 'Problem',
+  engagement: 'Fit',
+  directo: 'Direct',
+  despues: 'After',
+  ubicacion: 'Location',
   primitives: 'Base',
 };
 
@@ -76,13 +101,14 @@ function prettyId(id: string) {
   return id.replace(/[-_]/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-function labelFor(el: HTMLElement) {
+function labelFor(el: HTMLElement, locale: 'es' | 'en' = 'es') {
+  const labels = locale === 'en' ? SECTION_LABELS_EN : SECTION_LABELS;
   const id = el.id;
   const data = el.getAttribute('data-scroll-section');
-  if (data && data !== id && SECTION_LABELS[data]) return SECTION_LABELS[data];
+  if (data && data !== id && labels[data]) return labels[data];
   if (data && data !== id) return data;
-  if (id && SECTION_LABELS[id]) return SECTION_LABELS[id];
-  return prettyId(id || data || 'Sección');
+  if (id && labels[id]) return labels[id];
+  return prettyId(id || data || (locale === 'en' ? 'Section' : 'Sección'));
 }
 
 function sectionNodes(scroller: HTMLElement | Window) {
@@ -95,7 +121,7 @@ function sectionNodes(scroller: HTMLElement | Window) {
   );
 }
 
-function collectMarks(scroller: HTMLElement | Window): Mark[] {
+function collectMarks(scroller: HTMLElement | Window, locale: 'es' | 'en'): Mark[] {
   const nodes = sectionNodes(scroller);
   const height = docHeight(scroller);
   if (!nodes.length || height <= 0) return [];
@@ -103,7 +129,7 @@ function collectMarks(scroller: HTMLElement | Window): Mark[] {
   return nodes
     .map((el, index) => {
       const top = offsetTop(el, scroller);
-      const label = labelFor(el);
+      const label = labelFor(el, locale);
       return {
         key: `${el.id || label}-start-${index}`,
         label,
@@ -142,7 +168,7 @@ function useDesktopScrollRail(enabled: boolean) {
   return active;
 }
 
-export function ScrollIndicator({ className = '', contained = false }: ScrollIndicatorProps) {
+export function ScrollIndicator({ className = '', contained = false, locale = 'es' }: ScrollIndicatorProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [marks, setMarks] = useState<Mark[]>([]);
   const [progress, setProgress] = useState(0);
@@ -176,7 +202,7 @@ export function ScrollIndicator({ className = '', contained = false }: ScrollInd
     };
 
     const refresh = () => {
-      setMarks(collectMarks(target));
+      setMarks(collectMarks(target, locale));
       update();
     };
 
@@ -197,7 +223,7 @@ export function ScrollIndicator({ className = '', contained = false }: ScrollInd
       window.clearTimeout(later);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [contained, showRail]);
+  }, [contained, locale, showRail]);
 
   if (!showRail) return null;
 

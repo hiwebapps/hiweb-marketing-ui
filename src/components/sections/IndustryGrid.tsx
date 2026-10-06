@@ -32,6 +32,7 @@ type IndustryGridProps = {
   hrefPrefix?: string;
   ctaLabel?: string;
   headingWidth?: string;
+  locale?: 'es' | 'en';
 };
 
 const ACCENT_HEX: Record<IndustryAccent, string> = {
@@ -84,6 +85,7 @@ export function IndustryGrid({
   hrefPrefix = '/industrias',
   ctaLabel = 'Ver el sector',
   headingWidth,
+  locale = 'es',
 }: IndustryGridProps) {
   const width = headingProps(headingWidth);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -226,7 +228,7 @@ export function IndustryGrid({
             <button
               type="button"
               className="industry-slider__arrow industry-slider__arrow--prev"
-              aria-label="Industria anterior"
+              aria-label={locale === 'en' ? 'Previous industry' : 'Industria anterior'}
               disabled={activeIndex === 0}
               onClick={() => goTo(activeIndex - 1)}
             >
@@ -243,7 +245,7 @@ export function IndustryGrid({
             <button
               type="button"
               className="industry-slider__arrow industry-slider__arrow--next"
-              aria-label="Industria siguiente"
+              aria-label={locale === 'en' ? 'Next industry' : 'Industria siguiente'}
               disabled={activeIndex === lastIndex}
               onClick={() => goTo(activeIndex + 1)}
             >
@@ -271,7 +273,7 @@ export function IndustryGrid({
               <ul
                 ref={trackRef}
                 className="industry-slider__track"
-                aria-label="Industrias"
+                aria-label={locale === 'en' ? 'Industries' : 'Industrias'}
               >
                 {industries.map((item, index) => {
                   const icon =
@@ -307,7 +309,7 @@ export function IndustryGrid({
                           }}
                           role={current ? undefined : 'button'}
                           tabIndex={current ? undefined : 0}
-                          aria-label={current ? undefined : `Mostrar ${item.nombre}`}
+                          aria-label={current ? undefined : `${locale === 'en' ? 'Show' : 'Mostrar'} ${item.nombre}`}
                         >
                           <span className="industry-slide__icon">
                             <IndustryIcon name={icon} />

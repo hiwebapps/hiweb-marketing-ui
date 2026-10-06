@@ -134,7 +134,7 @@ const nombre = entry.data.nombre;
 {
 	section._type === 'servicePlans' && section.title && section.plans?.length ? (
 		<ServicePlans
-			eyebrow={section.eyebrow || 'Planes'}
+			eyebrow={section.eyebrow || (locale === 'en' ? 'Plans' : 'Planes')}
 			title={section.title}
 			description={section.description || ''}
 			note={section.note || ''}
@@ -145,6 +145,7 @@ const nombre = entry.data.nombre;
 			plans={section.plans}
 			tone="canvas"
 			headingWidth={section.headingWidth}
+			includesLabel={locale === 'en' ? 'Includes' : 'Incluye'}
 		/>
 	) : null
 }
@@ -152,6 +153,10 @@ const nombre = entry.data.nombre;
 	section._type === 'serviceIndustries' && (
 		<IndustryGrid
 			client:visible
+			locale={locale}
+			hrefPrefix={locale === 'en' ? '/en/industrias' : '/industrias'}
+			ctaLabel={locale === 'en' ? 'View industry' : 'Ver el sector'}
+			eyebrow={locale === 'en' ? 'Industries' : 'Industrias'}
 			industries={
 				section.items?.length
 					? section.items.map((item) => ({

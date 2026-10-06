@@ -132,7 +132,7 @@ const jsonLdItems = [
 	</head>
 	<body id="top">
 		<SiteNav client:load locale={lang} nav={nav} />
-		<ScrollIndicator client:load />
+		<ScrollIndicator client:load locale={lang} />
 		<slot />
 		<SiteFooter client:idle locale={lang} footer={footer} site={site} />
 		{PreviewChrome && <PreviewChrome />}

@@ -1,5 +1,43 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
+const PAGE_TYPES = [
+  { type: 'homePage' },
+  { type: 'aboutPage' },
+  { type: 'contactPage' },
+  { type: 'calendarPage' },
+  { type: 'sitePage' },
+  { type: 'servicesIndex' },
+  { type: 'industriesIndex' },
+  { type: 'blogIndex' },
+  { type: 'casesIndex' },
+  { type: 'service' },
+  { type: 'industry' },
+  { type: 'caseStudy' },
+  { type: 'post' },
+  { type: 'landingPage' },
+  { type: 'legalPage' },
+];
+
+function pageFilter({ document }: { document?: { locale?: string } }) {
+  const locale = document?.locale === 'en' ? 'en' : 'es';
+  return {
+    filter: `!(_id in path("drafts.**")) && coalesce(locale, select(_id match "*-en" => "en", "es")) == $locale`,
+    params: { locale },
+  };
+}
+
+function pageReferenceField(name: string, title: string) {
+  return defineField({
+    name,
+    title,
+    type: 'reference',
+    to: PAGE_TYPES,
+    description:
+      'Busca la página por nombre. Si después cambia el slug, este enlace se actualiza solo. En español solo aparecen páginas en español, y en inglés solo las de inglés.',
+    options: { disableNew: true, filter: pageFilter },
+  });
+}
+
 const navIcons = [
   { title: 'Actividad', value: 'activity' },
   { title: 'Objetivo', value: 'target' },
@@ -37,12 +75,18 @@ export const navLink = defineType({
       title: 'Descripción',
       type: 'string',
     }),
+    pageReferenceField('page', 'Página'),
     defineField({
       name: 'href',
-      title: 'Ruta',
+      title: 'Ruta manual',
       type: 'string',
-      description: 'Ruta del sitio, por ejemplo /servicios/seo o /en/industrias/salud.',
-      validation: (rule) => rule.required(),
+      description: 'Solo si el destino no está en Studio: un ancla, un archivo o un sitio externo.',
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const parent = context.parent as { page?: { _ref?: string } } | undefined;
+          if (!value && !parent?.page?._ref) return 'Elige una página o escribe una ruta manual';
+          return true;
+        }),
     }),
     defineField({
       name: 'icon',
@@ -110,16 +154,20 @@ export const navBarItem = defineType({
       initialValue: 'link',
       validation: (rule) => rule.required(),
     }),
+    {
+      ...pageReferenceField('page', 'Página'),
+      hidden: ({ parent }) => parent?.kind !== 'link',
+    },
     defineField({
       name: 'href',
-      title: 'Ruta',
+      title: 'Ruta manual',
       type: 'string',
-      description: 'A dónde lleva el enlace, por ejemplo /nosotros.',
+      description: 'Solo si el destino no está en Studio.',
       hidden: ({ parent }) => parent?.kind !== 'link',
       validation: (rule) =>
         rule.custom((value, context) => {
-          const parent = context.parent as { kind?: string } | undefined;
-          if (parent?.kind === 'link' && !value) return 'La ruta es obligatoria';
+          const parent = context.parent as { kind?: string; page?: { _ref?: string } } | undefined;
+          if (parent?.kind === 'link' && !value && !parent.page?._ref) return 'Elige una página o escribe una ruta manual';
           return true;
         }),
     }),
@@ -138,10 +186,15 @@ export const navBarItem = defineType({
       type: 'string',
       hidden: ({ parent }) => parent?.kind !== 'dropdown',
     }),
+    {
+      ...pageReferenceField('indexPage', 'Página del enlace extra'),
+      hidden: ({ parent }) => parent?.kind !== 'dropdown',
+    },
     defineField({
       name: 'indexHref',
-      title: 'Ruta del enlace extra',
+      title: 'Ruta manual del enlace extra',
       type: 'string',
+      description: 'Solo si el destino no está en Studio.',
       hidden: ({ parent }) => parent?.kind !== 'dropdown',
     }),
   ],
@@ -191,7 +244,13 @@ export const navigation = defineType({
       ],
     }),
     defineField({ name: 'ctaLabel', title: 'Texto del botón', type: 'string' }),
-    defineField({ name: 'ctaHref', title: 'Ruta del botón', type: 'string' }),
+    pageReferenceField('ctaPage', 'Página del botón'),
+    defineField({
+      name: 'ctaHref',
+      title: 'Ruta manual del botón',
+      type: 'string',
+      description: 'Solo si el destino no está en Studio.',
+    }),
   ],
   preview: {
     select: { locale: 'locale' },

@@ -8,6 +8,7 @@ import './ServicePlans.css';
 type ServicePlansProps = ServicePlansContent & {
   tone?: 'canvas' | 'surface';
   headingWidth?: string;
+  includesLabel?: string;
 };
 
 export function ServicePlans({
@@ -22,6 +23,7 @@ export function ServicePlans({
   plans,
   tone = 'canvas',
   headingWidth,
+  includesLabel = 'Incluye',
 }: ServicePlansProps) {
   const noteBody = noteLabel && noteHref ? note.split(noteLabel) : null;
 
@@ -53,7 +55,7 @@ export function ServicePlans({
               {plan.price}
               {plan.period ? <span>{plan.period}</span> : null}
             </p>
-            <p className="service-plans__includes">Incluye</p>
+            <p className="service-plans__includes">{includesLabel}</p>
             <ul>
               {plan.includes.map((item) => (
                 <li key={item}>

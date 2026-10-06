@@ -126,11 +126,48 @@ const serviceSectionsProjection = /* groq */ `
   }
 `;
 
-const navLinkProjection = /* groq */ `{ title, description, href, icon }`;
+const navPagePath = /* groq */ `{
+  "path": select(
+    _type == "homePage" && (locale == "en" || _id match "*-en") => "/en",
+    _type == "homePage" => "/",
+    _type == "aboutPage" && (locale == "en" || _id match "*-en") => "/en/nosotros",
+    _type == "aboutPage" => "/nosotros",
+    _type == "contactPage" => "/contacto",
+    _type == "calendarPage" && (locale == "en" || _id match "*-en") => "/en/calendario",
+    _type == "calendarPage" => "/calendario",
+    _type == "sitePage" && defined(slug.current) => "/" + slug.current,
+    _type == "service" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/servicios/" + slug.current,
+    _type == "service" && defined(slug.current) => "/servicios/" + slug.current,
+    _type == "industry" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/industrias/" + slug.current,
+    _type == "industry" && defined(slug.current) => "/industrias/" + slug.current,
+    _type == "caseStudy" && defined(slug.current) => "/portafolio/" + slug.current,
+    _type == "post" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/blogs/" + slug.current,
+    _type == "post" && defined(slug.current) => "/blog/" + slug.current,
+    _type == "landingPage" && defined(slug.current) => "/" + slug.current,
+    _type == "industriesIndex" && (locale == "en" || _id match "*-en") => "/en/industrias",
+    _type == "industriesIndex" => "/industrias",
+    _type == "servicesIndex" && (locale == "en" || _id match "*-en") => "/en/servicios",
+    _type == "servicesIndex" => "/servicios",
+    _type == "blogIndex" && (locale == "en" || _id match "*-en") => "/en/blogs",
+    _type == "blogIndex" => "/blog",
+    _type == "casesIndex" => "/portafolio",
+    _type == "legalPage" && _id match "legal-terms*" && (locale == "en" || _id match "*-en") => "/en/terminos",
+    _type == "legalPage" && _id match "legal-terms*" => "/terminos",
+    _type == "legalPage" && (locale == "en" || _id match "*-en") => "/en/aviso-de-privacidad",
+    _type == "legalPage" => "/aviso-de-privacidad"
+  )
+}`;
+
+const navLinkProjection = /* groq */ `{
+  title,
+  description,
+  icon,
+  "href": coalesce(page->${navPagePath}.path, href)
+}`;
 
 export const navigationQuery = defineQuery(`*[_type == "navigation" && _id == $id][0]{
   ctaLabel,
-  ctaHref,
+  "ctaHref": coalesce(ctaPage->${navPagePath}.path, ctaHref),
   allIndustriesLabel,
   industriesIndexHref,
   allServicesLabel,
@@ -139,9 +176,9 @@ export const navigationQuery = defineQuery(`*[_type == "navigation" && _id == $i
   bar[]{
     label,
     kind,
-    href,
+    "href": coalesce(page->${navPagePath}.path, href),
     indexLabel,
-    indexHref,
+    "indexHref": coalesce(indexPage->${navPagePath}.path, indexHref),
     exploreHeading,
     links[] ${navLinkProjection},
     columns[]{
