@@ -2,7 +2,7 @@
 import { CasePreview } from '../sections/CasePreview';
 import { CaseStories } from '../sections/CaseStories';
 import { FaqSection } from '../sections/FaqSection';
-import { FinalCta } from '../sections/FinalCta';
+import FinalCta from '../sections/FinalCtaBand.astro';
 import { IndustryGrid } from '../sections/IndustryGrid';
 import { IndustryHero } from '../sections/IndustryHero';
 import { IndustryServices } from '../sections/IndustryServices';
@@ -160,6 +160,7 @@ function previewsFrom(cases: CaseRecord[]) {
 			nombre: item.nombre,
 			tagline: item.tagline,
 			puntos: item.puntos,
+			icon: item.icon,
 		}))}
 		headingWidth={section.headingWidth}
 	/>
@@ -214,7 +215,6 @@ function previewsFrom(cases: CaseRecord[]) {
 
 {section._type === 'finalCta' ? (
 	<FinalCta
-		client:load
 		badge={section.badge}
 		title={section.title}
 		description={section.description}
@@ -246,7 +246,6 @@ function previewsFrom(cases: CaseRecord[]) {
 		client:visible
 		eyebrow={section.eyebrow}
 		title={section.title}
-		titleMuted={section.titleMuted}
 		description={section.description}
 		primaryLabel={section.primaryCta?.label}
 		primaryHref={section.primaryCta?.href}

@@ -8,6 +8,18 @@
   bottom: 1.75rem;
   z-index: 1500;
   width: 12px;
+  opacity: 1;
+  transition: opacity 0.55s ease;
+}
+
+.hw-scroll-indicator.is-resting {
+  opacity: 0;
+}
+
+.hw-scroll-indicator__surface {
+  pointer-events: auto;
+  position: absolute;
+  inset: 0 -1.35rem;
 }
 
 .hw-scroll-indicator__track {
@@ -189,8 +201,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hw-scroll-indicator,
   .hw-scroll-indicator__dot,
   .hw-scroll-indicator__label {
     transition: none;
+  }
+
+  .hw-scroll-indicator.is-resting {
+    opacity: 1;
   }
 }

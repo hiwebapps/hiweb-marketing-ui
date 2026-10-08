@@ -18,7 +18,7 @@ export type IndustryCard = {
   nombre: string;
   tagline: string;
   puntos?: string[];
-  icon?: IndustryIconName;
+  icon?: string;
 };
 
 type IndustryAccent = 'purple' | 'cyan' | 'orange' | 'green';
@@ -326,7 +326,7 @@ export function IndustryGrid({
                                         <span className="industry-slide__index">
                                           {String(puntoIndex + 1).padStart(2, '0')}
                                         </span>
-                                        <span>— {punto}</span>
+                                        <span>{punto}</span>
                                       </li>
                                     ))}
                                   </ol>

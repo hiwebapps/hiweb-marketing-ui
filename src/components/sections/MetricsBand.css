@@ -14,21 +14,13 @@
 }
 
 .metrics-band__title {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
   margin: 0.85rem 0 0;
+  color: var(--color-ink);
   font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
   font-size: clamp(2rem, 4.4vw, 3.35rem);
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.12;
-}
-
-.metrics-band__title-main,
-.metrics-band__title-muted {
-  color: var(--color-ink);
-  font-weight: inherit;
 }
 
 .metrics-band__lead {

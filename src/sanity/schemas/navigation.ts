@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { NavIconInput } from '../components/NavIconInput';
 
 const PAGE_TYPES = [
   { type: 'homePage' },
@@ -38,7 +39,7 @@ function pageReferenceField(name: string, title: string) {
   });
 }
 
-const navIcons = [
+export const navIcons = [
   { title: 'Actividad', value: 'activity' },
   { title: 'Objetivo', value: 'target' },
   { title: 'Chispa', value: 'spark' },
@@ -57,6 +58,14 @@ const navIcons = [
   { title: 'Avión', value: 'plane' },
   { title: 'Restaurante', value: 'utensils' },
   { title: 'App', value: 'app' },
+  { title: 'Auto', value: 'car' },
+  { title: 'Maletín', value: 'briefcase' },
+  { title: 'Carrito', value: 'cart' },
+  { title: 'Lupa', value: 'search' },
+  { title: 'Asesor', value: 'headset' },
+  { title: 'Pincel', value: 'brush' },
+  { title: 'Google Ads', value: 'googleads' },
+  { title: 'Meta', value: 'meta' },
 ];
 
 export const navLink = defineType({
@@ -92,12 +101,22 @@ export const navLink = defineType({
       name: 'icon',
       title: 'Icono',
       type: 'string',
+      description: 'El dibujo de la lista. Abajo se ve cómo queda.',
       options: { list: navIcons },
       initialValue: 'grid',
+      components: { input: NavIconInput },
+    }),
+    defineField({
+      name: 'iconImage',
+      title: 'Reemplazar con archivo',
+      description:
+        'Opcional. Elige un SVG o PNG de la galería. Si hay archivo, el sitio usa ese y deja de usar el icono de la lista. Quita el archivo para volver al icono de la lista.',
+      type: 'image',
+      options: { accept: 'image/svg+xml,image/png,image/webp' },
     }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'description' },
+    select: { title: 'title', subtitle: 'description', media: 'iconImage' },
   },
 });
 

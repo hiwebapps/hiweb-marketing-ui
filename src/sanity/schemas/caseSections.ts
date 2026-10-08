@@ -122,12 +122,6 @@ export const caseMetrics = defineType({
     headingTitleField({ initialValue: 'Antes y después' }),
     headingWidthField(),
     defineField({
-      name: 'titleMuted',
-      title: 'Segunda línea del título',
-      type: 'string',
-      initialValue: 'en cifras verificables',
-    }),
-    defineField({
       name: 'description',
       title: 'Descripción',
       type: 'text',

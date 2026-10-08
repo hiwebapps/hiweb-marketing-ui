@@ -20,6 +20,13 @@ export default defineCliConfig({
     appId: 'hfmbspi4louqwqyclcamau1z',
     autoUpdates: true,
   },
+  vite: (config) => ({
+    ...config,
+    define: {
+      ...config.define,
+      __HIWEB_STUDIO_BUILT_AT__: JSON.stringify(new Date().toISOString()),
+    },
+  }),
   typegen: {
     path: './src/**/*.{ts,tsx,js,jsx,astro}',
     schema: './schema.json',

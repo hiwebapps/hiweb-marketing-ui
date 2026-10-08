@@ -66,7 +66,7 @@ export type IndustryRecord = {
     retos: string[];
     porQue: TitledBlock[];
     faqs: FaqItem[];
-    serviceBlurbs: { serviceSlug: string; description: string }[];
+    serviceBlurbs: { serviceSlug: string; nombre?: string; description?: string; icon?: string }[];
     heroCtaLabel?: string;
     whyEyebrow?: string;
     whyTitle?: string;
@@ -102,7 +102,7 @@ export type IndustrySection = (
       eyebrow?: string;
       title?: string;
       description?: string;
-      pillars?: TitledBlock[];
+      pillars?: (TitledBlock & { icon?: string })[];
       retos?: string[];
     }
   | {
@@ -114,6 +114,7 @@ export type IndustrySection = (
       catalogHref?: string;
       ctaLabel?: string;
       tagLabel?: string;
+      items?: { slug: string; nombre?: string; description?: string; icon?: string }[];
     }
   | {
       _type: 'industryCases';
@@ -235,6 +236,8 @@ export type ServiceRecord = {
     nombre: string;
     orden: number;
     tagline: string;
+    cardImage?: string;
+    cardIcon?: string;
     heroTitle: string;
     heroDescription?: string;
     heroImage?: string;
@@ -292,7 +295,6 @@ export type CasePageSection = (
       _type: 'caseMetrics';
       eyebrow?: string;
       title?: string;
-      titleMuted?: string;
       description?: string;
       metricas: Metric[];
       primaryLabel?: string;
@@ -395,7 +397,6 @@ export type PersonRecord = {
 export type SectionIntro = {
   eyebrow?: string;
   title?: string;
-  titleMuted?: string;
   description?: string;
   headingWidth?: HeadingWidth;
 };
@@ -427,6 +428,8 @@ export type HomeServiceCard = {
   id: string;
   nombre: string;
   tagline: string;
+  image?: string;
+  icon?: string;
 };
 
 export type HomeIndustryCard = {
@@ -434,6 +437,7 @@ export type HomeIndustryCard = {
   nombre: string;
   tagline: string;
   puntos: string[];
+  icon?: string;
 };
 
 export type HomeCopy = {
@@ -463,6 +467,7 @@ export type HomeCopy = {
     title?: string;
     description?: string;
     memberLocale?: 'es' | 'en';
+    leaders?: PersonRecord[];
     ctaLabel?: string;
     ctaHref?: string;
     headingWidth?: HeadingWidth;
@@ -503,7 +508,7 @@ export type AboutCopy = {
   teamDescription?: string;
   teamCtaLabel?: string;
   teamCtaHref?: string;
-  teamFilters?: { id: string; label: string }[];
+  teamFilters?: { id?: string; label: string; members?: PersonRecord[] }[];
   mapEyebrow?: string;
   mapTitle?: string;
   mapDescription?: string;
@@ -558,7 +563,7 @@ export type AboutSection = (
       ctaHref?: string;
       memberLocale?: 'es' | 'en';
       filterLabel?: string;
-      filters?: { id: string; label: string }[];
+      filters?: { id?: string; label: string; members?: PersonRecord[] }[];
     }
   | {
       _type: 'aboutMap';
@@ -625,7 +630,7 @@ export type LandingSection = (
       title?: string;
       description?: string;
       tone?: 'canvas' | 'surface';
-      industries: { id: string; nombre: string; tagline: string; puntos?: string[] }[];
+      industries: { id: string; nombre: string; tagline: string; puntos?: string[]; icon?: string }[];
     }
   | {
       _type: 'processPhases';
@@ -683,7 +688,6 @@ export type LandingSection = (
       _type: 'metricsBand';
       eyebrow?: string;
       title?: string;
-      titleMuted?: string;
       description?: string;
       metrics: Metric[];
       primaryCta?: LandingCta;

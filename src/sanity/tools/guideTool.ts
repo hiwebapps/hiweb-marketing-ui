@@ -53,7 +53,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'note',
-        text: 'El sitio público (hiweb.com.mx) se arma al desplegar, con lo que esté publicado en ese momento. Publicar en el Studio no cambia esa URL al instante. Presentation sí muestra el borrador al momento, porque lee staging (staging.hiweb.com.mx).',
+        text: 'El borrador se ve en Staging al guardarse. hiweb.com.mx usa la versión publicada. Después de Publish, el sitio espera 10 minutos por si publicas algo más y junta esos cambios. La barra de arriba solo aparece cuando hay esa espera, o cuando el sitio ya se está actualizando. Luego tarda unos 5 minutos en mostrar los cambios. Si aparece el aviso de una versión nueva de Studio, recarga antes de seguir editando.',
       },
       {
         kind: 'p',
@@ -138,7 +138,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'El menú de arriba, en Español y en English. Cada idioma es su propio documento. Ahí se cambia el texto de los enlaces, el orden y qué aparece. Arrastrar una fila cambia el orden en el sitio.',
+        text: 'El menú de arriba, en Español y en English. Cada idioma es su propio documento. Ahí se cambia el texto de los enlaces, el orden y qué aparece. Arrastrar una fila cambia el orden en el sitio. En cada enlace, Icono muestra el dibujo actual. Reemplazar con archivo usa un SVG o PNG de la galería; si quitas ese archivo, vuelve el icono de la lista.',
       },
       {
         kind: 'h',
@@ -147,8 +147,8 @@ const SECTIONS: Section[] = [
       {
         kind: 'ul',
         items: [
-          'Marca y Título son los textos grandes.',
-          'Texto del campo de email es el placeholder del formulario.',
+          'Icono es el isotipo arriba del título. Si lo dejas vacío, se usa el de Hiweb. Puedes subir un SVG, PNG o WebP.',
+          'Título es el texto grande. El botón Agenda tu auditoría abre contacto.',
           'Enlaces del menú, Enlaces de contacto y Enlaces legales son listas. El orden de la lista es el orden en el sitio. Quitar una fila la quita del footer.',
           'Ciudades es la línea de sedes, por ejemplo Mérida · Cancún · Monterrey.',
           'Nombre en el copyright y Texto de volver arriba cierran el pie.',
@@ -168,11 +168,11 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Una carpeta por página. Dentro están Español y English, cada uno con su documento. El menú “+” crea la página en español y, al abrirla, también el borrador en inglés. Si English no está, ábrelo en la carpeta: se genera en ese momento. Las secciones se reordenan y se pueden ocultar, igual que en Home. La URL en español es /industrias/slug o /servicios/slug. En inglés es /en/industrias/slug o /en/servicios/slug.',
+        text: 'Una carpeta por página. Dentro están Español y English, cada uno con su documento. El menú “+” crea la página en español y, al abrirla, también el borrador en inglés. Si English no está, ábrelo en la carpeta: se genera en ese momento. Las secciones se reordenan y se pueden ocultar, igual que en Home. En un servicio, Imagen de la card e Icono de la card arman el bento. En Home, la sección Servicios puede cambiar el texto, la foto y el icono de cada card, y el orden de la lista. La sección Industrias de Home, de cada servicio y de una landing es la card completa: nombre, párrafo, bullets e icono. El enlace de la card es la industria elegida. En una industria, la imagen del Hero y el icono de cada pilar se eligen en la galería. La sección Servicios es la lista de cards: el orden, el nombre, el texto y el icono, también desde la galería. En un servicio, la imagen del Hero, la de Propuesta y la de cada Frente se eligen en la galería. El icono de Frentes, Por qué, Industrias y Proceso también: SVG o PNG, o se sube ahí mismo. La URL en español es /industrias/slug o /servicios/slug. En inglés es /en/industrias/slug o /en/servicios/slug.',
       },
       {
         kind: 'p',
-        text: 'Índice, dentro de Industrias, Servicios y Blog, es el texto de la página de listado en Español y en English: título, descripción y cierre. Casos tiene un solo índice, en español.',
+        text: 'Industrias y Servicios no tienen página de listado. Cada carpeta abre la ficha. Blog sí tiene Índice, el texto de la página de listado en Español y en English. Casos tiene un solo índice, en español.',
       },
       {
         kind: 'h',
@@ -196,7 +196,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'FAQs reutilizables, ordenadas por el campo Orden. Sirven para armar bloques de preguntas en las páginas. Testimonios es la biblioteca de citas: cliente, cita, nombre, cargo y foto. Cada testimonio abre Español e English. Home, cada caso y la sección Testimonios de cada servicio eligen de esa lista. En un servicio y en la home se ve la foto, la cita, la persona y hasta dos cifras si las escribes en el testimonio.',
+        text: 'Componentes Globales guarda las fotos de fondo del cierre. El orden de la lista es el orden del marquee. Si queda vacía, se usan las fotos actuales. El texto de esa sección se cambia en cada página. FAQs reutilizables, ordenadas por el campo Orden, sirven para armar bloques de preguntas. Testimonios es la biblioteca de citas: cliente, cita, nombre, cargo y foto. Cada testimonio abre Español e English. Home, cada caso y la sección Testimonios de cada servicio eligen de esa lista. En un servicio y en la home se ve la foto, la cita, la persona y hasta dos cifras si las escribes en el testimonio.',
       },
       {
         kind: 'h',
@@ -212,7 +212,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Las personas que salen en Home y en Nosotros. Cada persona abre Español e English. En la sección Equipo de esas páginas, Idioma del equipo elige cuál versión se muestra. El campo Orden define la posición.',
+        text: 'Las fichas de las personas. Cada persona abre Español e English. En la homepage, Líderes del slider elige quién aparece y en qué orden, una card a la vez. En Nosotros, cada filtro tiene su nombre y su propia lista de integrantes. Idioma del equipo elige si el selector muestra las fichas en español o en inglés.',
       },
     ],
   },
@@ -421,7 +421,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Al abrir una imagen se ve dónde está usada y se puede escribir el alt de cada uso. Guardar en un documento que ya está publicado escribe directo. Si el documento tiene borrador, el alt se guarda en el borrador y hay que publicar ese documento para verlo en el sitio.',
+        text: 'Al abrir una imagen se ve dónde está usada y se puede escribir el alt de cada uso. Guardar en un documento que ya está publicado escribe directo. Si el documento tiene borrador, el alt se guarda en el borrador y hay que publicar ese documento para verlo en el sitio. Los iconos de la navbar también están aquí: el archivo empieza con icono-, por ejemplo icono-carrito.svg. Se eligen en cualquier campo de imagen. Aparecen en Sin usar hasta que alguien los asigna.',
       },
     ],
   },

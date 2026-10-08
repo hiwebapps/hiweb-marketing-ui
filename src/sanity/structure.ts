@@ -3,6 +3,7 @@ import { CogIcon } from '@sanity/icons/Cog';
 import { ComposeIcon } from '@sanity/icons/Compose';
 import { DocumentIcon } from '@sanity/icons/Document';
 import { FolderIcon } from '@sanity/icons/Folder';
+import { ImagesIcon } from '@sanity/icons/Images';
 import { HelpCircleIcon } from '@sanity/icons/HelpCircle';
 import { HomeIcon } from '@sanity/icons/Home';
 import { CommentIcon } from '@sanity/icons/Comment';
@@ -15,6 +16,7 @@ const HIDDEN_FROM_FALLBACK = [
   'siteSettings',
   'navigation',
   'footer',
+  'ctaBackdrop',
   'redirect',
   'navLink',
   'navGroup',
@@ -46,6 +48,7 @@ const HIDDEN_FROM_FALLBACK = [
   'sitePage',
   'faqItem',
   'titledBlock',
+  'industryPillar',
   'processStep',
   'metric',
   'cta',
@@ -221,38 +224,12 @@ function groupPairs(rows: LocaleDoc[] | null) {
   return [...byKey.values()].sort((a, b) => a.orden - b.orden || a.nombre.localeCompare(b.nombre, 'es'));
 }
 
-function catalogIndex(
-  S: Parameters<StructureResolver>[0],
-  schemaType: 'industriesIndex' | 'servicesIndex',
-) {
-  const esId = schemaType === 'industriesIndex' ? 'industriesIndex' : 'servicesIndex';
-  const paneId = schemaType === 'industriesIndex' ? 'industries-index' : 'services-index';
-  return S.listItem()
-    .title('Índice')
-    .id(paneId)
-    .child(
-      S.list()
-        .title('Índice')
-        .items([
-          S.listItem()
-            .title('Español')
-            .id(`${paneId}-es`)
-            .child(S.document().schemaType(schemaType).documentId(esId).title('Español')),
-          S.listItem()
-            .title('English')
-            .id(`${paneId}-en`)
-            .child(S.document().schemaType(schemaType).documentId(`${esId}-en`).title('English')),
-        ]),
-    );
-}
-
 function catalogList(
   S: Parameters<StructureResolver>[0],
   context: Parameters<StructureResolver>[1],
   schemaType: 'service' | 'industry',
 ) {
   const title = schemaType === 'service' ? 'Servicios' : 'Industrias';
-  const indexType = schemaType === 'service' ? 'servicesIndex' : 'industriesIndex';
   return context.documentStore
     .listenQuery<LocaleDoc[]>(PAIR_QUERY, { type: schemaType }, { apiVersion: '2024-01-01', perspective: 'raw' })
     .pipe(
@@ -261,7 +238,6 @@ function catalogList(
           .title(title)
           .menuItems(createMenu(S, schemaType))
           .items([
-            catalogIndex(S, indexType),
             ...groupPairs(rows).map((page) =>
               S.listItem()
                 .title(page.nombre)
@@ -581,6 +557,26 @@ export const structure: StructureResolver = (S, context) => {
           S.list()
             .title('Biblioteca')
             .items([
+              S.listItem()
+                .title('Componentes Globales')
+                .id('componentes-globales')
+                .icon(FolderIcon)
+                .child(
+                  S.list()
+                    .title('Componentes Globales')
+                    .items([
+                      S.listItem()
+                        .title('Cierre')
+                        .id('cta-backdrop')
+                        .icon(ImagesIcon)
+                        .child(
+                          S.document()
+                            .schemaType('ctaBackdrop')
+                            .documentId('ctaBackdrop')
+                            .title('Cierre'),
+                        ),
+                    ]),
+                ),
               S.listItem()
                 .title('FAQs')
                 .id('faqs')

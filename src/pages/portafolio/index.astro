@@ -6,7 +6,7 @@ import { getCases, getCatalogIndex, getIndustries } from '../../lib/content';
 import { BlogHero } from '../../components/sections/BlogHero';
 import { CasesIndex } from '../../components/sections/CasesIndex';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
-import { FinalCta } from '../../components/sections/FinalCta';
+import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import { breadcrumbSchema } from '../../lib/schema';
 import { postCoverUrl } from '../../lib/blog';
 import { WEBFLOW_CASES_INDEX } from '../../data/webflow-cases';
@@ -63,7 +63,6 @@ const cards = cases.map((item) => ({
 			/>
 		</SectionBand>
 		<FinalCta
-			client:load
 			title={page?.closingTitle ?? '¿Un diagnóstico similar al de tu industria?'}
 			headingWidth={page?.closingHeadingWidth}
 		/>

@@ -10,6 +10,16 @@ const imageProjection = /* groq */ `{
   }
 }`;
 
+const personCardProjection = /* groq */ `{
+  name,
+  role,
+  bio,
+  photo ${imageProjection},
+  category,
+  accent,
+  socials{ tiktok, instagram, linkedin }
+}`;
+
 const storyStatProjection = /* groq */ `{ value, label }`;
 
 const testimonialFields = /* groq */ `{
@@ -53,14 +63,22 @@ const serviceSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      items[]{ title, summary, detailTitle, detail, icon, image, imageAlt }
+      items[]{
+        title,
+        summary,
+        detailTitle,
+        detail,
+        "icon": coalesce(iconImage.asset->url, icon),
+        "image": select(defined(image.asset) => image.asset->url, image),
+        "imageAlt": coalesce(image.alt, imageAlt)
+      }
     },
     _type == "servicePitch" => {
       badge,
       title,
       description,
-      image,
-      imageAlt,
+      "image": select(defined(picture.asset) => picture.asset->url, image),
+      "imageAlt": coalesce(picture.alt, imageAlt),
       ctaLabel,
       ctaHref
     },
@@ -70,7 +88,7 @@ const serviceSectionsProjection = /* groq */ `
       ctaLabel,
       ctaHref,
       stats[]{ valor, prefix, suffix, label },
-      cards[]{ title, description, icon, accent }
+      cards[]{ title, description, "icon": coalesce(iconImage.asset->url, icon), accent }
     },
     _type == "servicePlans" => {
       eyebrow,
@@ -89,7 +107,7 @@ const serviceSectionsProjection = /* groq */ `
       items[]{
         title,
         tagline,
-        icon,
+        "icon": coalesce(iconImage.asset->url, icon),
         "slug": industry->slug.current,
         "nombre": coalesce(title, industry->nombre),
         "taglineResolved": coalesce(tagline, industry->tagline),
@@ -100,7 +118,7 @@ const serviceSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      steps[]{ title, description, icon, accent }
+      steps[]{ title, description, "icon": coalesce(iconImage.asset->url, icon), accent }
     },
     _type == "serviceCases" => {
       eyebrow,
@@ -162,6 +180,7 @@ const navLinkProjection = /* groq */ `{
   title,
   description,
   icon,
+  "iconImage": iconImage.asset->url,
   "href": coalesce(page->${navPagePath}.path, href)
 }`;
 
@@ -201,6 +220,7 @@ export const navigationQuery = defineQuery(`*[_type == "navigation" && _id == $i
 
 export const footerQuery = defineQuery(`*[_type == "footer" && _id == $id][0]{
   brand,
+  "brandMark": brandMark.asset->url,
   title,
   emailPlaceholder,
   menuHeading,
@@ -211,6 +231,10 @@ export const footerQuery = defineQuery(`*[_type == "footer" && _id == $id][0]{
   legalName,
   legalLinks[]{ label, href },
   backToTop
+}`);
+
+export const ctaBackdropQuery = defineQuery(`*[_type == "ctaBackdrop" && _id == "ctaBackdrop"][0]{
+  "images": images[defined(asset)].asset->url
 }`);
 
 export const siteIdentityQuery = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
@@ -292,7 +316,31 @@ export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings" && _id =
   ${seoProjection}
 }`);
 
-const introProjection = /* groq */ `{ eyebrow, title, titleMuted, description, headingWidth }`;
+const introProjection = /* groq */ `{ eyebrow, title, description, headingWidth }`;
+
+const homeServiceItemProjection = /* groq */ `{
+  "id": service->slug.current,
+  "nombre": coalesce(nombre, service->nombre),
+  "tagline": coalesce(tagline, service->tagline),
+  "image": coalesce(image.asset->url, service->cardImage.asset->url),
+  "icon": coalesce(iconImage.asset->url, icon, service->cardIconImage.asset->url, service->cardIcon)
+}`;
+
+const industryCardProjection = /* groq */ `{
+  _type == "reference" => @->{
+    "id": slug.current,
+    nombre,
+    tagline,
+    "puntos": coalesce(sections[_type == "industryWhy"][0].pillars[].title, porQue[].title)
+  },
+  _type != "reference" => {
+    "id": industry->slug.current,
+    "nombre": coalesce(title, industry->nombre),
+    "tagline": coalesce(tagline, industry->tagline),
+    "icon": coalesce(iconImage.asset->url, icon),
+    "puntos": coalesce(puntos, industry->sections[_type == "industryWhy"][0].pillars[].title, industry->porQue[].title)
+  }
+}`;
 
 export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "homePage-en"][0]{
   sections[]{
@@ -318,20 +366,11 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
     },
     _type == "homeServices" => {
       intro ${introProjection},
-      items[]{
-        "id": service->slug.current,
-        "nombre": coalesce(nombre, service->nombre),
-        "tagline": coalesce(tagline, service->tagline)
-      }
+      items[] ${homeServiceItemProjection}
     },
     _type == "homeIndustries" => {
       intro ${introProjection},
-      items[]->{
-        "id": slug.current,
-        nombre,
-        tagline,
-        "puntos": porQue[].title
-      }
+      items[] ${industryCardProjection}
     },
     _type == "homeStories" => {
       intro ${introProjection},
@@ -358,6 +397,7 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
       title,
       description,
       memberLocale,
+      leaders[]->${personCardProjection},
       ctaLabel,
       ctaHref
     },
@@ -399,20 +439,11 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
     },
     _type == "homeServices" => {
       intro ${introProjection},
-      items[]{
-        "id": service->slug.current,
-        "nombre": coalesce(nombre, service->nombre),
-        "tagline": coalesce(tagline, service->tagline)
-      }
+      items[] ${homeServiceItemProjection}
     },
     _type == "homeIndustries" => {
       intro ${introProjection},
-      items[]->{
-        "id": slug.current,
-        nombre,
-        tagline,
-        "puntos": porQue[].title
-      }
+      items[] ${industryCardProjection}
     },
     _type == "homeStories" => {
       intro ${introProjection},
@@ -439,6 +470,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
       title,
       description,
       memberLocale,
+      leaders[]->${personCardProjection},
       ctaLabel,
       ctaHref
     },
@@ -500,7 +532,11 @@ const aboutSectionsProjection = /* groq */ `
       ctaHref,
       memberLocale,
       filterLabel,
-      filters[]{ id, label }
+      filters[]{
+        id,
+        label,
+        members[]->${personCardProjection}
+      }
     },
     _type == "aboutMap" => {
       eyebrow,
@@ -546,7 +582,7 @@ export const aboutPageQuery = defineQuery(`*[_type == "aboutPage" && _id == $id]
   "teamDescription": coalesce(sections[_type == "aboutTeam"][0].description, teamDescription),
   "teamCtaLabel": coalesce(sections[_type == "aboutTeam"][0].ctaLabel, teamCtaLabel),
   "teamCtaHref": coalesce(sections[_type == "aboutTeam"][0].ctaHref, teamCtaHref),
-  "teamFilters": coalesce(sections[_type == "aboutTeam"][0].filters[]{ id, label }, teamFilters[]{ id, label }),
+  "teamFilters": coalesce(sections[_type == "aboutTeam"][0].filters[]{ id, label, members[]->${personCardProjection} }, teamFilters[]{ id, label }),
   "mapEyebrow": coalesce(sections[_type == "aboutMap"][0].eyebrow, mapEyebrow),
   "mapTitle": coalesce(sections[_type == "aboutMap"][0].title, mapTitle),
   "mapDescription": coalesce(sections[_type == "aboutMap"][0].description, mapDescription),
@@ -576,7 +612,7 @@ const industrySectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      pillars[]{ title, description },
+      pillars[]{ title, description, "icon": icon.asset->url },
       retos
     },
     _type == "industryServices" => {
@@ -586,7 +622,13 @@ const industrySectionsProjection = /* groq */ `
       catalogLabel,
       catalogHref,
       ctaLabel,
-      tagLabel
+      tagLabel,
+      blurbs[]{
+        "slug": service->slug.current,
+        "nombre": coalesce(nombre, service->nombre),
+        description,
+        "icon": coalesce(iconImage.asset->url, icon, service->cardIconImage.asset->url, service->cardIcon)
+      }
     },
     _type == "industryCases" => {
       eyebrow,
@@ -635,11 +677,15 @@ const industryBodyProjection = /* groq */ `
   "serviceBlurbs": coalesce(
     sections[_type == "industryServices"][0].blurbs[]{
       "serviceSlug": service->slug.current,
-      description
+      "nombre": coalesce(nombre, service->nombre),
+      description,
+      "icon": coalesce(iconImage.asset->url, icon, service->cardIconImage.asset->url, service->cardIcon)
     },
     serviceBlurbs[]{
       "serviceSlug": service->slug.current,
-      description
+      "nombre": coalesce(nombre, service->nombre),
+      description,
+      "icon": coalesce(iconImage.asset->url, icon, service->cardIconImage.asset->url, service->cardIcon)
     }
   ),
   ${industrySectionsProjection}
@@ -699,6 +745,8 @@ export const servicesQuery = defineQuery(`*[
   nombre,
   orden,
   tagline,
+  "cardImage": cardImage.asset->url,
+  "cardIcon": coalesce(cardIconImage.asset->url, cardIcon),
   heroTitle,
   heroDescription,
   heroImage ${imageProjection},
@@ -782,7 +830,6 @@ sections[]{
   _type == "caseMetrics" => {
     eyebrow,
     title,
-    titleMuted,
     description,
     items[]{ valor, label, prefix, suffix, decimals, antes, despues },
     primaryCta{ label, href },
@@ -964,6 +1011,9 @@ export const landingBySlugQuery = defineQuery(`*[
       nombre,
       tagline,
       porQue[]{ title }
+    },
+    _type == "industryGrid" => {
+      "cards": items[] ${industryCardProjection}
     },
     "cases": cases[]->${landingCaseProjection},
     "people": people[]->${landingPersonProjection},

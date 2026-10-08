@@ -5,7 +5,7 @@ import { PillarGrid, type Pillar } from './PillarGrid';
 import { PresenceMap } from './PresenceMap';
 import { ProcessPhases, type ProcessPhase } from './ProcessPhases';
 import { TeamGrid, type TeamMember } from './TeamGrid';
-import { FinalCta } from './FinalCta';
+import FinalCta from './FinalCtaBand.astro';
 import { localePath } from '../../lib/locale';
 import type { AboutSection } from '../../lib/content/types';
 import type { BadgeVariant } from '../ui';
@@ -57,8 +57,17 @@ const pillars: Pillar[] =
 const teamFilters =
 	section._type === 'aboutTeam'
 		? (section.filters ?? []).flatMap((item) =>
-				item.id === 'all' || item.id === 'web' || item.id === 'redes' || item.id === 'diseno'
-					? [{ id: item.id, label: item.label }]
+				item.label
+					? [
+							{
+								id: item.id,
+								label: item.label,
+								members: item.members?.map((person) => ({
+									...person,
+									accent: person.accent as BadgeVariant | undefined,
+								})),
+							},
+						]
 					: [],
 			)
 		: [];
@@ -158,7 +167,6 @@ const phases =
 {
 	section._type === 'aboutCta' && (
 		<FinalCta
-			client:load
 			badge={section.badge}
 			title={section.title}
 			description={section.description}

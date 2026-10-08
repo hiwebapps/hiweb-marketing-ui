@@ -122,9 +122,12 @@
   transform: scale(1.08);
 }
 
-.industry-service-card__orb svg {
+.industry-service-card__orb svg,
+.industry-service-card__orb img,
+.industry-service-card__orb .industry-service-card__glyph {
   width: 1.15rem;
   height: 1.15rem;
+  object-fit: contain;
 }
 
 .industry-service-card__mark {
@@ -138,9 +141,26 @@
   transform: rotate(-8deg);
 }
 
-.industry-service-card__mark svg {
+.industry-service-card__mark svg,
+.industry-service-card__mark img,
+.industry-service-card__mark .industry-service-card__glyph {
   width: 100%;
   height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.industry-service-card__glyph {
+  display: block;
+  background-color: currentColor;
+  -webkit-mask-image: var(--service-glyph);
+  mask-image: var(--service-glyph);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 
 @media (max-width: 900px) {

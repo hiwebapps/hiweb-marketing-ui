@@ -23,7 +23,6 @@ type MetricsBandProps = {
   metrics: MetricItem[];
   eyebrow?: string;
   title?: string;
-  titleMuted?: string;
   description?: string;
   primaryLabel?: string;
   primaryHref?: string;
@@ -47,7 +46,6 @@ export function MetricsBand({
   metrics,
   eyebrow = 'Cifras',
   title = 'Antes y después',
-  titleMuted = 'en cifras verificables',
   description = 'Métricas de negocio de cuentas consolidadas. Cada cifra tiene baseline.',
   primaryLabel = 'Agenda tu auditoría',
   primaryHref = '/contacto',
@@ -131,12 +129,7 @@ export function MetricsBand({
           <Badge variant="cyan">{eyebrow}</Badge>
 
           <h2 className="metrics-band__title">
-            <span className="metrics-band__title-main">
-              <HeadingText text={title} />
-            </span>
-            {titleMuted ? (
-              <span className="metrics-band__title-muted">{titleMuted}</span>
-            ) : null}
+            <HeadingText text={title} />
           </h2>
 
           {description ? <p className="metrics-band__lead">{description}</p> : null}

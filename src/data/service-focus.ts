@@ -1,8 +1,6 @@
-import type { PillarIconName } from '../components/icons/PillarIcons';
-
 export type ServiceFocusItem = {
   id: string;
-  icon: PillarIconName;
+  icon: string;
   title: string;
   summary: string;
   detailTitle: string;

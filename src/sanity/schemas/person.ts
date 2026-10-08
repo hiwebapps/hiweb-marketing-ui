@@ -1,5 +1,37 @@
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType, type ReferenceFilterResolver } from 'sanity';
 import { imageWithAlt } from './shared';
+
+type SectionWithLocale = { _key?: string; memberLocale?: string };
+
+/** Limits a person picker to the language chosen on the Equipo section. */
+export const personLocaleFilter: ReferenceFilterResolver = ({ document, parentPath }) => {
+  const sections = (document.sections as SectionWithLocale[] | undefined) ?? [];
+  const section = sections.find((item) =>
+    parentPath.some(
+      (part) => part && typeof part === 'object' && '_key' in part && part._key === item._key,
+    ),
+  );
+  const locale = section?.memberLocale === 'en' ? 'en' : 'es';
+  return {
+    filter: `!(_id in path("drafts.**")) && (
+      coalesce(locale, "es") == $locale ||
+      (
+        $locale == "en" &&
+        coalesce(locale, "es") == "es" &&
+        count(*[_type == "person" && !(_id in path("drafts.**")) && coalesce(locale, "es") == "en"]) == 0
+      )
+    )`,
+    params: { locale },
+  };
+}
+
+export function personReferenceMember() {
+  return defineArrayMember({
+    type: 'reference',
+    to: [{ type: 'person' }],
+    options: { disableNew: true, filter: personLocaleFilter },
+  });
+}
 
 export const person = defineType({
   name: 'person',

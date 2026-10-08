@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { serviceContentKey } from '../../lib/en-slugs';
+import { isRetiredCatalogPath } from '../../lib/locale';
 import { ServiceIcon, SERVICE_ICON_NAMES, type ServiceIconName } from '../icons/ServiceIcons';
 import { Badge, Button } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
@@ -10,6 +11,7 @@ export type IndustryServiceCard = {
   slug: string;
   nombre: string;
   description: string;
+  icon?: string;
 };
 
 type ServiceAccent = 'purple' | 'cyan' | 'orange' | 'lime';
@@ -37,6 +39,20 @@ const ACCENT_HEX: Record<ServiceAccent, string> = {
 };
 
 const ACCENTS: ServiceAccent[] = ['cyan', 'orange', 'purple', 'lime'];
+
+function isUploadedIcon(icon: string) {
+  return icon.startsWith('http') || icon.startsWith('/');
+}
+
+function ServiceGlyph({ name }: { name: string }) {
+  if (!isUploadedIcon(name)) return <ServiceIcon name={name} />;
+  return (
+    <span
+      className="industry-service-card__glyph"
+      style={{ '--service-glyph': `url("${name.replaceAll('"', '%22')}")` } as CSSProperties}
+    />
+  );
+}
 
 const SERVICE_ICONS: Record<string, ServiceIconName> = {
   'redes-sociales': 'video',
@@ -77,17 +93,22 @@ export function IndustryServices({
           </div>
           <div className="industry-services__header">
             <SectionHeader title={title} description={description} className="mt-4" headingWidth={headingWidth} />
-            <div className="industry-services__header-cta">
-              <Button href={catalogHref} variant="primary" size="sm" className="no-underline">
-                {catalogLabel}
-              </Button>
-            </div>
+            {isRetiredCatalogPath(catalogHref) ? null : (
+              <div className="industry-services__header-cta">
+                <Button href={catalogHref} variant="primary" size="sm" className="no-underline">
+                  {catalogLabel}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 
         <ul className="industry-services__grid">
           {services.map((item, index) => {
-            const icon = SERVICE_ICONS[serviceContentKey(item.slug)] ?? SERVICE_ICON_NAMES[index % SERVICE_ICON_NAMES.length];
+            const icon =
+              item.icon ||
+              SERVICE_ICONS[serviceContentKey(item.slug)] ||
+              SERVICE_ICON_NAMES[index % SERVICE_ICON_NAMES.length];
             const accent = ACCENTS[index % ACCENTS.length];
 
             return (
@@ -113,12 +134,12 @@ export function IndustryServices({
                       {ctaLabel}
                     </Button>
                     <span className="industry-service-card__orb" aria-hidden="true">
-                      <ServiceIcon name={icon} />
+                      <ServiceGlyph name={icon} />
                     </span>
                   </div>
 
                   <span className="industry-service-card__mark" aria-hidden="true">
-                    <ServiceIcon name={icon} />
+                    <ServiceGlyph name={icon} />
                   </span>
                 </article>
               </li>

@@ -6,7 +6,7 @@ import { getCatalogIndex, getPosts, getServices } from '../../lib/content';
 import { BlogHero } from '../../components/sections/BlogHero';
 import { BlogIndex } from '../../components/sections/BlogIndex';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
-import { FinalCta } from '../../components/sections/FinalCta';
+import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import { breadcrumbSchema } from '../../lib/schema';
 import { BLOG_READING_MINUTES, postCoverUrl } from '../../lib/blog';
 import '../../components/sections/BlogHero.css';
@@ -93,7 +93,6 @@ const serviceFilters = services
 			/>
 		</SectionBand>
 		<FinalCta
-			client:load
 			title={page?.closingTitle ?? '¿Lo aplicamos a tu industria?'}
 			headingWidth={page?.closingHeadingWidth}
 		/>

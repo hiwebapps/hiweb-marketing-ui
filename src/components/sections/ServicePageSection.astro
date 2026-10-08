@@ -9,7 +9,7 @@ import { IndustryGrid } from './IndustryGrid';
 import { ProcessPhases } from './ProcessPhases';
 import { CaseStories } from './CaseStories';
 import { FaqSection } from './FaqSection';
-import { FinalCta } from './FinalCta';
+import FinalCta from './FinalCtaBand.astro';
 import { iconForServiceOverviewCard, type PillarIconName } from '../icons/PillarIcons';
 import { serviceContentKey } from '../../lib/en-slugs';
 import { serviceFocusItems } from '../../data/service-focus';
@@ -247,7 +247,6 @@ const nombre = entry.data.nombre;
 {
 	section._type === 'serviceCta' && (
 		<FinalCta
-			client:load
 			badge={section.badge}
 			title={section.title || `Agenda un diagnóstico de ${nombre}`}
 			description={section.description}

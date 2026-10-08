@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MOTION } from '../../lib/motion';
 import { Button } from '../ui';
-import { ServiceIcon, type ServiceIconName } from '../icons/ServiceIcons';
+import { ServiceIcon } from '../icons/ServiceIcons';
 import { SectionBand } from './primitives/SectionBand';
 import { HeadingText, headingProps } from './primitives/heading';
 import './ServiceWhy.css';
@@ -12,7 +12,7 @@ import './ServiceWhy.css';
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 type WhyCard = {
-  icon: ServiceIconName;
+  icon: string;
   accent: string;
   title: string;
   description: string;

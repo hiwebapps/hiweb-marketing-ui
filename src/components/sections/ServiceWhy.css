@@ -132,9 +132,11 @@
   transform: rotate(-8deg);
 }
 
-.service-why__mark svg {
+.service-why__mark svg,
+.service-why__mark img {
   width: 100%;
   height: auto;
+  object-fit: contain;
 }
 
 @keyframes service-why-up {

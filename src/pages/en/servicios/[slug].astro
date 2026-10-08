@@ -13,7 +13,7 @@ import { IndustryGrid } from '../../../components/sections/IndustryGrid';
 import { ProcessPhases } from '../../../components/sections/ProcessPhases';
 import { CaseStories } from '../../../components/sections/CaseStories';
 import { FaqSection } from '../../../components/sections/FaqSection';
-import { FinalCta } from '../../../components/sections/FinalCta';
+import FinalCta from '../../../components/sections/FinalCtaBand.astro';
 import ServicePageSection from '../../../components/sections/ServicePageSection.astro';
 import { serviceContentKey } from '../../../lib/en-slugs';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
@@ -101,7 +101,6 @@ const caseStories = cases.flatMap((item) => {
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Home', href: '/en' },
-			{ name: 'Services', href: '/en/servicios' },
 			{ name: entry.data.nombre, href: `/en/servicios/${entry.id}` },
 		]),
 		...(pageFaqs.length ? [faqSchema(pageFaqs)] : []),
@@ -182,7 +181,7 @@ const caseStories = cases.flatMap((item) => {
 					stories={caseStories}
 				/>
 				<FaqSection client:visible items={entry.data.faqs} withSchema={false} columns={2} />
-				<FinalCta client:load title={`Agenda un diagnóstico de ${entry.data.nombre}`} />
+				<FinalCta title={`Agenda un diagnóstico de ${entry.data.nombre}`} />
 			</>
 		)}
 	</main>

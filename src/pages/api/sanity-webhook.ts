@@ -1,5 +1,5 @@
 /**
- * Sanity publish → one Cloudflare deploy, a minute after the last publish.
+ * Sanity publish → one Cloudflare deploy, ten minutes after the last publish.
  * Auth: Authorization: Bearer <SANITY_REVALIDATE_SECRET>
  * The cron in wrangler.jsonc calls the deploy hook. Staging never dispatches.
  */

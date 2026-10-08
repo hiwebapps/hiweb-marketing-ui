@@ -10,7 +10,8 @@ import { createRedirect } from './src/sanity/actions/createRedirect';
 import { keywordBadge, seoChecklistBadge } from './src/sanity/badges/seoBadges';
 import { translationBadge, wordsBadge } from './src/sanity/badges/postBadges';
 import { PostSeoView } from './src/sanity/components/PostSeoView';
-import { ViewStagingButton } from './src/sanity/components/ViewStagingButton';
+import { DocumentFooter } from './src/sanity/components/DocumentFooter';
+import { StudioNavbar } from './src/sanity/components/StudioNavbar';
 import { resolve } from './src/sanity/presentation/resolve';
 import { SiteNavigator } from './src/sanity/presentation/SiteNavigator';
 import { landingTemplateSections, type LandingTemplateKind } from './src/sanity/landingTemplate';
@@ -44,7 +45,12 @@ function previewOrigin() {
 export default defineConfig({
   name: 'hiweb-web',
   __internal_tasks: {
-    footerAction: createElement(ViewStagingButton),
+    footerAction: createElement(DocumentFooter),
+  },
+  studio: {
+    components: {
+      navbar: StudioNavbar,
+    },
   },
   title: 'Hiweb Web 2026',
   projectId,

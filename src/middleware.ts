@@ -42,9 +42,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
   const englishSection =
-    path === '/en/servicios' ||
     path.startsWith('/en/servicios/') ||
-    path === '/en/industrias' ||
     path.startsWith('/en/industrias/') ||
     path === '/en/nosotros' ||
     path.startsWith('/en/nosotros/') ||

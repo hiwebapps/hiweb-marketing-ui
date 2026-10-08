@@ -9,6 +9,37 @@ import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } fr
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
+export const industryPillar = defineType({
+  name: 'industryPillar',
+  title: 'Pilar',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Título',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Descripción',
+      type: 'text',
+      rows: 3,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'icon',
+      title: 'Icono',
+      type: 'image',
+      description: 'Elige un SVG o PNG en la galería. Si lo dejas vacío, se usa el icono actual.',
+      options: { accept: 'image/svg+xml,image/png,image/webp' },
+    }),
+  ],
+  preview: {
+    select: { title: 'title', subtitle: 'description', media: 'icon' },
+  },
+});
+
 function sectionPreview(subtitle: string, titleField = 'title') {
   return {
     select: { title: titleField },
@@ -66,7 +97,7 @@ export const industryWhy = defineType({
       name: 'pillars',
       title: 'Pilares',
       type: 'array',
-      of: [defineArrayMember({ type: 'titledBlock' })],
+      of: [defineArrayMember({ type: 'industryPillar' })],
     }),
     defineField({
       name: 'retos',
@@ -106,7 +137,8 @@ export const industryServices = defineType({
       name: 'blurbs',
       title: 'Copy industria × servicio',
       type: 'array',
-      description: 'El texto de cada card. El orden de las cards sigue el catálogo de servicios.',
+      description:
+        'Cada fila es una card. Arrastra para el orden, cambia el nombre, el texto y el icono. Si quitas una fila, esa card no sale. Lista vacía = todos los servicios del catálogo.',
       of: [defineArrayMember({ type: 'serviceBlurb' })],
     }),
   ],

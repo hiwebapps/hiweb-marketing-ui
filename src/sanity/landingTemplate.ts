@@ -158,7 +158,6 @@ export function makeLandingBlock(
         ...base,
         eyebrow: 'Cifras',
         title: 'Antes y después',
-        titleMuted: 'en cifras verificables',
         description: 'Números de negocio, no recortes de Ads Manager.',
         metrics: [metric(), metric()],
         primaryCta: { _type: 'cta', label: 'Agenda tu auditoría', href: '/contacto' },

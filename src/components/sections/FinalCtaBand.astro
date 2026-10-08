@@ -1,0 +1,19 @@
+---
+import { FinalCta as FinalCtaView } from './FinalCta';
+import { getCtaBackdrop } from '../../lib/content';
+
+interface Props {
+  badge?: string;
+  title?: string;
+  description?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  headingWidth?: string;
+}
+
+const images = await getCtaBackdrop();
+---
+
+<FinalCtaView {...Astro.props} images={images} client:load />

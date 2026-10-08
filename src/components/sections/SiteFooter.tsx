@@ -5,7 +5,8 @@ import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import { fallbackFooter, type SiteFooterContent } from '../../lib/footer';
 import { fallbackSite, type SiteIdentity } from '../../lib/site-identity';
-import { localePath, type Locale } from '../../lib/locale';
+import { CHROME, isRetiredCatalogPath, localePath, type Locale } from '../../lib/locale';
+import { Button } from '../ui';
 import { MOTION } from '../../lib/motion';
 import './SiteFooter.css';
 
@@ -60,7 +61,7 @@ export function SiteFooter({
       const title = root.querySelector<HTMLElement>('.site-footer__title');
       const mark = root.querySelector<HTMLElement>('.site-footer__mark');
       const bits = root.querySelectorAll<HTMLElement>(
-        '.site-footer__brand, .site-footer__form, .site-footer__col, .site-footer__bar, .site-footer__legal',
+        '.site-footer__brand, .site-footer__audit, .site-footer__col, .site-footer__bar, .site-footer__legal',
       );
 
       gsap.set(bits, { y: 22, autoAlpha: 0 });
@@ -162,39 +163,28 @@ export function SiteFooter({
         <div className="site-footer__panel">
           <div className="site-footer__top">
             <div className="site-footer__intro">
-              <p className="site-footer__brand">{copy.brand}</p>
+              <img
+                className="site-footer__brand"
+                src={copy.brandMark || '/images/isotipo-hiweb.png'}
+                width="28"
+                height="28"
+                alt="Hiweb"
+              />
               <h2 className="site-footer__title">{copy.title}</h2>
-              <form className="site-footer__form" action={localePath('/contacto', locale)} method="get">
-                <label className="sr-only" htmlFor="footer-email">
-                  {copy.emailPlaceholder}
-                </label>
-                <input
-                  id="footer-email"
-                  className="site-footer__input"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  placeholder={copy.emailPlaceholder}
-                  required
-                />
-                <button className="site-footer__submit" type="submit" aria-label={copy.toContact}>
-                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path
-                      d="M3 8h10M9 4l4 4-4 4"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </form>
+              <Button
+                href={localePath('/contacto', locale)}
+                variant="primary"
+                size="md"
+                className="site-footer__audit"
+              >
+                {CHROME[locale].audit}
+              </Button>
             </div>
 
             <nav className="site-footer__col" aria-label={copy.menuHeading}>
               <p className="site-footer__heading">{copy.menuHeading}</p>
               <ul>
-                {copy.menuLinks.map((item) => (
+                {copy.menuLinks.filter((item) => !isRetiredCatalogPath(item.href)).map((item) => (
                   <li key={`${item.href}-${item.label}`}>
                     <a href={item.href}>{item.label}</a>
                   </li>

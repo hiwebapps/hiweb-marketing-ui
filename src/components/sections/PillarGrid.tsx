@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { PillarIcon, PILLAR_ICON_NAMES, type PillarIconName } from '../icons/PillarIcons';
+import { PillarIcon, PILLAR_ICON_NAMES } from '../icons/PillarIcons';
 import { Badge } from '../ui';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
@@ -10,7 +10,7 @@ export type PillarAccent = 'purple' | 'cyan' | 'orange' | 'green';
 export type Pillar = {
   title: string;
   description: string;
-  icon?: PillarIconName;
+  icon?: string;
   accent?: PillarAccent;
   href?: string;
 };

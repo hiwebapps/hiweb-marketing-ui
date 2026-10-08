@@ -1,4 +1,11 @@
-import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import {
@@ -34,6 +41,12 @@ export type TeamMember = {
 
 type FilterId = 'all' | TeamCategory;
 
+type TeamFilter = {
+  id?: string;
+  label: string;
+  members?: TeamMember[];
+};
+
 type TeamGridProps = {
   eyebrow?: string;
   title?: ReactNode;
@@ -41,11 +54,16 @@ type TeamGridProps = {
   ctaLabel?: string;
   ctaHref?: string;
   members?: TeamMember[];
-  /** Cap visible members (homepage). Filters ignore this when active. */
+  /** Cap visible members when this is still a grid. */
   limit?: number;
+  /** Cards side by side. Homepage leaders only. */
+  slider?: boolean;
+  previousLabel?: string;
+  nextLabel?: string;
+  positionLabel?: string;
   /** Category filter row — use on /nosotros */
   showFilters?: boolean;
-  filters?: ReadonlyArray<{ id: FilterId; label: string }>;
+  filters?: ReadonlyArray<TeamFilter>;
   filterLabel?: string;
   headingWidth?: string;
 };
@@ -89,6 +107,242 @@ function IconLinkedIn() {
   );
 }
 
+function TeamCard({ member, index, reveal }: { member: TeamMember; index: number; reveal?: boolean }) {
+  const accent = member.accent ?? ACCENTS[index % ACCENTS.length];
+  return (
+    <li data-reveal={reveal ? true : undefined} className={`team-card team-card--${accent}`}>
+      <div className="team-card__photo" style={{ '--photo': `url('${member.photo}')` } as CSSProperties}>
+        <span className="team-card__dither" aria-hidden="true" />
+        <img className="team-card__subject" src={member.photo} alt={member.name} width={720} height={1280} />
+        <span className="team-card__wash" aria-hidden="true" />
+      </div>
+      <div className="team-card__body">
+        <Badge variant={accent}>{member.role}</Badge>
+        <h3 className="team-card__name">{member.name}</h3>
+        <p className="team-card__bio">{member.bio}</p>
+        <div className="team-card__socials">
+          {member.socials?.tiktok ? (
+            <SocialLink href={member.socials.tiktok} label={`TikTok de ${member.name}`}>
+              <IconTikTok />
+            </SocialLink>
+          ) : null}
+          {member.socials?.instagram ? (
+            <SocialLink href={member.socials.instagram} label={`Instagram de ${member.name}`}>
+              <IconInstagram />
+            </SocialLink>
+          ) : null}
+          {member.socials?.linkedin ? (
+            <SocialLink href={member.socials.linkedin} label={`LinkedIn de ${member.name}`}>
+              <IconLinkedIn />
+            </SocialLink>
+          ) : null}
+        </div>
+      </div>
+    </li>
+  );
+}
+
+function Chevron({ direction }: { direction: 'left' | 'right' }) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d={direction === 'left' ? 'M10 3 5 8l5 5' : 'M6 3l5 5-5 5'}
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function prefersReducedMotion() {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function TeamSlider({
+  members,
+  previousLabel,
+  nextLabel,
+  positionLabel,
+}: {
+  members: TeamMember[];
+  previousLabel: string;
+  nextLabel: string;
+  positionLabel: string;
+}) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLUListElement>(null);
+  const indexRef = useRef(0);
+  const drag = useRef({
+    pointerId: -1,
+    startX: 0,
+    startY: 0,
+    origin: 0,
+    axis: '' as '' | 'x' | 'y',
+    moved: false,
+  });
+  const [index, setIndex] = useState(0);
+  const [maxIndex, setMaxIndex] = useState(0);
+  const membersKey = members.map((member) => member.name).join('|');
+
+  const metrics = () => {
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    const card = track?.querySelector<HTMLElement>('.team-card');
+    if (!viewport || !track || !card) return null;
+    const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
+    const step = card.offsetWidth + gap;
+    if (step <= 0) return null;
+    const visible = Math.max(1, Math.round((viewport.clientWidth + gap) / step));
+    return {
+      step,
+      max: Math.max(0, track.children.length - visible),
+      maxShift: Math.max(0, track.scrollWidth - viewport.clientWidth),
+    };
+  };
+
+  const place = (next: number, animate: boolean) => {
+    const track = trackRef.current;
+    const frame = metrics();
+    if (!track || !frame) return;
+    const clamped = Math.max(0, Math.min(frame.max, next));
+    const x = Math.min(clamped * frame.step, frame.maxShift);
+    track.style.transition =
+      animate && !prefersReducedMotion() ? 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+    track.style.transform = `translate3d(${-x}px, 0, 0)`;
+    indexRef.current = clamped;
+    setIndex(clamped);
+    setMaxIndex(frame.max);
+  };
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    indexRef.current = 0;
+    place(0, false);
+    const observer = new ResizeObserver(() => place(indexRef.current, false));
+    observer.observe(viewport);
+    return () => observer.disconnect();
+    // membersKey resets the row when the people change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [membersKey]);
+
+  const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    drag.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      origin: indexRef.current,
+      axis: '',
+      moved: false,
+    };
+  };
+
+  const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const state = drag.current;
+    if (state.pointerId !== event.pointerId) return;
+    const dx = event.clientX - state.startX;
+    const dy = event.clientY - state.startY;
+    if (!state.axis) {
+      if (Math.hypot(dx, dy) < 8) return;
+      state.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if (state.axis === 'y') {
+        state.pointerId = -1;
+        return;
+      }
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
+    if (state.axis !== 'x') return;
+    const frame = metrics();
+    const track = trackRef.current;
+    if (!frame || !track) return;
+    state.moved = true;
+    const base = Math.min(state.origin * frame.step, frame.maxShift);
+    const x = Math.max(0, Math.min(frame.maxShift, base - dx));
+    track.style.transition = 'none';
+    track.style.transform = `translate3d(${-x}px, 0, 0)`;
+  };
+
+  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const state = drag.current;
+    if (state.pointerId !== event.pointerId) return;
+    const dx = event.clientX - state.startX;
+    state.pointerId = -1;
+    if (state.axis !== 'x') return;
+    if (dx <= -48) place(state.origin + 1, true);
+    else if (dx >= 48) place(state.origin - 1, true);
+    else place(state.origin, true);
+  };
+
+  const pages = maxIndex + 1;
+
+  return (
+    <div className="team__slider">
+      <div
+        ref={viewportRef}
+        className="team__viewport"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onClickCapture={(event) => {
+          if (drag.current.moved) {
+            event.preventDefault();
+            event.stopPropagation();
+            drag.current.moved = false;
+          }
+        }}
+      >
+        <ul ref={trackRef} className="team__track">
+          {members.map((member, memberIndex) => (
+            <TeamCard key={`${member.name}-${memberIndex}`} member={member} index={memberIndex} />
+          ))}
+        </ul>
+      </div>
+      <div className="team__slider-nav">
+        {pages > 1 ? (
+          <>
+            <div className="team__dots">
+              {Array.from({ length: pages }, (_, page) => (
+                <button
+                  key={page}
+                  type="button"
+                  className={page === index ? 'team__dot is-active' : 'team__dot'}
+                  aria-label={`${positionLabel} ${page + 1}`}
+                  aria-current={page === index ? 'true' : undefined}
+                  onClick={() => place(page, true)}
+                />
+              ))}
+            </div>
+            <div className="team__slider-arrows">
+              <button
+                type="button"
+                className="team__slider-btn"
+                onClick={() => place(index - 1, true)}
+                disabled={index <= 0}
+                aria-label={previousLabel}
+              >
+                <Chevron direction="left" />
+              </button>
+              <button
+                type="button"
+                className="team__slider-btn"
+                onClick={() => place(index + 1, true)}
+                disabled={index >= maxIndex}
+                aria-label={nextLabel}
+              >
+                <Chevron direction="right" />
+              </button>
+            </div>
+          </>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function SocialLink({
   href,
   label,
@@ -119,21 +373,32 @@ export function TeamGrid({
   ctaHref = '/nosotros',
   members = [...TEAM_MEMBERS],
   limit,
+  slider = false,
+  previousLabel = 'Integrante anterior',
+  nextLabel = 'Siguiente integrante',
+  positionLabel = 'Ir a la posición',
   showFilters = false,
   filters = FILTERS,
   filterLabel = 'Filtrar por categoría',
   headingWidth,
 }: TeamGridProps) {
-  const [filter, setFilter] = useState<FilterId>('all');
+  const [filterIndex, setFilterIndex] = useState(0);
   const gridRef = useRef<HTMLUListElement>(null);
+  const selected = filters[filterIndex] ?? filters[0];
+  const selectedId = selected?.id;
+  const usesMemberLists = filters.some((item) => Array.isArray(item.members));
+  const category =
+    selectedId === 'web' || selectedId === 'redes' || selectedId === 'diseno' ? selectedId : undefined;
 
-  const filtered =
-    showFilters && filter !== 'all'
-      ? members.filter((member) => member.category === filter)
-      : members;
+  const filtered = !showFilters
+    ? members
+    : usesMemberLists
+      ? (selected?.members ?? [])
+      : category
+        ? members.filter((member) => member.category === category)
+        : members;
 
-  const visible =
-    !showFilters && limit != null ? filtered.slice(0, limit) : filtered;
+  const visible = slider || showFilters || limit == null ? filtered : filtered.slice(0, limit);
 
   const visibleKey = visible.map((member) => member.name).join('|');
 
@@ -161,7 +426,7 @@ export function TeamGrid({
         },
       );
     },
-    { scope: gridRef, dependencies: [showFilters, filter, visibleKey] },
+    { scope: gridRef, dependencies: [showFilters, filterIndex, visibleKey] },
   );
 
   return (
@@ -182,17 +447,17 @@ export function TeamGrid({
 
         {showFilters ? (
           <div className="team__filters" role="group" aria-label={filterLabel}>
-            {filters.map((item) => {
-              const active = filter === item.id;
+            {filters.map((item, index) => {
+              const active = filterIndex === index;
               return (
                 <Button
-                  key={item.id}
+                  key={`${item.label}-${index}`}
                   type="button"
                   size="sm"
                   variant={active ? 'primary' : 'secondary'}
                   glow={active}
                   aria-pressed={active}
-                  onClick={() => setFilter(item.id)}
+                  onClick={() => setFilterIndex(index)}
                 >
                   {item.label}
                 </Button>
@@ -201,62 +466,20 @@ export function TeamGrid({
           </div>
         ) : null}
 
-        <ul ref={gridRef} className="team__grid">
-          {visible.map((member, index) => {
-            const accent = member.accent ?? ACCENTS[index % ACCENTS.length];
-
-            return (
-              <li
-                key={member.name}
-                data-reveal={showFilters ? undefined : true}
-                className={`team-card team-card--${accent}`}
-              >
-                <div
-                  className="team-card__photo"
-                  style={{ '--photo': `url('${member.photo}')` } as CSSProperties}
-                >
-                  <span className="team-card__dither" aria-hidden="true" />
-                  <img
-                    className="team-card__subject"
-                    src={member.photo}
-                    alt={member.name}
-                    width={720}
-                    height={1280}
-                  />
-                  <span className="team-card__wash" aria-hidden="true" />
-                </div>
-                <div className="team-card__body">
-                  <Badge variant={accent}>{member.role}</Badge>
-                  <h3 className="team-card__name">{member.name}</h3>
-                  <p className="team-card__bio">{member.bio}</p>
-                  <div className="team-card__socials">
-                    {member.socials?.tiktok ? (
-                      <SocialLink href={member.socials.tiktok} label={`TikTok de ${member.name}`}>
-                        <IconTikTok />
-                      </SocialLink>
-                    ) : null}
-                    {member.socials?.instagram ? (
-                      <SocialLink
-                        href={member.socials.instagram}
-                        label={`Instagram de ${member.name}`}
-                      >
-                        <IconInstagram />
-                      </SocialLink>
-                    ) : null}
-                    {member.socials?.linkedin ? (
-                      <SocialLink
-                        href={member.socials.linkedin}
-                        label={`LinkedIn de ${member.name}`}
-                      >
-                        <IconLinkedIn />
-                      </SocialLink>
-                    ) : null}
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        {slider ? (
+          <TeamSlider
+            members={visible}
+            previousLabel={previousLabel}
+            nextLabel={nextLabel}
+            positionLabel={positionLabel}
+          />
+        ) : (
+          <ul ref={gridRef} className="team__grid">
+            {visible.map((member, index) => (
+              <TeamCard key={`${member.name}-${index}`} member={member} index={index} reveal={!showFilters} />
+            ))}
+          </ul>
+        )}
       </div>
     </SectionBand>
   );

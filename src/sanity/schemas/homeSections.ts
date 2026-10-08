@@ -8,6 +8,9 @@ import { RocketIcon } from '@sanity/icons/Rocket';
 import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
+import { NavIconInput } from '../components/NavIconInput';
+import { navIcons } from './navigation';
+import { personReferenceMember } from './person';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
 import { headingTitleField, headingWidthField, withVisibility } from './shared';
 
@@ -48,12 +51,35 @@ export const homeServiceItem = defineType({
       rows: 2,
       description: 'Si lo dejas vacío, se usa el tagline del servicio.',
     }),
+    defineField({
+      name: 'image',
+      title: 'Imagen de fondo',
+      type: 'image',
+      description: 'Si la dejas vacía, se usa la imagen de la card del servicio.',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'icon',
+      title: 'Icono',
+      type: 'string',
+      description: 'Si lo dejas vacío, se usa el icono del servicio.',
+      options: { list: navIcons },
+      components: { input: NavIconInput },
+    }),
+    defineField({
+      name: 'iconImage',
+      title: 'Icono desde la galería',
+      type: 'image',
+      description: 'Opcional. Un SVG o PNG reemplaza el icono de la lista en esta card.',
+      options: { accept: 'image/svg+xml,image/png,image/webp' },
+    }),
   ],
   preview: {
-    select: { title: 'service.nombre', subtitle: 'tagline' },
-    prepare: ({ title, subtitle }) => ({
+    select: { title: 'service.nombre', subtitle: 'tagline', media: 'image' },
+    prepare: ({ title, subtitle, media }) => ({
       title: title || 'Servicio',
       subtitle: subtitle || 'Usa el tagline del servicio',
+      media,
     }),
   },
 });
@@ -119,7 +145,8 @@ export const homeServices = defineType({
       name: 'items',
       title: 'Servicios',
       type: 'array',
-      description: 'Elige cuáles aparecen, edita el tagline y arrástralos para el orden. Vacío = todos los servicios.',
+      description:
+        'Elige cuáles aparecen y arrástralos para el orden. En cada fila puedes cambiar el nombre, el texto, la foto de fondo y el icono. Vacío = todos los servicios.',
       of: [defineArrayMember({ type: 'homeServiceItem' })],
     }),
   ],
@@ -138,11 +165,10 @@ export const homeIndustries = defineType({
     defineField({ name: 'intro', title: 'Intro', type: 'sectionIntro' }),
     defineField({
       name: 'items',
-      title: 'Industrias',
+      title: 'Cards',
       type: 'array',
-      description: 'Elige cuáles aparecen y arrástralos para el orden. Vacío = todas.',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'industry' }] })],
-      validation: (rule) => rule.unique(),
+      description: 'Cada fila es una card. Ahí se editan el nombre, el párrafo, los bullets y el icono. Arrastra para el orden.',
+      of: [defineArrayMember({ type: 'serviceIndustryItem' })],
     }),
   ],
   preview: {
@@ -237,6 +263,15 @@ export const homeTeam = defineType({
       },
       initialValue: 'es',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'leaders',
+      title: 'Líderes del slider',
+      type: 'array',
+      description:
+        'Elige fichas de Equipo. El orden de la lista es el orden del slider en la homepage, una card a la vez. Si la dejas vacía, se muestran las primeras cuatro fichas según el campo Orden.',
+      of: [personReferenceMember()],
+      validation: (rule) => rule.unique(),
     }),
     defineField({ name: 'ctaLabel', title: 'Texto del enlace', type: 'string' }),
     defineField({ name: 'ctaHref', title: 'URL del enlace', type: 'string' }),

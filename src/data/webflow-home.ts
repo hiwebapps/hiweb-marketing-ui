@@ -130,7 +130,6 @@ export const WEBFLOW_HOME: HomeCopy = {
   metricsIntro: {
     eyebrow: 'Cifras',
     title: 'Nuestra experiencia nos respalda',
-    titleMuted: 'Presencia Global · Dominio',
     description:
       'Más de una década construyendo marcas en México, Estados Unidos y Canadá, con un historial de inversión publicitaria que se traduce en resultados.',
   },

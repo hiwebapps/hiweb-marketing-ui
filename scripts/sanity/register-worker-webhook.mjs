@@ -1,3 +1,5 @@
+// Running this file creates a new webhook and a new secret. To change the filter,
+// patch the existing hook. Do not run this script again.
 import { randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
@@ -40,7 +42,7 @@ const hookBody = {
   rule: {
     on: ['create', 'update', 'delete'],
     filter:
-      '_type in ["industry","service","caseStudy","post","homePage","aboutPage","siteSettings","person","landingPage","faq"]',
+      '_type in ["calendarPage","industry","service","caseStudy","post","homePage","aboutPage","siteSettings","person","landingPage","faq","navigation","footer","ctaBackdrop","contactPage","legalPage","sitePage","servicesIndex","industriesIndex","blogIndex","casesIndex","testimonial"]',
   },
 };
 

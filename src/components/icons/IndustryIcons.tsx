@@ -76,7 +76,10 @@ const ICONS: Record<IndustryIconName, ComponentType<IconProps>> = {
   ),
 };
 
-export function IndustryIcon({ name, className }: { name: IndustryIconName; className?: string }) {
-  const Icon = ICONS[name] ?? ICONS.factory;
+export function IndustryIcon({ name, className }: { name: string; className?: string }) {
+  if (name.startsWith('http') || name.startsWith('/')) {
+    return <img src={name} alt="" className={className} />;
+  }
+  const Icon = ICONS[name as IndustryIconName] ?? ICONS.factory;
   return <Icon className={className} />;
 }

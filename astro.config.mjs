@@ -87,6 +87,10 @@ export default defineConfig({
     '/en/servicios/crm-automatizacion': '/en/servicios/crm-automation',
     '/en/servicios/ia-marketing': '/en/servicios/ai-tools-for-marketing',
     '/en/blog': '/en/blogs',
+    '/industrias': '/',
+    '/servicios': '/',
+    '/en/industrias': '/en',
+    '/en/servicios': '/en',
   },
   vite: {
     plugins: [gsapSsrStubPlugin(), tailwindcss()],

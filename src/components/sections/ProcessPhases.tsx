@@ -16,7 +16,7 @@ export type ProcessPhase = {
   index: string;
   title: string;
   description: string;
-  icon?: ProcessIconName;
+  icon?: string;
   accent?: ProcessAccent;
 };
 
@@ -173,14 +173,16 @@ export function ProcessPhases({
           {phases.map((phase, index) => {
             const accent = phase.accent && phase.accent in ACCENT_HEX ? phase.accent : ACCENTS[index % ACCENTS.length];
             const nextAccent = ACCENTS[(index + 1) % ACCENTS.length];
-            const Icon = (phase.icon && ICON_MAP[phase.icon]) || ICONS[index % ICONS.length];
+            const fileIcon = phase.icon?.startsWith('http') || phase.icon?.startsWith('/');
+            const Icon =
+              (!fileIcon && phase.icon && ICON_MAP[phase.icon as ProcessIconName]) || ICONS[index % ICONS.length];
             const isLast = index === phases.length - 1;
 
             return (
               <li key={phase.index} className={`proceso__step proceso__step--${accent}`}>
                 <div className="proceso__node">
                   <span className="proceso__icon">
-                    <Icon />
+                    {fileIcon ? <img src={phase.icon} alt="" /> : <Icon />}
                   </span>
                 </div>
                 {isLast ? null : (

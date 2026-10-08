@@ -8,7 +8,7 @@ import { PillarGrid } from '../../components/sections/PillarGrid';
 import { PresenceMap } from '../../components/sections/PresenceMap';
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { TeamGrid } from '../../components/sections/TeamGrid';
-import { FinalCta } from '../../components/sections/FinalCta';
+import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import AboutPageSection from '../../components/sections/AboutPageSection.astro';
 import { breadcrumbSchema } from '../../lib/schema';
 import { getAboutCopy, getHomeCopy, getPeople, getSiteSettings } from '../../lib/content';
@@ -41,8 +41,17 @@ const pillars: Pillar[] = (about.pillars ?? []).map((item) => ({
 	href: item.href ? localePath(item.href, 'en') : undefined,
 }));
 const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
-	item.id === 'all' || item.id === 'web' || item.id === 'redes' || item.id === 'diseno'
-		? [{ id: item.id, label: item.label }]
+	item.label
+		? [
+				{
+					id: item.id,
+					label: item.label,
+					members: item.members?.map((person) => ({
+						...person,
+						accent: person.accent as TeamMember['accent'],
+					})),
+				},
+			]
 		: [],
 );
 ---
@@ -129,7 +138,6 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 			globeLabel="Interactive globe with Mexico, the United States, and Canada"
 		/>
 		<FinalCta
-			client:load
 			badge={about.closingBadge}
 			title={about.closingTitle}
 			description={about.closingDescription}

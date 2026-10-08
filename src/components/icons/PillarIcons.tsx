@@ -93,8 +93,11 @@ const ICONS: Record<PillarIconName, ComponentType<IconProps>> = {
   workflow: IconWorkflow,
 };
 
-export function PillarIcon({ name, className }: { name: PillarIconName; className?: string }) {
-  const Icon = ICONS[name] ?? IconUsers;
+export function PillarIcon({ name, className }: { name: string; className?: string }) {
+  if (name.startsWith('http') || name.startsWith('/')) {
+    return <img src={name} alt="" className={className} />;
+  }
+  const Icon = ICONS[name as PillarIconName] ?? IconUsers;
   return <Icon className={className} />;
 }
 

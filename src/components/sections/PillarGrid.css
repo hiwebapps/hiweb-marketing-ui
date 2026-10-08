@@ -87,9 +87,11 @@
   color: var(--pillar-accent);
 }
 
-.pillar-card__icon svg {
+.pillar-card__icon svg,
+.pillar-card__icon img {
   width: 1.75rem;
   height: 1.75rem;
+  object-fit: contain;
 }
 
 .pillar-card__cta {

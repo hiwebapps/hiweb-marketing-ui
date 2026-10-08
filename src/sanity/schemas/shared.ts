@@ -335,7 +335,6 @@ export const sectionIntro = defineType({
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
     headingTitleField(),
     headingWidthField(),
-    defineField({ name: 'titleMuted', title: 'Título muted', type: 'string' }),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 4 }),
   ],
 });
@@ -391,7 +390,7 @@ export const faqCategory = defineType({
 
 export const serviceBlurb = defineType({
   name: 'serviceBlurb',
-  title: 'Blurb de servicio',
+  title: 'Card de servicio',
   type: 'object',
   fields: [
     defineField({
@@ -402,15 +401,32 @@ export const serviceBlurb = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'nombre',
+      title: 'Nombre en esta card',
+      type: 'string',
+      description: 'Si lo dejas vacío, se usa el nombre del servicio.',
+    }),
+    defineField({
       name: 'description',
-      title: 'Descripción para esta industria',
+      title: 'Texto de la card',
       type: 'text',
       rows: 3,
-      validation: (rule) => rule.required(),
+      description: 'Si lo dejas vacío, la card usa el texto que ya tiene para esta industria.',
+    }),
+    defineField({
+      name: 'iconImage',
+      title: 'Icono',
+      type: 'image',
+      description: 'Elige un SVG o PNG en la galería. Si lo dejas vacío, la card usa el icono del servicio.',
+      options: { accept: 'image/svg+xml,image/png,image/webp' },
     }),
   ],
   preview: {
-    select: { title: 'service.nombre', subtitle: 'description' },
+    select: { title: 'nombre', service: 'service.nombre', subtitle: 'description' },
+    prepare: ({ title, service, subtitle }: { title?: string; service?: string; subtitle?: string }) => ({
+      title: title || service || 'Servicio',
+      subtitle,
+    }),
   },
 });
 

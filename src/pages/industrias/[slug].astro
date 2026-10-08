@@ -8,14 +8,15 @@ import { IndustryServices } from '../../components/sections/IndustryServices';
 import { PillarGrid } from '../../components/sections/PillarGrid';
 import { CaseStories } from '../../components/sections/CaseStories';
 import { FaqSection } from '../../components/sections/FaqSection';
-import { FinalCta } from '../../components/sections/FinalCta';
+import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import IndustryPageSection from '../../components/sections/IndustryPageSection.astro';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
 import { industryServiceDescription } from '../../data/industryServices';
+import { serviceContentKey } from '../../lib/en-slugs';
 import type { BadgeVariant } from '../../components/ui';
 import { formatCaseStat } from '../../lib/content/format';
 import { notFound, resolveEntry } from '../../lib/content/resolve-entry';
-import type { IndustryRecord } from '../../lib/content/types';
+import type { IndustryRecord, IndustrySection } from '../../lib/content/types';
 import '../../components/sections/CaseStories.css';
 import '../../components/sections/FaqSection.css';
 import '../../components/sections/IndustryServices.css';
@@ -38,17 +39,37 @@ const heroImage = entry.data.heroImage ?? `/images/industries/${entry.id}.jpg`;
 const industryHeroBadges: { label: string; variant: BadgeVariant }[] = [
 	{ label: entry.data.nombre, variant: 'lime' },
 ];
-const blurbByService = Object.fromEntries(
-	entry.data.serviceBlurbs.map((item) => [item.serviceSlug, item.description]),
-);
+const blurbByService = Object.fromEntries(entry.data.serviceBlurbs.map((item) => [item.serviceSlug, item]));
 
-const industryServices = services.map((item) => ({
-	slug: item.id,
-	nombre: item.data.nombre,
-	description:
-		blurbByService[item.id] ??
-		industryServiceDescription(entry.id, item.id, entry.data.nombre),
-}));
+const industryServices = services.map((item) => {
+	const blurb = blurbByService[item.id];
+	return {
+		slug: item.id,
+		nombre: blurb?.nombre || item.data.nombre,
+		description:
+			blurb?.description ||
+			industryServiceDescription(entry.id, serviceContentKey(item.id), entry.data.nombre),
+		icon: blurb?.icon || item.data.cardIcon,
+	};
+});
+
+function cardsFor(section: IndustrySection) {
+	if (section._type !== 'industryServices' || !section.items?.length) return industryServices;
+	const cards = section.items.flatMap((item) => {
+		if (!item.slug) return [];
+		return [
+			{
+				slug: item.slug,
+				nombre: item.nombre || services.find((service) => service.id === item.slug)?.data.nombre || item.slug,
+				description:
+					item.description ||
+					industryServiceDescription(entry.id, serviceContentKey(item.slug), entry.data.nombre),
+				icon: item.icon,
+			},
+		];
+	});
+	return cards.length ? cards : industryServices;
+}
 
 const allSections = entry.data.sections ?? [];
 const pageSections = allSections.filter((section) => !section.hidden);
@@ -79,7 +100,6 @@ const caseStories = cases.map((item) => ({
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Inicio', href: '/' },
-			{ name: 'Industrias', href: '/industrias' },
 			{ name: entry.data.nombre, href: `/industrias/${entry.id}` },
 		]),
 		...(allSections.length === 0 || pageSections.some((section) => section._type === 'industryFaq')
@@ -95,7 +115,7 @@ const caseStories = cases.map((item) => ({
 					section={section}
 					nombre={entry.data.nombre}
 					heroFallback={heroImage}
-					services={industryServices}
+					services={cardsFor(section)}
 					stories={caseStories}
 					hasCases={cases.length > 0}
 				/>
@@ -143,7 +163,6 @@ const caseStories = cases.map((item) => ({
 			withSchema={false}
 		/>
 		<FinalCta
-			client:load
 			title={`Agenda un diagnóstico para ${entry.data.nombre.toLowerCase()}`}
 		/>
 		</>

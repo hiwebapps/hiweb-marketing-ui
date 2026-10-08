@@ -12,6 +12,7 @@ import {
   industriesIndexQuery,
   industriesQuery,
   catalogIndexQuery,
+  ctaBackdropQuery,
   footerQuery,
   legalPageQuery,
   navigationQuery,
@@ -226,7 +227,12 @@ function asLinks(value: unknown): NavLink[] {
         title: row.title,
         description: typeof row.description === 'string' ? row.description : '',
         href: row.href,
-        icon: typeof row.icon === 'string' ? row.icon : 'grid',
+        icon:
+          typeof row.iconImage === 'string' && row.iconImage
+            ? row.iconImage
+            : typeof row.icon === 'string'
+              ? row.icon
+              : 'grid',
       },
     ];
   });
@@ -532,6 +538,14 @@ export async function sanityLegalPage(id: string): Promise<LegalCopy | null> {
   };
 }
 
+export async function sanityCtaBackdrop(): Promise<string[]> {
+  const { data } = await loadQuery<{ images?: unknown } | null>({
+    query: ctaBackdropQuery,
+  });
+  if (!Array.isArray(data?.images)) return [];
+  return data.images.filter((url): url is string => typeof url === 'string' && url.length > 0);
+}
+
 export async function sanityFooter(locale: 'es' | 'en'): Promise<SiteFooterContent | null> {
   const { data } = await loadQuery<Record<string, unknown> | null>({
     query: footerQuery,
@@ -540,6 +554,7 @@ export async function sanityFooter(locale: 'es' | 'en'): Promise<SiteFooterConte
   if (!data) return null;
   return {
     brand: text(data.brand),
+    brandMark: optionalText(data.brandMark),
     title: text(data.title),
     emailPlaceholder: text(data.emailPlaceholder),
     menuHeading: text(data.menuHeading),

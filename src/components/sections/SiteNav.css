@@ -302,9 +302,14 @@
   color: #c8c8c8;
 }
 
-.hw-nav__dropdown-icon svg {
+.hw-nav__dropdown-icon svg,
+.hw-nav__dropdown-icon img {
   width: 1.15rem;
   height: 1.15rem;
+  object-fit: contain;
+}
+
+.hw-nav__dropdown-icon svg {
   fill: none;
   stroke: currentColor;
   stroke-width: 1.75;
@@ -737,9 +742,14 @@
   color: #d4d4d4;
 }
 
-.hw-nav-sheet__icon svg {
+.hw-nav-sheet__icon svg,
+.hw-nav-sheet__icon img {
   width: 1.25rem;
   height: 1.25rem;
+  object-fit: contain;
+}
+
+.hw-nav-sheet__icon svg {
   fill: none;
   stroke: currentColor;
   stroke-width: 1.75;

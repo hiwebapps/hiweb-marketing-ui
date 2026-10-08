@@ -254,7 +254,6 @@ function patch(sections: Section[], slugById: Map<string, string>) {
     if (section._type === 'homeMetrics') {
       const intro = section.intro as Record<string, unknown>;
       intro.title = 'Backed by our experience';
-      intro.titleMuted = 'Global Presence · Dominio';
       const items = section.items as Array<Record<string, unknown>>;
       if (items[0]) {
         items[0].suffix = ' Years';

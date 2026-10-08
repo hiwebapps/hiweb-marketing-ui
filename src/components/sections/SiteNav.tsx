@@ -3,8 +3,9 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
 import { fallbackNav, type SiteNavContent } from '../../lib/nav';
-import { CHROME, localePath, type Locale } from '../../lib/locale';
+import { CHROME, isRetiredCatalogPath, localePath, type Locale } from '../../lib/locale';
 import { Button } from '../ui';
+import { NavIcon } from './NavIcon';
 import './SiteNav.css';
 
 gsap.registerPlugin(useGSAP);
@@ -306,7 +307,7 @@ export function SiteNav({
               if (item.kind === 'dropdown') {
                 return (
                   <SheetSection key={`dropdown-${index}`} title={item.label}>
-                    {item.indexLabel ? (
+                    {item.indexLabel && item.indexHref && !isRetiredCatalogPath(item.indexHref) ? (
                       <li>
                         <a href={item.indexHref} className="hw-nav-sheet__link" onClick={() => setMobileOpen(false)}>
                           <span className="hw-nav-sheet__icon" aria-hidden="true">
@@ -520,156 +521,4 @@ function Chevron({ open }: { open: boolean }) {
       />
     </svg>
   );
-}
-
-function NavIcon({ name }: { name: string }) {
-  switch (name) {
-    case 'activity':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-        </svg>
-      );
-    case 'target':
-    case 'spark':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 3v3" />
-          <path d="M12 18v3" />
-          <path d="M3 12h3" />
-          <path d="M18 12h3" />
-          <path d="m5.6 5.6 2.1 2.1" />
-          <path d="m16.3 16.3 2.1 2.1" />
-          <path d="m5.6 18.4 2.1-2.1" />
-          <path d="m16.3 7.7 2.1-2.1" />
-          <circle cx="12" cy="12" r="2.5" />
-        </svg>
-      );
-    case 'users':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-        </svg>
-      );
-    case 'video':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
-          <rect x="2" y="6" width="14" height="12" rx="2" />
-        </svg>
-      );
-    case 'badge':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-          <path d="m9 12 2 2 4-4" />
-        </svg>
-      );
-    case 'focus':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" />
-          <circle cx="12" cy="12" r="4" />
-          <line x1="4.93" y1="4.93" x2="9.17" y2="9.17" />
-          <line x1="14.83" y1="14.83" x2="19.07" y2="19.07" />
-          <line x1="14.83" y1="9.17" x2="19.07" y2="4.93" />
-          <line x1="4.93" y1="19.07" x2="9.17" y2="14.83" />
-        </svg>
-      );
-    case 'code':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <polyline points="16 18 22 12 16 6" />
-          <polyline points="8 6 2 12 8 18" />
-        </svg>
-      );
-    case 'box':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M16.5 9.4 7.55 4.24" />
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-          <polyline points="3.29 7 12 12 20.71 7" />
-          <line x1="12" y1="22" x2="12" y2="12" />
-        </svg>
-      );
-    case 'grid':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <rect width="18" height="18" x="3" y="3" rx="2" />
-          <path d="M3 9h18" />
-          <path d="M9 21V9" />
-        </svg>
-      );
-    case 'book':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
-          <path d="M18 14h-8" />
-          <path d="M15 18h-5" />
-          <path d="M10 6h8v4h-8V6Z" />
-        </svg>
-      );
-    case 'mail':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <rect width="20" height="16" x="2" y="4" rx="2" />
-          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-        </svg>
-      );
-    case 'factory':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4H2Z" />
-        </svg>
-      );
-    case 'heart':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-        </svg>
-      );
-    case 'building':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <rect width="16" height="20" x="4" y="2" rx="2" />
-          <path d="M9 22v-4h6v4" />
-          <path d="M8 6h.01" />
-          <path d="M16 6h.01" />
-          <path d="M12 6h.01" />
-          <path d="M12 10h.01" />
-          <path d="M12 14h.01" />
-          <path d="M16 10h.01" />
-          <path d="M16 14h.01" />
-          <path d="M8 10h.01" />
-          <path d="M8 14h.01" />
-        </svg>
-      );
-    case 'plane':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
-        </svg>
-      );
-    case 'utensils':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-          <path d="M7 2v20" />
-          <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
-        </svg>
-      );
-    case 'app':
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-          <rect width="18" height="18" x="3" y="3" rx="2" />
-          <path d="M3 9h18" />
-          <path d="M9 21V9" />
-        </svg>
-      );
-    default:
-      return null;
-  }
 }

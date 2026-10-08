@@ -49,7 +49,7 @@ El hook de Sanity ya apunta a `https://hiweb-marketing-ui.hiwebapps.workers.dev/
 7. Cuando el primer build pase: **Settings → Deploy Hooks → Create hook** → copiar la URL.
 8. `echo <URL> | npx wrangler secret put CLOUDFLARE_DEPLOY_HOOK_URL`
 
-Filter del webhook Sanity: `_type in ["industry","service","caseStudy","post","homePage","aboutPage","siteSettings","person","landingPage","faq"]`.
+Filter del webhook Sanity: `_type in ["calendarPage","industry","service","caseStudy","post","homePage","aboutPage","siteSettings","person","landingPage","faq","navigation","footer","contactPage","legalPage","sitePage","servicesIndex","industriesIndex","blogIndex","casesIndex","testimonial"]`.
 
 Sin Deploy Hook, el publish llega al Worker pero **no** regenera el HTML prerendered.
 

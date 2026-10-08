@@ -10,6 +10,8 @@ export type GridCard = {
   slug: string;
   nombre: string;
   tagline: string;
+  image?: string;
+  icon?: string;
 };
 
 type ServiceAccent = 'purple' | 'cyan' | 'orange' | 'green';
@@ -48,6 +50,20 @@ const SERVICE_VISUALS: Record<
   'desarrollo-web': { image: '/images/services/desarrollo-web.jpg', icon: 'code' },
 };
 
+function isUploadedIcon(icon: string) {
+  return icon.startsWith('http') || icon.startsWith('/');
+}
+
+function ServiceGlyph({ name }: { name: string }) {
+  if (!isUploadedIcon(name)) return <ServiceIcon name={name} />;
+  return (
+    <span
+      className="service-card__glyph"
+      style={{ '--service-glyph': `url("${name.replaceAll('"', '%22')}")` } as CSSProperties}
+    />
+  );
+}
+
 function spanClass(index: number, total: number) {
   if (total === 1) return 'col-span-full';
   if (index === total - 1 && total % 2 === 1) return 'sm:col-span-2 lg:col-span-3';
@@ -77,8 +93,8 @@ export function ServiceGrid({
       <ul className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((item, index) => {
           const visual = SERVICE_VISUALS[serviceContentKey(item.slug)];
-          const icon = visual?.icon ?? SERVICE_ICON_NAMES[index % SERVICE_ICON_NAMES.length];
-          const image = visual?.image ?? '/images/services/desarrollo-web.jpg';
+          const icon = item.icon || visual?.icon || SERVICE_ICON_NAMES[index % SERVICE_ICON_NAMES.length];
+          const image = item.image || visual?.image || '/images/services/desarrollo-web.jpg';
           const accent = ACCENTS[index % ACCENTS.length];
 
           return (
@@ -98,7 +114,7 @@ export function ServiceGrid({
                   <span className="service-card__scrim" aria-hidden="true" />
                   <span className="service-card__wash" aria-hidden="true" />
                   <span className="service-card__icon">
-                    <ServiceIcon name={icon} />
+                    <ServiceGlyph name={icon} />
                   </span>
                   <div className="service-card__copy">
                     <h3 className="font-sans text-lg font-semibold tracking-tight">{item.nombre}</h3>

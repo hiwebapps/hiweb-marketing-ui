@@ -243,7 +243,6 @@ export function SectionsKitPage() {
             }))}
             eyebrow={WEBFLOW_HOME.metricsIntro?.eyebrow}
             title={WEBFLOW_HOME.metricsIntro?.title}
-            titleMuted={WEBFLOW_HOME.metricsIntro?.titleMuted}
             description={WEBFLOW_HOME.metricsIntro?.description}
           />
         </div>

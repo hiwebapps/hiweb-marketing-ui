@@ -168,11 +168,15 @@ function useDesktopScrollRail(enabled: boolean) {
   return active;
 }
 
+const RAIL_IDLE_MS = 2500;
+
 export function ScrollIndicator({ className = '', contained = false, locale = 'es' }: ScrollIndicatorProps) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const surfaceRef = useRef<HTMLDivElement>(null);
   const [marks, setMarks] = useState<Mark[]>([]);
   const [progress, setProgress] = useState(0);
   const [readY, setReadY] = useState(0);
+  const [resting, setResting] = useState(false);
   const showRail = useDesktopScrollRail(!contained);
 
   useEffect(() => {
@@ -225,6 +229,54 @@ export function ScrollIndicator({ className = '', contained = false, locale = 'e
     };
   }, [contained, locale, showRail]);
 
+  useEffect(() => {
+    const surface = surfaceRef.current;
+    const root = rootRef.current;
+    if (!surface || !root || !showRail) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const scroller = contained ? root.closest<HTMLElement>('[data-scroll-demo]') ?? window : window;
+    let timer = 0;
+    let over = false;
+
+    const arm = () => {
+      window.clearTimeout(timer);
+      if (over) return;
+      timer = window.setTimeout(() => setResting(true), RAIL_IDLE_MS);
+    };
+    const show = () => {
+      setResting(false);
+      arm();
+    };
+    const stay = () => {
+      over = true;
+      window.clearTimeout(timer);
+      setResting(false);
+    };
+    const release = (event: Event) => {
+      const next = 'relatedTarget' in event ? (event as FocusEvent).relatedTarget : null;
+      if (next instanceof Node && surface.contains(next)) return;
+      over = false;
+      arm();
+    };
+
+    scroller.addEventListener('scroll', show, { passive: true });
+    surface.addEventListener('pointerenter', stay);
+    surface.addEventListener('pointerleave', release);
+    surface.addEventListener('focusin', stay);
+    surface.addEventListener('focusout', release);
+    arm();
+
+    return () => {
+      window.clearTimeout(timer);
+      scroller.removeEventListener('scroll', show);
+      surface.removeEventListener('pointerenter', stay);
+      surface.removeEventListener('pointerleave', release);
+      surface.removeEventListener('focusin', stay);
+      surface.removeEventListener('focusout', release);
+    };
+  }, [contained, showRail]);
+
   if (!showRail) return null;
 
   const jump = (mark: Mark) => {
@@ -247,7 +299,12 @@ export function ScrollIndicator({ className = '', contained = false, locale = 'e
   return (
     <div
       ref={rootRef}
-      className={['hw-scroll-indicator', contained ? 'hw-scroll-indicator--contained' : '', className]
+      className={[
+        'hw-scroll-indicator',
+        contained ? 'hw-scroll-indicator--contained' : '',
+        resting ? 'is-resting' : '',
+        className,
+      ]
         .filter(Boolean)
         .join(' ')}
       role="progressbar"
@@ -256,6 +313,7 @@ export function ScrollIndicator({ className = '', contained = false, locale = 'e
       aria-valuemax={100}
       aria-valuenow={Math.round(progress * 100)}
     >
+      <div ref={surfaceRef} className="hw-scroll-indicator__surface">
       <div className="hw-scroll-indicator__track">
         <div className="hw-scroll-indicator__fill" />
       </div>
@@ -286,6 +344,7 @@ export function ScrollIndicator({ className = '', contained = false, locale = 'e
           );
         })}
       </ol>
+      </div>
     </div>
   );
 }

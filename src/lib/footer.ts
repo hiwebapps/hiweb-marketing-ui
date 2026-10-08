@@ -9,6 +9,7 @@ export type FooterLink = {
 
 export type SiteFooterContent = {
   brand: string;
+  brandMark?: string;
   title: string;
   emailPlaceholder: string;
   menuHeading: string;

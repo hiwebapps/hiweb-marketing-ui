@@ -8,7 +8,7 @@ import { PillarGrid } from '../components/sections/PillarGrid';
 import { PresenceMap } from '../components/sections/PresenceMap';
 import { ProcessPhases } from '../components/sections/ProcessPhases';
 import { TeamGrid } from '../components/sections/TeamGrid';
-import { FinalCta } from '../components/sections/FinalCta';
+import FinalCta from '../components/sections/FinalCtaBand.astro';
 import AboutPageSection from '../components/sections/AboutPageSection.astro';
 import { HOME_PILLARS } from '../data/site';
 import { breadcrumbSchema } from '../lib/schema';
@@ -104,7 +104,7 @@ const historyColumns =
 			title="Presencia con clientes en Norteamérica"
 			description={`Bases en ${site.locales.join(', ')}. Clientes en México, Estados Unidos y Canadá — la auditoría puede ser remota.`}
 		/>
-		<FinalCta client:load title="Hablemos de tu industria" />
+		<FinalCta title="Hablemos de tu industria" />
 		</>
 		)}
 	</main>

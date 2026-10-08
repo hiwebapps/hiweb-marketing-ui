@@ -1,4 +1,5 @@
 import type { ComponentType, SVGProps } from 'react';
+import { NavIcon } from '../sections/NavIcon';
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -91,7 +92,13 @@ const ICONS: Record<ServiceIconName, ComponentType<IconProps>> = {
   ),
 };
 
-export function ServiceIcon({ name, className }: { name: ServiceIconName; className?: string }) {
-  const Icon = ICONS[name] ?? ICONS.spark;
-  return <Icon className={className} />;
+export function ServiceIcon({ name, className }: { name: string; className?: string }) {
+  if (name.startsWith('http') || name.startsWith('/')) {
+    return <img src={name} alt="" className={className} />;
+  }
+  if (name in ICONS) {
+    const Icon = ICONS[name as ServiceIconName];
+    return <Icon className={className} />;
+  }
+  return <NavIcon name={name} />;
 }

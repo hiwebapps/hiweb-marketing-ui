@@ -65,6 +65,25 @@ function uploadedImage(image: unknown): { src: string; alt: string } | undefined
   return { src, alt: imageAlt(image as CmsImage) ?? '' };
 }
 
+/** A front image is either a gallery asset or an older public path. */
+function iconValue(value: unknown): string | undefined {
+  if (typeof value === 'string' && value.trim()) return value.trim();
+  return imageUrl(value as CmsImage);
+}
+
+function focusPicture(image: unknown, legacyAlt: unknown, title: string) {
+  if (typeof image === 'string' && image.trim()) {
+    const alt = typeof legacyAlt === 'string' && legacyAlt.trim() ? legacyAlt : title;
+    return { image, imageAlt: alt };
+  }
+  const asset = image && typeof image === 'object' ? (image as { asset?: { _ref?: string; _id?: string } }).asset : undefined;
+  if (!asset?._ref && !asset?._id) return undefined;
+  const uploaded = uploadedImage(image);
+  if (!uploaded?.src) return undefined;
+  const alt = uploaded.alt || (typeof legacyAlt === 'string' && legacyAlt.trim() ? legacyAlt : title);
+  return { image: uploaded.src, imageAlt: alt };
+}
+
 export function mapIndustry(doc: Record<string, unknown>): IndustryRecord {
   const image = doc.heroImage as CmsImage | undefined;
   return {
@@ -133,11 +152,29 @@ function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data
         eyebrow: text(section.eyebrow),
         title: text(section.title),
         description: text(section.description),
-        pillars: Array.isArray(section.pillars) ? (section.pillars as TitledBlock[]) : [],
+        pillars: Array.isArray(section.pillars)
+          ? (section.pillars as { title?: string; description?: string; icon?: string }[])
+              .filter((pillar) => pillar.title && pillar.description)
+              .map((pillar) => ({
+                title: String(pillar.title),
+                description: String(pillar.description),
+                icon: typeof pillar.icon === 'string' ? pillar.icon : undefined,
+              }))
+          : [],
         retos: Array.isArray(section.retos) ? section.retos.map(String) : [],
       }];
     }
     if (type === 'industryServices') {
+      const items = Array.isArray(section.blurbs)
+        ? (section.blurbs as { slug?: string; nombre?: string; description?: string; icon?: string }[])
+            .filter((item) => item.slug)
+            .map((item) => ({
+              slug: String(item.slug),
+              nombre: item.nombre ? String(item.nombre) : undefined,
+              description: item.description ? String(item.description) : undefined,
+              icon: item.icon ? String(item.icon) : undefined,
+            }))
+        : [];
       return [{
         _type: 'industryServices' as const,
         eyebrow: text(section.eyebrow),
@@ -147,6 +184,7 @@ function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data
         catalogHref: text(section.catalogHref),
         ctaLabel: text(section.ctaLabel),
         tagLabel: text(section.tagLabel),
+        items,
       }];
     }
     if (type === 'industryCases') {
@@ -284,7 +322,7 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
               .map((step) => ({
                 title: String(step.title),
                 description: String(step.description ?? ''),
-                icon: step.icon ? String(step.icon) : undefined,
+                icon: iconValue(step.icon),
                 accent: step.accent ? String(step.accent) : undefined,
               }))
           : [];
@@ -298,17 +336,23 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
       }
       if (type === 'serviceFocus') {
         const items = Array.isArray(section.items)
-          ? (section.items as { title?: string; summary?: string; detailTitle?: string; detail?: string; icon?: string; image?: string; imageAlt?: string }[])
-              .filter((item) => item.title && item.image)
-              .map((item) => ({
-                title: String(item.title),
-                summary: String(item.summary ?? ''),
-                detailTitle: String(item.detailTitle ?? item.title),
-                detail: String(item.detail ?? ''),
-                icon: String(item.icon ?? 'layers'),
-                image: String(item.image),
-                imageAlt: String(item.imageAlt ?? item.title),
-              }))
+          ? (section.items as { title?: string; summary?: string; detailTitle?: string; detail?: string; icon?: string; image?: unknown; imageAlt?: string }[])
+              .flatMap((item) => {
+                if (!item.title) return [];
+                const picture = focusPicture(item.image, item.imageAlt, String(item.title));
+                if (!picture) return [];
+                return [
+                  {
+                    title: String(item.title),
+                    summary: String(item.summary ?? ''),
+                    detailTitle: String(item.detailTitle ?? item.title),
+                    detail: String(item.detail ?? ''),
+                    icon: iconValue(item.icon) ?? 'layers',
+                    image: picture.image,
+                    imageAlt: picture.imageAlt,
+                  },
+                ];
+              })
           : [];
         return {
           _type: 'serviceFocus' as const,
@@ -325,7 +369,7 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
               .map((card) => ({
                 title: String(card.title),
                 description: String(card.description ?? ''),
-                icon: String(card.icon ?? 'spark'),
+                icon: iconValue(card.icon) ?? 'spark',
                 accent: String(card.accent ?? 'purple'),
               }))
           : [];
@@ -357,7 +401,7 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
                 slug: String(item.slug),
                 nombre: String(item.nombre ?? item.slug),
                 tagline: String(item.taglineResolved ?? item.tagline ?? ''),
-                icon: item.icon ? String(item.icon) : undefined,
+                icon: iconValue(item.icon),
                 puntos: Array.isArray(item.puntos) ? item.puntos.map(String) : [],
               }))
           : [];
@@ -402,7 +446,17 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
         };
       }
       if (type === 'servicePitch') {
-        return section as ServiceSection;
+        const picture = focusPicture(section.image, section.imageAlt, String(section.title ?? ''));
+        return {
+          _type: 'servicePitch' as const,
+          badge: section.badge ? String(section.badge) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          image: picture?.image,
+          imageAlt: picture?.imageAlt,
+          ctaLabel: section.ctaLabel ? String(section.ctaLabel) : undefined,
+          ctaHref: section.ctaHref ? String(section.ctaHref) : undefined,
+        };
       }
       return null;
       })();
@@ -447,6 +501,8 @@ export function mapService(doc: Record<string, unknown>): ServiceRecord {
       nombre: String(doc.nombre ?? ''),
       orden: Number(doc.orden ?? 0),
       tagline: String(doc.tagline ?? ''),
+      cardImage: typeof doc.cardImage === 'string' ? doc.cardImage : undefined,
+      cardIcon: typeof doc.cardIcon === 'string' ? doc.cardIcon : undefined,
       heroTitle: String(doc.heroTitle || (hero?._type === 'serviceHero' ? hero.title : '') || ''),
       heroDescription:
         (doc.heroDescription ? String(doc.heroDescription) : undefined) ||
@@ -578,7 +634,6 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
           _type: 'caseMetrics',
           eyebrow: asText(section.eyebrow),
           title: asText(section.title),
-          titleMuted: asText(section.titleMuted),
           description: asText(section.description),
           metricas: asMetrics(section.items),
           primaryLabel: primary?.label,
@@ -755,6 +810,26 @@ export function mapPost(doc: Record<string, unknown>): PostRecord {
   };
 }
 
+function asPeople(value: unknown): PersonRecord[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item) => item && typeof item === 'object' && (item as { name?: string }).name)
+    .map((item) => mapPerson(item as Record<string, unknown>));
+}
+
+function asTeamFilters(value: unknown): AboutCopy['teamFilters'] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((item) => {
+    if (!item || typeof item !== 'object') return [];
+    const row = item as { id?: string; label?: string; members?: unknown };
+    const label = text(row.label);
+    if (!label) return [];
+    const id = row.id === 'all' || row.id === 'web' || row.id === 'redes' || row.id === 'diseno' ? row.id : undefined;
+    const members = Array.isArray(row.members) ? asPeople(row.members) : undefined;
+    return [{ id, label, members }];
+  });
+}
+
 export function mapPerson(doc: Record<string, unknown>): PersonRecord {
   const photo = doc.photo as CmsImage | undefined;
   const category = doc.category === 'web' || doc.category === 'diseno' ? doc.category : 'redes';
@@ -775,7 +850,6 @@ function asIntro(value: unknown): HomeCopy['pillarIntro'] {
   return {
     eyebrow: item.eyebrow ? String(item.eyebrow) : undefined,
     title: item.title ? String(item.title) : undefined,
-    titleMuted: item.titleMuted ? String(item.titleMuted) : undefined,
     description: item.description ? String(item.description) : undefined,
     headingWidth: asHeadingWidth(item.headingWidth),
   };
@@ -819,6 +893,8 @@ function asServiceCards(value: unknown): HomeCopy['serviceCards'] {
       id: String(item.id),
       nombre: String(item.nombre ?? ''),
       tagline: String(item.tagline ?? ''),
+      image: typeof item.image === 'string' ? item.image : undefined,
+      icon: typeof item.icon === 'string' ? item.icon : undefined,
     }));
 }
 
@@ -831,6 +907,7 @@ function asIndustryCards(value: unknown): HomeCopy['industryCards'] {
       nombre: String(item.nombre ?? ''),
       tagline: String(item.tagline ?? ''),
       puntos: Array.isArray(item.puntos) ? item.puntos.map((punto) => String(punto)) : [],
+      icon: typeof item.icon === 'string' ? item.icon : undefined,
     }));
 }
 
@@ -879,6 +956,7 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
         title: section.title ? String(section.title) : undefined,
         description: section.description ? String(section.description) : undefined,
         memberLocale: section.memberLocale === 'en' ? 'en' : section.memberLocale === 'es' ? 'es' : undefined,
+        leaders: asPeople(section.leaders),
         ctaLabel: section.ctaLabel ? String(section.ctaLabel) : undefined,
         ctaHref: section.ctaHref ? String(section.ctaHref) : undefined,
         headingWidth: asHeadingWidth(section.headingWidth),
@@ -1033,7 +1111,7 @@ function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
         ctaHref: text(section.ctaHref),
         memberLocale: section.memberLocale === 'en' ? 'en' : section.memberLocale === 'es' ? 'es' : undefined,
         filterLabel: text(section.filterLabel),
-        filters: Array.isArray(section.filters) ? (section.filters as AboutCopy['teamFilters']) : [],
+        filters: asTeamFilters(section.filters),
       }];
     }
     if (type === 'aboutMap') {
@@ -1160,7 +1238,8 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
               }))
           : [],
       };
-    case 'industryGrid':
+    case 'industryGrid': {
+      const cards = Array.isArray(doc.cards) && doc.cards.length ? doc.cards : doc.industries;
       return {
         _type: 'industryGrid',
         source: asSource(doc.source),
@@ -1168,19 +1247,23 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
         title: doc.title ? String(doc.title) : undefined,
         description: doc.description ? String(doc.description) : undefined,
         tone: asTone(doc.tone),
-        industries: Array.isArray(doc.industries)
-          ? (doc.industries as Array<{ id?: string; nombre?: string; tagline?: string; porQue?: { title?: string }[] }>)
+        industries: Array.isArray(cards)
+          ? (cards as Array<{ id?: string; nombre?: string; tagline?: string; icon?: string; puntos?: string[]; porQue?: { title?: string }[] }>)
               .filter((item) => item.id)
               .map((item) => ({
                 id: String(item.id),
                 nombre: String(item.nombre ?? ''),
                 tagline: String(item.tagline ?? ''),
-                puntos: Array.isArray(item.porQue)
-                  ? item.porQue.map((punto) => String(punto.title ?? '')).filter(Boolean)
-                  : undefined,
+                icon: typeof item.icon === 'string' ? item.icon : undefined,
+                puntos: Array.isArray(item.puntos)
+                  ? item.puntos.map((punto) => String(punto)).filter(Boolean)
+                  : Array.isArray(item.porQue)
+                    ? item.porQue.map((punto) => String(punto.title ?? '')).filter(Boolean)
+                    : undefined,
               }))
           : [],
       };
+    }
     case 'processPhases': {
       const phases: ProcessPhase[] = Array.isArray(doc.phases)
         ? (doc.phases as Array<{ index?: string; title?: string; description?: string }>).map(
@@ -1259,7 +1342,6 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
         _type: 'metricsBand',
         eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
         title: doc.title ? String(doc.title) : undefined,
-        titleMuted: doc.titleMuted ? String(doc.titleMuted) : undefined,
         description: doc.description ? String(doc.description) : undefined,
         metrics: Array.isArray(doc.metrics)
           ? (doc.metrics as Array<{

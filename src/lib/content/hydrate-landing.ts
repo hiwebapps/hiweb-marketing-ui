@@ -26,7 +26,7 @@ export function hydrateLanding(page: LandingPage, catalogs: LandingCatalogs): La
         })),
       };
     }
-    if (section._type === 'industryGrid' && section.source !== 'refs') {
+    if (section._type === 'industryGrid' && section.industries.length === 0 && section.source !== 'refs') {
       return {
         ...section,
         industries: catalogs.industries.map((item) => ({

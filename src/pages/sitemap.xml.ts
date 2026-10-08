@@ -30,8 +30,6 @@ export const GET: APIRoute = async ({ url, site }) => {
 
   const urls = [
     '/',
-    '/servicios',
-    '/industrias',
     '/portafolio',
     '/blog',
     '/nosotros',

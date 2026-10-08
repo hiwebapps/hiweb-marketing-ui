@@ -268,9 +268,11 @@
   color: var(--industry-accent);
 }
 
-.industry-slide__icon svg {
+.industry-slide__icon svg,
+.industry-slide__icon img {
   width: 1.45rem;
   height: 1.45rem;
+  object-fit: contain;
 }
 
 .industry-slide__copy {

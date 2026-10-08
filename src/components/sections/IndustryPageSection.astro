@@ -4,7 +4,7 @@ import { IndustryServices, type IndustryServiceCard } from './IndustryServices';
 import { PillarGrid } from './PillarGrid';
 import { CaseStories, type CaseStory } from './CaseStories';
 import { FaqSection } from './FaqSection';
-import { FinalCta } from './FinalCta';
+import FinalCta from './FinalCtaBand.astro';
 import type { IndustrySection } from '../../lib/content/types';
 
 interface Props {
@@ -99,7 +99,6 @@ const lower = nombre.toLowerCase();
 {
 	section._type === 'industryCta' && (
 		<FinalCta
-			client:load
 			title={section.title || `Agenda un diagnóstico para ${lower}`}
 			headingWidth={section.headingWidth}
 		/>

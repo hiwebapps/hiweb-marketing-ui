@@ -8,7 +8,7 @@ import { CaseStories } from '../../components/sections/CaseStories';
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { MetricsBand } from '../../components/sections/MetricsBand';
 import { FaqSection } from '../../components/sections/FaqSection';
-import { FinalCta } from '../../components/sections/FinalCta';
+import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import { PillarGrid } from '../../components/sections/PillarGrid';
 import { ServiceGrid } from '../../components/sections/ServiceGrid';
 import { TeamGrid } from '../../components/sections/TeamGrid';
@@ -24,18 +24,31 @@ import type { TeamMember } from '../../components/sections/TeamGrid';
 const home = await getHomeCopy('en');
 const site = await getSiteSettings();
 const people = (await getPeople(home.team?.memberLocale === 'es' ? 'es' : 'en')) as TeamMember[];
+const leaders = (home.team?.leaders ?? []) as TeamMember[];
 const industriesIndex = await getIndustriesIndex();
-const industryCards = (await getIndustries('en')).map((item) => ({
-	slug: item.id,
-	nombre: item.data.nombre,
-	tagline: item.data.tagline,
-	puntos: item.data.porQue.map((punto) => punto.title),
-}));
-const services = (await getServices('en')).map((item) => ({
-	id: item.id,
-	nombre: item.data.nombre,
-	tagline: item.data.tagline,
-}));
+const industryCards = home.industryCards?.length
+	? home.industryCards.map((item) => ({
+			slug: item.id,
+			nombre: item.nombre,
+			tagline: item.tagline,
+			puntos: item.puntos,
+			icon: item.icon,
+		}))
+	: (await getIndustries('en')).map((item) => ({
+			slug: item.id,
+			nombre: item.data.nombre,
+			tagline: item.data.tagline,
+			puntos: item.data.porQue.map((punto) => punto.title),
+		}));
+const services = home.serviceCards?.length
+	? home.serviceCards
+	: (await getServices('en')).map((item) => ({
+			id: item.id,
+			nombre: item.data.nombre,
+			tagline: item.data.tagline,
+			image: item.data.cardImage,
+			icon: item.data.cardIcon,
+		}));
 const heroSlides = (home.heroCases?.length
 	? home.heroCases
 			.filter((item) => item.image)
@@ -143,6 +156,8 @@ const sectionOrder = home.hasSections
 							slug: item.id,
 							nombre: item.nombre,
 							tagline: item.tagline,
+							image: item.image,
+							icon: item.icon,
 						}))}
 						eyebrow={home.serviceIntro?.eyebrow}
 						title={home.serviceIntro?.title}
@@ -204,7 +219,6 @@ const sectionOrder = home.hasSections
 						metrics={metrics}
 						eyebrow={home.metricsIntro?.eyebrow}
 						title={home.metricsIntro?.title}
-						titleMuted={home.metricsIntro?.titleMuted}
 						description={home.metricsIntro?.description}
 						primaryLabel={home.primaryCta?.label}
 						primaryHref={home.primaryCta?.href}
@@ -219,8 +233,11 @@ const sectionOrder = home.hasSections
 					<TeamGrid
 						key={type}
 						client:visible
-						limit={4}
-						members={people}
+						slider
+						previousLabel="Previous teammate"
+						nextLabel="Next teammate"
+						positionLabel="Go to slide"
+						members={leaders.length ? leaders : people.slice(0, 4)}
 						eyebrow={home.team?.eyebrow}
 						title={home.team?.title}
 						description={home.team?.description}
@@ -235,7 +252,6 @@ const sectionOrder = home.hasSections
 					<FaqSection
 						key={type}
 						client:visible
-						constrainAnswers
 						categories={faqCategories}
 						eyebrow={home.faqIntro?.eyebrow}
 						title={home.faqIntro?.title}
@@ -248,7 +264,6 @@ const sectionOrder = home.hasSections
 				return (
 					<FinalCta
 						key={type}
-						client:load
 						badge={home.closing?.badge}
 						title={home.closing?.title}
 						description={home.closing?.description}

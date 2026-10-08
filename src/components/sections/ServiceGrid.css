@@ -96,9 +96,33 @@
   backdrop-filter: blur(10px);
 }
 
-.service-card__icon svg {
+.service-card__icon svg,
+.service-card__icon img,
+.service-card__icon .service-card__glyph {
   width: 1.15rem;
   height: 1.15rem;
+  object-fit: contain;
+}
+
+.service-card__icon svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.service-card__glyph {
+  display: block;
+  background-color: currentColor;
+  -webkit-mask-image: var(--service-glyph);
+  mask-image: var(--service-glyph);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 
 .service-card__copy {

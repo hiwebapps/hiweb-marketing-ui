@@ -115,13 +115,12 @@
 }
 
 .site-footer__brand {
-  margin: 0 0 1rem;
-  color: rgb(245 245 245 / 0.55);
-  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  display: block;
+  width: auto;
+  height: 1.75rem;
+  margin: 0 0 1.15rem;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .site-footer__title {
@@ -135,52 +134,10 @@
   line-height: 1.12;
 }
 
-.site-footer__form {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  width: min(100%, 22rem);
+.site-footer__audit {
   margin-top: 2.1rem;
-  padding-bottom: 0.55rem;
-  border-bottom: 1px solid rgb(255 255 255 / 0.22);
 }
 
-.site-footer__input {
-  flex: 1 1 auto;
-  min-width: 0;
-  margin: 0;
-  padding: 0.35rem 0;
-  border: 0;
-  background: transparent;
-  color: var(--footer-canvas);
-  font-family: var(--font-sans, Inter, system-ui, sans-serif);
-  font-size: 0.95rem;
-  outline: none;
-}
-
-.site-footer__input::placeholder {
-  color: rgb(245 245 245 / 0.42);
-}
-
-.site-footer__submit {
-  display: grid;
-  flex-shrink: 0;
-  place-items: center;
-  width: 2.1rem;
-  height: 2.1rem;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--footer-canvas);
-  cursor: pointer;
-}
-
-.site-footer__submit svg {
-  width: 1rem;
-  height: 1rem;
-}
-
-.site-footer__submit:focus-visible,
 .site-footer__icon:focus-visible,
 .site-footer__col a:focus-visible,
 .site-footer__legal a:focus-visible {
@@ -292,9 +249,6 @@
 
 .site-footer__totop {
   margin-left: auto;
-  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
-  font-weight: 500;
-  letter-spacing: 0.02em;
 }
 
 .site-footer__totop:focus-visible {

@@ -4,6 +4,7 @@ import { ImageIcon } from '@sanity/icons/Image';
 import { RocketIcon } from '@sanity/icons/Rocket';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
+import { personReferenceMember } from './person';
 import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
@@ -207,40 +208,31 @@ export const aboutTeam = defineType({
       name: 'filters',
       title: 'Filtros',
       type: 'array',
-      description: 'El texto es lo que ve el visitante. La categoría solo une el botón con las personas de Equipo.',
+      description:
+        'Cada filtro tiene el nombre que ve el visitante y las fichas de Equipo, en el orden en que aparecen.',
       of: [
         defineArrayMember({
           type: 'object',
           fields: [
             defineField({
-              name: 'id',
-              title: 'Categoría',
+              name: 'label',
+              title: 'Nombre del filtro',
               type: 'string',
-              options: {
-                list: [
-                  { title: 'Todos', value: 'all' },
-                  { title: 'Web', value: 'web' },
-                  { title: 'Redes', value: 'redes' },
-                  { title: 'Diseño', value: 'diseno' },
-                ],
-              },
+              validation: (rule) => rule.required(),
             }),
-            defineField({ name: 'label', title: 'Texto', type: 'string' }),
+            defineField({
+              name: 'members',
+              title: 'Integrantes',
+              type: 'array',
+              of: [personReferenceMember()],
+              validation: (rule) => rule.unique(),
+            }),
           ],
           preview: {
-            select: { title: 'label', category: 'id' },
-            prepare: ({ title, category }) => ({
+            select: { title: 'label', members: 'members' },
+            prepare: ({ title, members }) => ({
               title: title || 'Filtro',
-              subtitle:
-                category === 'all'
-                  ? 'Todos'
-                  : category === 'web'
-                    ? 'Web'
-                    : category === 'redes'
-                      ? 'Redes'
-                      : category === 'diseno'
-                        ? 'Diseño'
-                        : category,
+              subtitle: `${Array.isArray(members) ? members.length : 0} integrantes`,
             }),
           },
         }),

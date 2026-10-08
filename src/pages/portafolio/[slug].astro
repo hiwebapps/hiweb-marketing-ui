@@ -10,7 +10,7 @@ import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { MetricsBand } from '../../components/sections/MetricsBand';
 import { CaseStories } from '../../components/sections/CaseStories';
 import { CaseCards } from '../../components/sections/CasesIndex';
-import { FinalCta } from '../../components/sections/FinalCta';
+import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import { breadcrumbSchema } from '../../lib/schema';
 import { postCoverUrl } from '../../lib/blog';
 import { formatCaseStat } from '../../lib/content/format';
@@ -70,7 +70,6 @@ const sections: CasePageSection[] = entry.data.sections?.length
 				_type: 'caseMetrics',
 				eyebrow: 'Cifras',
 				title: 'Antes y después',
-				titleMuted: 'en cifras verificables',
 				description: 'Baseline incluido cuando aplica. Números de negocio, no recortes de Ads Manager.',
 				metricas: entry.data.metricas,
 			},
@@ -199,7 +198,6 @@ const sections: CasePageSection[] = entry.data.sections?.length
 						}))}
 						eyebrow={section.eyebrow}
 						title={section.title}
-						titleMuted={section.titleMuted}
 						description={section.description}
 						primaryLabel={section.primaryLabel}
 						primaryHref={section.primaryHref}
@@ -263,7 +261,6 @@ const sections: CasePageSection[] = entry.data.sections?.length
 			if (section._type === 'caseCta') {
 				return (
 					<FinalCta
-						client:load
 						badge={section.badge}
 						title={section.title ?? 'Agenda un diagnóstico similar'}
 						description={section.description}

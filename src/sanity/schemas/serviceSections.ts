@@ -48,6 +48,24 @@ const processIcons = [
   { title: 'Tendencia', value: 'trend' },
 ];
 
+function iconFields(list: { title: string; value: string }[]) {
+  return [
+    defineField({
+      name: 'icon',
+      title: 'Icono',
+      type: 'string',
+      options: { list },
+    }),
+    defineField({
+      name: 'iconImage',
+      title: 'Icono desde la galería',
+      type: 'image',
+      description: 'Opcional. Un SVG o PNG reemplaza el icono de la lista. Si lo dejas vacío, se usa el de arriba.',
+      options: { accept: 'image/svg+xml,image/png,image/webp' },
+    }),
+  ];
+}
+
 const accents = [
   { title: 'Morado', value: 'purple' },
   { title: 'Cian', value: 'cyan' },
@@ -65,12 +83,11 @@ export const serviceFocusItem = defineType({
     defineField({ name: 'summary', title: 'Resumen', type: 'text', rows: 2 }),
     defineField({ name: 'detailTitle', title: 'Título del detalle', type: 'string' }),
     defineField({ name: 'detail', title: 'Detalle', type: 'text', rows: 4 }),
-    defineField({ name: 'icon', title: 'Icono', type: 'string', options: { list: pillarIcons } }),
-    defineField({ name: 'image', title: 'Imagen', type: 'string', description: 'Ruta, por ejemplo /images/services/seo.jpg' }),
-    defineField({ name: 'imageAlt', title: 'Texto alternativo', type: 'string' }),
+    ...iconFields(pillarIcons),
+    imageWithAlt({ name: 'image', title: 'Imagen' }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'summary' },
+    select: { title: 'title', subtitle: 'summary', media: 'image' },
   },
 });
 
@@ -81,7 +98,7 @@ export const serviceWhyCard = defineType({
   fields: [
     defineField({ name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 3 }),
-    defineField({ name: 'icon', title: 'Icono', type: 'string', options: { list: serviceIcons } }),
+    ...iconFields(serviceIcons),
     defineField({ name: 'accent', title: 'Color', type: 'string', options: { list: accents } }),
   ],
   preview: {
@@ -99,16 +116,28 @@ export const serviceIndustryItem = defineType({
       title: 'Industria',
       type: 'reference',
       to: [{ type: 'industry' }],
+      description: 'A dónde lleva el botón de la card.',
       validation: (rule) => rule.required(),
     }),
-    defineField({ name: 'title', title: 'Nombre', type: 'string' }),
-    defineField({ name: 'tagline', title: 'Párrafo', type: 'text', rows: 2 }),
-    defineField({ name: 'icon', title: 'Icono', type: 'string', options: { list: industryIcons } }),
+    defineField({
+      name: 'title',
+      title: 'Nombre',
+      type: 'string',
+      description: 'El nombre que se lee en la card.',
+    }),
+    defineField({
+      name: 'tagline',
+      title: 'Párrafo',
+      type: 'text',
+      rows: 2,
+      description: 'El párrafo debajo del nombre.',
+    }),
+    ...iconFields(industryIcons),
     defineField({
       name: 'puntos',
       title: 'Bullets',
       type: 'array',
-      description: 'Quita un ítem para que no aparezca en la card. Si la lista queda vacía, la card no muestra bullets.',
+      description: 'Cada renglón es un bullet. El sitio pone el número. Quita un renglón para que deje de aparecer.',
       of: [defineArrayMember({ type: 'string' })],
     }),
   ],
@@ -127,7 +156,7 @@ export const serviceProcessStep = defineType({
   fields: [
     defineField({ name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
-    defineField({ name: 'icon', title: 'Icono', type: 'string', options: { list: processIcons } }),
+    ...iconFields(processIcons),
     defineField({ name: 'accent', title: 'Color', type: 'string', options: { list: accents } }),
   ],
   preview: {
@@ -212,8 +241,14 @@ export const servicePitch = defineType({
     headingTitleField(),
     headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 3 }),
-    defineField({ name: 'image', title: 'Imagen', type: 'string', description: 'Ruta, por ejemplo /images/services/seo.jpg' }),
-    defineField({ name: 'imageAlt', title: 'Texto alternativo', type: 'string' }),
+    defineField({
+      name: 'image',
+      title: 'Ruta actual',
+      type: 'string',
+      description: 'La foto que ya usa la página. Si eliges una imagen abajo, esta ruta deja de usarse.',
+    }),
+    defineField({ name: 'imageAlt', title: 'Texto alternativo de la ruta', type: 'string' }),
+    imageWithAlt({ name: 'picture', title: 'Imagen' }),
     defineField({ name: 'ctaLabel', title: 'Texto del botón', type: 'string' }),
     defineField({ name: 'ctaHref', title: 'URL del botón', type: 'string' }),
   ],
@@ -326,7 +361,7 @@ export const serviceIndustries = defineType({
       name: 'items',
       title: 'Cards',
       type: 'array',
-      description: 'Orden, copy e icono de cada industria en esta página.',
+      description: 'Cada fila es una card de esta página. Ahí se editan el nombre, el párrafo, los bullets y el icono.',
       of: [defineArrayMember({ type: 'serviceIndustryItem' })],
     }),
   ],

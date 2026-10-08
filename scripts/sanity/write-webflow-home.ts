@@ -57,7 +57,6 @@ function intro(value: NonNullable<typeof WEBFLOW_HOME.pillarIntro>, type = 'sect
     _type: type,
     eyebrow: value.eyebrow,
     title: value.title,
-    titleMuted: value.titleMuted,
     description: value.description,
   };
 }

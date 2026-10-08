@@ -43,10 +43,18 @@ export const footer = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'brandMark',
+      title: 'Icono',
+      type: 'image',
+      description: 'El isotipo arriba del título. Si lo dejas vacío, se usa el icono de Hiweb.',
+      options: { hotspot: false, accept: 'image/svg+xml,image/png,image/webp' },
+    }),
+    defineField({
       name: 'brand',
       title: 'Marca',
       type: 'string',
-      description: 'El nombre corto arriba del título.',
+      description: 'No se muestra. Arriba del título va el icono.',
+      hidden: true,
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -61,6 +69,7 @@ export const footer = defineType({
       name: 'emailPlaceholder',
       title: 'Texto del campo de email',
       type: 'string',
+      hidden: true,
     }),
     defineField({
       name: 'menuHeading',

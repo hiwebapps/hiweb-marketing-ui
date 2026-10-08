@@ -67,9 +67,11 @@
   color: var(--color-ink);
 }
 
-.proceso__icon svg {
+.proceso__icon svg,
+.proceso__icon img {
   width: 1.55rem;
   height: 1.55rem;
+  object-fit: contain;
 }
 
 .proceso__rail {

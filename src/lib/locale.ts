@@ -32,6 +32,14 @@ export function localePath(pathname: string, locale: Locale): string {
   return bare === '/' ? '/en' : `/en${bare}`;
 }
 
+const RETIRED_CATALOG_PATHS = new Set(['/industrias', '/servicios', '/en/industrias', '/en/servicios']);
+
+/** Index pages for industries and services are gone. Individual pages stay. */
+export function isRetiredCatalogPath(href: string) {
+  const path = href.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
+  return RETIRED_CATALOG_PATHS.has(path);
+}
+
 export const CHROME = {
   es: {
     about: 'Nosotros',

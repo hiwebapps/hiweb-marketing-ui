@@ -11,6 +11,8 @@ type FinalCtaProps = {
   secondaryLabel?: string;
   secondaryHref?: string;
   headingWidth?: string;
+  /** Shared marquee photos. Empty keeps the current set. */
+  images?: string[];
 };
 
 type MarqueeCard = {
@@ -53,6 +55,23 @@ const ROWS: MarqueeCard[][] = [
   ],
 ];
 
+const CARD_SIZES: MarqueeCard['size'][] = ['m', 'l', 's', 'xl'];
+
+function marqueeRows(images?: string[]): MarqueeCard[][] {
+  const urls = (images ?? []).map((src) => src.trim()).filter(Boolean);
+  if (urls.length === 0) return ROWS;
+  const rows = ROWS.map((row) => row.map((card) => ({ ...card })));
+  const slots = rows.flat();
+  slots.forEach((slot, index) => {
+    slot.src = urls[index % urls.length];
+  });
+  urls.slice(slots.length).forEach((src, index) => {
+    const at = slots.length + index;
+    rows[at % rows.length].push({ src, size: CARD_SIZES[at % CARD_SIZES.length] });
+  });
+  return rows;
+}
+
 function MarqueeRow({ cards, reverse }: { cards: MarqueeCard[]; reverse: boolean }) {
   const loop = [...cards, ...cards];
 
@@ -82,13 +101,15 @@ export function FinalCta({
   primaryLabel = 'Agenda tu auditoría',
   primaryHref = '/contacto',
   headingWidth,
+  images,
 }: FinalCtaProps) {
   const width = headingProps(headingWidth);
+  const rows = marqueeRows(images);
   return (
     <section id="contacto" className="final-cta" data-scroll-section="contacto">
       <div className="final-cta__panel">
         <div className="final-cta__marquee" aria-hidden="true">
-          {ROWS.map((cards, index) => (
+          {rows.map((cards, index) => (
             <MarqueeRow key={index} cards={cards} reverse={index % 2 === 0} />
           ))}
         </div>

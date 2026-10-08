@@ -14,11 +14,26 @@ const SPANISH_SERVICE_SLUG = new Map(
   Object.entries(EN_SERVICE_SLUG).map(([spanish, english]) => [english, spanish]),
 );
 
+/** Public slugs on the service drafts, keyed back to the photo and icon maps. */
+const SERVICE_SLUG_ALIAS: Record<string, string> = {
+  'gestion-de-redes-sociales': 'redes-sociales',
+  'agencia-seo': 'seo',
+  'agencia-de-facebook-ads': 'meta-ads',
+  'agencia-de-google-ads': 'google-ads',
+  'agencia-de-branding': 'branding',
+  'crm-para-empresas': 'crm-automatizacion',
+  'servicio-de-community-manager': 'community-manager',
+  'marketing-con-inteligencia-artificial': 'ia-marketing',
+  'agencia-de-desarrollo-web': 'desarrollo-web',
+  'web-design-and-development': 'desarrollo-web',
+};
+
 export function englishServiceSlug(slug: string) {
   return EN_SERVICE_SLUG[slug] ?? slug;
 }
 
 /** Asset and copy maps are keyed by the Spanish slug. */
 export function serviceContentKey(slug: string) {
-  return SPANISH_SERVICE_SLUG.get(slug) ?? slug;
+  const clean = slug.replace(/\u200b/g, '');
+  return SPANISH_SERVICE_SLUG.get(clean) ?? SERVICE_SLUG_ALIAS[clean] ?? clean;
 }

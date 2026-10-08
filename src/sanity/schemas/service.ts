@@ -1,4 +1,6 @@
 import { defineField, defineType } from 'sanity';
+import { NavIconInput } from '../components/NavIconInput';
+import { navIcons } from './navigation';
 import { serviceSectionMembers } from './serviceSections';
 import { seoFields } from './shared';
 
@@ -72,6 +74,32 @@ export const service = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'cardImage',
+      title: 'Imagen de la card',
+      type: 'image',
+      group: 'content',
+      description:
+        'Fondo de la card en el bento de Servicios. Si la dejas vacía, la card sigue con la foto que ya tiene.',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'cardIcon',
+      title: 'Icono de la card',
+      type: 'string',
+      group: 'content',
+      description: 'El dibujo de la card en el bento y el icono por defecto en las páginas de industria.',
+      options: { list: navIcons },
+      components: { input: NavIconInput },
+    }),
+    defineField({
+      name: 'cardIconImage',
+      title: 'Icono desde la galería',
+      type: 'image',
+      group: 'content',
+      description: 'Opcional. Un SVG o PNG reemplaza el icono de la lista.',
+      options: { accept: 'image/svg+xml,image/png,image/webp' },
+    }),
+    defineField({
       name: 'sections',
       title: 'Secciones',
       type: 'array',
@@ -98,7 +126,7 @@ export const service = defineType({
     },
   ],
   preview: {
-    select: { title: 'nombre', locale: 'locale', media: 'sections.0.image' },
+    select: { title: 'nombre', locale: 'locale', media: 'cardImage' },
     prepare: ({ title, locale }) => ({
       title: title || 'Servicio',
       subtitle: locale === 'en' ? 'English' : 'Español',

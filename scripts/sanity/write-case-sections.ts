@@ -113,7 +113,6 @@ function sectionsFor(doc: CaseDoc) {
       _type: 'caseMetrics',
       eyebrow: 'Cifras',
       title: 'Antes y después',
-      titleMuted: 'en cifras verificables',
       description: 'Baseline incluido cuando aplica. Números de negocio, no recortes de Ads Manager.',
       items: (doc.metricas ?? [])
         .filter((item) => item.label)

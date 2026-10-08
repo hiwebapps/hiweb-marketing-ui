@@ -13,7 +13,7 @@ import { caseSectionTypes } from './caseSections';
 import { homePage } from './homePage';
 import { homeSectionTypes, homeServiceItem } from './homeSections';
 import { industriesIndex, industry } from './industry';
-import { industrySectionTypes } from './industrySections';
+import { industryPillar, industrySectionTypes } from './industrySections';
 import { person } from './person';
 import { service } from './service';
 import { serviceSectionTypes } from './serviceSections';
@@ -29,6 +29,7 @@ import {
   servicePlan,
   titledBlock,
 } from './shared';
+import { ctaBackdrop } from './ctaBackdrop';
 import { footer, footerLink } from './footer';
 import { navBarItem, navGroup, navLink, navigation } from './navigation';
 import { redirect } from './redirect';
@@ -54,6 +55,7 @@ export const schemaTypes = [
   ...homeSectionTypes,
   ...serviceSectionTypes,
   ...caseSectionTypes,
+  industryPillar,
   ...industrySectionTypes,
   ...aboutSectionTypes,
   navLink,
@@ -62,6 +64,7 @@ export const schemaTypes = [
   navigation,
   footerLink,
   footer,
+  ctaBackdrop,
   redirect,
   siteSettings,
   servicesIndex,

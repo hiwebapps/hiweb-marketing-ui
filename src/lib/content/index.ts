@@ -18,6 +18,7 @@ import {
   sanityCases,
   sanityCatalogIndex,
   sanityFavicon,
+  sanityCtaBackdrop,
   sanityFooter,
   sanityLegalPage,
   sanitySiteIdentity,
@@ -111,6 +112,14 @@ export async function getFavicon() {
     () => sanityFavicon(),
     () => null,
     (value) => !value,
+  );
+}
+
+export async function getCtaBackdrop() {
+  return withFallback(
+    () => sanityCtaBackdrop(),
+    () => [] as string[],
+    (value) => value.length === 0,
   );
 }
 

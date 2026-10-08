@@ -257,7 +257,14 @@ export const industryGrid = defineType({
       title: 'Industrias',
       type: 'array',
       of: [defineArrayMember({ type: 'reference', to: [{ type: 'industry' }] })],
-      hidden: ({ parent }) => parent?.source !== 'refs',
+      hidden: true,
+    }),
+    defineField({
+      name: 'items',
+      title: 'Cards',
+      type: 'array',
+      description: 'Cada fila es una card. Ahí se editan el nombre, el párrafo, los bullets y el icono. Arrastra para el orden.',
+      of: [defineArrayMember({ type: 'serviceIndustryItem' })],
     }),
     ...headerFields(),
     toneField(),
@@ -419,7 +426,6 @@ export const metricsBand = defineType({
   icon: TrendUpwardIcon,
   fields: [
     ...headerFields(),
-    defineField({ name: 'titleMuted', title: 'Título muted', type: 'string' }),
     defineField({
       name: 'metrics',
       title: 'Métricas',
