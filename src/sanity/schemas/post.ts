@@ -157,6 +157,14 @@ export const post = defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'readingMinutes',
+      title: 'Minutos de lectura',
+      type: 'number',
+      group: 'content',
+      description: 'Si lo dejas vacío, se calcula del cuerpo a 200 palabras por minuto.',
+      validation: (rule) => rule.min(1).max(180).integer(),
+    }),
+    defineField({
       name: 'categoriaServicio',
       title: 'Categoría servicio',
       type: 'reference',

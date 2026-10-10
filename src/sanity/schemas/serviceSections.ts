@@ -469,6 +469,7 @@ export const serviceSectionMembers: ArrayOfObjectsMember[] = [
   defineArrayMember({ type: 'serviceCases', ...dialog }),
   defineArrayMember({ type: 'serviceFaq', ...dialog }),
   defineArrayMember({ type: 'serviceCta', ...dialog }),
+  defineArrayMember({ type: 'beforeAfter', ...dialog }),
 ];
 
 export const serviceSectionTypes = [

@@ -8,7 +8,7 @@ import { BlogIndex } from '../../../components/sections/BlogIndex';
 import { SectionBand } from '../../../components/sections/primitives/SectionBand';
 import FinalCta from '../../../components/sections/FinalCtaBand.astro';
 import { breadcrumbSchema } from '../../../lib/schema';
-import { BLOG_READING_MINUTES, postCoverUrl } from '../../../lib/blog';
+import { postCoverUrl } from '../../../lib/blog';
 import '../../../components/sections/BlogHero.css';
 import '../../../components/sections/BlogIndex.css';
 
@@ -37,7 +37,7 @@ const cards = sorted.map((post) => {
 		industria: post.data.categoriaIndustria?.id,
 		servicio,
 		servicioNombre: post.data.categoriaServicio?.nombre ?? (servicio ? serviceName[servicio] : undefined),
-		readingMinutes: BLOG_READING_MINUTES,
+		readingMinutes: post.data.readingMinutes,
 		image: post.coverUrl ?? postCoverUrl(post.id, 800, 520),
 		ctaLabel: page?.featuredCta ?? 'Read article',
 		href: `/en/blogs/${post.id}`,

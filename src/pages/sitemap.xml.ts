@@ -39,6 +39,8 @@ export const GET: APIRoute = async ({ url, site }) => {
     '/diagnostico-marketing-digital',
     '/calendario',
     '/en/calendario',
+    '/portal',
+    '/en/portal',
     ...services.map((item) => `/servicios/${item.id}`),
     ...industries.map((item) => `/industrias/${item.id}`),
     ...cases.map((item) => `/portafolio/${item.id}`),

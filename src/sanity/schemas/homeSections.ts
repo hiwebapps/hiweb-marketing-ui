@@ -331,6 +331,7 @@ export const homeSectionMembers: ArrayOfObjectsMember[] = [
   defineArrayMember({ type: 'homeTeam', ...dialog }),
   defineArrayMember({ type: 'homeFaq', ...dialog }),
   defineArrayMember({ type: 'homeCta', ...dialog }),
+  defineArrayMember({ type: 'beforeAfter', ...dialog }),
 ];
 
 export const homeSectionTypes = [

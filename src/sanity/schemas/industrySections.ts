@@ -206,6 +206,7 @@ export const industrySectionMembers: ArrayOfObjectsMember[] = [
   defineArrayMember({ type: 'industryCases', ...dialog }),
   defineArrayMember({ type: 'industryFaq', ...dialog }),
   defineArrayMember({ type: 'industryCta', ...dialog }),
+  defineArrayMember({ type: 'beforeAfter', ...dialog }),
 ];
 
 export const industrySectionTypes = [

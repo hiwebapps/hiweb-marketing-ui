@@ -6,13 +6,13 @@ import { IndustryHero } from '../components/sections/IndustryHero';
 import { AboutHistory } from '../components/sections/AboutHistory';
 import { PillarGrid } from '../components/sections/PillarGrid';
 import { PresenceMap } from '../components/sections/PresenceMap';
-import { ProcessPhases } from '../components/sections/ProcessPhases';
+import { PortalShowcase } from '../components/sections/PortalShowcase';
 import { TeamGrid } from '../components/sections/TeamGrid';
 import FinalCta from '../components/sections/FinalCtaBand.astro';
 import AboutPageSection from '../components/sections/AboutPageSection.astro';
 import { HOME_PILLARS } from '../data/site';
 import { breadcrumbSchema } from '../lib/schema';
-import { getAboutCopy, getHomeCopy, getPeople, getSiteSettings } from '../lib/content';
+import { getAboutCopy, getPeople, getSiteSettings } from '../lib/content';
 import type { TeamMember } from '../components/sections/TeamGrid';
 import '../components/sections/AboutHistory.css';
 import '../components/sections/TeamGrid.css';
@@ -20,7 +20,6 @@ import '../components/sections/PresenceMap.css';
 
 const about = await getAboutCopy();
 const site = await getSiteSettings();
-const home = await getHomeCopy();
 const aboutTeam = about.sections?.find((section) => section._type === 'aboutTeam');
 const people = (await getPeople(aboutTeam?.memberLocale === 'en' ? 'en' : 'es')) as TeamMember[];
 const allSections = about.sections ?? [];
@@ -53,7 +52,6 @@ const historyColumns =
 					key={section._type}
 					section={section}
 					people={people}
-					homePhases={home.process ?? []}
 					heroFallback="/images/team/hiweb-team.png"
 					heroAltFallback="Equipo Hiweb con playeras de la marca"
 				/>
@@ -81,16 +79,10 @@ const historyColumns =
 			columns={historyColumns}
 		/>
 		<PillarGrid pillars={[...HOME_PILLARS]} title="Diferenciadores" />
-		<ProcessPhases
-			client:visible
-			phases={home.process ?? []}
-			eyebrow="Tecnología propia"
-			title="Nuestro portal es parte del delivery"
-			description="Tablero, assets y señal en un solo lugar. Menos PDFs huérfanos; más operación."
-			tone="canvas"
-		/>
+		<PortalShowcase locale="es" primaryHref="/portal" secondaryHref="/contacto" />
 		<TeamGrid
 			client:load
+			slider
 			showFilters
 			members={people}
 			title="Un núcleo senior, no una bancada de juniors invisibles"

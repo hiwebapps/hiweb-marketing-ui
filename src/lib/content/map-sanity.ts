@@ -2,6 +2,7 @@ import { asHeadingWidth } from '../heading';
 import { urlForWidth } from '../../sanity/image';
 import type {
   AboutCopy,
+  BeforeAfterBlock,
   CaseRecord,
   CasePageSection,
   CmsImage,
@@ -13,6 +14,8 @@ import type {
   LandingPage,
   LandingSection,
   PersonRecord,
+  PortalPage,
+  PortalSection,
   PostRecord,
   ProcessPhase,
   SeoFields,
@@ -212,6 +215,7 @@ function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data
     if (type === 'industryCta') {
       return [{ _type: 'industryCta' as const, title: text(section.title) }];
     }
+    if (type === 'beforeAfter') return [mapBeforeAfter(section)];
     return [];
     })();
     return mapped.map((entry) => withHeading(section, entry));
@@ -445,6 +449,7 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
           items: Array.isArray(section.items) ? (section.items as FaqItem[]) : [],
         };
       }
+      if (type === 'beforeAfter') return mapBeforeAfter(section);
       if (type === 'servicePitch') {
         const picture = focusPicture(section.image, section.imageAlt, String(section.title ?? ''));
         return {
@@ -670,6 +675,7 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
         },
       ];
     }
+    if (type === 'beforeAfter') return [mapBeforeAfter(section)];
     if (type === 'caseCta') {
       const primary = asCta(section.primaryCta);
       return [
@@ -791,6 +797,7 @@ export function mapPost(doc: Record<string, unknown>): PostRecord {
       author,
       fecha,
       featured: Boolean(doc.featured),
+      readingMinutes: postReadingMinutes(doc),
       categoriaServicio: (doc.categoriaServicio as { id?: string; nombre?: string } | undefined)?.id
         ? {
             id: String((doc.categoriaServicio as { id: string }).id),
@@ -966,6 +973,8 @@ export function mapHome(doc: Record<string, unknown> | null): HomeCopy | null {
       copy.faqCategories = Array.isArray(section.categories)
         ? (section.categories as HomeCopy['faqCategories'])
         : undefined;
+    } else if (type === 'beforeAfter' && section.hidden !== true) {
+      copy.beforeAfter = [...(copy.beforeAfter ?? []), withHeading(section, mapBeforeAfter(section))];
     } else if (type === 'homeCta') {
       copy.closing = {
         badge: section.badge ? String(section.badge) : undefined,
@@ -1126,6 +1135,21 @@ function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
         ctaHref: text(section.ctaHref),
       }];
     }
+    if (type === 'aboutPortal') {
+      return [{
+        _type: 'aboutPortal' as const,
+        eyebrow: text(section.eyebrow),
+        title: text(section.title),
+        description: text(section.description),
+        clientName: text(section.clientName),
+        badgeVariant: text(section.badgeVariant),
+        primaryLabel: text(section.primaryLabel),
+        primaryHref: text(section.primaryHref),
+        secondaryLabel: text(section.secondaryLabel),
+        secondaryHref: text(section.secondaryHref),
+      }];
+    }
+    if (type === 'beforeAfter') return [mapBeforeAfter(section)];
     if (type === 'aboutCta') {
       return [{
         _type: 'aboutCta' as const,
@@ -1145,6 +1169,48 @@ function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
 
 function text(value: unknown) {
   return typeof value === 'string' && value ? value : undefined;
+}
+
+function mapBeforeAfter(section: Record<string, unknown>): BeforeAfterBlock {
+  const pairs = Array.isArray(section.pairs)
+    ? section.pairs.flatMap((item) => {
+        if (!item || typeof item !== 'object') return [];
+        const pair = item as Record<string, unknown>;
+        const beforeImage = imageUrl(pair.beforeImage as CmsImage) ?? undefined;
+        const afterImage = imageUrl(pair.afterImage as CmsImage) ?? undefined;
+        const beforeVideo = typeof pair.beforeVideo === 'string' ? pair.beforeVideo : undefined;
+        const afterVideo = typeof pair.afterVideo === 'string' ? pair.afterVideo : undefined;
+        if (!beforeImage && !beforeVideo && !afterImage && !afterVideo) return [];
+        return [{
+          title: text(pair.title),
+          beforeLabel: text(pair.beforeLabel) || 'Antes',
+          afterLabel: text(pair.afterLabel) || 'Después',
+          beforeImage,
+          beforeVideo,
+          afterImage,
+          afterVideo,
+        }];
+      })
+    : [];
+  return {
+    _type: 'beforeAfter',
+    eyebrow: text(section.eyebrow),
+    title: text(section.title),
+    description: text(section.description),
+    badge: text(section.badge),
+    badgeVariant: text(section.badgeVariant),
+    pairs,
+  };
+}
+
+function postReadingMinutes(doc: Record<string, unknown>) {
+  const override = Number(doc.readingMinutes);
+  if (Number.isFinite(override) && override > 0) return Math.round(override);
+  const words = String(doc.bodyText ?? '')
+    .split(/\s+/)
+    .filter(Boolean).length;
+  if (!words) return 1;
+  return Math.max(1, Math.round(words / 200));
 }
 
 function asCta(value: unknown): LandingCta | undefined {
@@ -1367,6 +1433,8 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
         primaryCta: asCta(doc.primaryCta),
         secondaryCta: asCta(doc.secondaryCta),
       };
+    case 'beforeAfter':
+      return mapBeforeAfter(doc);
     case 'presenceMap':
       return {
         _type: 'presenceMap',
@@ -1378,6 +1446,129 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
     default:
       return null;
   }
+}
+
+const PORTAL_MODULES = ['rrss', 'web', 'seo', 'docs', 'hilinks'] as const;
+
+export function mapPortal(doc: Record<string, unknown> | null): PortalPage | null {
+  if (!doc) return null;
+  const sections = Array.isArray(doc.sections)
+    ? doc.sections.flatMap((item): PortalSection[] => {
+        const section = item as Record<string, unknown>;
+        if (section.hidden === true) return [];
+        const type = String(section._type ?? '');
+        if (type === 'beforeAfter') return [withHeading(section, mapBeforeAfter(section))];
+        if (type === 'portalHero') {
+          const samples = Array.isArray(section.samples)
+            ? section.samples.flatMap((row) => {
+                const sample = row as { module?: string; title?: string; detail?: string };
+                if (!sample.title || !sample.module) return [];
+                if (!PORTAL_MODULES.includes(sample.module as (typeof PORTAL_MODULES)[number])) return [];
+                return [{
+                  module: sample.module as (typeof PORTAL_MODULES)[number],
+                  title: String(sample.title),
+                  detail: sample.detail ? String(sample.detail) : undefined,
+                }];
+              })
+            : undefined;
+          return [withHeading(section, {
+            _type: 'portalHero' as const,
+            badge: text(section.badge),
+            badgeNote: text(section.badgeNote),
+            title: text(section.title),
+            description: text(section.description),
+            clientName: text(section.clientName),
+            windowTitle: text(section.windowTitle),
+            proofTitle: text(section.proofTitle),
+            proofText: text(section.proofText),
+            tourLabel: text(section.tourLabel),
+            viewerLabel: text(section.viewerLabel),
+            coachLabel: text(section.coachLabel),
+            coachText: text(section.coachText),
+            samples,
+          })];
+        }
+        if (type === 'portalStrip') {
+          const badges = Array.isArray(section.badges)
+            ? (section.badges as { label?: string; variant?: string }[])
+                .filter((badge) => badge.label)
+                .map((badge) => ({ label: String(badge.label), variant: badge.variant }))
+            : [];
+          return [withHeading(section, { _type: 'portalStrip' as const, text: text(section.text), badges })];
+        }
+        if (type === 'portalJourney') {
+          const steps = Array.isArray(section.steps)
+            ? (section.steps as Record<string, unknown>[]).filter((step) => step.title).map((step) => ({
+                index: text(step.index),
+                title: text(step.title),
+                description: text(step.description),
+                panelTitle: text(step.panelTitle),
+                panelText: text(step.panelText),
+                badge: text(step.badge),
+                badgeVariant: text(step.badgeVariant),
+              }))
+            : [];
+          return [withHeading(section, {
+            _type: 'portalJourney' as const,
+            eyebrow: text(section.eyebrow),
+            title: text(section.title),
+            description: text(section.description),
+            steps,
+          })];
+        }
+        if (type === 'portalBento') {
+          const cards = Array.isArray(section.cards)
+            ? (section.cards as Record<string, unknown>[]).filter((card) => card.title).map((card) => ({
+                eyebrow: text(card.eyebrow),
+                title: text(card.title),
+                description: text(card.description),
+                module: text(card.module),
+              }))
+            : [];
+          return [withHeading(section, {
+            _type: 'portalBento' as const,
+            eyebrow: text(section.eyebrow),
+            title: text(section.title),
+            description: text(section.description),
+            cards,
+          })];
+        }
+        if (type === 'portalFaq') {
+          const items = Array.isArray(section.items)
+            ? (section.items as Record<string, unknown>[]).flatMap((row) => {
+                if (!row.question || !row.answer) return [];
+                return [{
+                  question: String(row.question),
+                  answer: String(row.answer),
+                  badge: text(row.badge),
+                  category: text(row.category),
+                }];
+              })
+            : [];
+          return [withHeading(section, {
+            _type: 'portalFaq' as const,
+            eyebrow: text(section.eyebrow),
+            title: text(section.title),
+            description: text(section.description),
+            searchPlaceholder: text(section.searchPlaceholder),
+            items,
+          })];
+        }
+        if (type === 'portalCloser') {
+          return [withHeading(section, {
+            _type: 'portalCloser' as const,
+            lead: text(section.lead),
+            title: text(section.title),
+            description: text(section.description),
+            primaryLabel: text(section.primaryLabel),
+            secondaryLabel: text(section.secondaryLabel),
+            trust: Array.isArray(section.trust) ? section.trust.map(String) : [],
+          })];
+        }
+        return [];
+      })
+    : [];
+  return { title: String(doc.title ?? ''), sections, seo: seoOf(doc) };
 }
 
 export function mapLanding(doc: Record<string, unknown>): LandingPage {

@@ -50,13 +50,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
     path.startsWith('/en/blogs/') ||
     path === '/en/terminos' ||
     path === '/en/aviso-de-privacidad' ||
-    path === '/en/calendario';
+    path === '/en/calendario' ||
+    path === '/en/portal';
   if (path.startsWith('/en/') && path !== '/en' && !englishSection) {
     return context.redirect('/en');
   }
 
   let previewPerspective: string | undefined;
-  if (isStagingSite()) {
+  if (isStagingSite() && !context.isPrerendered) {
     const user = await readBinding('STAGING_USER');
     const password = await readBinding('STAGING_PASSWORD');
     if (!user || !password) {

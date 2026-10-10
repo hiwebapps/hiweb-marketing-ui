@@ -430,4 +430,25 @@
   .hero-studio-a__card {
     width: min(280px, 78vw);
   }
+
+  .hero-studio-a__card-label,
+  .hero-studio-a__card-cta {
+    display: inline-flex;
+    align-items: center;
+    height: auto;
+    min-height: 0;
+    padding: 0.42rem 0.72rem 0.34rem;
+    line-height: 1;
+    font-size: 0.75rem;
+  }
+
+  .hero-studio-a__card-label {
+    max-width: calc(100% - 7.4rem);
+    white-space: normal;
+  }
+
+  .hero-studio-a__card-cta {
+    max-width: none;
+    gap: 0.28rem;
+  }
 }

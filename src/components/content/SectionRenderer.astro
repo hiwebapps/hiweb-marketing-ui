@@ -9,6 +9,7 @@ import { IndustryServices } from '../sections/IndustryServices';
 import { MetricsBand } from '../sections/MetricsBand';
 import { PageHero } from '../sections/PageHero';
 import { PillarGrid, type Pillar, type PillarAccent } from '../sections/PillarGrid';
+import { BeforeAfter } from '../sections/BeforeAfter';
 import { PresenceMap } from '../sections/PresenceMap';
 import { ProcessPhases } from '../sections/ProcessPhases';
 import { ServiceGrid } from '../sections/ServiceGrid';
@@ -260,6 +261,18 @@ function previewsFrom(cases: CaseRecord[]) {
 			detail: metric.antes && metric.despues ? `${metric.antes} → ${metric.despues}` : undefined,
 		}))}
 		headingWidth={section.headingWidth}
+	/>
+) : null}
+
+{section._type === 'beforeAfter' && section.pairs.length ? (
+	<BeforeAfter
+		client:visible
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		badgeVariant={(section.badgeVariant || 'orange') as BadgeVariant}
+		headingWidth={section.headingWidth}
+		pairs={section.pairs}
 	/>
 ) : null}
 

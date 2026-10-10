@@ -1,0 +1,374 @@
+{
+  "es": {
+    "title": "Portal de clientes",
+    "metaTitle": "Portal de clientes — Hiweb Marketing",
+    "metaDescription": "El visor interactivo para aprobar redes, sitios, artículos SEO y reportes. Sin cadenas de correo ni audios de WhatsApp.",
+    "sections": [
+      {
+        "_key": "hero",
+        "_type": "portalHero",
+        "badge": "",
+        "badgeNote": "Portal de Clientes Hiweb",
+        "title": "Tus clientes aprueban rápido. Tus proyectos fluyen.",
+        "description": "El visor interactivo que elimina las cadenas eternas de correos y audios de WhatsApp. Redes sociales, sitios web responsivos, artículos SEO y reportes en una experiencia fluida de marca.",
+        "clientName": "Aura Café & Roastery",
+        "windowTitle": "Portal de Clientes",
+        "proofTitle": "Diseñado para marcas de alto calibre",
+        "proofText": "Aprobado por clientes y agencias en México y LATAM",
+        "tourLabel": "Iniciar Tour Guiado",
+        "viewerLabel": "Modo Visor Completo",
+        "coachLabel": "Tour Guiado",
+        "coachText": "Observa cómo aprueba un cliente o haz clic en cualquier lugar para explorar libremente.",
+        "samples": [
+          { "_key": "s1", "module": "rrss", "title": "Carrusel Origen Chiapas", "detail": "4 diapositivas · octubre" },
+          { "_key": "s2", "module": "web", "title": "Banner principal tienda", "detail": "Desktop y móvil" },
+          { "_key": "s3", "module": "seo", "title": "Artículo de origen del café", "detail": "Modo lectura" },
+          { "_key": "s4", "module": "docs", "title": "Reporte de rendimiento", "detail": "Alcance y conversiones" },
+          { "_key": "s5", "module": "hilinks", "title": "Enlace en bio", "detail": "Promociones activas" }
+        ]
+      },
+      {
+        "_key": "strip",
+        "_type": "portalStrip",
+        "text": "Entregables listos para aprobar, con sincronización directa para tu equipo.",
+        "badges": [
+          { "_key": "b1", "label": "Instagram Feed & Reels", "variant": "orange" },
+          { "_key": "b2", "label": "Sitios Webflow & Next.js", "variant": "cyan" },
+          { "_key": "b3", "label": "Artículos SEO", "variant": "lime" },
+          { "_key": "b4", "label": "Reportes PDF", "variant": "purple" }
+        ]
+      },
+      {
+        "_key": "journey",
+        "_type": "portalJourney",
+        "eyebrow": "Flujo de Aprobación Sin Caos",
+        "title": "De la entrega al visto bueno. En 3 pasos simples.",
+        "description": "Elimina las notas sueltas en chats y las cadenas eternas de correo. Una experiencia clara tanto para tu equipo creativo como para tus clientes.",
+        "steps": [
+          {
+            "_key": "j1",
+            "index": "01",
+            "title": "Entrega Organizada",
+            "description": "Carruseles, webs y artículos centralizados con fecha exacta de salida.",
+            "badge": "Paso 01",
+            "badgeVariant": "lime",
+            "panelTitle": "El cliente ve su mes de un vistazo",
+            "panelText": "En lugar de carpetas dispersas en Drive, el cliente entra y ve su calendario, conteo de piezas pendientes y la fecha de publicación de cada entregable. Octubre 2026 · Aura Café. 4 entregables esperando visto bueno. Carrusel Origen Chiapas, pendiente."
+          },
+          {
+            "_key": "j2",
+            "index": "02",
+            "title": "Feedback con Pines",
+            "description": "Comentarios visuales sobre el píxel exacto o el párrafo señalado.",
+            "badge": "Paso 02",
+            "badgeVariant": "purple",
+            "panelTitle": "Notas visuales directamente sobre la pantalla",
+            "panelText": "El cliente hace clic sobre el banner, el botón o la diapositiva específica para dejar una nota puntual. El equipo ve el contexto exacto sin interpretaciones erróneas. Pin 1: Cambiar la foto del cold brew por la nueva sesión."
+          },
+          {
+            "_key": "j3",
+            "index": "03",
+            "title": "Aprobación en 1 Clic",
+            "description": "Visto bueno registrado con fecha, hora y rol. Cero «¿me lo mandas otra vez?».",
+            "badge": "Paso 03",
+            "badgeVariant": "lime",
+            "panelTitle": "Aprobación formal registrada al instante",
+            "panelText": "Cuando el cliente da su visto bueno, el sistema registra el usuario, la fecha y hora exacta. El estado cambia a Programado y el equipo recibe la confirmación al momento. Visto bueno de Sofia M., registrado en el sistema."
+          }
+        ]
+      },
+      {
+        "_key": "bento",
+        "_type": "portalBento",
+        "eyebrow": "Funcionalidades Diseñadas para Aprobación",
+        "title": "Todo lo que tu cliente necesita. En un solo lugar.",
+        "description": "Cada formato tiene su propia vista especializada para que la revisión sea rápida, cómoda e intuitiva.",
+        "cards": [
+          {
+            "_key": "c1",
+            "eyebrow": "Redes sociales",
+            "title": "Visor de Carruseles y Reproductor de Reels",
+            "description": "Revisa cada diapositiva en proporción real, navega con miniaturas y copia el copy listo para Instagram con un solo botón.",
+            "module": "rrss"
+          },
+          {
+            "_key": "c2",
+            "eyebrow": "Diseño y desarrollo web",
+            "title": "Desktop y móvil con pines",
+            "description": "Alterna entre vista Desktop 1440px y Móvil 390px con casillas de validación obligatorias.",
+            "module": "web"
+          },
+          {
+            "_key": "c3",
+            "eyebrow": "Contenido y SEO",
+            "title": "Modo editorial y notas por párrafo",
+            "description": "Revisión tipográfica limpia, recuento de palabras y comentarios precisos al margen del texto.",
+            "module": "seo"
+          },
+          {
+            "_key": "c4",
+            "eyebrow": "Documentos y reportes",
+            "title": "Reportes mensuales y KPIs",
+            "description": "Métricas de alcance, engagement y conversiones condensadas en un PDF descargable.",
+            "module": "docs"
+          },
+          {
+            "_key": "c5",
+            "eyebrow": "HiLinks bio",
+            "title": "Link en bio integrado",
+            "description": "La página de enlaces móviles de tu cliente siempre visible y sincronizada con sus promociones activas.",
+            "module": "hilinks"
+          }
+        ]
+      },
+      {
+        "_key": "faq",
+        "_type": "portalFaq",
+        "eyebrow": "Dudas Frecuentes",
+        "title": "Preguntas y Respuestas",
+        "description": "Todo lo que necesitas saber sobre el funcionamiento del portal para agencias y clientes.",
+        "searchPlaceholder": "Escribe para buscar (ej. roles, pines, integraciones, formatos)...",
+        "items": [
+          {
+            "_key": "f1",
+            "badge": "Multiformato",
+            "category": "Entregables y formatos",
+            "question": "¿Qué tipo de entregables puede revisar mi cliente en el portal?",
+            "answer": "El portal soporta los 5 entregables esenciales de agencias y marcas: Redes Sociales (carruseles deslizables en alta resolución, reels con reproductor y copys listos para copiar), Sitios Web (con visor responsivo Desktop 1440px y Móvil 390px), Artículos SEO (modo lectura limpia y revisión de párrafos), Reportes de Rendimiento (documentos PDF con KPIs clave) y HiLinks (enlace en bio móvil)."
+          },
+          {
+            "_key": "f2",
+            "badge": "Cero fricción",
+            "category": "Experiencia del cliente",
+            "question": "¿Mis clientes necesitan crear contraseñas o registrarse?",
+            "answer": "No. El acceso está diseñado para eliminar cualquier barrera: cada cliente ingresa a través de enlaces seguros directos (Magic Links o tokens encriptados) enviados por correo electrónico o WhatsApp. Acceden en 1 segundo desde cualquier teléfono o computadora sin recordar contraseñas."
+          },
+          {
+            "_key": "f3",
+            "badge": "Precisión visual",
+            "category": "Feedback visual",
+            "question": "¿Cómo funciona el sistema de comentarios con pines visuales?",
+            "answer": "El cliente simplemente hace clic sobre la diapositiva del carrusel o sobre la sección del sitio web donde desea un ajuste y escribe su comentario. El equipo de diseño y contenido recibe la coordenada exacta (X, Y) junto con la captura de pantalla, erradicando confusiones como «¿en qué imagen iba el cambio?»."
+          },
+          {
+            "_key": "f4",
+            "badge": "Roles flexibles",
+            "category": "Permisos y gobernanza",
+            "question": "¿Puedo definir roles diferentes para el equipo del cliente?",
+            "answer": "Sí. Puedes asignar permisos diferenciados: Aprobador (quien tiene la autoridad de dar el visto bueno final y programar), Revisor (miembros del equipo del cliente que aportan comentarios y notas) y Lector (quienes solo pueden consultar entregables sin modificar estados)."
+          },
+          {
+            "_key": "f5",
+            "badge": "Webhooks en tiempo real",
+            "category": "Integraciones y automatización",
+            "question": "¿Cómo se conecta con herramientas como ClickUp, Slack o n8n?",
+            "answer": "En la versión de producción conectada, cada acción del cliente (aprobación, solicitud de cambios o comentarios) dispara webhooks instantáneos que actualizan las tareas en ClickUp, notifican al canal de Slack de la cuenta y activan flujos automatizados de publicación o seguimiento."
+          },
+          {
+            "_key": "f6",
+            "badge": "White-label",
+            "category": "Marca blanca",
+            "question": "¿Es posible personalizar la marca para que parezca de mi propia agencia?",
+            "answer": "Totalmente. El portal se personaliza con el logotipo, colores corporativos, tipografía y subdominio de tu propia marca (por ejemplo, clientes.tumarca.mx), transmitiendo una imagen profesional ante tus clientes."
+          }
+        ]
+      },
+      {
+        "_key": "closer",
+        "_type": "portalCloser",
+        "lead": "¿Listo para transformar la experiencia de tus clientes?",
+        "title": "Aprobaciones a la primera.",
+        "description": "Ofrece a tus clientes el portal más intuitivo y elegante del mercado. Diseñado para acelerar tus proyectos y fidelizar cuentas.",
+        "primaryLabel": "Probar Tour Guiado",
+        "secondaryLabel": "Pantalla Completa",
+        "trust": ["100% interactivo", "Cero instalaciones", "Diseñado por Hiweb"]
+      }
+    ]
+  },
+  "en": {
+    "title": "Client portal",
+    "metaTitle": "Client portal — Hiweb Marketing",
+    "metaDescription": "The interactive viewer for approving social, websites, SEO articles, and reports. No email threads or WhatsApp voice notes.",
+    "sections": [
+      {
+        "_key": "hero",
+        "_type": "portalHero",
+        "badge": "",
+        "badgeNote": "Hiweb Client Portal",
+        "title": "Your clients approve faster. Your projects keep moving.",
+        "description": "The interactive viewer that ends the endless email threads and WhatsApp voice notes. Social, responsive websites, SEO articles, and reports in one branded experience.",
+        "clientName": "Aura Café & Roastery",
+        "windowTitle": "Client Portal",
+        "proofTitle": "Designed for high-caliber brands",
+        "proofText": "Approved by clients and agencies in Mexico and LATAM",
+        "tourLabel": "Start guided tour",
+        "viewerLabel": "Full viewer mode",
+        "coachLabel": "Guided tour",
+        "coachText": "Watch how a client approves, or click anywhere to explore on your own.",
+        "samples": [
+          { "_key": "s1", "module": "rrss", "title": "Chiapas Origin carousel", "detail": "4 slides · October" },
+          { "_key": "s2", "module": "web", "title": "Store hero banner", "detail": "Desktop and mobile" },
+          { "_key": "s3", "module": "seo", "title": "Coffee origin article", "detail": "Reading view" },
+          { "_key": "s4", "module": "docs", "title": "Performance report", "detail": "Reach and conversions" },
+          { "_key": "s5", "module": "hilinks", "title": "Link in bio", "detail": "Active promotions" }
+        ]
+      },
+      {
+        "_key": "strip",
+        "_type": "portalStrip",
+        "text": "Deliverables ready to approve, with a direct sync for your team.",
+        "badges": [
+          { "_key": "b1", "label": "Instagram Feed & Reels", "variant": "orange" },
+          { "_key": "b2", "label": "Webflow & Next.js sites", "variant": "cyan" },
+          { "_key": "b3", "label": "SEO articles", "variant": "lime" },
+          { "_key": "b4", "label": "PDF reports", "variant": "purple" }
+        ]
+      },
+      {
+        "_key": "journey",
+        "_type": "portalJourney",
+        "eyebrow": "Approval flow without the chaos",
+        "title": "From delivery to sign-off. In 3 simple steps.",
+        "description": "Drop the loose notes in chats and the endless email threads. A clear experience for your creative team and your clients.",
+        "steps": [
+          {
+            "_key": "j1",
+            "index": "01",
+            "title": "Organized delivery",
+            "description": "Carousels, websites, and articles in one place, each with an exact publish date.",
+            "badge": "Step 01",
+            "badgeVariant": "lime",
+            "panelTitle": "The client sees the month at a glance",
+            "panelText": "Instead of folders scattered across Drive, the client opens the portal and sees the calendar, the count of pending pieces, and the publish date of each deliverable. October 2026 · Aura Café. 4 deliverables waiting for sign-off. Chiapas Origin carousel, pending."
+          },
+          {
+            "_key": "j2",
+            "index": "02",
+            "title": "Feedback with pins",
+            "description": "Visual comments on the exact pixel or the marked paragraph.",
+            "badge": "Step 02",
+            "badgeVariant": "purple",
+            "panelTitle": "Visual notes directly on the screen",
+            "panelText": "The client clicks the banner, the button, or the specific slide to leave a precise note. The team sees the exact context, without guesswork. Pin 1: Change the cold brew photo for the new shoot."
+          },
+          {
+            "_key": "j3",
+            "index": "03",
+            "title": "Approval in 1 click",
+            "description": "Sign-off recorded with date, time, and role. No more “can you send it again?”",
+            "badge": "Step 03",
+            "badgeVariant": "lime",
+            "panelTitle": "A formal approval recorded instantly",
+            "panelText": "When the client signs off, the system records the user and the exact date and time. The status changes to Scheduled and the team gets the confirmation right away. Sign-off from Sofia M., recorded in the system."
+          }
+        ]
+      },
+      {
+        "_key": "bento",
+        "_type": "portalBento",
+        "eyebrow": "Features designed for approval",
+        "title": "Everything your client needs. In one place.",
+        "description": "Each format has its own view so the review stays fast, comfortable, and intuitive.",
+        "cards": [
+          {
+            "_key": "c1",
+            "eyebrow": "Social",
+            "title": "Carousel viewer and Reels player",
+            "description": "Review each slide at real proportion, move through thumbnails, and copy the Instagram caption with one button.",
+            "module": "rrss"
+          },
+          {
+            "_key": "c2",
+            "eyebrow": "Web design and development",
+            "title": "Desktop and mobile with pins",
+            "description": "Switch between a 1440px desktop view and a 390px mobile view, with required validation checks.",
+            "module": "web"
+          },
+          {
+            "_key": "c3",
+            "eyebrow": "Content and SEO",
+            "title": "Editorial view and notes by paragraph",
+            "description": "A clean typographic review, word count, and precise comments in the margin of the text.",
+            "module": "seo"
+          },
+          {
+            "_key": "c4",
+            "eyebrow": "Documents and reports",
+            "title": "Monthly reports and KPIs",
+            "description": "Reach, engagement, and conversion metrics condensed into a downloadable PDF.",
+            "module": "docs"
+          },
+          {
+            "_key": "c5",
+            "eyebrow": "HiLinks bio",
+            "title": "Integrated link in bio",
+            "description": "Your client’s mobile links page, always visible and synced with their active promotions.",
+            "module": "hilinks"
+          }
+        ]
+      },
+      {
+        "_key": "faq",
+        "_type": "portalFaq",
+        "eyebrow": "Common questions",
+        "title": "Questions and answers",
+        "description": "What you need to know about how the portal works for agencies and clients.",
+        "searchPlaceholder": "Search (for example roles, pins, integrations, formats)...",
+        "items": [
+          {
+            "_key": "f1",
+            "badge": "Multi-format",
+            "category": "Deliverables and formats",
+            "question": "What kinds of deliverables can my client review in the portal?",
+            "answer": "The portal supports the 5 essential deliverables for agencies and brands: Social (high-resolution carousels, reels with a player, and captions ready to copy), Websites (a responsive viewer at Desktop 1440px and Mobile 390px), SEO articles (a clean reading view and paragraph review), Performance reports (PDF documents with key KPIs), and HiLinks (a mobile link in bio)."
+          },
+          {
+            "_key": "f2",
+            "badge": "Zero friction",
+            "category": "Client experience",
+            "question": "Do my clients need to create passwords or sign up?",
+            "answer": "No. Access is built to remove the barrier: each client enters through a secure direct link (magic links or encrypted tokens) sent by email or WhatsApp. They get in within a second from any phone or computer, without remembering a password."
+          },
+          {
+            "_key": "f3",
+            "badge": "Visual precision",
+            "category": "Visual feedback",
+            "question": "How do visual pin comments work?",
+            "answer": "The client clicks the carousel slide or the website section they want changed and writes the comment. The design and content team receives the exact X, Y coordinate together with the screenshot, so questions like “which image was that change on?” go away."
+          },
+          {
+            "_key": "f4",
+            "badge": "Flexible roles",
+            "category": "Permissions and governance",
+            "question": "Can I set different roles for the client’s team?",
+            "answer": "Yes. You can assign different permissions: Approver (the person who can give the final sign-off and schedule), Reviewer (client-team members who leave comments and notes), and Reader (people who can view deliverables without changing status)."
+          },
+          {
+            "_key": "f5",
+            "badge": "Real-time webhooks",
+            "category": "Integrations and automation",
+            "question": "How does it connect with tools like ClickUp, Slack, or n8n?",
+            "answer": "In the connected production version, each client action (approval, change request, or comment) fires instant webhooks that update ClickUp tasks, notify the account’s Slack channel, and trigger automated publishing or follow-up flows."
+          },
+          {
+            "_key": "f6",
+            "badge": "White-label",
+            "category": "White label",
+            "question": "Can the brand be customized so it looks like my own agency?",
+            "answer": "Yes. The portal is customized with your logo, brand colors, type, and subdomain (for example, clientes.tumarca.mx), so it reads as your own in front of your clients."
+          }
+        ]
+      },
+      {
+        "_key": "closer",
+        "_type": "portalCloser",
+        "lead": "Ready to change how your clients experience the work?",
+        "title": "Approvals on the first pass.",
+        "description": "Give your clients the most intuitive, elegant portal on the market. Built to speed up your projects and keep accounts close.",
+        "primaryLabel": "Try the guided tour",
+        "secondaryLabel": "Full screen",
+        "trust": ["100% interactive", "Zero installs", "Designed by Hiweb"]
+      }
+    ]
+  }
+}

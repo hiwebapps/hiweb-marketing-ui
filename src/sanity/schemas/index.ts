@@ -2,6 +2,7 @@ import { aboutPage } from './aboutPage';
 import { aboutSectionTypes } from './aboutSections';
 import { calendarPage } from './calendarPage';
 import { contactPage } from './contactPage';
+import { beforeAfter } from './blocks/beforeAfter';
 import { landingSectionTypes } from './blocks/pageSections';
 import { blogTable } from './blogTable';
 import { faq } from './faq';
@@ -28,6 +29,7 @@ import {
   serviceBlurb,
   servicePlan,
   titledBlock,
+  withVisibility,
 } from './shared';
 import { ctaBackdrop } from './ctaBackdrop';
 import { footer, footerLink } from './footer';
@@ -36,6 +38,7 @@ import { redirect } from './redirect';
 import { blogIndex, casesIndex, servicesIndex } from './catalogIndex';
 import { legalObjectTypes, legalPage } from './legalPage';
 import { siteSettings } from './siteSettings';
+import { portalPage, portalSectionTypes } from './portalPage';
 import { sitePage } from './sitePage';
 
 export const schemaTypes = [
@@ -50,7 +53,9 @@ export const schemaTypes = [
   servicePlan,
   table,
   blogTable,
+  withVisibility(beforeAfter),
   ...landingSectionTypes,
+  ...portalSectionTypes,
   homeServiceItem,
   ...homeSectionTypes,
   ...serviceSectionTypes,
@@ -76,6 +81,7 @@ export const schemaTypes = [
   aboutPage,
   contactPage,
   calendarPage,
+  portalPage,
   sitePage,
   industry,
   industriesIndex,

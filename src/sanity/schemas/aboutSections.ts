@@ -282,14 +282,42 @@ export const aboutCta = defineType({
   preview: sectionPreview('Sección Cierre'),
 });
 
+export const aboutPortal = defineType({
+  name: 'aboutPortal',
+  title: 'Portal de clientes',
+  type: 'object',
+  icon: RocketIcon,
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    headingTitleField(),
+    headingWidthField(),
+    defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
+    defineField({ name: 'clientName', title: 'Cliente de la demo', type: 'string' }),
+    defineField({
+      name: 'badgeVariant',
+      title: 'Color del badge',
+      type: 'string',
+      options: { list: badgeVariants, layout: 'radio' },
+      initialValue: 'cyan',
+    }),
+    defineField({ name: 'primaryLabel', title: 'Botón principal', type: 'string' }),
+    defineField({ name: 'primaryHref', title: 'URL principal', type: 'string', initialValue: '/portal' }),
+    defineField({ name: 'secondaryLabel', title: 'Botón secundario', type: 'string' }),
+    defineField({ name: 'secondaryHref', title: 'URL secundaria', type: 'string', initialValue: '/contacto' }),
+  ],
+  preview: sectionPreview('Portal de clientes'),
+});
+
 export const aboutSectionMembers: ArrayOfObjectsMember[] = [
   defineArrayMember({ type: 'aboutHero', ...dialog }),
   defineArrayMember({ type: 'aboutHistory', ...dialog }),
   defineArrayMember({ type: 'aboutPillars', ...dialog }),
+  defineArrayMember({ type: 'aboutPortal', ...dialog }),
   defineArrayMember({ type: 'aboutProcess', ...dialog }),
   defineArrayMember({ type: 'aboutTeam', ...dialog }),
   defineArrayMember({ type: 'aboutMap', ...dialog }),
   defineArrayMember({ type: 'aboutCta', ...dialog }),
+  defineArrayMember({ type: 'beforeAfter', ...dialog }),
 ];
 
 export const aboutSectionTypes = [
@@ -297,6 +325,7 @@ export const aboutSectionTypes = [
   aboutHistory,
   aboutPillars,
   aboutProcess,
+  aboutPortal,
   aboutTeam,
   aboutMap,
   aboutCta,

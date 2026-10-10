@@ -211,6 +211,7 @@ export const caseSectionMembers: ArrayOfObjectsMember[] = [
   defineArrayMember({ type: 'caseTestimonial', ...dialog }),
   defineArrayMember({ type: 'caseRelated', ...dialog }),
   defineArrayMember({ type: 'caseCta', ...dialog }),
+  defineArrayMember({ type: 'beforeAfter', ...dialog }),
 ];
 
 export const caseSectionTypes = [

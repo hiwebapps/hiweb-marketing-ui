@@ -42,7 +42,7 @@ const hookBody = {
   rule: {
     on: ['create', 'update', 'delete'],
     filter:
-      '_type in ["calendarPage","industry","service","caseStudy","post","homePage","aboutPage","siteSettings","person","landingPage","faq","navigation","footer","ctaBackdrop","contactPage","legalPage","sitePage","servicesIndex","industriesIndex","blogIndex","casesIndex","testimonial"]',
+      '_type in ["calendarPage","portalPage","industry","service","caseStudy","post","homePage","aboutPage","siteSettings","person","landingPage","faq","navigation","footer","ctaBackdrop","contactPage","legalPage","sitePage","servicesIndex","industriesIndex","blogIndex","casesIndex","testimonial"]',
   },
 };
 

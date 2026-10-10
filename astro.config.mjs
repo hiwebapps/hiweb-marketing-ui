@@ -33,10 +33,14 @@ function gsapSsrStubPlugin() {
 }
 
 /**
- * @param {{ route: { prerender: boolean } }} context
+ * @param {{ route: { prerender: boolean, redirectRoute?: { prerender: boolean } } }} context
  */
-function disablePrerender(context) {
-  if (isStaging) context.route.prerender = false;
+function disablePrerender({ route }) {
+  if (!isStaging) return;
+  route.prerender = false;
+  // A redirect to this page copies prerender from the source file after the
+  // page itself was already forced onto SSR. Clear the copy too.
+  if (route.redirectRoute) route.redirectRoute.prerender = false;
 }
 
 /** Staging is SSR so unpublished Sanity drafts show up without a rebuild. */
@@ -96,6 +100,12 @@ export default defineConfig({
     plugins: [gsapSsrStubPlugin(), tailwindcss()],
     ssr: {
       noExternal: ['gsap'],
+    },
+    // Rolldown's dep optimizer cannot read styled-components / Sanity CJS
+    // named exports, so `astro dev` dies before it listens. Production builds
+    // do not use this prebundle step.
+    optimizeDeps: {
+      exclude: ['styled-components', '@sanity/ui', 'sanity', '@sanity/visual-editing'],
     },
   },
 });

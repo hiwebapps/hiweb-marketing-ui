@@ -533,6 +533,14 @@ export const structure: StructureResolver = (S, context) => {
                     .items(languageItems(S, 'legalPage', 'legal-privacy', 'legal-privacy-en')),
                 ),
               S.listItem()
+                .title('Portal de clientes')
+                .id('portal-pair')
+                .child(
+                  S.list()
+                    .title('Portal de clientes')
+                    .items(languageItems(S, 'portalPage', 'portalPage', 'portalPage-en')),
+                ),
+              S.listItem()
                 .title('Calendario')
                 .id('calendario-pair')
                 .child(

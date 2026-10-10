@@ -8,6 +8,7 @@ export const RESERVED_SLUGS = [
   'contacto',
   'diagnostico-marketing-digital',
   'calendario',
+  'portal',
   'design-system',
   'sections',
   'terminos',

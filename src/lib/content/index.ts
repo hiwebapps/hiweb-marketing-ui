@@ -30,6 +30,7 @@ import {
   sanityLandings,
   sanityNavigation,
   sanityPeople,
+  sanityPortal,
   sanityPost,
   sanityPosts,
   sanityService,
@@ -292,6 +293,15 @@ export async function getContactPage(): Promise<ContactPageCopy> {
     return (await sanityContactPage()) ?? DEFAULT_CONTACT;
   } catch {
     return DEFAULT_CONTACT;
+  }
+}
+
+export async function getPortal(locale: 'es' | 'en' = 'es') {
+  if (!isSanityConfigured()) return null;
+  try {
+    return await sanityPortal(locale);
+  } catch {
+    return null;
   }
 }
 

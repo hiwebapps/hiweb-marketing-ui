@@ -6,6 +6,7 @@ const PAGE_TYPES = [
   { type: 'aboutPage' },
   { type: 'contactPage' },
   { type: 'calendarPage' },
+  { type: 'portalPage' },
   { type: 'sitePage' },
   { type: 'servicesIndex' },
   { type: 'industriesIndex' },

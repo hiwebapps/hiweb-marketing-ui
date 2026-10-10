@@ -1,0 +1,32 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { PortalPageView } from '../../components/portal/PortalPageView';
+import { getPortal } from '../../lib/content';
+import defaults from '../../lib/content/portal-defaults.json';
+import type { PortalSection } from '../../lib/content/types';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const remote = await getPortal('en');
+const fallback = defaults.en;
+const sections = (remote?.sections?.length ? remote.sections : fallback.sections) as PortalSection[];
+---
+
+<Layout
+	title={remote?.seo?.metaTitle || fallback.metaTitle}
+	description={remote?.seo?.metaDescription || fallback.metaDescription}
+	ogImage={remote?.seo?.ogImage}
+	noindex={remote?.seo?.noindex}
+	canonical={remote?.seo?.canonicalPath || '/en/portal'}
+	lang="en"
+	alternates={{ es: '/portal', en: '/en/portal' }}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: remote?.title || fallback.title, href: '/en/portal' },
+	])}
+>
+	<main>
+		<PortalPageView client:load locale="en" sections={sections} />
+	</main>
+</Layout>

@@ -6,12 +6,12 @@ import { IndustryHero } from '../../components/sections/IndustryHero';
 import { AboutHistory } from '../../components/sections/AboutHistory';
 import { PillarGrid } from '../../components/sections/PillarGrid';
 import { PresenceMap } from '../../components/sections/PresenceMap';
-import { ProcessPhases } from '../../components/sections/ProcessPhases';
+import { PortalShowcase } from '../../components/sections/PortalShowcase';
 import { TeamGrid } from '../../components/sections/TeamGrid';
 import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import AboutPageSection from '../../components/sections/AboutPageSection.astro';
 import { breadcrumbSchema } from '../../lib/schema';
-import { getAboutCopy, getHomeCopy, getPeople, getSiteSettings } from '../../lib/content';
+import { getAboutCopy, getPeople, getSiteSettings } from '../../lib/content';
 import { localePath } from '../../lib/locale';
 import type { TeamMember } from '../../components/sections/TeamGrid';
 import type { Pillar } from '../../components/sections/PillarGrid';
@@ -21,7 +21,6 @@ import '../../components/sections/PresenceMap.css';
 
 const about = await getAboutCopy('en');
 const site = await getSiteSettings();
-const home = await getHomeCopy('en');
 const aboutTeam = about.sections?.find((section) => section._type === 'aboutTeam');
 const people = (await getPeople(aboutTeam?.memberLocale === 'es' ? 'es' : 'en')) as TeamMember[];
 const allSections = about.sections ?? [];
@@ -77,7 +76,6 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 					section={section}
 					locale="en"
 					people={people}
-					homePhases={home.process ?? []}
 					heroFallback="/images/team/hiweb-team.png"
 					heroAltFallback="Hiweb team in brand shirts"
 				/>
@@ -109,17 +107,18 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 			eyebrow={about.pillarsEyebrow ?? 'Differentiators'}
 			title={about.pillarsTitle ?? 'Differentiators'}
 		/>
-		<ProcessPhases
-			client:visible
-			phases={home.process ?? []}
-			eyebrow={about.processEyebrow}
-			title={about.processTitle}
-			description={about.processDescription}
-			tone="canvas"
+		<PortalShowcase
+			locale="en"
+			primaryHref="/en/portal"
+			secondaryHref="/contacto"
 		/>
 		<TeamGrid
 			client:load
+			slider
 			showFilters
+			previousLabel="Previous teammate"
+			nextLabel="Next teammate"
+			positionLabel="Go to slide"
 			members={people}
 			eyebrow={about.teamEyebrow}
 			title={about.teamTitle}

@@ -36,6 +36,14 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "contactPage" && _id in ["contactPage", "drafts.contactPage"]`,
     },
     {
+      route: '/portal',
+      filter: `_type == "portalPage" && _id in ["portalPage", "drafts.portalPage"]`,
+    },
+    {
+      route: '/en/portal',
+      filter: `_type == "portalPage" && _id in ["portalPage-en", "drafts.portalPage-en"]`,
+    },
+    {
       route: '/calendario',
       filter: `_type == "calendarPage" && _id in ["calendarPage", "drafts.calendarPage"]`,
     },
@@ -124,6 +132,15 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       resolve: (doc) => ({
         locations: [{ title: doc?.title || 'Contacto', href: '/contacto' }],
       }),
+    }),
+    portalPage: defineLocations({
+      select: { title: 'title', locale: 'locale', id: '_id' },
+      resolve: (doc) => {
+        const english = doc?.locale === 'en' || englishId(doc?.id);
+        return {
+          locations: [{ title: doc?.title || 'Portal', href: english ? '/en/portal' : '/portal' }],
+        };
+      },
     }),
     calendarPage: defineLocations({
       select: { title: 'title', locale: 'locale', id: '_id' },

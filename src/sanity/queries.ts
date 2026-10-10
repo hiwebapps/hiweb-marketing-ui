@@ -10,6 +10,24 @@ const imageProjection = /* groq */ `{
   }
 }`;
 
+const beforeAfterProjection = /* groq */ `
+    _type == "beforeAfter" => {
+      eyebrow,
+      title,
+      description,
+      badge,
+      badgeVariant,
+      pairs[]{
+        title,
+        beforeLabel,
+        afterLabel,
+        beforeImage ${imageProjection},
+        afterImage ${imageProjection},
+        "beforeVideo": beforeVideo.asset->url,
+        "afterVideo": afterVideo.asset->url
+      }
+    }`;
+
 const personCardProjection = /* groq */ `{
   name,
   role,
@@ -140,7 +158,8 @@ const serviceSectionsProjection = /* groq */ `
       columns,
       items[]{ question, answer }
     },
-    _type == "serviceCta" => { badge, title, description }
+    _type == "serviceCta" => { badge, title, description },
+    ${beforeAfterProjection}
   }
 `;
 
@@ -150,6 +169,8 @@ const navPagePath = /* groq */ `{
     _type == "homePage" => "/",
     _type == "aboutPage" && (locale == "en" || _id match "*-en") => "/en/nosotros",
     _type == "aboutPage" => "/nosotros",
+    _type == "portalPage" && (locale == "en" || _id match "*-en") => "/en/portal",
+    _type == "portalPage" => "/portal",
     _type == "contactPage" => "/contacto",
     _type == "calendarPage" && (locale == "en" || _id match "*-en") => "/en/calendario",
     _type == "calendarPage" => "/calendario",
@@ -410,7 +431,8 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
       title,
       description,
       primaryCta{ label, href }
-    }
+    },
+    ${beforeAfterProjection}
   },
   ${seoProjection}
 }`);
@@ -483,7 +505,8 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
       title,
       description,
       primaryCta{ label, href }
-    }
+    },
+    ${beforeAfterProjection}
   },
   ${seoProjection}
 }`);
@@ -524,6 +547,18 @@ const aboutSectionsProjection = /* groq */ `
       description,
       phases[]{ index, title, description }
     },
+    _type == "aboutPortal" => {
+      eyebrow,
+      title,
+      description,
+      clientName,
+      badgeVariant,
+      primaryLabel,
+      primaryHref,
+      secondaryLabel,
+      secondaryHref
+    },
+    ${beforeAfterProjection},
     _type == "aboutTeam" => {
       eyebrow,
       title,
@@ -643,7 +678,8 @@ const industrySectionsProjection = /* groq */ `
     },
     _type == "industryCta" => {
       title
-    }
+    },
+    ${beforeAfterProjection}
   }
 `;
 
@@ -856,7 +892,8 @@ sections[]{
     title,
     description,
     primaryCta{ label, href }
-  }
+  },
+  ${beforeAfterProjection}
 }`;
 
 const caseBodyProjection = /* groq */ `
@@ -912,6 +949,8 @@ export const postsQuery = defineQuery(`*[
   "authorCard": author->{ name, role, company, linkedin, photo ${imageProjection} },
   fecha,
   featured,
+  readingMinutes,
+  "bodyText": pt::text(body),
   "categoriaServicio": { "id": categoriaServicio->slug.current, "nombre": categoriaServicio->nombre },
   "categoriaIndustria": { "id": categoriaIndustria->slug.current },
   cover ${imageProjection},
@@ -1017,7 +1056,8 @@ export const landingBySlugQuery = defineQuery(`*[
     },
     "cases": cases[]->${landingCaseProjection},
     "people": people[]->${landingPersonProjection},
-    "faqFromLibrary": faqRefs[]->{ question, answer }
+    "faqFromLibrary": faqRefs[]->{ question, answer },
+    ${beforeAfterProjection}
   },
   ${seoProjection}
 }`);
@@ -1046,6 +1086,61 @@ export const calendarPageQuery = defineQuery(`*[_id == $id && _type == "calendar
   cancellingLabel,
   metaTitle,
   metaDescription
+}`);
+
+export const portalPageQuery = defineQuery(`*[_id == $id && _type == "portalPage"][0]{
+  title,
+  sections[]{
+    _type,
+    _key,
+    hidden,
+    headingWidth,
+    _type == "portalHero" => {
+      badge,
+      badgeNote,
+      title,
+      description,
+      clientName,
+      windowTitle,
+      proofTitle,
+      proofText,
+      tourLabel,
+      viewerLabel,
+      coachLabel,
+      coachText,
+      samples[]{ module, title, detail }
+    },
+    _type == "portalStrip" => { text, badges[]{ label, variant } },
+    _type == "portalJourney" => {
+      eyebrow,
+      title,
+      description,
+      steps[]{ index, title, description, panelTitle, panelText, badge, badgeVariant }
+    },
+    _type == "portalBento" => {
+      eyebrow,
+      title,
+      description,
+      cards[]{ eyebrow, title, description, module }
+    },
+    _type == "portalFaq" => {
+      eyebrow,
+      title,
+      description,
+      searchPlaceholder,
+      items[]{ question, answer, badge, category }
+    },
+    _type == "portalCloser" => {
+      lead,
+      title,
+      description,
+      primaryLabel,
+      secondaryLabel,
+      trust
+    },
+    ${beforeAfterProjection}
+  },
+  ${seoProjection}
 }`);
 
 export const sitePageQuery = defineQuery(`*[_id == $id && _type == "sitePage"][0]{

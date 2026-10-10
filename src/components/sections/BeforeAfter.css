@@ -1,0 +1,131 @@
+.compare-band__grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 900px) {
+  .compare-band__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .compare-band__grid:has(.compare:only-child) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.compare__title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.compare__stage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border-radius: 1.25rem;
+  background: #111;
+  user-select: none;
+  touch-action: none;
+}
+
+.compare__after,
+.compare__before {
+  position: absolute;
+  inset: 0;
+}
+
+.compare__before {
+  overflow: hidden;
+  border-right: 2px solid #fff;
+}
+
+.compare__before .compare__media,
+.compare__before .compare__empty {
+  width: 100cqi;
+  max-width: none;
+}
+
+.compare__stage {
+  container-type: inline-size;
+}
+
+.compare__media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.compare__empty {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(245, 245, 245, 0.7);
+  font-size: 0.85rem;
+}
+
+.compare__tag {
+  position: absolute;
+  z-index: 2;
+  top: 0.75rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.compare__tag--before {
+  left: 0.75rem;
+}
+
+.compare__tag--after {
+  right: 0.75rem;
+}
+
+.compare__range {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+.compare__handle {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #fff;
+  pointer-events: none;
+  transform: translateX(-1px);
+}
+
+.compare__handle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transform: translate(-50%, -50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compare__media {
+    animation: none;
+  }
+}

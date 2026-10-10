@@ -22,6 +22,7 @@ import {
   landingBySlugQuery,
   landingsQuery,
   peopleQuery,
+  portalPageQuery,
   postBySlugQuery,
   postsQuery,
   serviceBySlugQuery,
@@ -36,6 +37,7 @@ import {
   mapIndustry,
   mapLanding,
   mapPerson,
+  mapPortal,
   mapPost,
   mapService,
 } from './map-sanity';
@@ -50,6 +52,7 @@ import type {
   IndustryRecord,
   LandingPage,
   PersonRecord,
+  PortalPage,
   PostRecord,
   ServiceRecord,
 } from './types';
@@ -206,6 +209,14 @@ export async function sanityCalendarPage(locale: 'es' | 'en' = 'es'): Promise<Ca
 export async function sanityContactPage(): Promise<ContactPageCopy | null> {
   const { data } = await loadQuery<Record<string, unknown> | null>({ query: contactPageQuery });
   return mapContactPage(data);
+}
+
+export async function sanityPortal(locale: 'es' | 'en' = 'es'): Promise<PortalPage | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: portalPageQuery,
+    params: { id: locale === 'en' ? 'portalPage-en' : 'portalPage' },
+  });
+  return mapPortal(data);
 }
 
 export async function sanityAbout(locale: 'es' | 'en' = 'es'): Promise<AboutCopy | null> {

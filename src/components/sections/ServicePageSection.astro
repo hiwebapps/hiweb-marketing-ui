@@ -6,6 +6,7 @@ import { ServicePitch } from './ServicePitch';
 import { ServiceWhy } from './ServiceWhy';
 import { ServicePlans } from './ServicePlans';
 import { IndustryGrid } from './IndustryGrid';
+import { BeforeAfter } from './BeforeAfter';
 import { ProcessPhases } from './ProcessPhases';
 import { CaseStories } from './CaseStories';
 import { FaqSection } from './FaqSection';
@@ -18,6 +19,7 @@ import type { IndustryIconName } from '../icons/IndustryIcons';
 import type { ServiceIconName } from '../icons/ServiceIcons';
 import type { CaseStory } from './CaseStories';
 import type { ProcessAccent, ProcessIconName } from './ProcessPhases';
+import type { BadgeVariant } from '../ui';
 import type { ServiceRecord, ServiceSection } from '../../lib/content/types';
 
 interface Props {
@@ -243,6 +245,19 @@ const nombre = entry.data.nombre;
 			headingWidth={section.headingWidth}
 		/>
 	)
+}
+{
+	section._type === 'beforeAfter' && section.pairs.length ? (
+		<BeforeAfter
+			client:visible
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			badgeVariant={(section.badgeVariant || 'orange') as BadgeVariant}
+			headingWidth={section.headingWidth}
+			pairs={section.pairs}
+		/>
+	) : null
 }
 {
 	section._type === 'serviceCta' && (

@@ -133,6 +133,7 @@ export type IndustrySection = (
       _type: 'industryCta';
       title?: string;
     }
+  | BeforeAfterBlock
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type ServiceSection = (
@@ -227,6 +228,7 @@ export type ServiceSection = (
       items?: FaqItem[];
     }
   | { _type: 'serviceCta'; badge?: string; title?: string; description?: string }
+  | BeforeAfterBlock
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type ServiceRecord = {
@@ -328,6 +330,7 @@ export type CasePageSection = (
       primaryLabel?: string;
       primaryHref?: string;
     }
+  | BeforeAfterBlock
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type CaseRecord = {
@@ -370,6 +373,7 @@ export type PostRecord = {
     };
     fecha: Date;
     featured: boolean;
+    readingMinutes?: number;
     categoriaServicio?: { id: string; nombre?: string };
     categoriaIndustria?: { id: string };
     faqs: FaqItem[];
@@ -481,6 +485,7 @@ export type HomeCopy = {
   };
   hasSections?: boolean;
   sectionOrder?: string[];
+  beforeAfter?: BeforeAfterBlock[];
   seo?: SeoFields;
 };
 
@@ -576,6 +581,18 @@ export type AboutSection = (
       ctaHref?: string;
     }
   | {
+      _type: 'aboutPortal';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      clientName?: string;
+      badgeVariant?: string;
+      primaryLabel?: string;
+      primaryHref?: string;
+      secondaryLabel?: string;
+      secondaryHref?: string;
+    }
+  | {
       _type: 'aboutCta';
       badge?: string;
       title?: string;
@@ -583,7 +600,28 @@ export type AboutSection = (
       ctaLabel?: string;
       ctaHref?: string;
     }
+  | BeforeAfterBlock
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
+
+export type BeforeAfterPair = {
+  title?: string;
+  beforeLabel: string;
+  afterLabel: string;
+  beforeImage?: string;
+  beforeVideo?: string;
+  afterImage?: string;
+  afterVideo?: string;
+};
+
+export type BeforeAfterBlock = {
+  _type: 'beforeAfter';
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  badge?: string;
+  badgeVariant?: string;
+  pairs: BeforeAfterPair[];
+};
 
 export type CmsImage = SanityImageSource & { alt?: string };
 
@@ -700,11 +738,88 @@ export type LandingSection = (
       description?: string;
       cta?: LandingCta;
     }
+  | BeforeAfterBlock
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type LandingPage = {
   id: string;
   title: string;
   sections: LandingSection[];
+  seo?: SeoFields;
+};
+
+export type PortalSample = {
+  module: 'rrss' | 'web' | 'seo' | 'docs' | 'hilinks';
+  title: string;
+  detail?: string;
+};
+
+export type PortalSection = (
+  | {
+      _type: 'portalHero';
+      badge?: string;
+      badgeNote?: string;
+      title?: string;
+      description?: string;
+      clientName?: string;
+      windowTitle?: string;
+      proofTitle?: string;
+      proofText?: string;
+      tourLabel?: string;
+      viewerLabel?: string;
+      coachLabel?: string;
+      coachText?: string;
+      samples?: PortalSample[];
+    }
+  | {
+      _type: 'portalStrip';
+      text?: string;
+      badges?: { label: string; variant?: string }[];
+    }
+  | {
+      _type: 'portalJourney';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      steps?: {
+        index?: string;
+        title?: string;
+        description?: string;
+        panelTitle?: string;
+        panelText?: string;
+        badge?: string;
+        badgeVariant?: string;
+      }[];
+    }
+  | {
+      _type: 'portalBento';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      cards?: { eyebrow?: string; title?: string; description?: string; module?: string }[];
+    }
+  | {
+      _type: 'portalFaq';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      searchPlaceholder?: string;
+      items?: { question: string; answer: string; badge?: string; category?: string }[];
+    }
+  | {
+      _type: 'portalCloser';
+      lead?: string;
+      title?: string;
+      description?: string;
+      primaryLabel?: string;
+      secondaryLabel?: string;
+      trust?: string[];
+    }
+  | BeforeAfterBlock
+) & { hidden?: boolean; headingWidth?: HeadingWidth };
+
+export type PortalPage = {
+  title: string;
+  sections: PortalSection[];
   seo?: SeoFields;
 };

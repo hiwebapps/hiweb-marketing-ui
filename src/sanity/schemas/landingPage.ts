@@ -18,6 +18,7 @@ export const LANDING_SECTION_MEMBERS = [
   defineArrayMember({ type: 'teamGrid' }),
   defineArrayMember({ type: 'metricsBand' }),
   defineArrayMember({ type: 'presenceMap' }),
+  defineArrayMember({ type: 'beforeAfter' }),
 ];
 
 export const landingPage = defineType({

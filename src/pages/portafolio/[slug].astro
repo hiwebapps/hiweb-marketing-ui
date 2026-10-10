@@ -6,6 +6,7 @@ import { caseStaticPaths, getCases, getIndustries } from '../../lib/content';
 import { CaseTelescopeHero } from '../../components/sections/CaseTelescopeHero';
 import { SectionBand } from '../../components/sections/primitives/SectionBand';
 import { SectionHeader } from '../../components/sections/primitives/SectionHeader';
+import { BeforeAfter } from '../../components/sections/BeforeAfter';
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
 import { MetricsBand } from '../../components/sections/MetricsBand';
 import { CaseStories } from '../../components/sections/CaseStories';
@@ -256,6 +257,19 @@ const sections: CasePageSection[] = entry.data.sections?.length
 							/>
 						</div>
 					</SectionBand>
+				);
+			}
+			if (section._type === 'beforeAfter' && section.pairs.length) {
+				return (
+					<BeforeAfter
+						client:visible
+						eyebrow={section.eyebrow}
+						title={section.title}
+						description={section.description}
+						badgeVariant={(section.badgeVariant || 'orange') as 'orange'}
+						headingWidth={section.headingWidth}
+						pairs={section.pairs}
+					/>
 				);
 			}
 			if (section._type === 'caseCta') {

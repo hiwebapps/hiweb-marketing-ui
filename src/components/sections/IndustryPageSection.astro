@@ -3,9 +3,11 @@ import { IndustryHero } from './IndustryHero';
 import { IndustryServices, type IndustryServiceCard } from './IndustryServices';
 import { PillarGrid } from './PillarGrid';
 import { CaseStories, type CaseStory } from './CaseStories';
+import { BeforeAfter } from './BeforeAfter';
 import { FaqSection } from './FaqSection';
 import FinalCta from './FinalCtaBand.astro';
 import type { IndustrySection } from '../../lib/content/types';
+import type { BadgeVariant } from '../ui';
 
 interface Props {
 	section: IndustrySection;
@@ -95,6 +97,19 @@ const lower = nombre.toLowerCase();
 			headingWidth={section.headingWidth}
 		/>
 	)
+}
+{
+	section._type === 'beforeAfter' && section.pairs.length ? (
+		<BeforeAfter
+			client:visible
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			badgeVariant={(section.badgeVariant || 'orange') as BadgeVariant}
+			headingWidth={section.headingWidth}
+			pairs={section.pairs}
+		/>
+	) : null
 }
 {
 	section._type === 'industryCta' && (
