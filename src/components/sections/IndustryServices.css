@@ -130,6 +130,15 @@
   object-fit: contain;
 }
 
+.industry-service-card__orb svg,
+.industry-service-card__mark svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .industry-service-card__mark {
   position: absolute;
   right: -8%;

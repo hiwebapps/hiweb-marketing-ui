@@ -1,5 +1,7 @@
 import { defineQuery } from 'groq';
 
+const processIconField = /* groq */ `"icon": coalesce(iconImage.asset->url, icon)`;
+
 const imageProjection = /* groq */ `{
   ...,
   alt,
@@ -9,6 +11,27 @@ const imageProjection = /* groq */ `{
     metadata { lqip, dimensions }
   }
 }`;
+
+const instagramPhoneProjection = /* groq */ `
+    _type == "instagramPhone" => {
+      eyebrow,
+      title,
+      description,
+      tone,
+      username,
+      displayName,
+      bio,
+      stats[]{ value, label },
+      avatar ${imageProjection},
+      posts[]{
+        kind,
+        caption,
+        image ${imageProjection},
+        slides[] ${imageProjection},
+        poster ${imageProjection},
+        "videoUrl": video.asset->url
+      }
+    }`;
 
 const beforeAfterProjection = /* groq */ `
     _type == "beforeAfter" => {
@@ -136,7 +159,7 @@ const serviceSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      steps[]{ title, description, "icon": coalesce(iconImage.asset->url, icon), accent }
+      steps[]{ title, description, ${processIconField}, accent }
     },
     _type == "serviceCases" => {
       eyebrow,
@@ -167,7 +190,7 @@ const navPagePath = /* groq */ `{
   "path": select(
     _type == "homePage" && (locale == "en" || _id match "*-en") => "/en",
     _type == "homePage" => "/",
-    _type == "aboutPage" && (locale == "en" || _id match "*-en") => "/en/nosotros",
+    _type == "aboutPage" && (locale == "en" || _id match "*-en") => "/en/" + coalesce(slug.current, "nosotros"),
     _type == "aboutPage" => "/nosotros",
     _type == "portalPage" && (locale == "en" || _id match "*-en") => "/en/portal",
     _type == "portalPage" => "/portal",
@@ -407,7 +430,7 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
     },
     _type == "homeProcess" => {
       intro ${introProjection},
-      items[]{ index, title, description }
+      items[]{ index, title, description, ${processIconField} }
     },
     _type == "homeMetrics" => {
       intro ${introProjection},
@@ -481,7 +504,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
     },
     _type == "homeProcess" => {
       intro ${introProjection},
-      items[]{ index, title, description }
+      items[]{ index, title, description, ${processIconField} }
     },
     _type == "homeMetrics" => {
       intro ${introProjection},
@@ -545,7 +568,7 @@ const aboutSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      phases[]{ index, title, description }
+      phases[]{ index, title, description, ${processIconField} }
     },
     _type == "aboutPortal" => {
       eyebrow,
@@ -593,6 +616,7 @@ const aboutSectionsProjection = /* groq */ `
 `;
 
 export const aboutPageQuery = defineQuery(`*[_type == "aboutPage" && _id == $id][0]{
+  "slug": slug.current,
   "heroTitle": coalesce(sections[_type == "aboutHero"][0].title, heroTitle),
   "heroDescription": coalesce(sections[_type == "aboutHero"][0].description, heroDescription),
   "heroBadge": coalesce(sections[_type == "aboutHero"][0].badges[0].label, heroBadge),
@@ -788,7 +812,7 @@ export const servicesQuery = defineQuery(`*[
   heroImage ${imageProjection},
   heroBadge,
   cards[]{ title, description },
-  proceso[]{ title, description },
+  proceso[]{ title, description, ${processIconField} },
   faqs[]{ question, answer },
   planesEyebrow,
   planesTitle,
@@ -819,7 +843,7 @@ export const serviceBySlugQuery = defineQuery(`*[
   heroImage ${imageProjection},
   heroBadge,
   cards[]{ title, description },
-  proceso[]{ title, description },
+  proceso[]{ title, description, ${processIconField} },
   faqs[]{ question, answer },
   planesEyebrow,
   planesTitle,
@@ -846,6 +870,7 @@ sections[]{
   headingWidth,
   _type == "caseHero" => {
     anio,
+    imagen ${imageProjection},
     imagenesProyecto[] ${imageProjection}
   },
   _type == "caseContext" => {
@@ -861,7 +886,7 @@ sections[]{
     eyebrow,
     title,
     description,
-    fases[]{ title, description }
+    fases[]{ title, description, ${processIconField} }
   },
   _type == "caseMetrics" => {
     eyebrow,
@@ -893,6 +918,7 @@ sections[]{
     description,
     primaryCta{ label, href }
   },
+  ${instagramPhoneProjection},
   ${beforeAfterProjection}
 }`;
 
@@ -900,7 +926,7 @@ const caseBodyProjection = /* groq */ `
   "metricas": coalesce(sections[_type == "caseMetrics"][0].items[]{ valor, label, prefix, suffix, decimals, antes, despues }, metricas[]{ valor, label, prefix, suffix, decimals, antes, despues }),
   "reto": coalesce(sections[_type == "caseContext"][0].reto, reto),
   "estrategia": coalesce(sections[_type == "caseContext"][0].estrategia, estrategia),
-  "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description }, fases[]{ title, description }),
+  "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description, ${processIconField} }, fases[]{ title, description, ${processIconField} }),
   "testimonio": coalesce(sections[_type == "caseTestimonial"][0]${testimonialFields}, testimonio{ quote, name, role }),
   "anio": coalesce(sections[_type == "caseHero"][0].anio, anio),
   "imagenesProyecto": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[] ${imageProjection}, imagenesProyecto[] ${imageProjection}),
@@ -1006,7 +1032,7 @@ const landingCaseProjection = /* groq */ `{
   "metricas": coalesce(sections[_type == "caseMetrics"][0].items[]{ valor, label, prefix, suffix, decimals, antes, despues }, metricas[]{ valor, label, prefix, suffix, decimals, antes, despues }),
   "reto": coalesce(sections[_type == "caseContext"][0].reto, reto),
   "estrategia": coalesce(sections[_type == "caseContext"][0].estrategia, estrategia),
-  "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description }, fases[]{ title, description }),
+  "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description, ${processIconField} }, fases[]{ title, description, ${processIconField} }),
   "testimonio": coalesce(sections[_type == "caseTestimonial"][0]${testimonialFields}, testimonio{ quote, name, role })
 }`;
 
@@ -1040,7 +1066,8 @@ export const landingBySlugQuery = defineQuery(`*[
     primaryCta{ label, href },
     secondaryCta{ label, href },
     pillars[]{ title, description, icon, accent, href },
-    phases[]{ index, title, description },
+    phases[]{ index, title, description, ${processIconField} },
+    ${instagramPhoneProjection},
     metrics[]{ valor, label, prefix, suffix, decimals, antes, despues },
     items[]{ question, answer },
     badges[]{ label, variant },

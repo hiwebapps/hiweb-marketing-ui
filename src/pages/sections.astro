@@ -3,9 +3,14 @@ export const prerender = true;
 
 import Layout from '../layouts/Layout.astro';
 import { SectionsKitPage } from '../components/sections/SectionsKitPage';
+import InstagramPhone from '../components/sections/InstagramPhone.astro';
+import { INSTAGRAM_PHONE_DEMO } from '../components/sections/instagram-phone-demo';
 ---
 
 <Layout title="Sections Kit — Hiweb Marketing" noindex>
 	{/* Includes HeroSection + GradientWaves */}
 	<SectionsKitPage client:only="react" />
+	<div id="demo-instagram" class="scroll-mt-28">
+		<InstagramPhone {...INSTAGRAM_PHONE_DEMO} />
+	</div>
 </Layout>

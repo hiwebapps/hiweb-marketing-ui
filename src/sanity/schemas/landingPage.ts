@@ -11,6 +11,7 @@ export const LANDING_SECTION_MEMBERS = [
   defineArrayMember({ type: 'serviceGrid' }),
   defineArrayMember({ type: 'industryGrid' }),
   defineArrayMember({ type: 'processPhases' }),
+  defineArrayMember({ type: 'instagramPhone' }),
   defineArrayMember({ type: 'caseStories' }),
   defineArrayMember({ type: 'casePreview' }),
   defineArrayMember({ type: 'faqSection' }),

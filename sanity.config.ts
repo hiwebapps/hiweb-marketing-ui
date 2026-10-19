@@ -1,4 +1,3 @@
-import { createElement } from 'react';
 import { defineConfig } from 'sanity';
 import { presentationTool } from 'sanity/presentation';
 import { structureTool } from 'sanity/structure';
@@ -10,7 +9,7 @@ import { createRedirect } from './src/sanity/actions/createRedirect';
 import { keywordBadge, seoChecklistBadge } from './src/sanity/badges/seoBadges';
 import { translationBadge, wordsBadge } from './src/sanity/badges/postBadges';
 import { PostSeoView } from './src/sanity/components/PostSeoView';
-import { DocumentFooter } from './src/sanity/components/DocumentFooter';
+import { StagingDocumentLayout } from './src/sanity/components/StagingDocumentLayout';
 import { StudioNavbar } from './src/sanity/components/StudioNavbar';
 import { resolve } from './src/sanity/presentation/resolve';
 import { SiteNavigator } from './src/sanity/presentation/SiteNavigator';
@@ -44,9 +43,6 @@ function previewOrigin() {
 
 export default defineConfig({
   name: 'hiweb-web',
-  __internal_tasks: {
-    footerAction: createElement(DocumentFooter),
-  },
   studio: {
     components: {
       navbar: StudioNavbar,
@@ -101,6 +97,9 @@ export default defineConfig({
     });
   },
   document: {
+    components: {
+      unstable_layout: StagingDocumentLayout,
+    },
     badges: (prev, context) => {
       const withChecklist = [...prev, seoChecklistBadge];
       return context.schemaType === 'post'

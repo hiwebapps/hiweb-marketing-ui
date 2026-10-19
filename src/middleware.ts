@@ -40,19 +40,24 @@ function credentialsMatch(header: string | null, user: string, password: string)
 /** Belt-and-suspenders: X-Robots-Tag while PUBLIC_SITE_INDEXABLE is off (and always on non-live hosts). */
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
+  const visiblePath = pathname.replace(/[\u200B\u200C\u200D\uFEFF]/g, '');
+  if (visiblePath !== pathname) {
+    return context.redirect(`${visiblePath}${context.url.search}`);
+  }
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
   const englishSection =
     path.startsWith('/en/servicios/') ||
     path.startsWith('/en/industrias/') ||
-    path === '/en/nosotros' ||
-    path.startsWith('/en/nosotros/') ||
     path === '/en/blogs' ||
     path.startsWith('/en/blogs/') ||
     path === '/en/terminos' ||
     path === '/en/aviso-de-privacidad' ||
     path === '/en/calendario' ||
-    path === '/en/portal';
-  if (path.startsWith('/en/') && path !== '/en' && !englishSection) {
+    path === '/en/portal' ||
+    path === '/en/404';
+  // The English About page lives at /en/<slug>, and Studio owns the slug.
+  const englishPageCandidate = !englishSection && /^\/en\/[^/]+$/.test(path);
+  if (path.startsWith('/en/') && path !== '/en' && !englishSection && !englishPageCandidate) {
     return context.redirect('/en');
   }
 
@@ -80,18 +85,44 @@ export const onRequest = defineMiddleware(async (context, next) => {
     () => next(),
   );
 
+  if (englishPageCandidate && response.status === 404) {
+    return context.redirect('/en');
+  }
+
+  if (isMissingDocument(context.request, response, path)) {
+    const rendered = await context.rewrite(path.startsWith('/en') ? '/en/404' : '/404');
+    return withSiteHeaders(rendered, context.url.hostname, 404);
+  }
+
+  return withSiteHeaders(response, context.url.hostname);
+});
+
+function isMissingDocument(request: Request, response: Response, path: string) {
+  if (response.status !== 404) return false;
+  if (path === '/404' || path === '/en/404') return false;
+  if (path.startsWith('/api/')) return false;
+  const type = response.headers.get('content-type') ?? '';
+  if (type.includes('application/json')) return false;
+  const accept = request.headers.get('accept') ?? '';
+  return accept.includes('text/html');
+}
+
+function withSiteHeaders(response: Response, hostname: string, status?: number) {
+  const nextStatus = status ?? response.status;
   const headers = new Headers(response.headers);
-  if (isStagingSite()) {
+  const staging = isStagingSite();
+  const noindex = shouldNoIndex(hostname);
+  if (staging) {
     headers.set('Cache-Control', 'no-store');
     headers.set('Content-Security-Policy', `frame-ancestors ${STUDIO_FRAME_ANCESTORS}`);
     headers.delete('X-Frame-Options');
   }
-  if (shouldNoIndex(context.url.hostname)) headers.set('X-Robots-Tag', ROBOTS_NOINDEX);
-  if (!isStagingSite() && !shouldNoIndex(context.url.hostname)) return response;
+  if (noindex) headers.set('X-Robots-Tag', ROBOTS_NOINDEX);
+  if (!staging && !noindex && nextStatus === response.status) return response;
 
   return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
+    status: nextStatus,
+    statusText: nextStatus === 404 ? 'Not Found' : response.statusText,
     headers,
   });
-});
+}

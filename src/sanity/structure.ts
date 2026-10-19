@@ -59,6 +59,8 @@ const HIDDEN_FROM_FALLBACK = [
   'serviceGrid',
   'industryGrid',
   'processPhases',
+  'instagramPhone',
+  'instagramPhonePost',
   'caseStories',
   'casePreview',
   'faqSection',

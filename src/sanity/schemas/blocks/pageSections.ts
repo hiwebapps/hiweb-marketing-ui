@@ -10,6 +10,7 @@ import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from '../shared';
+import { instagramPhone } from './instagramPhone';
 
 const TONE_OPTIONS = [
   { title: 'Canvas', value: 'canvas' },
@@ -287,6 +288,7 @@ export const processPhases = defineType({
       name: 'phases',
       title: 'Pasos',
       type: 'array',
+      description: 'Abre cada paso para cambiar su icono.',
       of: [defineArrayMember({ type: 'processStep' })],
       validation: (rule) => rule.min(2).max(6),
     }),
@@ -463,6 +465,7 @@ export const landingSectionTypes = [
   serviceGrid,
   industryGrid,
   processPhases,
+  instagramPhone,
   caseStories,
   casePreview,
   landingFaqSection,

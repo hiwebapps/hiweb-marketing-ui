@@ -1,0 +1,279 @@
+---
+import type { InstagramPhonePost, InstagramPhoneProps } from './instagram-phone-demo';
+import './InstagramPhone.css';
+
+export type { InstagramPhonePost, InstagramPhoneProps };
+
+interface Props extends InstagramPhoneProps {}
+
+const {
+  eyebrow,
+  title,
+  description,
+  tone = 'canvas',
+  username,
+  displayName,
+  bio,
+  avatar,
+  avatarAlt = '',
+  stats = [],
+  posts = [],
+} = Astro.props;
+
+const payload = posts.map((post) => ({
+  kind: post.kind,
+  caption: post.caption ?? '',
+  slides: post.slides.filter((slide) => slide.src),
+  poster: post.poster ?? '',
+  videoUrl: post.videoUrl ?? '',
+}));
+
+const initial = username.trim().charAt(0).toUpperCase() || '·';
+---
+
+<section class:list={['ig-phone-section', tone === 'surface' && 'ig-phone-section--surface']} id="instagram">
+  <div class="ig-phone-section__inner">
+    <div class="ig-phone-section__copy">
+      {eyebrow ? <p class="ig-phone-section__eyebrow">{eyebrow}</p> : null}
+      {title ? <h2 class="hw-section-title">{title}</h2> : null}
+      {description ? <p class="ig-phone-section__lead">{description}</p> : null}
+    </div>
+
+    <div class="ig-device" data-ig-phone data-ig-posts={JSON.stringify(payload)} data-ig-user={username}>
+      <div class="ig-device__screen">
+        <div class="ig-top">
+          <span class="ig-top__back" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
+          </span>
+          <p class="ig-top__user">{username}</p>
+        </div>
+        <div class="ig-profile" data-ig-profile>
+          <div class="ig-profile__head">
+            <div class="ig-profile__row">
+              {avatar ? (
+                <img class="ig-profile__avatar" src={avatar} alt={avatarAlt || username} width="74" height="74" />
+              ) : (
+                <span class="ig-profile__fallback" aria-hidden="true">{initial}</span>
+              )}
+              {stats.length ? (
+                <ul class="ig-profile__stats">
+                  {stats.slice(0, 3).map((stat) => (
+                    <li>
+                      <span class="ig-profile__value">{stat.value}</span>
+                      <span class="ig-profile__label">{stat.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+            {displayName ? <p class="ig-profile__display">{displayName}</p> : null}
+            {bio ? <p class="ig-profile__bio">{bio}</p> : null}
+          </div>
+
+          {payload.length ? (
+            <ul class="ig-grid">
+              {payload.map((post, index) => {
+                const thumb = post.kind === 'reel' ? post.poster || post.slides[0]?.src : post.slides[0]?.src;
+                const label = post.kind === 'reel' ? 'Abrir reel' : post.kind === 'carousel' ? 'Abrir carrusel' : 'Abrir foto';
+                return (
+                  <li>
+                    <button type="button" class="ig-grid__hit" data-ig-open={index} aria-label={`${label} ${index + 1}`}>
+                      {thumb ? <img src={thumb} alt="" /> : <span class="ig-grid__empty" aria-hidden="true">{index + 1}</span>}
+                      {post.kind === 'carousel' ? (
+                        <span class="ig-grid__mark" aria-hidden="true">
+                          <svg viewBox="0 0 24 24"><rect x="7" y="7" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="4" y="4" width="12" height="12" rx="2" fill="currentColor"/></svg>
+                        </span>
+                      ) : null}
+                      {post.kind === 'reel' ? (
+                        <span class="ig-grid__mark" aria-hidden="true">
+                          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 7.5v9l7-4.5-7-4.5Z"/></svg>
+                        </span>
+                      ) : null}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p class="ig-profile__empty">Agrega publicaciones en Studio para llenar el feed.</p>
+          )}
+        </div>
+
+        <div class="ig-tabbar" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg>
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.25"/><path d="m16 16 4 4"/></svg>
+          <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="m10 8.5 6 3.5-6 3.5v-7Z" fill="currentColor" stroke="none"/></svg>
+          <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M12 8v8M8 12h8"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 19s-6.5-4.1-6.5-8.2A3.7 3.7 0 0 1 12 8a3.7 3.7 0 0 1 6.5 2.8C18.5 14.9 12 19 12 19Z"/></svg>
+          {avatar ? (
+            <img src={avatar} alt="" width="22" height="22" />
+          ) : (
+            <span class="ig-tabbar__avatar">{initial}</span>
+          )}
+        </div>
+
+        <div class="ig-viewer" data-ig-viewer hidden>
+          <div class="ig-viewer__bar">
+            <button type="button" class="ig-viewer__back" data-ig-close aria-label="Volver al feed">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+            </button>
+            <p class="ig-viewer__user">{username}</p>
+          </div>
+          <div class="ig-viewer__stage" data-ig-stage>
+            <button type="button" class="ig-viewer__arrow ig-viewer__arrow--prev" data-ig-prev aria-label="Foto anterior" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+            </button>
+            <img class="ig-viewer__photo" data-ig-photo alt="" hidden />
+            <video class="ig-viewer__video" data-ig-video controls playsinline preload="metadata" hidden></video>
+            <button type="button" class="ig-viewer__arrow ig-viewer__arrow--next" data-ig-next aria-label="Foto siguiente" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            </button>
+          </div>
+          <div class="ig-viewer__dots" data-ig-dots></div>
+          <p class="ig-viewer__caption" data-ig-caption></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  type Slide = { src: string; alt: string };
+  type Post = { kind: 'photo' | 'carousel' | 'reel'; caption: string; slides: Slide[]; poster: string; videoUrl: string };
+
+  function bind(root: HTMLElement) {
+    if (root.dataset.igReady === 'true') return;
+    root.dataset.igReady = 'true';
+
+    const posts = JSON.parse(root.dataset.igPosts || '[]') as Post[];
+    const profile = root.querySelector<HTMLElement>('[data-ig-profile]');
+    const viewer = root.querySelector<HTMLElement>('[data-ig-viewer]');
+    const photo = root.querySelector<HTMLImageElement>('[data-ig-photo]');
+    const video = root.querySelector<HTMLVideoElement>('[data-ig-video]');
+    const caption = root.querySelector<HTMLElement>('[data-ig-caption]');
+    const dots = root.querySelector<HTMLElement>('[data-ig-dots]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-ig-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-ig-next]');
+    const stage = root.querySelector<HTMLElement>('[data-ig-stage]');
+    const closeButton = root.querySelector<HTMLButtonElement>('[data-ig-close]');
+    if (!profile || !viewer || !photo || !video || !caption || !dots || !prev || !next || !stage || !closeButton) return;
+
+    let postIndex = -1;
+    let slideIndex = 0;
+    let opener: HTMLElement | null = null;
+    let touchX = 0;
+
+    function current() {
+      return posts[postIndex];
+    }
+
+    function showSlide() {
+      const post = current();
+      if (!post) return;
+      const slides = post.slides;
+      const reel = post.kind === 'reel' && post.videoUrl;
+      photo.hidden = Boolean(reel);
+      video.hidden = !reel;
+      prev.hidden = Boolean(reel) || slides.length < 2;
+      next.hidden = Boolean(reel) || slides.length < 2;
+      dots.replaceChildren();
+
+      if (reel) {
+        photo.removeAttribute('src');
+        if (video.src !== post.videoUrl) {
+          video.src = post.videoUrl;
+          if (post.poster) video.poster = post.poster;
+        }
+        video.play().catch(() => undefined);
+        return;
+      }
+
+      video.pause();
+      video.removeAttribute('src');
+      const slide = slides[slideIndex];
+      if (slide) {
+        photo.src = slide.src;
+        photo.alt = slide.alt || '';
+      }
+      if (slides.length > 1) {
+        slides.forEach((_, index) => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'ig-viewer__dot';
+          dot.setAttribute('aria-label', `Foto ${index + 1}`);
+          if (index === slideIndex) dot.setAttribute('aria-current', 'true');
+          dot.addEventListener('click', () => {
+            slideIndex = index;
+            showSlide();
+          });
+          dots.append(dot);
+        });
+      }
+    }
+
+    function open(index: number, from: HTMLElement) {
+      postIndex = index;
+      slideIndex = 0;
+      opener = from;
+      const post = current();
+      caption.textContent = post?.caption || '';
+      profile.hidden = true;
+      viewer.hidden = false;
+      showSlide();
+      closeButton.focus();
+    }
+
+    function close() {
+      video.pause();
+      video.removeAttribute('src');
+      viewer.hidden = true;
+      profile.hidden = false;
+      postIndex = -1;
+      opener?.focus();
+      opener = null;
+    }
+
+    function step(delta: number) {
+      const post = current();
+      if (!post || post.kind === 'reel' || post.slides.length < 2) return;
+      slideIndex = (slideIndex + delta + post.slides.length) % post.slides.length;
+      showSlide();
+    }
+
+    root.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const openButton = target.closest<HTMLElement>('[data-ig-open]');
+      if (openButton && root.contains(openButton)) {
+        open(Number(openButton.dataset.igOpen), openButton);
+      }
+    });
+    closeButton.addEventListener('click', close);
+    prev.addEventListener('click', () => step(-1));
+    next.addEventListener('click', () => step(1));
+
+    stage.addEventListener('touchstart', (event) => {
+      touchX = event.changedTouches[0]?.clientX ?? 0;
+    }, { passive: true });
+    stage.addEventListener('touchend', (event) => {
+      const end = event.changedTouches[0]?.clientX ?? touchX;
+      const delta = end - touchX;
+      if (Math.abs(delta) < 40) return;
+      step(delta < 0 ? 1 : -1);
+    }, { passive: true });
+
+    document.addEventListener('keydown', (event) => {
+      if (viewer.hidden) return;
+      if (event.key === 'Escape') close();
+      if (event.key === 'ArrowRight') step(1);
+      if (event.key === 'ArrowLeft') step(-1);
+    });
+  }
+
+  function boot() {
+    document.querySelectorAll<HTMLElement>('[data-ig-phone]').forEach(bind);
+  }
+
+  boot();
+  document.addEventListener('astro:page-load', boot);
+</script>

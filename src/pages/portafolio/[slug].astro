@@ -12,6 +12,7 @@ import { MetricsBand } from '../../components/sections/MetricsBand';
 import { CaseStories } from '../../components/sections/CaseStories';
 import { CaseCards } from '../../components/sections/CasesIndex';
 import FinalCta from '../../components/sections/FinalCtaBand.astro';
+import InstagramPhone from '../../components/sections/InstagramPhone.astro';
 import { breadcrumbSchema } from '../../lib/schema';
 import { postCoverUrl } from '../../lib/blog';
 import { formatCaseStat } from '../../lib/content/format';
@@ -40,9 +41,6 @@ const related = allCases.filter(
 	(item) => item.id !== entry.id && item.data.industria.id === entry.data.industria.id,
 );
 
-const heroImage =
-	entry.data.seo?.ogImage ?? industry?.data.heroImage ?? postCoverUrl(`caso-${entry.id}`, 1600, 1000);
-
 const projectWords = entry.data.cliente.trim().split(/\s+/);
 const projectMid = Math.max(1, Math.ceil(projectWords.length / 2));
 const titleLeft = projectWords.slice(0, projectMid).join(' ');
@@ -51,7 +49,13 @@ const titleRight = projectWords.slice(projectMid).join(' ');
 const sections: CasePageSection[] = entry.data.sections?.length
 	? entry.data.sections.filter((section) => !section.hidden)
 	: [
-			{ _type: 'caseHero', anio: entry.data.anio, imagenesProyecto: entry.data.imagenesProyecto },
+			{
+				_type: 'caseHero',
+				anio: entry.data.anio,
+				imagen: entry.data.imagen,
+				imagenAlt: entry.data.imagenAlt,
+				imagenesProyecto: entry.data.imagenesProyecto,
+			},
 			{
 				_type: 'caseContext',
 				retoEyebrow: 'Reto',
@@ -97,6 +101,17 @@ const sections: CasePageSection[] = entry.data.sections?.length
 			},
 			{ _type: 'caseCta', title: 'Agenda un diagnóstico similar' },
 		];
+
+const heroSection = sections.find((section) => section._type === 'caseHero');
+const heroImage =
+	(heroSection?._type === 'caseHero' ? heroSection.imagen : undefined) ??
+	entry.data.seo?.ogImage ??
+	industry?.data.heroImage ??
+	postCoverUrl(`caso-${entry.id}`, 1600, 1000);
+const heroAlt =
+	(heroSection?._type === 'caseHero' ? heroSection.imagenAlt : undefined) ||
+	industry?.data.heroImageAlt ||
+	`Imagen del caso ${entry.data.cliente}`;
 ---
 
 <Layout
@@ -120,7 +135,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 						titleLeft={titleLeft}
 						titleRight={titleRight}
 						image={heroImage}
-						imageAlt={industry?.data.heroImageAlt ?? `Imagen del caso ${entry.data.cliente}`}
+						imageAlt={heroAlt}
 						floatImages={section.imagenesProyecto ?? []}
 						year={section.anio}
 					/>
@@ -172,6 +187,7 @@ const sections: CasePageSection[] = entry.data.sections?.length
 							index: String(index + 1).padStart(2, '0'),
 							title: fase.title,
 							description: fase.description,
+							icon: fase.icon,
 						}))}
 						eyebrow={section.eyebrow ?? 'Ejecución'}
 						title={section.title ?? 'Cómo se hizo el trabajo'}
@@ -251,12 +267,29 @@ const sections: CasePageSection[] = entry.data.sections?.length
 									client: item.data.cliente,
 									industry: industry?.data.nombre ?? item.data.cliente,
 									industrySlug: item.data.industria.id,
-									image: item.data.seo?.ogImage ?? postCoverUrl(`caso-${item.id}`, 800, 520),
+									image: item.data.imagen || item.data.seo?.ogImage || postCoverUrl(`caso-${item.id}`, 800, 520),
 									href: `/portafolio/${item.id}`,
 								}))}
 							/>
 						</div>
 					</SectionBand>
+				);
+			}
+			if (section._type === 'instagramPhone' && section.username) {
+				return (
+					<InstagramPhone
+						eyebrow={section.eyebrow}
+						title={section.title}
+						description={section.description}
+						tone={section.tone}
+						username={section.username}
+						displayName={section.displayName}
+						bio={section.bio}
+						avatar={section.avatar}
+						avatarAlt={section.avatarAlt}
+						stats={section.stats}
+						posts={section.posts}
+					/>
 				);
 			}
 			if (section._type === 'beforeAfter' && section.pairs.length) {

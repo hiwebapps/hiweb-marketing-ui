@@ -3,7 +3,7 @@ import { createElement } from 'react';
 import { useClient } from 'sanity';
 import { Badge, Box, Card, Flex, Spinner, Text } from '@sanity/ui';
 import { extractPortableHeadings } from '../../lib/blog';
-import { pagePath } from '../../lib/page-meta';
+import { aboutPath, pagePath } from '../../lib/page-meta';
 import { normalizeHref } from '../seo/inventory';
 
 type ViewProps = {
@@ -12,6 +12,7 @@ type ViewProps = {
 };
 
 const PATHS_QUERY = `{
+  "aboutSlug": *[_id == "aboutPage-en"][0].slug.current,
   "services": *[_type == "service" && defined(slug.current)]{
     _id,
     "locale": coalesce(locale, "es"),
@@ -31,6 +32,7 @@ const PATHS_QUERY = `{
 }`;
 
 type PathRows = {
+  aboutSlug?: string;
   services?: { _id: string; locale: string; slug: string }[];
   industries?: { _id: string; locale: string; slug: string }[];
   posts?: { locale: string; slug: string }[];
@@ -60,8 +62,8 @@ function knownPaths(data: PathRows) {
   const paths = new Set<string>([
     '/',
     '/en',
-    '/nosotros',
-    '/en/nosotros',
+    aboutPath('es'),
+    aboutPath('en', data.aboutSlug),
     '/blog',
     '/en/blogs',
     '/contacto',

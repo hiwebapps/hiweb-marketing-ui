@@ -25,12 +25,14 @@ export type FaqItem = {
 export type TitledBlock = {
   title: string;
   description: string;
+  icon?: string;
 };
 
 export type ProcessPhase = {
   index: string;
   title: string;
   description: string;
+  icon?: string;
 };
 
 export type Metric = {
@@ -275,6 +277,8 @@ export type CasePageSection = (
   | {
       _type: 'caseHero';
       anio?: string;
+      imagen?: string;
+      imagenAlt?: string;
       imagenesProyecto?: string[];
     }
   | {
@@ -331,6 +335,26 @@ export type CasePageSection = (
       primaryHref?: string;
     }
   | BeforeAfterBlock
+  | {
+      _type: 'instagramPhone';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      tone?: 'canvas' | 'surface';
+      username: string;
+      displayName?: string;
+      bio?: string;
+      avatar?: string;
+      avatarAlt?: string;
+      stats: { value: string; label: string }[];
+      posts: {
+        kind: 'photo' | 'carousel' | 'reel';
+        caption?: string;
+        slides: { src: string; alt: string }[];
+        poster?: string;
+        videoUrl?: string;
+      }[];
+    }
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
 export type CaseRecord = {
@@ -350,6 +374,8 @@ export type CaseRecord = {
     fases: TitledBlock[];
     testimonio?: { quote: string; name: string; role: string; client?: string; photo?: string; stats?: StoryStat[] };
     anio?: string;
+    imagen?: string;
+    imagenAlt?: string;
     imagenesProyecto?: string[];
     sections?: CasePageSection[];
     seo?: SeoFields;
@@ -490,6 +516,8 @@ export type HomeCopy = {
 };
 
 export type AboutCopy = {
+  /** English only. Empty means /en/nosotros. */
+  slug?: string;
   heroTitle?: string;
   heroDescription?: string;
   heroBadge?: string;
@@ -557,7 +585,7 @@ export type AboutSection = (
       eyebrow?: string;
       title?: string;
       description?: string;
-      phases?: { index: string; title: string; description: string }[];
+      phases?: { index: string; title: string; description: string; icon?: string }[];
     }
   | {
       _type: 'aboutTeam';
@@ -677,6 +705,26 @@ export type LandingSection = (
       description?: string;
       tone?: 'canvas' | 'surface';
       phases: ProcessPhase[];
+    }
+  | {
+      _type: 'instagramPhone';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      tone?: 'canvas' | 'surface';
+      username: string;
+      displayName?: string;
+      bio?: string;
+      avatar?: string;
+      avatarAlt?: string;
+      stats: { value: string; label: string }[];
+      posts: {
+        kind: 'photo' | 'carousel' | 'reel';
+        caption?: string;
+        slides: { src: string; alt: string }[];
+        poster?: string;
+        videoUrl?: string;
+      }[];
     }
   | {
       _type: 'caseStories';

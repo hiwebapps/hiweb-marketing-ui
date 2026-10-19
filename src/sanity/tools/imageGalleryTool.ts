@@ -34,6 +34,7 @@ const FIELD_LABELS: Record<string, string> = {
   body: 'Cuerpo',
   cover: 'Portada',
   image: 'Imagen',
+  imagen: 'Imagen principal',
   imagenesProyecto: 'Imágenes del proyecto',
   ogImage: 'Open Graph',
   photo: 'Foto',

@@ -3,7 +3,8 @@
  * PUBLIC_SITE_INDEXABLE is off (see docs/cms/CUTOVER-SEO.md).
  */
 import type { APIRoute } from 'astro';
-import { getCases, getIndustries, getLandings, getPosts, getServices } from '../lib/content';
+import { getAboutCopy, getCases, getIndustries, getLandings, getPosts, getServices } from '../lib/content';
+import { aboutPath } from '../lib/page-meta';
 import { isReservedSlug } from '../sanity/reservedSlugs';
 import { shouldNoIndex } from '../lib/seo';
 
@@ -19,21 +20,22 @@ function urlXml(href: string): string {
 
 export const GET: APIRoute = async ({ url, site }) => {
   const origin = site?.origin ?? import.meta.env.PUBLIC_SITE_URL ?? url.origin;
-  const [industries, services, cases, posts, englishPosts, landings] = await Promise.all([
+  const [industries, services, cases, posts, englishPosts, landings, englishAbout] = await Promise.all([
     getIndustries(),
     getServices(),
     getCases(),
     getPosts(),
     getPosts('en'),
     getLandings(),
+    getAboutCopy('en'),
   ]);
 
   const urls = [
     '/',
     '/portafolio',
     '/blog',
-    '/nosotros',
-    '/en/nosotros',
+    aboutPath('es'),
+    aboutPath('en', englishAbout.slug),
     '/en/blogs',
     '/contacto',
     '/diagnostico-marketing-digital',

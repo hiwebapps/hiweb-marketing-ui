@@ -60,7 +60,17 @@ import type {
 async function fetchList<T>(query: string, map: (doc: Record<string, unknown>) => T): Promise<T[]> {
   const { data } = await loadQuery<Record<string, unknown>[]>({ query });
   if (!Array.isArray(data) || data.length === 0) return [];
-  return data.filter((item) => item?.id || item?.name).map(map);
+  const items: T[] = [];
+  for (const item of data) {
+    if (!item?.id && !item?.name) continue;
+    try {
+      items.push(map(item));
+    } catch (error) {
+      const message = error instanceof Error ? error.message.split('\n')[0] : String(error);
+      console.warn(`[cms] Skipped ${String(item.id ?? item.name)} (${message}).`);
+    }
+  }
+  return items;
 }
 
 async function fetchOne<T>(

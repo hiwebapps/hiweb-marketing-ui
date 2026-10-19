@@ -1,0 +1,43 @@
+---
+import './NotFound.css';
+
+interface Props {
+	lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+
+const copy = {
+	es: {
+		title: 'Esta página no existe.',
+		lead: 'El enlace no lleva a ningún lugar. Puede estar mal escrito, o la página ya se movió.',
+		home: 'Ir al inicio',
+		homeHref: '/',
+		contact: 'Contacto',
+		contactHref: '/contacto',
+	},
+	en: {
+		title: 'This page doesn’t exist.',
+		lead: 'This link doesn’t go anywhere. It may be mistyped, or the page has moved.',
+		home: 'Back home',
+		homeHref: '/en',
+		contact: 'Contact',
+		contactHref: '/contacto',
+	},
+}[lang];
+---
+
+<main class="not-found">
+	<div class="not-found__inner">
+		<div>
+			<p class="not-found__badge">404</p>
+			<h1 class="not-found__title">{copy.title}</h1>
+			<p class="not-found__lead">{copy.lead}</p>
+			<div class="not-found__actions">
+				<a class="not-found__go" href={copy.homeHref}>{copy.home}</a>
+				<a class="not-found__go not-found__go--quiet" href={copy.contactHref}>{copy.contact}</a>
+			</div>
+		</div>
+		<p class="not-found__mark" aria-hidden="true"><span>4</span><span class="not-found__zero"></span><span>4</span></p>
+	</div>
+</main>

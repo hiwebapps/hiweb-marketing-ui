@@ -57,7 +57,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Ver en staging, en el menú de acciones del documento, abre esa página en el sitio de staging. Staging pide usuario y contraseña. Ahí se ven borradores. El sitio público no.',
+        text: 'Ver Staging, en la barra de abajo a la izquierda de Publish, abre esa página en el sitio de staging. Staging pide usuario y contraseña. Ahí se ven borradores. El sitio público no.',
       },
     ],
   },

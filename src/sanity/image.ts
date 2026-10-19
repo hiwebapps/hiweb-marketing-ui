@@ -10,7 +10,17 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
+/** An empty Studio image (`asset: null`) is not a URL. The builder throws on it. */
+function isEmptyImage(source: SanityImageSource): boolean {
+  if (typeof source !== 'object' || source === null) return false;
+  return 'asset' in source && (source as { asset?: unknown }).asset == null;
+}
+
 export function urlForWidth(source: SanityImageSource | undefined | null, width: number) {
-  if (!source) return undefined;
-  return urlFor(source).width(width).auto('format').url();
+  if (!source || isEmptyImage(source)) return undefined;
+  try {
+    return urlFor(source).width(width).auto('format').url();
+  } catch {
+    return undefined;
+  }
 }

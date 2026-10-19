@@ -360,6 +360,13 @@ export function SiteNav({
   );
 }
 
+/** The page's hreflang pair knows slugs that differ per language. */
+function switchLocaleHref(target: Locale) {
+  const alternate = document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${target}"]`);
+  if (alternate?.href) return new URL(alternate.href).pathname;
+  return localePath(window.location.pathname, target);
+}
+
 function LangSwitch({
   locale,
   open,
@@ -433,7 +440,7 @@ function LangSwitch({
               aria-selected={locale === 'es'}
               onClick={() => {
                 onClose();
-                window.location.assign(localePath(window.location.pathname, 'es'));
+                window.location.assign(switchLocaleHref('es'));
               }}
             >
               ES · Español
@@ -447,7 +454,7 @@ function LangSwitch({
               aria-selected={locale === 'en'}
               onClick={() => {
                 onClose();
-                window.location.assign(localePath(window.location.pathname, 'en'));
+                window.location.assign(switchLocaleHref('en'));
               }}
             >
               EN · English

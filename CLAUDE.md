@@ -10,6 +10,8 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Documentation
 
+Mapa del repo, archivo por archivo: [docs/codebase/README.md](docs/codebase/README.md). Auditoría (SEO, rendimiento, seguridad, Studio, design system): [docs/audit/README.md](docs/audit/README.md).
+
 Full documentation: https://docs.astro.build
 
 Consult these guides before working on related tasks:

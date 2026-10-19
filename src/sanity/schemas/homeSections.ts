@@ -210,6 +210,7 @@ export const homeProcess = defineType({
       name: 'items',
       title: 'Fases',
       type: 'array',
+      description: 'Abre cada fase para cambiar su icono. Cada página guarda los suyos.',
       of: [defineArrayMember({ type: 'processStep' })],
     }),
   ],

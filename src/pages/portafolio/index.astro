@@ -28,7 +28,7 @@ const cards = cases.map((item) => ({
 	client: item.data.cliente,
 	industry: industryName[item.data.industria.id] || item.data.cliente,
 	industrySlug: item.data.industria.id,
-	image: item.data.seo?.ogImage ?? postCoverUrl(`caso-${item.id}`, 800, 520),
+	image: item.data.imagen || item.data.seo?.ogImage || postCoverUrl(`caso-${item.id}`, 800, 520),
 	href: `/portafolio/${item.id}`,
 	featured: item.data.destacado,
 }));

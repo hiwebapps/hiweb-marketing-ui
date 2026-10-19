@@ -169,7 +169,7 @@ export const aboutProcess = defineType({
       name: 'phases',
       title: 'Fases',
       type: 'array',
-      description: 'Si está vacío, la página usa las fases de la Home.',
+      description: 'Si está vacío, la página usa las fases de la Home. Abre cada fase para cambiar su icono.',
       of: [defineArrayMember({ type: 'processStep' })],
     }),
   ],

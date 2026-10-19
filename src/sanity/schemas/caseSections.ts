@@ -5,7 +5,7 @@ import { RocketIcon } from '@sanity/icons/Rocket';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { headingTitleField, headingWidthField, withVisibility } from './shared';
+import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -25,6 +25,12 @@ export const caseHero = defineType({
   type: 'object',
   icon: ImageIcon,
   fields: [
+    imageWithAlt({
+      name: 'imagen',
+      title: 'Imagen principal',
+      description:
+        'Fondo de la hero. Sube una foto o elige una de la galería. Si la dejas vacía, se usa la imagen Open Graph.',
+    }),
     defineField({
       name: 'anio',
       title: 'Año del proyecto',
@@ -36,7 +42,7 @@ export const caseHero = defineType({
       name: 'imagenesProyecto',
       title: 'Imágenes del proyecto',
       type: 'array',
-      description: 'Fotos de la animación del hero. Máximo 10.',
+      description: 'Fotos que flotan en la animación. No son el fondo. Máximo 10.',
       validation: (rule) => rule.max(10),
       of: [
         defineArrayMember({
@@ -54,8 +60,8 @@ export const caseHero = defineType({
     }),
   ],
   preview: {
-    select: { title: 'anio' },
-    prepare: ({ title }) => ({ title: title || 'Hero', subtitle: 'Sección Hero' }),
+    select: { title: 'anio', media: 'imagen' },
+    prepare: ({ title, media }) => ({ title: title || 'Hero', subtitle: 'Sección Hero', media }),
   },
 });
 
@@ -106,6 +112,7 @@ export const caseProcess = defineType({
       name: 'fases',
       title: 'Fases',
       type: 'array',
+      description: 'Abre cada fase para cambiar su icono.',
       of: [defineArrayMember({ type: 'titledBlock' })],
     }),
   ],
@@ -212,6 +219,7 @@ export const caseSectionMembers: ArrayOfObjectsMember[] = [
   defineArrayMember({ type: 'caseRelated', ...dialog }),
   defineArrayMember({ type: 'caseCta', ...dialog }),
   defineArrayMember({ type: 'beforeAfter', ...dialog }),
+  defineArrayMember({ type: 'instagramPhone', ...dialog }),
 ];
 
 export const caseSectionTypes = [

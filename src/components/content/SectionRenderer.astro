@@ -12,6 +12,7 @@ import { PillarGrid, type Pillar, type PillarAccent } from '../sections/PillarGr
 import { BeforeAfter } from '../sections/BeforeAfter';
 import { PresenceMap } from '../sections/PresenceMap';
 import { ProcessPhases } from '../sections/ProcessPhases';
+import InstagramPhone from '../sections/InstagramPhone.astro';
 import { ServiceGrid } from '../sections/ServiceGrid';
 import { TeamGrid, type TeamMember } from '../sections/TeamGrid';
 import type { PillarIconName } from '../icons/PillarIcons';
@@ -176,6 +177,22 @@ function previewsFrom(cases: CaseRecord[]) {
 		tone={section.tone}
 		phases={section.phases}
 		headingWidth={section.headingWidth}
+	/>
+) : null}
+
+{section._type === 'instagramPhone' ? (
+	<InstagramPhone
+		eyebrow={section.eyebrow}
+		title={section.title}
+		description={section.description}
+		tone={section.tone}
+		username={section.username}
+		displayName={section.displayName}
+		bio={section.bio}
+		avatar={section.avatar}
+		avatarAlt={section.avatarAlt}
+		stats={section.stats}
+		posts={section.posts}
 	/>
 ) : null}
 

@@ -7,7 +7,8 @@ import { RocketIcon } from '@sanity/icons/Rocket';
 import { ThLargeIcon } from '@sanity/icons/ThLarge';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from './shared';
+import { PROCESS_ICON_MEDIA } from '../../components/icons/ProcessIcons';
+import { headingTitleField, headingWidthField, imageWithAlt, processIconFields, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -39,13 +40,6 @@ const industryIcons = [
   { title: 'Avión', value: 'plane' },
   { title: 'Restaurante', value: 'utensils' },
   { title: 'App', value: 'app' },
-];
-
-const processIcons = [
-  { title: 'Búsqueda', value: 'search' },
-  { title: 'Chispa', value: 'spark' },
-  { title: 'Play', value: 'play' },
-  { title: 'Tendencia', value: 'trend' },
 ];
 
 function iconFields(list: { title: string; value: string }[]) {
@@ -156,11 +150,16 @@ export const serviceProcessStep = defineType({
   fields: [
     defineField({ name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
-    ...iconFields(processIcons),
+    ...processIconFields(),
     defineField({ name: 'accent', title: 'Color', type: 'string', options: { list: accents } }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'accent' },
+    select: { title: 'title', accent: 'accent', icon: 'icon' },
+    prepare: ({ title, accent, icon }: { title?: string; accent?: string; icon?: string }) => ({
+      title: title || 'Paso',
+      subtitle: accent,
+      media: icon && icon in PROCESS_ICON_MEDIA ? PROCESS_ICON_MEDIA[icon as keyof typeof PROCESS_ICON_MEDIA] : undefined,
+    }),
   },
 });
 
@@ -382,6 +381,7 @@ export const serviceProcess = defineType({
       name: 'steps',
       title: 'Pasos',
       type: 'array',
+      description: 'Abre cada paso para cambiar su icono. El de la lista o uno propio de la galería.',
       of: [defineArrayMember({ type: 'serviceProcessStep' })],
     }),
   ],

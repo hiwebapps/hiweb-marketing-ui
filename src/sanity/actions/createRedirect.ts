@@ -4,7 +4,7 @@ import { type DocumentActionComponent, useClient } from 'sanity';
 import { useToast } from '@sanity/ui/toast';
 import { pagePath } from '../../lib/page-meta';
 
-const SLUG_TYPES = new Set(['post', 'service', 'industry', 'caseStudy', 'landingPage']);
+const SLUG_TYPES = new Set(['post', 'service', 'industry', 'caseStudy', 'landingPage', 'aboutPage']);
 
 function redirectId(from: string) {
   const slug = from

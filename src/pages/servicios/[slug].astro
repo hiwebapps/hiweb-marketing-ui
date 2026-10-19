@@ -45,6 +45,7 @@ const phases = entry.data.proceso.map((step, index) => ({
 	index: String(index + 1).padStart(2, '0'),
 	title: step.title,
 	description: step.description,
+	icon: step.icon,
 }));
 
 const serviceHeroBadges: { label: string; variant: BadgeVariant }[] = [

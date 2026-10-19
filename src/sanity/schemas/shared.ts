@@ -1,7 +1,9 @@
 import { EyeClosedIcon } from '@sanity/icons/EyeClosed';
 import { defineArrayMember, defineField, defineType, type ObjectDefinition, type PreviewConfig } from 'sanity';
 import { HEADING_WIDTH_OPTIONS } from '../../lib/heading';
+import { PROCESS_ICON_MEDIA, PROCESS_ICONS } from '../../components/icons/ProcessIcons';
 import { charCountInput } from '../components/CharCountInput';
+import { ProcessIconInput } from '../components/ProcessIconInput';
 import { serpTitleInput } from '../components/SerpPreview';
 
 const headingTitleDescription =
@@ -108,17 +110,20 @@ export function imageWithAlt({
   title,
   required = false,
   group,
+  description,
 }: {
   name: string;
   title: string;
   required?: boolean;
   group?: string;
+  description?: string;
 }) {
   return defineField({
     name,
     title,
     type: 'image',
     group,
+    description,
     options: { hotspot: true },
     fields: [
       defineField({
@@ -263,11 +268,45 @@ export const titledBlock = defineType({
       rows: 3,
       validation: (rule) => rule.required(),
     }),
+    ...processIconFields({ caseOnly: true }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'description' },
+    select: { title: 'title', subtitle: 'description', icon: 'icon' },
+    prepare: ({ title, subtitle, icon }: { title?: string; subtitle?: string; icon?: string }) => ({
+      title: title || 'Bloque',
+      subtitle,
+      media: icon && icon in PROCESS_ICON_MEDIA ? PROCESS_ICON_MEDIA[icon as keyof typeof PROCESS_ICON_MEDIA] : undefined,
+    }),
   },
 });
+
+/** Icono de un paso del proceso. Cada página guarda el suyo. */
+export function processIconFields(options?: { caseOnly?: boolean; hideOnAbout?: boolean }) {
+  const hidden = options?.caseOnly
+    ? ({ document }: { document?: { _type?: string } | null }) => document?._type !== 'caseStudy'
+    : options?.hideOnAbout
+      ? ({ document }: { document?: { _type?: string } | null }) => document?._type === 'aboutPage'
+      : undefined;
+  return [
+    defineField({
+      name: 'icon',
+      title: 'Icono',
+      type: 'string',
+      description: 'El dibujo del cuadro de color. Vacío = el icono de esa posición.',
+      options: { list: [...PROCESS_ICONS] },
+      components: { input: ProcessIconInput },
+      ...(hidden ? { hidden } : {}),
+    }),
+    defineField({
+      name: 'iconImage',
+      title: 'Icono propio',
+      type: 'image',
+      description: 'Opcional. Un SVG o PNG de la galería reemplaza el icono de la lista.',
+      options: { accept: 'image/svg+xml,image/png,image/webp' },
+      ...(hidden ? { hidden } : {}),
+    }),
+  ];
+}
 
 export const processStep = defineType({
   name: 'processStep',
@@ -293,9 +332,15 @@ export const processStep = defineType({
       rows: 3,
       validation: (rule) => rule.required(),
     }),
+    ...processIconFields({ hideOnAbout: true }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'index' },
+    select: { title: 'title', subtitle: 'index', icon: 'icon' },
+    prepare: ({ title, subtitle, icon }: { title?: string; subtitle?: string; icon?: string }) => ({
+      title: title || 'Paso',
+      subtitle,
+      media: icon && icon in PROCESS_ICON_MEDIA ? PROCESS_ICON_MEDIA[icon as keyof typeof PROCESS_ICON_MEDIA] : undefined,
+    }),
   },
 });
 

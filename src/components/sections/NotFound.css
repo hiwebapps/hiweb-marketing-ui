@@ -1,0 +1,129 @@
+.not-found {
+  background: var(--color-canvas, #fff);
+  color: var(--color-ink, #111);
+}
+
+.not-found__inner {
+  display: grid;
+  align-items: center;
+  gap: 2.5rem;
+  width: min(100%, var(--section-max, 72rem));
+  min-height: calc(100dvh - 8rem);
+  margin-inline: auto;
+  padding: 7.5rem 1.5rem 4.5rem;
+}
+
+.not-found__badge {
+  display: inline-flex;
+  margin: 0;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: #927afe;
+  color: #111;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.not-found__title {
+  max-width: 12ch;
+  margin: 0.9rem 0 0;
+  color: #111;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: clamp(2.5rem, 4.5vw, 3.6rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+
+.not-found__lead {
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  color: var(--color-muted, #5c5c5c);
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.not-found__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.not-found__go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.15rem;
+  padding: 0 1.5rem;
+  border: 1px solid #111;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+.not-found__go:hover {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+.not-found__go--quiet {
+  background: transparent;
+  color: #111;
+}
+
+.not-found__go--quiet:hover {
+  background: #f5f5f5;
+  color: #111;
+}
+
+.not-found__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.02em;
+  margin: 0;
+  padding: 2.5rem 1.5rem;
+  border-radius: 2rem;
+  background: var(--color-surface, #f5f5f5);
+  color: #111;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: clamp(6.5rem, 16vw, 11rem);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 0.85;
+}
+
+.not-found__zero {
+  width: 0.68em;
+  height: 0.68em;
+  margin-inline: 0.06em;
+  border: 0.075em solid #927afe;
+  border-radius: 999px;
+}
+
+@media (min-width: 900px) {
+  .not-found__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
+    gap: 3rem 4rem;
+  }
+}
+
+@media (max-width: 899px) {
+  .not-found__mark {
+    order: -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .not-found__inner {
+    padding: 6.5rem 1rem 3rem;
+  }
+}

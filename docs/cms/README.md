@@ -1,5 +1,9 @@
 # CMS + Cloudflare — Hiweb Marketing (sitio actual)
 
+Parte de este índice quedó atrás del código. El sitio sí tiene inglés (`src/pages/en`), el staging sirve todo por SSR, y hay APIs de calendario, diagnóstico y rebuild. El mapa vigente está en [../codebase/README.md](../codebase/README.md). Los desfases concretos están en [../audit/01-arquitectura.md](../audit/01-arquitectura.md) (A-04) y [../audit/02-seo.md](../audit/02-seo.md) (S-10).
+
+
+
 Este sitio **no replica Webflow**. El diseño y las secciones React se quedan. Sanity alimenta el copy, las listas y las imágenes. El front se sirve en Cloudflare Workers. El Studio vive en un host propio (`hiweb-web`) para no pisar [hiweb-marketing.sanity.studio](https://hiweb-marketing.sanity.studio).
 
 ## Arquitectura

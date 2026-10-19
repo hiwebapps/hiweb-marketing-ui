@@ -46,6 +46,7 @@ const KIT = [
   { id: 'service-plans', name: 'Planes de servicio', source: 'SEO', role: 'Tres planes, precio y lista de incluye' },
   { id: 'industries', name: 'Industrias', source: 'Home', role: 'Grid arrastrable por sector' },
   { id: 'process', name: 'Proceso', source: 'Home', role: 'Fases 01–04 sobre una línea' },
+  { id: 'instagram', name: 'Perfil de Instagram', source: 'Redes', role: 'Celular con feed, carrusel y reels' },
   { id: 'metrics', name: 'Métricas', source: 'Home', role: 'Banda ink, numeral y dos CTAs' },
   { id: 'team', name: 'Equipo', source: 'Home', role: 'Cuatro caras y enlace a /nosotros' },
   { id: 'cases-real', name: 'Cards de caso', source: 'Portafolio', role: 'Cliente, industria y outcome real' },

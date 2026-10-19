@@ -3,13 +3,15 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
+import { PROCESS_ICON_MEDIA, type ProcessIconName } from '../icons/ProcessIcons';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
 import './ProcessPhases.css';
 
+export type { ProcessIconName };
+
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-export type ProcessIconName = 'search' | 'spark' | 'play' | 'trend';
 export type ProcessAccent = 'purple' | 'cyan' | 'orange' | 'lime' | 'green';
 
 export type ProcessPhase = {
@@ -39,60 +41,7 @@ const ACCENT_HEX: Record<ProcessAccent, string> = {
   green: '#74c465',
 };
 
-const ICON_MAP = {
-  search: IconSearch,
-  spark: IconSpark,
-  play: IconPlay,
-  trend: IconTrend,
-};
-
-function IconSearch() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M16 16.5 20 20.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function IconSpark() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M12 4.5 13.4 9l4.6.4-3.5 3.1 1.1 4.5L12 14.7 8.4 17l1.1-4.5L6 9.4 10.6 9 12 4.5Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function IconPlay() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="4.5" y="4.5" width="15" height="15" rx="3.5" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M10 8.8v6.4l5.4-3.2L10 8.8Z" fill="currentColor" />
-    </svg>
-  );
-}
-
-function IconTrend() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M4.5 16.5 9 12l3.2 3.2 7.3-7.7"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path d="M14.5 7.5h5v5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-const ICONS = [IconSearch, IconSpark, IconPlay, IconTrend];
+const ICONS = [PROCESS_ICON_MEDIA.search, PROCESS_ICON_MEDIA.spark, PROCESS_ICON_MEDIA.play, PROCESS_ICON_MEDIA.trend];
 
 function prefersReducedMotion() {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -175,7 +124,7 @@ export function ProcessPhases({
             const nextAccent = ACCENTS[(index + 1) % ACCENTS.length];
             const fileIcon = phase.icon?.startsWith('http') || phase.icon?.startsWith('/');
             const Icon =
-              (!fileIcon && phase.icon && ICON_MAP[phase.icon as ProcessIconName]) || ICONS[index % ICONS.length];
+              (!fileIcon && phase.icon && PROCESS_ICON_MEDIA[phase.icon as ProcessIconName]) || ICONS[index % ICONS.length];
             const isLast = index === phases.length - 1;
 
             return (

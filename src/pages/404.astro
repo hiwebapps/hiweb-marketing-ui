@@ -1,0 +1,18 @@
+---
+export const prerender = false;
+
+import Layout from '../layouts/Layout.astro';
+import NotFoundView from '../components/sections/NotFoundView.astro';
+
+const lang = Astro.url.pathname === '/en' || Astro.url.pathname.startsWith('/en/') ? 'en' : 'es';
+Astro.response.status = 404;
+---
+
+<Layout
+	title={lang === 'en' ? 'Page not found — Hiweb Marketing' : 'Página no encontrada — Hiweb Marketing'}
+	description={lang === 'en' ? 'This page doesn’t exist.' : 'Esta página no existe.'}
+	noindex
+	lang={lang}
+>
+	<NotFoundView lang={lang} />
+</Layout>

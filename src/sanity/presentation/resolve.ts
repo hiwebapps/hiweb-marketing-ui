@@ -1,5 +1,6 @@
 import { defineDocuments, defineLocations } from 'sanity/presentation';
 import type { PresentationPluginOptions } from 'sanity/presentation';
+import { aboutPath, DEFAULT_ABOUT_EN_SLUG } from '../../lib/page-meta';
 
 function publishedId(id: string | undefined) {
   return (id ?? '').replace(/^drafts\./, '');
@@ -26,10 +27,6 @@ export const resolve: PresentationPluginOptions['resolve'] = {
     {
       route: '/nosotros',
       filter: `_type == "aboutPage" && _id in ["aboutPage", "drafts.aboutPage"]`,
-    },
-    {
-      route: '/en/nosotros',
-      filter: `_type == "aboutPage" && _id in ["aboutPage-en", "drafts.aboutPage-en"]`,
     },
     {
       route: '/contacto',
@@ -104,6 +101,10 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "post" && slug.current == $slug && locale == "en"`,
     },
     {
+      route: '/en/:slug',
+      filter: `_type == "aboutPage" && _id in ["aboutPage-en", "drafts.aboutPage-en"] && coalesce(slug.current, "${DEFAULT_ABOUT_EN_SLUG}") == $slug`,
+    },
+    {
       route: '/:slug',
       filter: `_type == "landingPage" && slug.current == $slug && coalesce(locale, "es") == "es"`,
     },
@@ -119,11 +120,13 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       },
     }),
     aboutPage: defineLocations({
-      select: { id: '_id', locale: 'locale' },
+      select: { id: '_id', locale: 'locale', slug: 'slug.current' },
       resolve: (doc) => {
         const english = doc?.locale === 'en' || englishId(doc?.id);
         return {
-          locations: [{ title: english ? 'About' : 'Nosotros', href: english ? '/en/nosotros' : '/nosotros' }],
+          locations: [
+            { title: english ? 'About' : 'Nosotros', href: aboutPath(english ? 'en' : 'es', doc?.slug) },
+          ],
         };
       },
     }),
@@ -255,7 +258,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
           doc?.locale === 'en'
             ? [
                 { title: 'Home', href: '/en' },
-                { title: 'About', href: '/en/nosotros' },
+                { title: 'Blog', href: '/en/blogs' },
               ]
             : [
                 { title: 'Inicio', href: '/' },
@@ -273,7 +276,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
           doc?.locale === 'en'
             ? [
                 { title: 'Home', href: '/en' },
-                { title: 'About', href: '/en/nosotros' },
+                { title: 'Blog', href: '/en/blogs' },
               ]
             : [
                 { title: 'Inicio', href: '/' },

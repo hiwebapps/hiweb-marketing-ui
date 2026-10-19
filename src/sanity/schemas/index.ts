@@ -4,6 +4,7 @@ import { calendarPage } from './calendarPage';
 import { contactPage } from './contactPage';
 import { beforeAfter } from './blocks/beforeAfter';
 import { landingSectionTypes } from './blocks/pageSections';
+import { instagramPhonePost } from './blocks/instagramPhone';
 import { blogTable } from './blogTable';
 import { faq } from './faq';
 import { testimonial } from './testimonial';
@@ -55,6 +56,7 @@ export const schemaTypes = [
   blogTable,
   withVisibility(beforeAfter),
   ...landingSectionTypes,
+  instagramPhonePost,
   ...portalSectionTypes,
   homeServiceItem,
   ...homeSectionTypes,

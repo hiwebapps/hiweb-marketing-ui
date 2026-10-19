@@ -9,6 +9,7 @@ import { Box, Button, Card, Flex, Text } from '@sanity/ui';
 import { createElement, useEffect, useMemo, useState, type ComponentType, type ReactNode } from 'react';
 import { useClient } from 'sanity';
 import { usePresentationNavigate, usePresentationParams } from 'sanity/presentation';
+import { aboutPath } from '../../lib/page-meta';
 
 type Locale = 'es' | 'en';
 
@@ -20,6 +21,7 @@ type NavDoc = {
 };
 
 type NavData = {
+  aboutSlug?: string;
   services: NavDoc[];
   industries: NavDoc[];
   cases: NavDoc[];
@@ -30,6 +32,10 @@ type NavData = {
 const EMPTY: NavData = { services: [], industries: [], cases: [], pages: [], posts: [] };
 
 const NAV_QUERY = `{
+  "aboutSlug": coalesce(
+    *[_id == "drafts.aboutPage-en"][0].slug.current,
+    *[_id == "aboutPage-en"][0].slug.current
+  ),
   "services": *[_type == "service" && coalesce(locale, "es") == $locale && defined(slug.current)] | order(orden asc) {
     _id, "title": nombre, "slug": slug.current
   },
@@ -177,7 +183,7 @@ export function SiteNavigator() {
   const toggle = (id: string) => setOpen((current) => ({ ...current, [id]: !current[id] }));
 
   const homeHref = locale === 'en' ? '/en' : '/';
-  const aboutHref = locale === 'en' ? '/en/nosotros' : '/nosotros';
+  const aboutHref = aboutPath(locale, data.aboutSlug);
   const blogIndex = locale === 'en' ? '/en/blogs' : '/blog';
   const spanishPosts = data.posts.filter((post) => post.locale !== 'en');
   const englishPosts = data.posts.filter((post) => post.locale === 'en');

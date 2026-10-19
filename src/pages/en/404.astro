@@ -1,0 +1,17 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import NotFoundView from '../../components/sections/NotFoundView.astro';
+
+Astro.response.status = 404;
+---
+
+<Layout
+	title="Page not found — Hiweb Marketing"
+	description="This page doesn’t exist."
+	noindex
+	lang="en"
+>
+	<NotFoundView lang="en" />
+</Layout>

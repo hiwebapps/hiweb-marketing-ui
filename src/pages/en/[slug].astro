@@ -12,14 +12,28 @@ import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import AboutPageSection from '../../components/sections/AboutPageSection.astro';
 import { breadcrumbSchema } from '../../lib/schema';
 import { getAboutCopy, getPeople, getSiteSettings } from '../../lib/content';
+import { notFound } from '../../lib/content/resolve-entry';
 import { localePath } from '../../lib/locale';
+import { aboutPath } from '../../lib/page-meta';
+import type { AboutCopy } from '../../lib/content/types';
 import type { TeamMember } from '../../components/sections/TeamGrid';
 import type { Pillar } from '../../components/sections/PillarGrid';
 import '../../components/sections/AboutHistory.css';
 import '../../components/sections/TeamGrid.css';
 import '../../components/sections/PresenceMap.css';
 
-const about = await getAboutCopy('en');
+export async function getStaticPaths() {
+	const about = await getAboutCopy('en');
+	return [{ params: { slug: aboutPath('en', about.slug).slice('/en/'.length) }, props: { about } }];
+}
+
+interface Props {
+	about?: AboutCopy;
+}
+
+const about = Astro.props.about ?? (await getAboutCopy('en'));
+const path = aboutPath('en', about.slug);
+if (`/en/${Astro.params.slug}` !== path) return notFound();
 const site = await getSiteSettings();
 const aboutTeam = about.sections?.find((section) => section._type === 'aboutTeam');
 const people = (await getPeople(aboutTeam?.memberLocale === 'es' ? 'es' : 'en')) as TeamMember[];
@@ -62,10 +76,10 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 	ogImage={about.seo?.ogImage ?? about.heroImage}
 	noindex={about.seo?.noindex}
 	canonical={about.seo?.canonicalPath}
-	alternates={{ es: '/nosotros', en: '/en/nosotros' }}
+	alternates={{ es: aboutPath('es'), en: path }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Home', href: '/en' },
-		{ name: about.heroBadge ?? 'About', href: '/en/nosotros' },
+		{ name: about.heroBadge ?? 'About', href: path },
 	])}
 >
 	<main>

@@ -575,13 +575,18 @@ function asTestimonial(value: unknown) {
   };
 }
 
-function asBlocks(value: unknown): { title: string; description: string }[] {
+function asBlocks(value: unknown): TitledBlock[] {
   if (!Array.isArray(value)) return [];
   return value
     .filter((item) => item && typeof item === 'object' && 'title' in item)
     .map((item) => {
-      const block = item as { title?: string; description?: string };
-      return { title: String(block.title ?? ''), description: String(block.description ?? '') };
+      const block = item as { title?: string; description?: string; icon?: unknown };
+      const icon = iconValue(block.icon);
+      return {
+        title: String(block.title ?? ''),
+        description: String(block.description ?? ''),
+        ...(icon ? { icon } : {}),
+      };
     });
 }
 
@@ -595,10 +600,13 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
     const type = String(section._type ?? '');
     const mapped = ((): CasePageSection[] => {
     if (type === 'caseHero') {
+      const imagen = section.imagen as CmsImage | undefined;
       return [
         {
           _type: 'caseHero',
           anio: asText(section.anio),
+          imagen: imageUrl(imagen, 1600),
+          imagenAlt: imageAlt(imagen),
           imagenesProyecto: Array.isArray(section.imagenesProyecto)
             ? section.imagenesProyecto
                 .map((image) => imageUrl(image as CmsImage, 800))
@@ -676,6 +684,11 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
       ];
     }
     if (type === 'beforeAfter') return [mapBeforeAfter(section)];
+    if (type === 'instagramPhone') {
+      const mapped = mapLandingSection(section);
+      if (mapped?._type === 'instagramPhone') return [mapped];
+      return [];
+    }
     if (type === 'caseCta') {
       const primary = asCta(section.primaryCta);
       return [
@@ -746,6 +759,8 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
             }
           : asTestimonial(legacyQuote) ?? legacyQuote,
       anio: hero?._type === 'caseHero' ? hero.anio : asText(doc.anio),
+      imagen: hero?._type === 'caseHero' ? hero.imagen : undefined,
+      imagenAlt: hero?._type === 'caseHero' ? hero.imagenAlt : undefined,
       imagenesProyecto:
         hero?._type === 'caseHero'
           ? (hero.imagenesProyecto ?? [])
@@ -873,11 +888,15 @@ function withHeading<T extends object>(section: Record<string, unknown>, entry: 
 
 function asProcess(value: unknown): HomeCopy['process'] {
   if (!Array.isArray(value)) return undefined;
-  return (value as Array<{ index?: string; title: string; description: string }>).map((step, index) => ({
-    index: step.index || String(index + 1).padStart(2, '0'),
-    title: step.title,
-    description: step.description,
-  }));
+  return (value as Array<{ index?: string; title: string; description: string; icon?: unknown }>).map((step, index) => {
+    const icon = iconValue(step.icon);
+    return {
+      index: step.index || String(index + 1).padStart(2, '0'),
+      title: step.title,
+      description: step.description,
+      ...(icon ? { icon } : {}),
+    };
+  });
 }
 
 function asHeroCases(value: unknown): HomeCopy['heroCases'] {
@@ -999,6 +1018,7 @@ export function mapAbout(doc: Record<string, unknown> | null): AboutCopy | null 
   if (!doc) return null;
   const image = doc.heroImage as CmsImage | undefined;
   return {
+    slug: text(doc.slug),
     heroTitle: doc.heroTitle ? String(doc.heroTitle) : undefined,
     heroDescription: doc.heroDescription ? String(doc.heroDescription) : undefined,
     heroImage: imageUrl(image) ?? undefined,
@@ -1094,13 +1114,17 @@ function mapAboutSections(doc: Record<string, unknown>): AboutCopy['sections'] {
     }
     if (type === 'aboutProcess') {
       const phases = Array.isArray(section.phases)
-        ? (section.phases as { index?: string; title?: string; description?: string }[])
+        ? (section.phases as { index?: string; title?: string; description?: string; icon?: unknown }[])
             .filter((phase) => phase.title)
-            .map((phase, index) => ({
-              index: phase.index || String(index + 1).padStart(2, '0'),
-              title: String(phase.title),
-              description: String(phase.description ?? ''),
-            }))
+            .map((phase, index) => {
+              const icon = iconValue(phase.icon);
+              return {
+                index: phase.index || String(index + 1).padStart(2, '0'),
+                title: String(phase.title),
+                description: String(phase.description ?? ''),
+                ...(icon ? { icon } : {}),
+              };
+            })
         : [];
       return [{
         _type: 'aboutProcess' as const,
@@ -1332,12 +1356,16 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
     }
     case 'processPhases': {
       const phases: ProcessPhase[] = Array.isArray(doc.phases)
-        ? (doc.phases as Array<{ index?: string; title?: string; description?: string }>).map(
-            (step, index) => ({
-              index: step.index || String(index + 1).padStart(2, '0'),
-              title: String(step.title ?? ''),
-              description: String(step.description ?? ''),
-            }),
+        ? (doc.phases as Array<{ index?: string; title?: string; description?: string; icon?: unknown }>).map(
+            (step, index) => {
+              const icon = iconValue(step.icon);
+              return {
+                index: step.index || String(index + 1).padStart(2, '0'),
+                title: String(step.title ?? ''),
+                description: String(step.description ?? ''),
+                ...(icon ? { icon } : {}),
+              };
+            },
           )
         : [];
       return {
@@ -1347,6 +1375,58 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
         description: doc.description ? String(doc.description) : undefined,
         tone: asTone(doc.tone),
         phases,
+      };
+    }
+    case 'instagramPhone': {
+      const stats = Array.isArray(doc.stats)
+        ? (doc.stats as Array<{ value?: string; label?: string }>)
+            .filter((stat) => stat.value && stat.label)
+            .slice(0, 3)
+            .map((stat) => ({ value: String(stat.value), label: String(stat.label) }))
+        : [];
+      const posts = Array.isArray(doc.posts)
+        ? (doc.posts as Array<Record<string, unknown>>).flatMap((row) => {
+            const kind: 'photo' | 'carousel' | 'reel' = row.kind === 'carousel' || row.kind === 'reel' ? row.kind : 'photo';
+            const slides =
+              kind === 'carousel'
+                ? (Array.isArray(row.slides) ? row.slides : []).flatMap((item) => {
+                    const uploaded = uploadedImage(item);
+                    return uploaded ? [uploaded] : [];
+                  })
+                : kind === 'photo'
+                  ? (() => {
+                      const uploaded = uploadedImage(row.image);
+                      return uploaded ? [uploaded] : [];
+                    })()
+                  : [];
+            const poster = uploadedImage(row.poster);
+            const videoUrl = typeof row.videoUrl === 'string' && row.videoUrl ? row.videoUrl : undefined;
+            if (kind === 'photo' && !slides.length) return [];
+            if (kind === 'carousel' && slides.length < 2) return [];
+            if (kind === 'reel' && !poster?.src && !videoUrl) return [];
+            return [{
+              kind,
+              caption: typeof row.caption === 'string' ? row.caption : undefined,
+              slides: kind === 'reel' && poster ? [poster] : slides,
+              poster: poster?.src,
+              videoUrl,
+            }];
+          })
+        : [];
+      const avatar = doc.avatar as CmsImage | undefined;
+      return {
+        _type: 'instagramPhone' as const,
+        eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
+        title: doc.title ? String(doc.title) : undefined,
+        description: doc.description ? String(doc.description) : undefined,
+        tone: asTone(doc.tone),
+        username: String(doc.username ?? ''),
+        displayName: doc.displayName ? String(doc.displayName) : undefined,
+        bio: doc.bio ? String(doc.bio) : undefined,
+        avatar: imageUrl(avatar),
+        avatarAlt: imageAlt(avatar),
+        stats,
+        posts,
       };
     }
     case 'caseStories':

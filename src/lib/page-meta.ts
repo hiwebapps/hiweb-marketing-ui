@@ -40,12 +40,19 @@ export function isEnglish(id: string, locale?: string) {
   return locale === 'en' || publishedId(id).endsWith('-en');
 }
 
+/** Studio sets the English slug. Spanish stays on /nosotros. */
+export const DEFAULT_ABOUT_EN_SLUG = 'nosotros';
+
+export function aboutPath(locale: 'es' | 'en', slug?: string) {
+  return locale === 'en' ? `/en/${slug || DEFAULT_ABOUT_EN_SLUG}` : '/nosotros';
+}
+
 export function pagePath(type: string, id: string, doc: { locale?: string; slug?: SlugValue }) {
   const published = publishedId(id);
   const english = isEnglish(published, doc.locale);
   const slug = slugOf(doc.slug);
   if (type === 'homePage') return english ? '/en' : '/';
-  if (type === 'aboutPage') return english ? '/en/nosotros' : '/nosotros';
+  if (type === 'aboutPage') return aboutPath(english ? 'en' : 'es', slug);
   if (type === 'contactPage') return '/contacto';
   if (type === 'calendarPage') return english ? '/en/calendario' : '/calendario';
   if (type === 'sitePage' && slug) return `/${slug}`;

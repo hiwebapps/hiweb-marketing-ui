@@ -404,12 +404,28 @@ export type ProcessStep = {
   index?: string;
   title: string;
   description: string;
+  icon?: "search" | "spark" | "play" | "trend";
+  iconImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
 };
 
 export type TitledBlock = {
   _type: "titledBlock";
   title: string;
   description: string;
+  icon?: "search" | "spark" | "play" | "trend";
+  iconImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
 };
 
 export type FaqItem = {
