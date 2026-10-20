@@ -185,6 +185,7 @@ export function SiteNavigator() {
   const homeHref = locale === 'en' ? '/en' : '/';
   const aboutHref = aboutPath(locale, data.aboutSlug);
   const blogIndex = locale === 'en' ? '/en/blogs' : '/blog';
+  const casesIndex = locale === 'en' ? '/en/success-stories' : '/portafolio';
   const spanishPosts = data.posts.filter((post) => post.locale !== 'en');
   const englishPosts = data.posts.filter((post) => post.locale === 'en');
 
@@ -273,7 +274,7 @@ export function SiteNavigator() {
         'Servicios',
         docs(
           data.services,
-          (slug) => (locale === 'en' ? `/en/servicios/${slug}` : `/servicios/${slug}`),
+          (slug) => (locale === 'en' ? `/en/services/${slug}` : `/servicios/${slug}`),
           'service',
           CaseIcon,
         ),
@@ -287,8 +288,8 @@ export function SiteNavigator() {
                 key: 'industries-index',
                 label: 'Índice',
                 icon: DocumentsIcon,
-                active: currentPath === '/en/industrias',
-                onClick: () => go('/en/industrias', { type: 'industriesIndex', id: 'industriesIndex-en' }),
+                active: currentPath === '/en/industries',
+                onClick: () => go('/en/industries', { type: 'industriesIndex', id: 'industriesIndex-en' }),
               })
             : createElement(NavItem, {
                 key: 'industries-index',
@@ -299,7 +300,7 @@ export function SiteNavigator() {
               }),
           docs(
             data.industries,
-            (slug) => (locale === 'en' ? `/en/industrias/${slug}` : `/industrias/${slug}`),
+            (slug) => (locale === 'en' ? `/en/industries/${slug}` : `/industrias/${slug}`),
             'industry',
             CaseIcon,
           ),
@@ -313,10 +314,10 @@ export function SiteNavigator() {
             key: 'cases-index',
             label: 'Índice',
             icon: DocumentsIcon,
-            active: currentPath === '/portafolio',
-            onClick: () => go('/portafolio'),
+            active: currentPath === casesIndex,
+            onClick: () => go(casesIndex),
           }),
-          docs(data.cases, (slug) => `/portafolio/${slug}`, 'caseStudy', CaseIcon),
+          docs(data.cases, (slug) => `${casesIndex}/${slug}`, 'caseStudy', CaseIcon),
         ],
       ),
       folder(

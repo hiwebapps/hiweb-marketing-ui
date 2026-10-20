@@ -41,7 +41,7 @@ export function isEnglish(id: string, locale?: string) {
 }
 
 /** Studio sets the English slug. Spanish stays on /nosotros. */
-export const DEFAULT_ABOUT_EN_SLUG = 'nosotros';
+export const DEFAULT_ABOUT_EN_SLUG = 'about-us';
 
 export function aboutPath(locale: 'es' | 'en', slug?: string) {
   return locale === 'en' ? `/en/${slug || DEFAULT_ABOUT_EN_SLUG}` : '/nosotros';
@@ -54,17 +54,17 @@ export function pagePath(type: string, id: string, doc: { locale?: string; slug?
   if (type === 'homePage') return english ? '/en' : '/';
   if (type === 'aboutPage') return aboutPath(english ? 'en' : 'es', slug);
   if (type === 'contactPage') return '/contacto';
-  if (type === 'calendarPage') return english ? '/en/calendario' : '/calendario';
+  if (type === 'calendarPage') return english ? '/en/calendar' : '/calendario';
   if (type === 'sitePage' && slug) return `/${slug}`;
-  if (type === 'service' && slug) return english ? `/en/servicios/${slug}` : `/servicios/${slug}`;
-  if (type === 'industry' && slug) return english ? `/en/industrias/${slug}` : `/industrias/${slug}`;
-  if (type === 'caseStudy' && slug) return `/portafolio/${slug}`;
+  if (type === 'service' && slug) return english ? `/en/services/${slug}` : `/servicios/${slug}`;
+  if (type === 'industry' && slug) return english ? `/en/industries/${slug}` : `/industrias/${slug}`;
+  if (type === 'caseStudy' && slug) return english ? `/en/success-stories/${slug}` : `/portafolio/${slug}`;
   if (type === 'post' && slug) return english ? `/en/blogs/${slug}` : `/blog/${slug}`;
   if (type === 'landingPage' && slug) return `/${slug}`;
-  if (type === 'industriesIndex') return english ? '/en/industrias' : '/industrias';
-  if (type === 'servicesIndex') return english ? '/en/servicios' : '/servicios';
+  if (type === 'industriesIndex') return english ? '/en/industries' : '/industrias';
+  if (type === 'servicesIndex') return english ? '/en/services' : '/servicios';
   if (type === 'blogIndex') return english ? '/en/blogs' : '/blog';
-  if (type === 'casesIndex') return '/portafolio';
+  if (type === 'casesIndex') return english ? '/en/success-stories' : '/portafolio';
   if (type === 'legalPage') {
     const terms = published === 'legal-terms' || published === 'legal-terms-en';
     const path = terms ? '/terminos' : '/aviso-de-privacidad';
@@ -87,7 +87,7 @@ export function fallbackTitle(type: string, doc: PageMetaDoc) {
   if (type === 'industriesIndex') return name || (english ? 'Industries — Hiweb Marketing' : 'Industrias — Hiweb Marketing');
   if (type === 'servicesIndex') return name || (english ? 'Services — Hiweb Marketing' : 'Servicios — Hiweb Marketing');
   if (type === 'blogIndex') return name || 'Blog — Hiweb Marketing';
-  if (type === 'casesIndex') return name || 'Casos de Éxito — Hiweb Marketing';
+  if (type === 'casesIndex') return name || (english ? 'Success Stories — Hiweb Marketing' : 'Casos de Éxito — Hiweb Marketing');
   if (type === 'legalPage') return name || 'Hiweb Marketing';
   return name || 'Hiweb Marketing';
 }

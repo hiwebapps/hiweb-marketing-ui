@@ -11,8 +11,27 @@ type FinalCtaProps = {
   secondaryLabel?: string;
   secondaryHref?: string;
   headingWidth?: string;
+  /** Language of the fallback copy when a field comes empty. */
+  locale?: 'es' | 'en';
   /** Shared marquee photos. Empty keeps the current set. */
   images?: string[];
+};
+
+const DEFAULTS = {
+  es: {
+    badge: 'Siguiente paso',
+    title: 'Listos cuando tú lo estés.',
+    description: 'Cuéntanos industria, objetivo e ICP. Te devolvemos un diagnóstico claro y el siguiente paso.',
+    primaryLabel: 'Agenda tu auditoría',
+    primaryHref: '/contacto',
+  },
+  en: {
+    badge: 'Next step',
+    title: 'Ready when you are.',
+    description: 'Tell us your industry, goal and ideal customer. We send back a clear diagnostic with the next step.',
+    primaryLabel: 'Book your audit',
+    primaryHref: '/en/calendar',
+  },
 };
 
 type MarqueeCard = {
@@ -95,11 +114,12 @@ function MarqueeRow({ cards, reverse }: { cards: MarqueeCard[]; reverse: boolean
  * Final CTA — panel ink con marquee infinito y una sola decisión.
  */
 export function FinalCta({
-  badge = 'Siguiente paso',
-  title = 'Listos cuando tú lo estés.',
-  description = 'Cuéntanos industria, objetivo e ICP. Te devolvemos un diagnóstico claro y el siguiente paso.',
-  primaryLabel = 'Agenda tu auditoría',
-  primaryHref = '/contacto',
+  locale = 'es',
+  badge = DEFAULTS[locale].badge,
+  title = DEFAULTS[locale].title,
+  description = DEFAULTS[locale].description,
+  primaryLabel = DEFAULTS[locale].primaryLabel,
+  primaryHref = DEFAULTS[locale].primaryHref,
   headingWidth,
   images,
 }: FinalCtaProps) {

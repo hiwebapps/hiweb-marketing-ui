@@ -19,6 +19,7 @@ import '../../components/sections/FaqSection.css';
 import '../../components/sections/CaseStories.css';
 import '../../components/sections/MetricsBand.css';
 import { faqSchema } from '../../lib/schema';
+import { localePath } from '../../lib/locale';
 import { getCases, getHomeCopy, getIndustries, getIndustriesIndex, getPeople, getServices, getSiteSettings } from '../../lib/content';
 import type { TeamMember } from '../../components/sections/TeamGrid';
 
@@ -56,18 +57,18 @@ const heroSlides = (home.heroCases?.length
 			.map((item) => ({
 				image: item.image as string,
 				title: item.cliente,
-				href: `/portafolio/${item.id}`,
+				href: `/en/success-stories/${item.id}`,
 			}))
-	: (await getCases())
-			.filter((item) => item.data.seo?.ogImage)
+	: (await getCases('en'))
+			.filter((item) => item.data.imagen ?? item.data.seo?.ogImage)
 			.sort((a, b) => {
 				if (a.data.destacado !== b.data.destacado) return a.data.destacado ? -1 : 1;
 				return a.data.cliente.localeCompare(b.data.cliente, 'es');
 			})
 			.map((item) => ({
-				image: item.data.seo?.ogImage as string,
+				image: (item.data.imagen ?? item.data.seo?.ogImage) as string,
 				title: item.data.cliente,
-				href: `/portafolio/${item.id}`,
+				href: `/en/success-stories/${item.id}`,
 			})));
 const faqCategories = home.faqCategories ?? [];
 const faqs = faqCategories.flatMap((category) => category.items);
@@ -78,7 +79,7 @@ const stories = (home.testimonials ?? []).map((item) => ({
 	role: item.role ?? '',
 	photo: item.photo,
 	cover: item.cover,
-	href: item.href,
+	href: item.href?.startsWith('/portafolio/') ? localePath(item.href, 'en') : item.href,
 	stats: item.stats,
 }));
 const metrics = (home.metrics ?? []).map((item) => ({
@@ -165,7 +166,7 @@ const sectionOrder = home.hasSections
 						title={home.serviceIntro?.title}
 						description={home.serviceIntro?.description}
 						headingWidth={home.serviceIntro?.headingWidth}
-						hrefPrefix="/en/servicios"
+						hrefPrefix="/en/services"
 					/>
 				);
 			}
@@ -180,7 +181,7 @@ const sectionOrder = home.hasSections
 						description={home.industryIntro?.description}
 						headingWidth={home.industryIntro?.headingWidth}
 						industries={industryCards}
-						hrefPrefix="/en/industrias"
+						hrefPrefix="/en/industries"
 						ctaLabel={industriesIndex?.cardCtaLabel}
 					/>
 				);
@@ -244,7 +245,7 @@ const sectionOrder = home.hasSections
 						title={home.team?.title}
 						description={home.team?.description}
 						ctaLabel={home.team?.ctaLabel ?? 'Conoce a todo el equipo'}
-						ctaHref={home.team?.ctaHref ?? '/nosotros#nosotros'}
+						ctaHref={home.team?.ctaHref ?? '/en/about-us#nosotros'}
 						headingWidth={home.team?.headingWidth}
 					/>
 				);
@@ -281,7 +282,7 @@ const sectionOrder = home.hasSections
 			}
 			if (type === 'homeCta') {
 				return (
-					<FinalCta
+					<FinalCta locale="en"
 						key={type}
 						badge={home.closing?.badge}
 						title={home.closing?.title}

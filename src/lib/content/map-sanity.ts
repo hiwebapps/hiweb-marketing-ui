@@ -123,6 +123,7 @@ export function mapIndustry(doc: Record<string, unknown>): IndustryRecord {
       casesEmpty: doc.casesEmpty ? String(doc.casesEmpty) : undefined,
       faqTitle: doc.faqTitle ? String(doc.faqTitle) : undefined,
       closingTitle: doc.closingTitle ? String(doc.closingTitle) : undefined,
+      closingDescription: doc.closingDescription ? String(doc.closingDescription) : undefined,
       sections: mapIndustrySections(doc),
       seo: seoOf(doc),
     },
@@ -213,7 +214,7 @@ function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data
       }];
     }
     if (type === 'industryCta') {
-      return [{ _type: 'industryCta' as const, title: text(section.title) }];
+      return [{ _type: 'industryCta' as const, title: text(section.title), description: text(section.description) }];
     }
     if (type === 'beforeAfter') return [mapBeforeAfter(section)];
     return [];
@@ -733,6 +734,7 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
 
   return {
     id: String(doc.id),
+    alternateSlug: alternateSlugOf(doc),
     data: {
       cliente: String(doc.cliente ?? ''),
       industria: { id: String(industria?.id ?? '') },

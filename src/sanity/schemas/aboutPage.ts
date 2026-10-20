@@ -45,7 +45,7 @@ export const aboutPage = defineType({
       type: 'slug',
       group: 'datos',
       description:
-        'La página queda en /en/<slug>. Vacío usa /en/nosotros. Si cambias un slug ya publicado, usa Crear redirección antes de publicar para que la ruta anterior siga funcionando.',
+        'La página queda en /en/<slug>. Vacío usa /en/about-us. Si cambias un slug ya publicado, usa Crear redirección antes de publicar para que la ruta anterior siga funcionando.',
       hidden: ({ document }) => document?.locale !== 'en',
       options: { maxLength: 96 },
       validation: (rule) =>
@@ -81,7 +81,7 @@ export const aboutPage = defineType({
   preview: {
     select: { locale: 'locale', slug: 'slug.current' },
     prepare({ locale, slug }) {
-      return { title: 'Nosotros', subtitle: locale === 'en' ? `English · /en/${slug || 'nosotros'}` : 'Español' };
+      return { title: 'Nosotros', subtitle: locale === 'en' ? `English · /en/${slug || 'about-us'}` : 'Español' };
     },
   },
 });

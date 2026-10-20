@@ -4,7 +4,7 @@ export const prerender = true;
 import Layout from '../../layouts/Layout.astro';
 import BlogAuthorCard from '../../components/content/BlogAuthorCard.astro';
 import BlogBody from '../../components/content/BlogBody.astro';
-import { getPost, getPosts, getSiteSettings, postStaticPaths } from '../../lib/content';
+import { getCatalogIndex, getPost, getPosts, getSiteSettings, postStaticPaths } from '../../lib/content';
 import { BlogPostToc } from '../../components/sections/BlogPostToc';
 import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import { Button } from '../../components/ui';
@@ -25,6 +25,7 @@ interface Props {
 const entry = Astro.props.entry ?? (await getPost(Astro.params.slug ?? ''));
 const site = await getSiteSettings();
 if (!entry) return notFound();
+const blogIndex = await getCatalogIndex('blogIndex');
 const allPosts = await getPosts('es', { stega: false });
 const related = allPosts
 	.filter((post) => post.id !== entry.id)
@@ -182,7 +183,7 @@ const schemas = [
 			</div>
 		</section>
 
-		<FinalCta />
+		<FinalCta title={blogIndex?.postClosingTitle} description={blogIndex?.postClosingDescription} />
 	</main>
 </Layout>
 

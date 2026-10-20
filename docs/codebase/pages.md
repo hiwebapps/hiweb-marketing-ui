@@ -1,4 +1,4 @@
-Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs` declara `output: 'server'` y el adapter de Cloudflare. Cada plantilla de abajo exporta `prerender = true`, así el build de live la deja en HTML; el hook `stagingSsr` pone `prerender = false` en todas las rutas cuando `PUBLIC_SITE_ENV=staging`. `robots.txt.ts` y `sitemap.xml.ts` quedan en SSR en los dos entornos. El español está en la raíz y el inglés en `src/pages/en`. El middleware solo deja vivir bajo `/en` estas secciones: `/en/servicios/`, `/en/industrias/`, `/en/blogs`, `/en/terminos`, `/en/aviso-de-privacidad`, `/en/calendario` y `/en/portal`. Un `/en/<algo>` de un solo segmento pasa a `src/pages/en/[slug].astro` (Nosotros en inglés) y, si responde 404, redirige a `/en`. Cualquier otro `/en/…` redirige a `/en`. No hay archivo para los índices `/servicios`, `/industrias`, `/en/servicios` ni `/en/industrias`: `astro.config.mjs` los redirige a `/` o `/en`. Los pares con `alternates` escritos en la plantilla son `/` ↔ `/en`, `/nosotros` ↔ `/en/<slug de Nosotros>`, `/blog` ↔ `/en/blogs`, `/calendario` ↔ `/en/calendario`, `/portal` ↔ `/en/portal`, `/terminos` ↔ `/en/terminos` y `/aviso-de-privacidad` ↔ `/en/aviso-de-privacidad`. Servicios, industrias y posts emiten hreflang solo si el registro trae `alternateSlug`. Contacto, portafolio, diagnóstico, landings, `/design-system` y `/sections` no tienen par en inglés. En servicio, industria, nosotros, caso y landing, si el documento trae `sections`, la página delega en `ServicePageSection`, `IndustryPageSection`, `AboutPageSection` o `SectionRenderer`; si el array viene vacío, la misma plantilla pinta un árbol de respaldo. El grafo marca «Lo usan: —» en todas: nadie las importa. Quien las usa es la URL.
+Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs` declara `output: 'server'` y el adapter de Cloudflare. Cada plantilla de abajo exporta `prerender = true`, así el build de live la deja en HTML; el hook `stagingSsr` pone `prerender = false` en todas las rutas cuando `PUBLIC_SITE_ENV=staging`. `robots.txt.ts` y `sitemap.xml.ts` quedan en SSR en los dos entornos. El español está en la raíz y el inglés en `src/pages/en`. Antes de todo, el middleware manda con 301 las URLs inglesas viejas a la actual, en un solo salto: prefijos en español (`/en/servicios`, `/en/industrias`, `/en/portafolio`, `/en/calendario`, `/en/terminos`, `/en/aviso-de-privacidad`, `/en/nosotros`), slugs en español de servicios e industrias y los 15 slugs viejos de posts (`src/lib/legacy-en-paths.ts`). Después solo deja vivir bajo `/en` estas secciones: `/en/success-stories`, `/en/services/`, `/en/industries/`, `/en/blogs`, `/en/terms`, `/en/privacy-policy`, `/en/calendar` y `/en/portal`. Un `/en/<algo>` de un solo segmento pasa a `src/pages/en/[slug].astro` (Nosotros en inglés) y, si responde 404, redirige a `/en`. Cualquier otro `/en/…` redirige a `/en`. No hay archivo para los índices `/servicios`, `/industrias`, `/en/services` ni `/en/industries`: `astro.config.mjs` manda los españoles a `/` y el middleware los ingleses a `/en`. Los pares con `alternates` escritos en la plantilla son `/` ↔ `/en`, `/nosotros` ↔ `/en/<slug de Nosotros>`, `/blog` ↔ `/en/blogs`, `/portafolio` ↔ `/en/success-stories`, `/calendario` ↔ `/en/calendar`, `/portal` ↔ `/en/portal`, `/terminos` ↔ `/en/terms` y `/aviso-de-privacidad` ↔ `/en/privacy-policy`. Servicios, industrias, casos y posts emiten hreflang solo si el registro trae `alternateSlug`. Contacto, diagnóstico, landings, `/design-system` y `/sections` no tienen par en inglés. En servicio, industria, nosotros, caso y landing, si el documento trae `sections`, la página delega en `ServicePageSection`, `IndustryPageSection`, `AboutPageSection` o `SectionRenderer`; si el array viene vacío, la misma plantilla pinta un árbol de respaldo. El grafo marca «Lo usan: —» en todas: nadie las importa. Quien las usa es la URL.
 
 ### `src/pages/index.astro`
 - Propósito: Home en español. Recorre `sectionOrder` y monta el bloque que corresponda (`homeHero`, `homePillars`, `homeServices`, `homeIndustries`, `homeStories`, `homeProcess`, `homeMetrics`, `homeTeam`, `homeFaq`, `beforeAfter`, `homeCta`).
@@ -10,7 +10,7 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 - Hallazgos: S-04, R-01, P-05, D-08.
 
 ### `src/pages/en/index.astro`
-- Propósito: Home en inglés. El mismo recorrido de secciones que `index.astro`, con `lang="en"` y prefijos `/en/servicios` y `/en/industrias`.
+- Propósito: Home en inglés. El mismo recorrido de secciones que `index.astro`, con `lang="en"` y prefijos `/en/services` y `/en/industries`.
 - Por qué está así: `prerender = true` y las mismas directivas de cliente que la home en español. El hreflang es el mismo par `/` ↔ `/en`. Los slides del hero siguen enlazando a `/portafolio/${id}`.
 - Exporta: la ruta `/en` y `prerender`.
 - Depende de: los mismos módulos que `src/pages/index.astro`, más `getIndustriesIndex` de `src/lib/content` (el grafo lo deja dentro de ese barrel; el archivo sí lo importa).
@@ -38,19 +38,19 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 
 ### `src/pages/servicios/[slug].astro`
 - Propósito: Ficha de servicio en español, una ruta por slug. Con `sections`, delega en `ServicePageSection`. Sin secciones, pinta hero, overview, focus, pitch, planes, industrias, proceso, casos, FAQ y CTA.
-- Por qué está así: `prerender = true`. `getStaticPaths` devuelve `serviceStaticPaths()` y `resolveEntry` relee ese listado en SSR de staging si la prop no llegó. Sin entrada, `notFound()` responde 404. Hreflang solo si hay `alternateSlug`: `/servicios/${id}` ↔ `/en/servicios/${alternateSlug}`. `ServiceFocus`, `ServiceWhy` (solo el id `seo`), `IndustryGrid`, `ProcessPhases`, `CaseStories` y `FaqSection` del respaldo van con `client:visible`. `FaqSection` lleva `withSchema={false}` porque el JSON-LD ya sale de `faqSchema`.
+- Por qué está así: `prerender = true`. `getStaticPaths` devuelve `serviceStaticPaths()` y `resolveEntry` relee ese listado en SSR de staging si la prop no llegó. Sin entrada, `notFound()` responde 404. Hreflang solo si hay `alternateSlug`: `/servicios/${id}` ↔ `/en/services/${alternateSlug}`. `ServiceFocus`, `ServiceWhy` (solo el id `seo`), `IndustryGrid`, `ProcessPhases`, `CaseStories` y `FaqSection` del respaldo van con `client:visible`. `FaqSection` lleva `withSchema={false}` porque el JSON-LD ya sale de `faqSchema`.
 - Exporta: la ruta `/servicios/[slug]`, `prerender` y `getStaticPaths`.
 - Depende de: `Layout.astro`, `getCases`, `getIndustries`, `serviceStaticPaths`, `IndustryHero`, `PillarGrid`, `ServiceFocus`, `ServicePitch`, `ServiceWhy`, `ServicePlans`, `IndustryGrid`, `ProcessPhases`, `CaseStories`, `FaqSection`, `FinalCtaBand.astro`, `ServicePageSection.astro`, `breadcrumbSchema` y `faqSchema`, `iconForServiceOverviewCard` de `src/components/icons/PillarIcons.tsx`, `serviceFocusItems`, `servicePitch`, `servicePlans`, `resolveEntry` y `notFound`. CSS de CaseStories. El tipo `BadgeVariant` sale de `src/components/ui`.
 - Lo usan: la URL `/servicios/:slug`.
 - Datos: el registro es `ServiceRecord`. Planes: `entry.data.planes` o `servicePlans(entry.id)`. Focus y pitch usan el mismo id contra `src/data/service-focus.ts` y `src/data/service-pitch.ts`. Casos: `getCases()` filtrados por `servicios` que referencian `entry.id`, y solo los que traen `testimonio.quote`. Industrias del grid: `getIndustries()` (español, con fallback de colección). Si hay secciones y una `serviceFaq` visible con ítems, el schema usa esos ítems; si hay secciones y no hay esa FAQ, el schema de FAQ queda vacío; si no hay secciones, usa `entry.data.faqs`. El respaldo deja el CTA en `/contacto` y el copy en español.
 - Hallazgos: S-06, S-11, D-08.
 
-### `src/pages/en/servicios/[slug].astro`
+### `src/pages/en/services/[slug].astro`
 - Propósito: Ficha de servicio en inglés. La misma bifurcación que la española, con `locale="en"` en `ServicePageSection` y en `CaseStories`.
-- Por qué está así: `prerender = true`, `getStaticPaths` llama a `serviceStaticPaths('en')`, `lang="en"`. El hreflang, si hay `alternateSlug`, invierte el par: español en `/servicios/${alternateSlug}` e inglés en `/en/servicios/${id}`. Las directivas de cliente del respaldo coinciden con la ficha española. `serviceContentKey(entry.id)` traduce el slug inglés a la clave de los módulos de `src/data` (focus, pitch, planes, imagen `/images/services/${contentKey}-hero.jpg`, y el caso especial `seo` de `ServiceWhy`).
-- Exporta: la ruta `/en/servicios/[slug]`, `prerender` y `getStaticPaths`.
+- Por qué está así: `prerender = true`, `getStaticPaths` llama a `serviceStaticPaths('en')`, `lang="en"`. El hreflang, si hay `alternateSlug`, invierte el par: español en `/servicios/${alternateSlug}` e inglés en `/en/services/${id}`. Las directivas de cliente del respaldo coinciden con la ficha española. `serviceContentKey(entry.id)` traduce el slug inglés a la clave de los módulos de `src/data` (focus, pitch, planes, imagen `/images/services/${contentKey}-hero.jpg`, y el caso especial `seo` de `ServiceWhy`).
+- Exporta: la ruta `/en/services/[slug]`, `prerender` y `getStaticPaths`.
 - Depende de: los mismos módulos que `servicios/[slug].astro`, más `serviceContentKey` de `src/lib/en-slugs.ts`.
-- Lo usan: la URL `/en/servicios/:slug`.
+- Lo usan: la URL `/en/services/:slug`.
 - Datos: servicios del path vía `getServices('en')`, sin fallback de `src/content`. Las industrias del grid salen de `getIndustries()` sin locale, o sea el catálogo español. Los casos salen de `getCases()` si el servicio referencia `entry.id` o `contentKey`, y el enlace del caso es `/portafolio/${id}`. El respaldo conserva textos en español (`Cotiza tu proyecto`, `Cómo se entiende…`, `El servicio`, `Cómo trabajamos`) y `ctaHref="/contacto"`.
 - Hallazgos: A-01, S-03, S-06, D-08.
 
@@ -63,12 +63,12 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 - Datos: `IndustryRecord`. Servicios del grid: `getServices()` (español, con fallback). La descripción de cada card es el blurb del documento o `industryServiceDescription(id de industria, serviceContentKey(slug), nombre)`. Casos: `getCases()` con `industria.id === entry.id`; el enlace es `/portafolio/${id}`. Imagen de hero: `entry.data.heroImage` o `/images/industries/${id}.jpg`. El schema de FAQ entra si no hay secciones o si alguna sección visible es `industryFaq`, y el cuerpo del schema es `entry.data.faqs`.
 - Hallazgos: S-06, S-11, R-05, D-08.
 
-### `src/pages/en/industrias/[slug].astro`
-- Propósito: Ficha de industria en inglés. Misma bifurcación. `IndustryPageSection` e `IndustryServices` reciben `hrefPrefix="/en/servicios"`. `CaseStories` recibe `locale="en"`.
+### `src/pages/en/industries/[slug].astro`
+- Propósito: Ficha de industria en inglés. Misma bifurcación. `IndustryPageSection` e `IndustryServices` reciben `hrefPrefix="/en/services"`. `CaseStories` recibe `locale="en"`.
 - Por qué está así: `prerender = true`, `industryStaticPaths('en')`, `lang="en"`. Hreflang invertido respecto a la ficha española cuando hay `alternateSlug`. El respaldo no trae copy fijo en español: títulos, CTA, casos vacíos y FAQ salen de campos del registro (`heroCtaLabel`, `servicesTitle`, `casesEmpty`, `faqTitle`, `closingTitle`). Esas props pueden llegar vacías si el documento no las trae.
-- Exporta: la ruta `/en/industrias/[slug]`, `prerender` y `getStaticPaths`.
+- Exporta: la ruta `/en/industries/[slug]`, `prerender` y `getStaticPaths`.
 - Depende de: los mismos módulos que `industrias/[slug].astro`.
-- Lo usan: la URL `/en/industrias/:slug`.
+- Lo usan: la URL `/en/industries/:slug`.
 - Datos: `getServices('en')` para las cards, sin fallback de colección. El blurb busca `item.id` y, si no está, `serviceContentKey(item.id)`. Los casos siguen siendo `getCases()` (consulta en español) enlazados a `/portafolio/${id}`. La imagen de respaldo usa el slug inglés: `/images/industries/${entry.id}.jpg`.
 - Hallazgos: A-01, S-03, S-06, D-08.
 
@@ -110,7 +110,7 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 
 ### `src/pages/portafolio/index.astro`
 - Propósito: Índice de casos en español. Hero y grilla filtrable por industria.
-- Por qué está así: `prerender = true`. `CasesIndex` va con `client:load`. No pasa `alternates` ni `lang`. No hay `src/pages/en/portafolio`.
+- Por qué está así: `prerender = true`. `CasesIndex` va con `client:load`. Hreflang `/portafolio` ↔ `/en/success-stories`.
 - Exporta: la ruta `/portafolio` y `prerender`.
 - Depende de: `Layout.astro`, `getCases`, `getCatalogIndex`, `getIndustries`, `BlogHero`, `CasesIndex`, `SectionBand`, `FinalCtaBand.astro`, `breadcrumbSchema`, `postCoverUrl`, `WEBFLOW_CASES_INDEX` de `src/data/webflow-cases.ts`. CSS de BlogHero y BlogIndex.
 - Lo usan: la URL `/portafolio`. `astro.config.mjs` redirige `/work` aquí.
@@ -119,12 +119,28 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 
 ### `src/pages/portafolio/[slug].astro`
 - Propósito: Caso de estudio. Recorre secciones (`caseHero`, `caseContext`, `caseProcess`, `caseMetrics`, `caseTestimonial`, `caseRelated`, `beforeAfter`, `caseCta`) y descarta el bloque si le faltan fases, métricas, quote, relacionados o pares.
-- Por qué está así: `prerender = true`. `caseStaticPaths()` no recibe locale. `resolveEntry` recompone la entrada en staging. 404 si no existe. No hay `alternates`. `CaseTelescopeHero` es `client:load`. `ProcessPhases`, `MetricsBand`, `CaseStories` y `BeforeAfter` son `client:visible`. El título del hero parte el nombre del cliente en dos mitades para `titleLeft` y `titleRight`.
+- Por qué está así: `prerender = true`. `caseStaticPaths()` usa el locale español por defecto. `resolveEntry` recompone la entrada en staging. 404 si no existe. Hreflang solo si hay `alternateSlug`: `/portafolio/${id}` ↔ `/en/success-stories/${alternateSlug}`. `CaseTelescopeHero` es `client:load`. `ProcessPhases`, `MetricsBand`, `CaseStories` y `BeforeAfter` son `client:visible`. El título del hero parte el nombre del cliente en dos mitades para `titleLeft` y `titleRight`.
 - Exporta: la ruta `/portafolio/[slug]`, `prerender` y `getStaticPaths`.
 - Depende de: `Layout.astro`, `caseStaticPaths`, `getCases`, `getIndustries`, `CaseTelescopeHero`, `SectionBand`, `SectionHeader`, `BeforeAfter`, `ProcessPhases`, `MetricsBand`, `CaseStories`, `CaseCards` de `CasesIndex`, `FinalCtaBand.astro`, `breadcrumbSchema`, `postCoverUrl`, `formatCaseStat`, `resolveEntry` y `notFound`. CSS de CaseTelescopeHero, MetricsBand, CaseStories y BlogIndex.
 - Lo usan: la URL `/portafolio/:slug`.
 - Datos: `CaseRecord` de `getCases()`, que filtra `locale` español en la query. Si `sections` viene vacío, la página fabrica el árbol: hero, contexto (reto y estrategia), proceso, métricas, testimonio si hay quote, relacionados y CTA «Agenda un diagnóstico similar». La imagen es `seo.ogImage`, si no la del hero de la industria, si no `postCoverUrl`. Relacionados: otros casos de la misma `industria.id`. Los servicios del contexto enlazan a `/servicios/${id}`. `imageAlt` se calcula (`heroImageAlt` de la industria o «Imagen del caso…») y se pasa al telescopio.
 - Hallazgos: A-05, A-06, S-07, S-11, S-12.
+
+### `src/pages/en/success-stories/index.astro`
+- Propósito: Índice de casos en inglés. La misma grilla que `/portafolio` con textos en inglés.
+- Por qué está así: `prerender = true`, `lang="en"`, hreflang `/portafolio` ↔ `/en/success-stories`. `CasesIndex` recibe las etiquetas en inglés por props y `contactHref="/en/calendar"`.
+- Exporta: la ruta `/en/success-stories` y `prerender`.
+- Depende de: lo mismo que `portafolio/index.astro`.
+- Lo usan: la URL `/en/success-stories`. El middleware manda aquí `/en/portafolio` y `/en/marketing-portafolio`.
+- Datos: `getCatalogIndex('casesIndex-en')`, `getCases('en')` y `getIndustries('en')`. Cada card enlaza a `/en/success-stories/${id}`.
+
+### `src/pages/en/success-stories/[slug].astro`
+- Propósito: Caso de estudio en inglés. El mismo recorrido de secciones que `portafolio/[slug].astro`.
+- Por qué está así: `prerender = true`, `caseStaticPaths('en')`, `lang="en"`. El hreflang, si hay `alternateSlug`, apunta el español a `/portafolio/${alternateSlug}`. El árbol de respaldo y los títulos por defecto van en inglés.
+- Exporta: la ruta `/en/success-stories/[slug]`, `prerender` y `getStaticPaths`.
+- Depende de: lo mismo que `portafolio/[slug].astro`.
+- Lo usan: la URL `/en/success-stories/:slug`.
+- Datos: `getCases('en')` y `getIndustries('en')`. Relacionados: otros casos ingleses de la misma industria. Los servicios del contexto enlazan a `/en/services/${id}`; los CTA por defecto van a `/en/calendar` y `/en/success-stories`.
 
 ### `src/pages/contacto.astro`
 - Propósito: Formulario de contacto en español. Al enviar, arma un `mailto:` con nombre, apellido, email, celular, sitio, servicios, presupuesto y proyecto.
@@ -137,19 +153,19 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 
 ### `src/pages/calendario.astro`
 - Propósito: Agenda en español. Monta `CalendarTool` con el copy de la página y los ajustes del sitio.
-- Por qué está así: `prerender = true`. `CalendarTool` va con `client:load` porque reserva, cancela y consulta horarios por fetch. `lang="es"`. Canonical fijo `/calendario`. Hreflang `/calendario` ↔ `/en/calendario`. No pasa `noindex` ni `ogImage`.
+- Por qué está así: `prerender = true`. `CalendarTool` va con `client:load` porque reserva, cancela y consulta horarios por fetch. `lang="es"`. Canonical fijo `/calendario`. Hreflang `/calendario` ↔ `/en/calendar`. No pasa `noindex` ni `ogImage`.
 - Exporta: la ruta `/calendario` y `prerender`.
 - Depende de: `Layout.astro`, `CalendarTool`, `getCalendarPage`, `getSiteSettings`, `breadcrumbSchema`.
 - Lo usan: la URL `/calendario`.
 - Datos: `getCalendarPage('es')`. Sin Sanity configurado, o si la query falla o viene vacía, el loader devuelve `DEFAULT_CALENDAR.es` de `src/lib/content/calendar-page.ts`. El título visible es `page.metaTitle` o `${page.title} — Hiweb Marketing`.
 - Hallazgos: A-09, S-12, R-03.
 
-### `src/pages/en/calendario.astro`
+### `src/pages/en/calendar.astro`
 - Propósito: La misma agenda, con copy en inglés.
-- Por qué está así: `prerender = true`, `CalendarTool` con `client:load`, `lang="en"`, canonical fijo `/en/calendario`, el mismo par de hreflang. Tampoco pasa `noindex` ni `ogImage`.
-- Exporta: la ruta `/en/calendario` y `prerender`.
+- Por qué está así: `prerender = true`, `CalendarTool` con `client:load`, `lang="en"`, canonical fijo `/en/calendar`, el mismo par de hreflang. Tampoco pasa `noindex` ni `ogImage`.
+- Exporta: la ruta `/en/calendar` y `prerender`.
 - Depende de: los mismos módulos que `calendario.astro`.
-- Lo usan: la URL `/en/calendario`.
+- Lo usan: la URL `/en/calendar`.
 - Datos: `getCalendarPage('en')` con respaldo `DEFAULT_CALENDAR.en`. La miga usa «Home» hacia `/en`.
 - Hallazgos: A-09, S-12.
 
@@ -182,37 +198,37 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 
 ### `src/pages/aviso-de-privacidad.astro`
 - Propósito: Aviso de privacidad en español. Hero a ancho completo y `LegalDocument` con la fecha y las secciones.
-- Por qué está así: `prerender = true`. Hreflang fijo con `/en/aviso-de-privacidad`. `noindex` es `page.seo.noindex ?? true`: si el documento no trae el booleano `true`, la página sigue excluida. `PageHero` y `LegalDocument` no llevan directiva de cliente.
+- Por qué está así: `prerender = true`. Hreflang fijo con `/en/privacy-policy`. `noindex` es `page.seo.noindex ?? true`: si el documento no trae el booleano `true`, la página sigue excluida. `PageHero` y `LegalDocument` no llevan directiva de cliente.
 - Exporta: la ruta `/aviso-de-privacidad` y `prerender`.
 - Depende de: `Layout.astro`, `PageHero`, `SectionBand`, `LegalDocument`, `getLegalPage`, `breadcrumbSchema`, CSS de LegalDocument.
 - Lo usan: la URL `/aviso-de-privacidad`.
 - Datos: `getLegalPage('legal-privacy')`. El loader devuelve `null` si Sanity falla o el documento no está. Entonces el título es «Aviso de privacidad Hiweb», la descripción es el texto de la LFPDPPP escrito en la plantilla, y `sections` es `[]`.
 - Hallazgos: S-05, S-08, S-12.
 
-### `src/pages/en/aviso-de-privacidad.astro`
+### `src/pages/en/privacy-policy.astro`
 - Propósito: Aviso de privacidad en inglés.
 - Por qué está así: igual que la versión española, con `lang="en"` y el mismo `noindex ?? true`.
-- Exporta: la ruta `/en/aviso-de-privacidad` y `prerender`.
+- Exporta: la ruta `/en/privacy-policy` y `prerender`.
 - Depende de: los mismos módulos que `aviso-de-privacidad.astro`.
-- Lo usan: la URL `/en/aviso-de-privacidad`.
+- Lo usan: la URL `/en/privacy-policy`.
 - Datos: `getLegalPage('legal-privacy-en')`. Título de respaldo: «Hiweb Privacy Notice». Descripción de respaldo en inglés, citando la ley federal mexicana. Secciones `[]` si no hay documento.
 - Hallazgos: S-08, S-12.
 
 ### `src/pages/terminos.astro`
 - Propósito: Términos y condiciones en español. La misma composición que el aviso.
-- Por qué está así: `prerender = true`, hreflang `/terminos` ↔ `/en/terminos`, `noindex={page?.seo?.noindex ?? true}`.
+- Por qué está así: `prerender = true`, hreflang `/terminos` ↔ `/en/terms`, `noindex={page?.seo?.noindex ?? true}`.
 - Exporta: la ruta `/terminos` y `prerender`.
 - Depende de: `Layout.astro`, `PageHero`, `SectionBand`, `LegalDocument`, `getLegalPage`, `breadcrumbSchema`, CSS de LegalDocument.
 - Lo usan: la URL `/terminos`.
 - Datos: `getLegalPage('legal-terms')`. Título de respaldo: «Términos y condiciones Hiweb». Descripción de respaldo sobre el uso de hiwebmarketing.com y la contratación. Secciones `[]` si el loader devuelve `null`.
 - Hallazgos: S-05, S-08, S-12.
 
-### `src/pages/en/terminos.astro`
+### `src/pages/en/terms.astro`
 - Propósito: Términos en inglés.
 - Por qué está así: `prerender = true`, `lang="en"`, el mismo par de hreflang y el mismo `noindex ?? true`.
-- Exporta: la ruta `/en/terminos` y `prerender`.
+- Exporta: la ruta `/en/terms` y `prerender`.
 - Depende de: los mismos módulos que `terminos.astro`.
-- Lo usan: la URL `/en/terminos`.
+- Lo usan: la URL `/en/terms`.
 - Datos: `getLegalPage('legal-terms-en')`. Título de respaldo: «Hiweb Terms and Conditions». Descripción de respaldo en inglés.
 - Hallazgos: S-08, S-12.
 
@@ -256,5 +272,5 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 - Exporta: `prerender = false` y `GET`. La ruta es `/sitemap.xml`.
 - Depende de: `getIndustries`, `getServices`, `getCases`, `getPosts`, `getLandings` de `src/lib/content`, `isReservedSlug`, `shouldNoIndex`.
 - Lo usan: la URL `/sitemap.xml`.
-- Datos: la lista fija es `/`, `/portafolio`, `/blog`, `/nosotros`, `/en/nosotros`, `/en/blogs`, `/contacto`, `/diagnostico-marketing-digital`, `/calendario`, `/en/calendario`, `/portal` y `/en/portal`. Después suma `/servicios/${id}` y `/industrias/${id}` de `getServices()` y `getIndustries()` sin locale (español), `/portafolio/${id}`, `/blog/${id}`, `/en/blogs/${id}` de `getPosts('en')`, y `/${id}` de landings que no estén en `RESERVED_SLUGS`. Cada nodo es solo `<loc>`. No entra `/en`, ni `/en/servicios/…`, ni `/en/industrias/…`, ni términos, ni aviso, ni `/design-system`, ni `/sections`. No se lee `seo.noindex`.
+- Datos: la lista fija es `/`, `/portafolio`, `/blog`, `/nosotros`, `/en/nosotros`, `/en/blogs`, `/contacto`, `/diagnostico-marketing-digital`, `/calendario`, `/en/calendar`, `/portal` y `/en/portal`. Después suma `/servicios/${id}` y `/industrias/${id}` de `getServices()` y `getIndustries()` sin locale (español), `/portafolio/${id}`, `/blog/${id}`, `/en/blogs/${id}` de `getPosts('en')`, y `/${id}` de landings que no estén en `RESERVED_SLUGS`. Cada nodo es solo `<loc>`. No entra `/en`, ni `/en/services/…`, ni `/en/industries/…`, ni términos, ni aviso, ni `/design-system`, ni `/sections`. No se lee `seo.noindex`.
 - Hallazgos: S-02, S-03.

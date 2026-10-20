@@ -34,7 +34,7 @@ const entry = await resolveEntry<IndustryRecord>(Astro.props.entry, Astro.params
 );
 if (!entry) return notFound();
 const services = await getServices('en');
-const cases = (await getCases()).filter((item) => item.data.industria.id === entry.id);
+const cases = (await getCases('en')).filter((item) => item.data.industria.id === entry.id);
 const heroImage = entry.data.heroImage ?? `/images/industries/${entry.id}.jpg`;
 const industryHeroBadges: { label: string; variant: BadgeVariant }[] = [
 	{ label: entry.data.nombre, variant: 'lime' },
@@ -82,7 +82,7 @@ const caseStories = cases.map((item) => ({
 	photo: item.data.testimonio?.photo,
 	cover: item.data.imagenesProyecto?.[0],
 	stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
-	href: `/portafolio/${item.id}`,
+	href: `/en/success-stories/${item.id}`,
 }));
 ---
 
@@ -95,13 +95,13 @@ const caseStories = cases.map((item) => ({
 	canonical={entry.data.seo?.canonicalPath}
 	alternates={
 		entry.alternateSlug
-			? { es: `/industrias/${entry.alternateSlug}`, en: `/en/industrias/${entry.id}` }
+			? { es: `/industrias/${entry.alternateSlug}`, en: `/en/industries/${entry.id}` }
 			: undefined
 	}
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Home', href: '/en' },
-			{ name: entry.data.nombre, href: `/en/industrias/${entry.id}` },
+			{ name: entry.data.nombre, href: `/en/industries/${entry.id}` },
 		]),
 		...(allSections.length === 0 || pageSections.some((section) => section._type === 'industryFaq')
 			? [faqSchema(entry.data.faqs)]
@@ -119,7 +119,7 @@ const caseStories = cases.map((item) => ({
 					services={cardsFor(section)}
 					stories={caseStories}
 					hasCases={cases.length > 0}
-					hrefPrefix="/en/servicios"
+					hrefPrefix="/en/services"
 				/>
 			))
 		) : (
@@ -145,7 +145,7 @@ const caseStories = cases.map((item) => ({
 			services={industryServices}
 			title={entry.data.servicesTitle}
 			description={entry.data.servicesDescription}
-			hrefPrefix="/en/servicios"
+			hrefPrefix="/en/services"
 			ctaLabel={entry.data.servicesCtaLabel}
 			tagLabel={entry.data.servicesTag}
 			tone="canvas"
@@ -165,7 +165,7 @@ const caseStories = cases.map((item) => ({
 			withSchema={false}
 			columns={2}
 		/>
-		<FinalCta title={entry.data.closingTitle} />
+		<FinalCta locale="en" title={entry.data.closingTitle} description={entry.data.closingDescription} />
 		</>
 		)}
 	</main>

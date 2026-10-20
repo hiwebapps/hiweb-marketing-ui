@@ -4,7 +4,7 @@ export const prerender = true;
 import Layout from '../../../layouts/Layout.astro';
 import BlogAuthorCard from '../../../components/content/BlogAuthorCard.astro';
 import BlogBody from '../../../components/content/BlogBody.astro';
-import { getPost, getPosts, getSiteSettings, postStaticPaths } from '../../../lib/content';
+import { getCatalogIndex, getPost, getPosts, getSiteSettings, postStaticPaths } from '../../../lib/content';
 import { BlogPostToc } from '../../../components/sections/BlogPostToc';
 import FinalCta from '../../../components/sections/FinalCtaBand.astro';
 import { Button } from '../../../components/ui';
@@ -25,6 +25,7 @@ interface Props {
 const entry = Astro.props.entry ?? (await getPost(Astro.params.slug ?? '', 'en'));
 const site = await getSiteSettings();
 if (!entry) return notFound();
+const blogIndex = await getCatalogIndex('blogIndex-en');
 const allPosts = await getPosts('en', { stega: false });
 const related = allPosts
 	.filter((post) => post.id !== entry.id)
@@ -183,7 +184,11 @@ const schemas = [
 			</div>
 		</section>
 
-		<FinalCta title="Want to apply this to your business?" />
+		<FinalCta locale="en"
+			title={blogIndex?.postClosingTitle ?? 'Want to apply this to your business?'}
+			description={blogIndex?.postClosingDescription ??
+				'Tell us your industry, goal and ideal customer. We send back a clear diagnostic with the next step.'}
+		/>
 	</main>
 </Layout>
 

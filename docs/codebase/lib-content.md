@@ -31,7 +31,7 @@ Quedan fuera de la función, a propósito en el código actual:
 - Por qué está así: el build de live prerenderiza con el dataset publicado. Sin token, o con el dataset caído, el español de colecciones tiene que seguir saliendo. El inglés de catálogo se dejó en llamada directa: no hay colección EN en `src/content`. Home mezcla las dos fuentes porque un documento de Sanity puede traer solo algunas secciones y la página espera pilares, proceso, métricas y FAQ completos. Calendario, contacto, diagnóstico y portal no comparten el helper porque su respaldo no es `src/content`.
 - Exporta: `getIndustries`, `getIndustry`, `industryStaticPaths`, `getServices`, `getService`, `serviceStaticPaths`, `getCases`, `getCase`, `caseStaticPaths`, `getPosts`, `getPost`, `postStaticPaths`, `getPeople`, `getHomeCopy`, `getAboutCopy`, `getSiteSettings`, `getFavicon`, `getNavigation`, `getFooter`, `getCtaBackdrop`, `getCatalogIndex`, `getIndustriesIndex`, `getLegalPage`, `getSitePage`, `getCalendarPage`, `getContactPage`, `getPortal`, `getLandings`, `getLanding`, `landingStaticPaths`.
 - Depende de: `src/sanity/client.ts` (`isSanityConfigured`), `src/lib/site-identity.ts` (`fallbackSite`), `from-collections.ts`, `from-sanity.ts`, `hydrate-landing.ts`, `calendar-page.ts`, `contact.ts`, `types.ts`.
-- Lo usan: `src/layouts/Layout.astro` (favicon, footer, nav, ajustes); `src/components/sections/FinalCtaBand.astro`; `src/pages/index.astro` y `src/pages/en/index.astro`; `src/pages/nosotros.astro` y `src/pages/en/nosotros.astro`; `src/pages/servicios/[slug].astro` y `src/pages/en/servicios/[slug].astro`; `src/pages/industrias/[slug].astro` y `src/pages/en/industrias/[slug].astro`; `src/pages/portafolio/index.astro` y `src/pages/portafolio/[slug].astro`; `src/pages/blog/index.astro`, `src/pages/blog/[slug].astro`, `src/pages/en/blogs/index.astro`, `src/pages/en/blogs/[slug].astro`; `src/pages/calendario.astro` y `src/pages/en/calendario.astro`; `src/pages/contacto.astro`; `src/pages/portal.astro` y `src/pages/en/portal.astro`; `src/pages/terminos.astro`, `src/pages/aviso-de-privacidad.astro` y las pares `en/`; `src/pages/diagnostico-marketing-digital.astro`; `src/pages/[slug].astro`; `src/pages/sitemap.xml.ts`; `src/lib/growth/calendar/services.ts` (`getCalendarPage`).
+- Lo usan: `src/layouts/Layout.astro` (favicon, footer, nav, ajustes); `src/components/sections/FinalCtaBand.astro`; `src/pages/index.astro` y `src/pages/en/index.astro`; `src/pages/nosotros.astro` y `src/pages/en/nosotros.astro`; `src/pages/servicios/[slug].astro` y `src/pages/en/services/[slug].astro`; `src/pages/industrias/[slug].astro` y `src/pages/en/industries/[slug].astro`; `src/pages/portafolio/index.astro` y `src/pages/portafolio/[slug].astro`; `src/pages/blog/index.astro`, `src/pages/blog/[slug].astro`, `src/pages/en/blogs/index.astro`, `src/pages/en/blogs/[slug].astro`; `src/pages/calendario.astro` y `src/pages/en/calendar.astro`; `src/pages/contacto.astro`; `src/pages/portal.astro` y `src/pages/en/portal.astro`; `src/pages/terminos.astro`, `src/pages/aviso-de-privacidad.astro` y las pares `en/`; `src/pages/diagnostico-marketing-digital.astro`; `src/pages/[slug].astro`; `src/pages/sitemap.xml.ts`; `src/lib/growth/calendar/services.ts` (`getCalendarPage`).
 - Datos: `SITE_PAGES` es el copy fijo de `page-calendario` y `page-diagnostico` (el diagnóstico es el que la ruta usa). `getHomeCopy` parte de `collectionsHome()` y pisa cada bloque solo si Sanity trae intro o una lista con elementos. `postStaticPaths` vuelve a pedir cada post completo. `landingStaticPaths` hidrata cada landing con catálogos. El sitemap llama `getServices()` y `getIndustries()` sin locale, así que lista el español.
 - Hallazgos: A-01, A-14, D-07, S-03 (el sitemap no pide el catálogo EN porque esta API, llamada sin locale, devuelve español).
 
@@ -91,7 +91,7 @@ Quedan fuera de la función, a propósito en el código actual:
 - Por qué está así: `stagingSsr()` apaga el prerender. Sin este helper cada plantilla repetiría el mismo `if`.
 - Exporta: `resolveEntry`, `notFound` (respuesta 404 con cuerpo `Not found`).
 - Depende de: nada del repo.
-- Lo usan: `src/pages/[slug].astro`, `src/pages/blog/[slug].astro`, `src/pages/en/blogs/[slug].astro`, `src/pages/industrias/[slug].astro`, `src/pages/en/industrias/[slug].astro`, `src/pages/servicios/[slug].astro`, `src/pages/en/servicios/[slug].astro`, `src/pages/portafolio/[slug].astro`. Las de blog importan `notFound`; el resto importa los dos.
+- Lo usan: `src/pages/[slug].astro`, `src/pages/blog/[slug].astro`, `src/pages/en/blogs/[slug].astro`, `src/pages/industrias/[slug].astro`, `src/pages/en/industries/[slug].astro`, `src/pages/servicios/[slug].astro`, `src/pages/en/services/[slug].astro`, `src/pages/portafolio/[slug].astro`. Las de blog importan `notFound`; el resto importa los dos.
 - Datos: si `current` ya existe, lo devuelve. Si no hay slug, `undefined`. Si no, carga los paths y compara `params.slug`.
 - Hallazgos: —
 
@@ -101,7 +101,7 @@ Quedan fuera de la función, a propósito en el código actual:
 - Por qué está así: las métricas de un caso se muestran como valor + etiqueta, y el título de página a veces ya viene del SEO.
 - Exporta: `formatCaseStat`, `pageTitle`.
 - Depende de: nada.
-- Lo usan: `formatCaseStat` en `SectionRenderer.astro`, `src/pages/industrias/[slug].astro`, `src/pages/en/industrias/[slug].astro`, `src/pages/portafolio/[slug].astro`. `pageTitle` no tiene ningún import en el repo.
+- Lo usan: `formatCaseStat` en `SectionRenderer.astro`, `src/pages/industrias/[slug].astro`, `src/pages/en/industries/[slug].astro`, `src/pages/portafolio/[slug].astro`. `pageTitle` no tiene ningún import en el repo.
 - Datos: el valor concatena `prefix`, el número (`toFixed` si hay `decimals`) y `suffix`. `pageTitle` devuelve el fallback si viene con texto, y si no `${name} — Hiweb Marketing`.
 - Hallazgos: —
 
@@ -117,7 +117,7 @@ Quedan fuera de la función, a propósito en el código actual:
 
 ### `src/lib/content/calendar-page.ts`
 
-- Propósito: copy y catálogo de servicios de `/calendario` y `/en/calendario`, más el mapper del documento Sanity.
+- Propósito: copy y catálogo de servicios de `/calendario` y `/en/calendar`, más el mapper del documento Sanity.
 - Por qué está así: el formulario necesita etiquetas, hints y la lista de servicios aunque Sanity falle. Los ids EN no son los ids ES (coinciden con `en-slugs.ts` en los que cambian de slug). El horario real lo impone `calendar-rules.ts`; este archivo solo describe ese horario en el copy.
 - Exporta: tipos `CalendarField` y `CalendarPageCopy`, `DEFAULT_CALENDAR`, `mapCalendarPage`.
 - Depende de: `src/lib/growth/calendar/types.ts` (`CalendarServiceOption`).

@@ -120,7 +120,7 @@ export function CaseStories({
   const lastIndex = Math.max(stories.length - perView, 0);
   const canSlide = lastIndex > 0;
   const ctaLabel = locale === 'en' ? 'View project' : 'Ver proyecto';
-  const portfolioHref = '/portafolio';
+  const portfolioHref = locale === 'en' ? '/en/success-stories' : '/portafolio';
   const goTo = useCallback(
     (next: number) => {
       setActiveIndex(Math.max(0, Math.min(lastIndex, next)));

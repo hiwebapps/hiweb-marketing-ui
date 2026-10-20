@@ -20,10 +20,11 @@ function urlXml(href: string): string {
 
 export const GET: APIRoute = async ({ url, site }) => {
   const origin = site?.origin ?? import.meta.env.PUBLIC_SITE_URL ?? url.origin;
-  const [industries, services, cases, posts, englishPosts, landings, englishAbout] = await Promise.all([
+  const [industries, services, cases, englishCases, posts, englishPosts, landings, englishAbout] = await Promise.all([
     getIndustries(),
     getServices(),
     getCases(),
+    getCases('en'),
     getPosts(),
     getPosts('en'),
     getLandings(),
@@ -33,6 +34,7 @@ export const GET: APIRoute = async ({ url, site }) => {
   const urls = [
     '/',
     '/portafolio',
+    '/en/success-stories',
     '/blog',
     aboutPath('es'),
     aboutPath('en', englishAbout.slug),
@@ -40,12 +42,13 @@ export const GET: APIRoute = async ({ url, site }) => {
     '/contacto',
     '/diagnostico-marketing-digital',
     '/calendario',
-    '/en/calendario',
+    '/en/calendar',
     '/portal',
     '/en/portal',
     ...services.map((item) => `/servicios/${item.id}`),
     ...industries.map((item) => `/industrias/${item.id}`),
     ...cases.map((item) => `/portafolio/${item.id}`),
+    ...englishCases.map((item) => `/en/success-stories/${item.id}`),
     ...posts.map((item) => `/blog/${item.id}`),
     ...englishPosts.map((item) => `/en/blogs/${item.id}`),
     ...landings.filter((item) => !isReservedSlug(item.id)).map((item) => `/${item.id}`),

@@ -373,9 +373,9 @@ export function HeroStudioA({
           style={width.style}
           data-heading-width={width['data-heading-width']}
         >
-          <h2 className="hero-studio-a__title">
+          <h1 className="hero-studio-a__title">
             <HeadingText text={title} />
-          </h2>
+          </h1>
           <p className="hero-studio-a__lead">{description}</p>
           <div className="hero-studio-a__actions">
             <Button href={primaryHref} variant="primary" size="md" className="no-underline">

@@ -259,13 +259,13 @@ El kit (`/sections`, `client:only`) también muestra piezas que ninguna ruta de 
 - Exporta: `FinalCta`.
 - Depende de: `src/components/ui`, `primitives/heading.tsx`, `FinalCta.css`.
 - Lo usan: `ContactPage.tsx`, `FinalCtaBand.astro`, `sections/index.ts`, `WorkPage.tsx`. Las páginas lo reciben a través de la banda.
-- Datos: badge, título, descripción, CTA y `images`. Sin imágenes usa el set fijo (fotos de `/images/services` y picsum). Los `alt` van vacíos: el marquee es `aria-hidden`.
+- Datos: badge, título, descripción, CTA, `locale` e `images`. Cada campo vacío cae al texto por defecto del idioma (`locale="en"` en las páginas inglesas). Sin imágenes usa el set fijo (fotos de `/images/services` y picsum). Los `alt` van vacíos: el marquee es `aria-hidden`.
 - Hallazgos: D-05, P-05.
 
 ### `src/components/sections/FinalCtaBand.astro`
 - Propósito: Envuelve `FinalCta` como isla y le pasa el fondo de fotos.
 - Por qué está así: `client:load` en el componente React. Las fotos salen de `getCtaBackdrop()` en el build.
-- Exporta: componente Astro. Reenvía badge, título, descripción, CTAs y `headingWidth`.
+- Exporta: componente Astro. Reenvía badge, título, descripción, CTAs, `headingWidth` y `locale`.
 - Depende de: `FinalCta.tsx`, `src/lib/content` (`getCtaBackdrop`).
 - Lo usan: `SectionRenderer.astro`, los tres `*PageSection.astro`, y las páginas de blog, home, industrias, nosotros, portafolio y servicios (ES y EN donde existe el par).
 - Datos: props del bloque de cierre más el arreglo de imágenes del contenido.
@@ -289,12 +289,12 @@ El kit (`/sections`, `client:only`) también muestra piezas que ninguna ruta de 
 
 ### `src/components/sections/HeroStudioA.tsx`
 - Propósito: Hero de la home. Coverflow 3D, autoplay de 3.5 s, arrastre y click al portafolio.
-- Por qué está así: Isla `client:load`. GSAP coloca las cards (`spacing`, `rotate`, escala según el ancho). `prefersReducedMotion` no autoavanza. El título es un `h2`, no un `h1`. Hay un `<button>` de play/pausa aparte de `Button`.
+- Por qué está así: Isla `client:load`. GSAP coloca las cards (`spacing`, `rotate`, escala según el ancho). `prefersReducedMotion` no autoavanza. El título es el `h1` de la home; la clase fija peso y aire para que se vea igual que el `h2` anterior. Hay un `<button>` de play/pausa aparte de `Button`.
 - CSS: `HeroStudioA.css` — con `html.motion-ready` y sin reduced motion oculta título, lead, CTAs y carrusel hasta `.is-ready`, para que no parpadeen al hidratar. `Layout` quita `motion-ready` si el script de motion no arranca. Un hex fuera de paleta (`#ddd`).
 - Exporta: `HeroStudioSlide`, `HeroStudioA`.
 - Depende de: `src/lib/motion.ts`, `src/components/ui`, `primitives/heading.tsx`, `HeroStudioA.css`.
 - Lo usan: `HomePage.tsx`, `sections/index.ts`, `pages/index.astro`, `pages/en/index.astro`.
-- Datos: título, lead, CTAs, `slides` y `headingWidth` del documento de home. Sin slides el carrusel queda vacío.
+- Datos: título, lead, CTAs, `slides` y `headingWidth` del documento de home. La imagen de cada slide es la del hero del caso; si el hero no trae imagen, la de SEO. Sin slides el carrusel queda vacío.
 - Hallazgos: R-01, S-04, S-07, P-04, P-05, D-05, D-09.
 
 ### `src/components/sections/HeroStudioB.tsx`
@@ -355,7 +355,7 @@ El kit (`/sections`, `client:only`) también muestra piezas que ninguna ruta de 
 - Propósito: Despacha un bloque de industria según `_type`.
 - Exporta: componente Astro.
 - Depende de: `IndustryHero`, `IndustryServices`, `PillarGrid`, `CaseStories`, `BeforeAfter`, `FaqSection`, `FinalCtaBand`, `src/lib/content/types.ts`, `src/components/ui`.
-- Lo usan: `pages/industrias/[slug].astro`, `pages/en/industrias/[slug].astro`.
+- Lo usan: `pages/industrias/[slug].astro`, `pages/en/industries/[slug].astro`.
 - Datos: `IndustrySection` más nombre, foto de respaldo, servicios e historias. `industryHero` → `IndustryHero`. `industryWhy` → `PillarGrid`. `industryServices` → `IndustryServices`. `industryCases` → `CaseStories` con `client:visible`. `industryFaq` → `FaqSection`. `beforeAfter` con `client:visible`. `industryCta` → `FinalCtaBand`. `hrefPrefix` que empieza por `/en` pone `locale="en"` en las historias.
 - Hallazgos: D-08 (el fallback de la página repite este árbol).
 
@@ -365,7 +365,7 @@ El kit (`/sections`, `client:only`) también muestra piezas que ninguna ruta de 
 - CSS: `IndustryServices.css` — orb y watermark. Reduced motion en la hoja. Las páginas de industria también la importan.
 - Exporta: `IndustryServiceCard`, `IndustryServices`.
 - Depende de: `src/lib/en-slugs.ts`, `src/lib/locale.ts` (`isRetiredCatalogPath`), `icons/ServiceIcons.tsx`, `src/components/ui`, `SectionBand`, `SectionHeader`, `IndustryServices.css`.
-- Lo usan: `SectionRenderer.astro`, `sections/index.ts`, `IndustryPageSection.astro`, `pages/industrias/[slug].astro`, `pages/en/industrias/[slug].astro`.
+- Lo usan: `SectionRenderer.astro`, `sections/index.ts`, `IndustryPageSection.astro`, `pages/industrias/[slug].astro`, `pages/en/industries/[slug].astro`.
 - Datos: nombre de industria, servicios y labels. El icono de respaldo sale de `serviceContentKey`. El enlace es `hrefPrefix` (default `/servicios`) más el slug. Si `catalogHref` es una ruta de catálogo retirada, ese enlace no se pinta.
 
 ### `src/components/sections/LegalDocument.tsx`
@@ -373,7 +373,7 @@ El kit (`/sections`, `client:only`) también muestra piezas que ninguna ruta de 
 - CSS: `LegalDocument.css` — artículo y listas. Las cuatro páginas legales importan la hoja.
 - Exporta: `LegalDocument`.
 - Depende de: `src/lib/content/from-sanity.ts` (`LegalBlock`, `LegalSection`), `LegalDocument.css`.
-- Lo usan: `pages/aviso-de-privacidad.astro`, `pages/en/aviso-de-privacidad.astro`, `pages/terminos.astro`, `pages/en/terminos.astro`.
+- Lo usan: `pages/aviso-de-privacidad.astro`, `pages/en/privacy-policy.astro`, `pages/terminos.astro`, `pages/en/terms.astro`.
 - Datos: `sections` ya mapeadas desde Sanity, más fecha de actualización.
 
 ### `src/components/sections/MetricsBand.tsx`
@@ -465,7 +465,7 @@ El kit (`/sections`, `client:only`) también muestra piezas que ninguna ruta de 
 - CSS: `ServiceFocus.css` — columnas en `rem`. Reduced motion en la hoja.
 - Exporta: `ServiceFocus`.
 - Depende de: `icons/PillarIcons.tsx`, `src/data/service-focus.ts` (tipo `ServiceFocusItem`), `SectionBand`, `SectionHeader`, `ServiceFocus.css`.
-- Lo usan: `sections/index.ts`, `ServicePageSection.astro`, `pages/servicios/[slug].astro`, `pages/en/servicios/[slug].astro`.
+- Lo usan: `sections/index.ts`, `ServicePageSection.astro`, `pages/servicios/[slug].astro`, `pages/en/services/[slug].astro`.
 - Datos: `items` (icono, título, resumen, detalle, imagen). Si Sanity no trae ítems, la página usa `serviceFocusItems(slug)`.
 - Hallazgos: D-04.
 
@@ -483,7 +483,7 @@ El kit (`/sections`, `client:only`) también muestra piezas que ninguna ruta de 
 - Propósito: Despacha un bloque de servicio según `_type`.
 - Exporta: componente Astro.
 - Depende de: `IndustryHero`, `PillarGrid`, `ServiceFocus`, `ServicePitch`, `ServiceWhy`, `ServicePlans`, `IndustryGrid`, `BeforeAfter`, `ProcessPhases`, `CaseStories`, `FaqSection`, `FinalCtaBand`, `icons/PillarIcons.tsx`, `src/lib/en-slugs.ts`, `src/data/service-focus.ts`, `src/data/service-pitch.ts`, `icons/IndustryIcons.tsx`, `icons/ServiceIcons.tsx`, `src/components/ui`, `src/lib/content/types.ts`.
-- Lo usan: `pages/servicios/[slug].astro`, `pages/en/servicios/[slug].astro`.
+- Lo usan: `pages/servicios/[slug].astro`, `pages/en/services/[slug].astro`.
 - Datos: `ServiceSection` y el `ServiceRecord`. Mapa: `serviceHero` → `IndustryHero`; `serviceOverview` → `PillarGrid` (icono por título con `iconForServiceOverviewCard`); `serviceFocus` → isla, con fallback `serviceFocusItems`; `servicePitch` → bloque o `service-pitch.ts`; `serviceWhy` → isla; `servicePlans`; `serviceIndustries` → `IndustryGrid`; `serviceProcess` → `ProcessPhases`; `serviceCases` → `CaseStories`; `serviceFaq`; `beforeAfter`; `serviceCta` → `FinalCtaBand`.
 - Hallazgos: D-08, S-11.
 

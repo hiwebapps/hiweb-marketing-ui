@@ -149,12 +149,14 @@ export async function sanityService(slug: string, locale: 'es' | 'en' = 'es'): P
   return fetchOne(serviceBySlugQuery, { slug, locale }, mapService);
 }
 
-export async function sanityCases(): Promise<CaseRecord[]> {
-  return fetchList(casesQuery, mapCase);
+export async function sanityCases(locale: 'es' | 'en' = 'es'): Promise<CaseRecord[]> {
+  const { data } = await loadQuery<Record<string, unknown>[]>({ query: casesQuery, params: { locale } });
+  if (!Array.isArray(data) || data.length === 0) return [];
+  return data.filter((item) => item?.id).map(mapCase);
 }
 
-export async function sanityCase(slug: string): Promise<CaseRecord | null> {
-  return fetchOne(caseBySlugQuery, { slug }, mapCase);
+export async function sanityCase(slug: string, locale: 'es' | 'en' = 'es'): Promise<CaseRecord | null> {
+  return fetchOne(caseBySlugQuery, { slug, locale }, mapCase);
 }
 
 export async function sanityPosts(
@@ -421,6 +423,9 @@ export type CatalogIndexCopy = {
   readingSuffix?: string;
   closingTitle?: string;
   closingHeadingWidth?: ReturnType<typeof asHeadingWidth>;
+  closingDescription?: string;
+  postClosingTitle?: string;
+  postClosingDescription?: string;
   seo?: SeoFields;
 };
 
@@ -452,6 +457,9 @@ export async function sanityCatalogIndex(id: string): Promise<CatalogIndexCopy |
     readingSuffix: optionalText(data.readingSuffix),
     closingTitle: optionalText(data.closingTitle),
     closingHeadingWidth: asHeadingWidth(data.closingHeadingWidth),
+    closingDescription: optionalText(data.closingDescription),
+    postClosingTitle: optionalText(data.postClosingTitle),
+    postClosingDescription: optionalText(data.postClosingDescription),
     seo: {
       metaTitle: optionalText(data.metaTitle),
       metaDescription: optionalText(data.metaDescription),

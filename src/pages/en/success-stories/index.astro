@@ -1,0 +1,87 @@
+---
+export const prerender = true;
+
+import Layout from '../../../layouts/Layout.astro';
+import { getCases, getCatalogIndex, getIndustries } from '../../../lib/content';
+import { BlogHero } from '../../../components/sections/BlogHero';
+import { CasesIndex } from '../../../components/sections/CasesIndex';
+import { SectionBand } from '../../../components/sections/primitives/SectionBand';
+import FinalCta from '../../../components/sections/FinalCtaBand.astro';
+import { breadcrumbSchema } from '../../../lib/schema';
+import { postCoverUrl } from '../../../lib/blog';
+import '../../../components/sections/BlogHero.css';
+import '../../../components/sections/BlogIndex.css';
+
+const [industries, page, allCases] = await Promise.all([
+	getIndustries('en'),
+	getCatalogIndex('casesIndex-en'),
+	getCases('en'),
+]);
+const cases = allCases.sort((a, b) => {
+	if (a.data.destacado !== b.data.destacado) return a.data.destacado ? -1 : 1;
+	return a.data.cliente.localeCompare(b.data.cliente, 'en');
+});
+const industryName = Object.fromEntries(industries.map((item) => [item.id, item.data.nombre]));
+
+const cards = cases.map((item) => ({
+	id: item.id,
+	title: item.data.titulo,
+	description: item.data.resumen,
+	client: item.data.cliente,
+	industry: industryName[item.data.industria.id] || item.data.cliente,
+	industrySlug: item.data.industria.id,
+	image: item.data.imagen || item.data.seo?.ogImage || postCoverUrl(`caso-${item.id}`, 800, 520),
+	href: `/en/success-stories/${item.id}`,
+	featured: item.data.destacado,
+}));
+
+const path = '/en/success-stories';
+const description =
+	page?.description ?? 'Real case studies in manufacturing, tourism, healthcare, software and more, with verifiable results.';
+---
+
+<Layout
+	lang="en"
+	title={page?.seo?.metaTitle ?? 'Success Stories — Hiweb Marketing'}
+	description={page?.seo?.metaDescription ?? description}
+	noindex={page?.seo?.noindex}
+	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/portafolio', en: path }}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: 'Success Stories', href: path },
+	])}
+>
+	<main>
+		<BlogHero
+			label={page?.label ?? 'Success stories'}
+			eyebrow={page?.eyebrow ?? 'Portfolio / Cases'}
+			title={page?.title ?? 'Success Stories'}
+			description={description}
+			headingWidth={page?.headingWidth}
+		/>
+		<SectionBand tone="canvas">
+			<CasesIndex
+				client:load
+				cases={cards}
+				industries={industries.map((item) => ({ slug: item.id, nombre: item.data.nombre }))}
+				title={page?.listTitle ?? 'All cases'}
+				headingWidth={page?.listHeadingWidth}
+				description={page?.listDescription ?? 'Filter by industry. Each case shows the client and the real work.'}
+				eyebrow="Portfolio"
+				allLabel={page?.allLabel ?? 'All'}
+				filterLabel={page?.filterLabel ?? 'Filter by industry'}
+				ctaLabel="View case"
+				emptyText="No published cases in that industry yet. Try another filter or"
+				emptyLinkLabel="schedule an audit"
+				contactHref="/en/calendar"
+			/>
+		</SectionBand>
+		<FinalCta locale="en"
+			title={page?.closingTitle ?? "Let's make your brand our next success story."}
+			description={page?.closingDescription ??
+				'Tell us your industry, goal and ideal customer. We send back a clear diagnostic with the next step.'}
+			headingWidth={page?.closingHeadingWidth}
+		/>
+	</main>
+</Layout>

@@ -213,12 +213,12 @@ export function buildSeoEntries(rows: SeoSource[]): SeoEntry[] {
       const hrefs = flattenHrefs(current.hrefs).map(normalizeHref);
       const servicePath = current.servicioSlug
         ? locale === 'en'
-          ? `/en/servicios/${current.servicioSlug}`
+          ? `/en/services/${current.servicioSlug}`
           : `/servicios/${current.servicioSlug}`
         : '';
       const industryPath = current.industriaSlug
         ? locale === 'en'
-          ? `/en/industrias/${current.industriaSlug}`
+          ? `/en/industries/${current.industriaSlug}`
           : `/industrias/${current.industriaSlug}`
         : '';
       const key = pairKey(current);

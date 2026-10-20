@@ -29,6 +29,13 @@ type CasesIndexProps = {
   title?: string;
   description?: string;
   headingWidth?: string;
+  eyebrow?: string;
+  allLabel?: string;
+  filterLabel?: string;
+  ctaLabel?: string;
+  emptyText?: string;
+  emptyLinkLabel?: string;
+  contactHref?: string;
 };
 
 function caseHref(item: CaseIndexCard) {
@@ -38,9 +45,11 @@ function caseHref(item: CaseIndexCard) {
 export function CaseCards({
   cases,
   listRef,
+  ctaLabel = 'Ver caso',
 }: {
   cases: CaseIndexCard[];
   listRef?: Ref<HTMLUListElement>;
+  ctaLabel?: string;
 }) {
   return (
     <ul ref={listRef} className="blog-grid">
@@ -58,7 +67,7 @@ export function CaseCards({
               <h3 className="blog-card__title">{item.title}</h3>
               <p className="blog-card__desc">{item.description}</p>
               <span className="blog-card__cta">
-                Ver caso
+                {ctaLabel}
                 <span aria-hidden="true"> →</span>
               </span>
             </div>
@@ -82,18 +91,25 @@ export function CasesIndex({
   title = 'Todos los casos',
   description = 'Filtra por industria. Cada caso muestra el cliente y el trabajo real.',
   headingWidth,
+  eyebrow = 'Portafolio',
+  allLabel = 'Todos',
+  filterLabel = 'Filtrar por industria',
+  ctaLabel,
+  emptyText = 'No hay casos publicados en esa industria todavía. Prueba otro filtro o',
+  emptyLinkLabel = 'agenda una auditoría',
+  contactHref = '/contacto',
 }: CasesIndexProps) {
   const [filter, setFilter] = useState<FilterId>('all');
   const gridRef = useRef<HTMLUListElement>(null);
 
   const filters = useMemo(
     () => [
-      { id: 'all' as const, label: 'Todos' },
+      { id: 'all' as const, label: allLabel },
       ...industries
         .filter((industry) => cases.some((item) => item.industrySlug === industry.slug))
         .map((industry) => ({ id: industry.slug, label: industry.nombre })),
     ],
-    [cases, industries],
+    [cases, industries, allLabel],
   );
 
   const visible = useMemo(() => {
@@ -132,14 +148,14 @@ export function CasesIndex({
   return (
     <div className="blog-index">
       <SectionHeader
-        eyebrow="Portafolio"
+        eyebrow={eyebrow}
         title={title}
         description={description}
         badgeVariant="lime"
         headingWidth={headingWidth}
       />
 
-      <div className="blog-filters" role="radiogroup" aria-label="Filtrar por industria">
+      <div className="blog-filters" role="radiogroup" aria-label={filterLabel}>
         {filters.map((item) => {
           const active = filter === item.id;
           return (
@@ -160,11 +176,10 @@ export function CasesIndex({
 
       {visible.length === 0 ? (
         <p className="mt-10 !text-sm text-muted">
-          No hay casos publicados en esa industria todavía. Prueba otro filtro o{' '}
-          <a href="/contacto">agenda una auditoría</a>.
+          {emptyText} <a href={contactHref}>{emptyLinkLabel}</a>.
         </p>
       ) : (
-        <CaseCards cases={visible} listRef={gridRef} />
+        <CaseCards cases={visible} listRef={gridRef} ctaLabel={ctaLabel} />
       )}
     </div>
   );

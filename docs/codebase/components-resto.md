@@ -205,7 +205,7 @@ Demo de producto en `/portal` y `/en/portal`. El copy de ejemplo es Aura Café. 
 - CSS: `CalendarTool.css` — mes y huecos. `#e23b3b` y `#f3f3f3` fuera de paleta. También importa `sections/ContactForm.css` para compartir campos con el formulario.
 - Exporta: `CalendarTool`.
 - Depende de: `src/lib/site-identity.ts`, `src/lib/growth/calendar/calendar-rules.ts`, `src/lib/growth/calendar/client.ts`, `src/lib/content/calendar-page.ts`, `src/lib/growth/calendar/types.ts`, `sections/ContactBanner.tsx`, `ui/Button.tsx`, `ui/TextField.tsx`, `sections/ContactForm.css`, `CalendarTool.css`.
-- Lo usan: `pages/calendario.astro`, `pages/en/calendario.astro`.
+- Lo usan: `pages/calendario.astro`, `pages/en/calendar.astro`.
 - Datos: `CalendarPageCopy` (servicios, labels) y `SiteIdentity`. Los huecos llegan de `GET /api/calendar/availability`.
 - Hallazgos: R-03, S-11, D-05.
 
@@ -240,7 +240,7 @@ Trazos. Si `name` es URL o ruta, los tres pintan `<img alt="">`.
 - Propósito: Seis iconos de pilar, sacados de `src/assets/iconografia-hiweb.svg` (geometría Lucide, con margen para que el trazo no se corte). También elige icono según el título de una card de servicio.
 - Exporta: `IconUsers`, `IconGlobe`, `IconTarget`, `IconCheckCircle`, `IconLayers`, `IconWorkflow`, `PILLAR_ICON_NAMES`, `PillarIconName`, `PillarIcon`, `iconForServiceOverviewCard`.
 - Depende de: —
-- Lo usan: `content/SectionRenderer.astro`, `sections/PillarGrid.tsx`, `sections/ServiceFocus.tsx`, `sections/ServicePageSection.astro`, `sections/ServicePlans.tsx` (`IconCheckCircle`), `pages/servicios/[slug].astro`, `pages/en/servicios/[slug].astro`.
+- Lo usan: `content/SectionRenderer.astro`, `sections/PillarGrid.tsx`, `sections/ServiceFocus.tsx`, `sections/ServicePageSection.astro`, `sections/ServicePlans.tsx` (`IconCheckCircle`), `pages/servicios/[slug].astro`, `pages/en/services/[slug].astro`.
 - Datos: nombre o URL. `iconForServiceOverviewCard` mira el título sin acentos (“que es”, “como funciona”, “resultado”) y si no reconoce, rota por índice.
 
 ## content

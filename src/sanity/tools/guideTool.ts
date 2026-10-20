@@ -22,13 +22,14 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Arriba hay siete pestañas. Guía es este manual. Structure es el árbol de documentos (adentro se llama Contenido). Blogs y SEO son tableros para copy y SEO. Presentation muestra el sitio con los borradores. Galería junta todas las imágenes. Vision es una consola de consultas para desarrollo: el equipo de contenido puede ignorarla.',
+        text: 'Arriba hay ocho pestañas. Guía es este manual. Structure es el árbol de documentos (adentro se llama Contenido). Pendientes lista todo lo que tiene cambios sin publicar y permite publicar varios a la vez. Blogs y SEO son tableros para copy y SEO. Presentation muestra el sitio con los borradores. Galería junta todas las imágenes. Vision es una consola de consultas para desarrollo: el equipo de contenido puede ignorarla.',
       },
       {
         kind: 'ul',
         items: [
           'Para cambiar un texto, ábrelo en Structure, edítalo y pulsa Publish.',
           'Para ver el cambio antes de que salga al sitio público, usa Presentation o el botón Ver en staging.',
+          'Para publicar varios documentos de una vez, usa la pestaña Pendientes.',
           'Para trabajar un artículo en los dos idiomas, usa la pestaña Blogs.',
           'Para revisar títulos, descripciones y parejas de idioma de todo el sitio, usa la pestaña SEO.',
         ],
@@ -77,6 +78,14 @@ const SECTIONS: Section[] = [
       {
         kind: 'p',
         text: 'El árbol de todo el contenido. El panel se llama Contenido. Cada carpeta abre documentos. Al entrar a uno, el formulario está a la derecha. Los artículos tienen además una vista SEO, junto al formulario.',
+      },
+      {
+        kind: 'h',
+        text: 'Pendientes',
+      },
+      {
+        kind: 'p',
+        text: 'Una fila por cada documento con cambios sin publicar: páginas, casos, industrias, servicios, artículos, navbar, footer, ajustes y el resto. Dice si es nuevo o si ya estaba publicado, quién lo editó al último y si tiene errores. Marca las casillas y pulsa Publicar seleccionados. Un documento con errores no se puede marcar: debajo dice qué campo revisar, y Abrir te lleva al formulario. Como con Publish, hiweb.com.mx muestra los cambios después del siguiente deploy.',
       },
       {
         kind: 'h',
@@ -168,11 +177,11 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Una carpeta por página. Dentro están Español y English, cada uno con su documento. El menú “+” crea la página en español y, al abrirla, también el borrador en inglés. Si English no está, ábrelo en la carpeta: se genera en ese momento. Las secciones se reordenan y se pueden ocultar, igual que en Home. En un servicio, Imagen de la card e Icono de la card arman el bento. En Home, la sección Servicios puede cambiar el texto, la foto y el icono de cada card, y el orden de la lista. La sección Industrias de Home, de cada servicio y de una landing es la card completa: nombre, párrafo, bullets e icono. El enlace de la card es la industria elegida. En una industria, la imagen del Hero y el icono de cada pilar se eligen en la galería. La sección Servicios es la lista de cards: el orden, el nombre, el texto y el icono, también desde la galería. En un servicio, la imagen del Hero, la de Propuesta y la de cada Frente se eligen en la galería. El icono de Frentes, Por qué, Industrias y Proceso también: SVG o PNG, o se sube ahí mismo. La URL en español es /industrias/slug o /servicios/slug. En inglés es /en/industrias/slug o /en/servicios/slug.',
+        text: 'Una carpeta por página. Dentro están Español y English, cada uno con su documento. El menú “+” crea la página en español y, al abrirla, también el borrador en inglés. Si English no está, ábrelo en la carpeta: se genera en ese momento. Las secciones se reordenan y se pueden ocultar, igual que en Home. En un servicio, Imagen de la card e Icono de la card arman el bento. En Home, la sección Servicios puede cambiar el texto, la foto y el icono de cada card, y el orden de la lista. La sección Industrias de Home, de cada servicio y de una landing es la card completa: nombre, párrafo, bullets e icono. El enlace de la card es la industria elegida. En una industria, la imagen del Hero y el icono de cada pilar se eligen en la galería. La sección Servicios es la lista de cards: el orden, el nombre, el texto y el icono, también desde la galería. En un servicio, la imagen del Hero, la de Propuesta y la de cada Frente se eligen en la galería. El icono de Frentes, Por qué, Industrias y Proceso también: SVG o PNG, o se sube ahí mismo. La URL en español es /industrias/slug o /servicios/slug. En inglés es /en/industries/slug o /en/services/slug.',
       },
       {
         kind: 'p',
-        text: 'Industrias y Servicios no tienen página de listado. Cada carpeta abre la ficha. Blog sí tiene Índice, el texto de la página de listado en Español y en English. Casos tiene un solo índice, en español.',
+        text: 'Industrias y Servicios no tienen página de listado. Cada carpeta abre la ficha. Blog sí tiene Índice, el texto de la página de listado en Español y en English. Casos también tiene Índice en Español (/portafolio) y en English (/en/success-stories).',
       },
       {
         kind: 'h',
@@ -180,7 +189,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Los casos de portafolio. No tienen pareja de idioma: una sola versión, en /portafolio/slug. También tienen grupo SEO.',
+        text: 'Los casos de portafolio, en Español (/portafolio/slug) y en English (/en/success-stories/slug). También tienen grupo SEO.',
       },
       {
         kind: 'h',
@@ -233,8 +242,8 @@ const SECTIONS: Section[] = [
         items: [
           'Español: /blog/mi-articulo',
           'English: /en/blogs/my-article',
-          'Servicio: /servicios/seo y /en/servicios/…',
-          'Industria: /industrias/salud y /en/industrias/…',
+          'Servicio: /servicios/seo y /en/services/…',
+          'Industria: /industrias/salud y /en/industries/…',
         ],
       },
       {
@@ -243,7 +252,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'note',
-        text: 'Casos, contacto y landings no tienen versión en inglés. No muestran pareja ni hreflang.',
+        text: 'Contacto y landings no tienen versión en inglés. No muestran pareja ni hreflang.',
       },
     ],
   },
@@ -357,7 +366,7 @@ const SECTIONS: Section[] = [
           'Título publicado es el que saldría, incluido el fallback si el campo está vacío.',
           'Meta marca título vacío, descripción corta (menos de 70 caracteres) y título duplicado.',
           'Open Graph marca imagen y alt.',
-          'Pareja dice si existe el otro idioma. Casos, contacto, landings y el índice de industrias no tienen pareja: dicen “Sin idioma”.',
+          'Pareja dice si existe el otro idioma. Contacto, landings y el índice de industrias no tienen pareja: dicen “Sin idioma”.',
           'En los posts, un aviso extra dice si el cuerpo no enlaza a su servicio o a su industria.',
         ],
       },

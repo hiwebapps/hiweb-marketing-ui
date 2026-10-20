@@ -66,6 +66,29 @@ const catalogFields: FieldDefinition[] = [
   }),
   headingTitleField({ name: 'closingTitle', title: 'Título de cierre', group: 'content' }),
   headingWidthField({ name: 'closingHeadingWidth', group: 'content', title: 'Ancho del cierre' }),
+  defineField({
+    name: 'closingDescription',
+    title: 'Párrafo de cierre',
+    type: 'text',
+    rows: 2,
+    group: 'content',
+  }),
+  {
+    ...headingTitleField({
+      name: 'postClosingTitle',
+      title: 'Título de cierre de cada artículo',
+      group: 'content',
+    }),
+    hidden: ({ document }) => document?._type !== 'blogIndex',
+  },
+  defineField({
+    name: 'postClosingDescription',
+    title: 'Párrafo de cierre de cada artículo',
+    type: 'text',
+    rows: 2,
+    group: 'content',
+    hidden: ({ document }) => document?._type !== 'blogIndex',
+  }),
   ...seoFields,
 ];
 

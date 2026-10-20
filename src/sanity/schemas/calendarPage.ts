@@ -264,7 +264,7 @@ export const calendarPage = defineType({
     select: { title: 'title', locale: 'locale' },
     prepare: ({ title, locale }) => ({
       title: title || 'Calendario',
-      subtitle: locale === 'en' ? '/en/calendario' : '/calendario',
+      subtitle: locale === 'en' ? '/en/calendar' : '/calendario',
     }),
   },
 });

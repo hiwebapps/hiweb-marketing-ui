@@ -20,6 +20,7 @@ import { structure } from './src/sanity/structure';
 import { blogsTool } from './src/sanity/tools/blogsTool';
 import { guideTool } from './src/sanity/tools/guideTool';
 import { imageGalleryTool } from './src/sanity/tools/imageGalleryTool';
+import { pendingTool } from './src/sanity/tools/pendingTool';
 import { seoTool } from './src/sanity/tools/seoTool';
 
 const projectId =
@@ -88,8 +89,8 @@ export default defineConfig({
     visionTool({ defaultApiVersion: '2026-09-18' }),
   ],
   tools: (prev) => {
-    const order = ['guia', 'structure', 'blogs', 'seo', 'presentation', 'galeria', 'vision'];
-    const tools = [...prev, guideTool(), blogsTool(), seoTool(), imageGalleryTool()];
+    const order = ['guia', 'structure', 'pendientes', 'blogs', 'seo', 'presentation', 'galeria', 'vision'];
+    const tools = [...prev, guideTool(), pendingTool(), blogsTool(), seoTool(), imageGalleryTool()];
     return tools.sort((a, b) => {
       const left = order.indexOf(a.name);
       const right = order.indexOf(b.name);

@@ -190,32 +190,34 @@ const navPagePath = /* groq */ `{
   "path": select(
     _type == "homePage" && (locale == "en" || _id match "*-en") => "/en",
     _type == "homePage" => "/",
-    _type == "aboutPage" && (locale == "en" || _id match "*-en") => "/en/" + coalesce(slug.current, "nosotros"),
+    _type == "aboutPage" && (locale == "en" || _id match "*-en") => "/en/" + coalesce(slug.current, "about-us"),
     _type == "aboutPage" => "/nosotros",
     _type == "portalPage" && (locale == "en" || _id match "*-en") => "/en/portal",
     _type == "portalPage" => "/portal",
     _type == "contactPage" => "/contacto",
-    _type == "calendarPage" && (locale == "en" || _id match "*-en") => "/en/calendario",
+    _type == "calendarPage" && (locale == "en" || _id match "*-en") => "/en/calendar",
     _type == "calendarPage" => "/calendario",
     _type == "sitePage" && defined(slug.current) => "/" + slug.current,
-    _type == "service" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/servicios/" + slug.current,
+    _type == "service" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/services/" + slug.current,
     _type == "service" && defined(slug.current) => "/servicios/" + slug.current,
-    _type == "industry" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/industrias/" + slug.current,
+    _type == "industry" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/industries/" + slug.current,
     _type == "industry" && defined(slug.current) => "/industrias/" + slug.current,
+    _type == "caseStudy" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/success-stories/" + slug.current,
     _type == "caseStudy" && defined(slug.current) => "/portafolio/" + slug.current,
     _type == "post" && defined(slug.current) && (locale == "en" || _id match "*-en") => "/en/blogs/" + slug.current,
     _type == "post" && defined(slug.current) => "/blog/" + slug.current,
     _type == "landingPage" && defined(slug.current) => "/" + slug.current,
-    _type == "industriesIndex" && (locale == "en" || _id match "*-en") => "/en/industrias",
+    _type == "industriesIndex" && (locale == "en" || _id match "*-en") => "/en/industries",
     _type == "industriesIndex" => "/industrias",
-    _type == "servicesIndex" && (locale == "en" || _id match "*-en") => "/en/servicios",
+    _type == "servicesIndex" && (locale == "en" || _id match "*-en") => "/en/services",
     _type == "servicesIndex" => "/servicios",
     _type == "blogIndex" && (locale == "en" || _id match "*-en") => "/en/blogs",
     _type == "blogIndex" => "/blog",
+    _type == "casesIndex" && (locale == "en" || _id match "*-en") => "/en/success-stories",
     _type == "casesIndex" => "/portafolio",
-    _type == "legalPage" && _id match "legal-terms*" && (locale == "en" || _id match "*-en") => "/en/terminos",
+    _type == "legalPage" && _id match "legal-terms*" && (locale == "en" || _id match "*-en") => "/en/terms",
     _type == "legalPage" && _id match "legal-terms*" => "/terminos",
-    _type == "legalPage" && (locale == "en" || _id match "*-en") => "/en/aviso-de-privacidad",
+    _type == "legalPage" && (locale == "en" || _id match "*-en") => "/en/privacy-policy",
     _type == "legalPage" => "/aviso-de-privacidad"
   )
 }`;
@@ -310,6 +312,9 @@ export const catalogIndexQuery = defineQuery(`*[_id == $id][0]{
   readingSuffix,
   closingTitle,
   closingHeadingWidth,
+  closingDescription,
+  postClosingTitle,
+  postClosingDescription,
   ${seoProjection}
 }`);
 
@@ -400,7 +405,7 @@ export const homePageEnQuery = defineQuery(`*[_type == "homePage" && _id == "hom
         "id": slug.current,
         cliente,
         "industriaId": industria->slug.current,
-        ogImage ${imageProjection}
+        "ogImage": coalesce(sections[_type == "caseHero"][0].imagen ${imageProjection}, ogImage ${imageProjection})
       }
     },
     _type == "homePillars" => {
@@ -474,7 +479,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage" && _id == "homeP
         "id": slug.current,
         cliente,
         "industriaId": industria->slug.current,
-        ogImage ${imageProjection}
+        "ogImage": coalesce(sections[_type == "caseHero"][0].imagen ${imageProjection}, ogImage ${imageProjection})
       }
     },
     _type == "homePillars" => {
@@ -701,7 +706,8 @@ const industrySectionsProjection = /* groq */ `
       items[]{ question, answer }
     },
     _type == "industryCta" => {
-      title
+      title,
+      description
     },
     ${beforeAfterProjection}
   }
@@ -734,6 +740,7 @@ const industryBodyProjection = /* groq */ `
   "faqEyebrow": sections[_type == "industryFaq"][0].eyebrow,
   "faqs": coalesce(sections[_type == "industryFaq"][0].items[]{ question, answer }, faqs[]{ question, answer }),
   "closingTitle": coalesce(sections[_type == "industryCta"][0].title, closingTitle),
+  "closingDescription": sections[_type == "industryCta"][0].description,
   "serviceBlurbs": coalesce(
     sections[_type == "industryServices"][0].blurbs[]{
       "serviceSlug": service->slug.current,
@@ -933,9 +940,15 @@ const caseBodyProjection = /* groq */ `
   ${caseSectionsProjection}
 `;
 
+const caseAlternateSlug = /* groq */ `"alternateSlug": select(
+    $locale == "en" => *[_type == "caseStudy" && _id == string::split(^._id, "-en")[0]][0].slug.current,
+    *[_type == "caseStudy" && _id == ^._id + "-en"][0].slug.current
+  )`;
+
 export const casesQuery = defineQuery(`*[
-  _type == "caseStudy" && defined(slug.current) && coalesce(locale, "es") == "es"
+  _type == "caseStudy" && defined(slug.current) && coalesce(locale, "es") == $locale
 ]{
+  ${caseAlternateSlug},
   "id": slug.current,
   cliente,
   "industria": { "id": industria->slug.current },
@@ -949,8 +962,9 @@ export const casesQuery = defineQuery(`*[
 }`);
 
 export const caseBySlugQuery = defineQuery(`*[
-  _type == "caseStudy" && slug.current == $slug && coalesce(locale, "es") == "es"
+  _type == "caseStudy" && slug.current == $slug && coalesce(locale, "es") == $locale
 ][0]{
+  ${caseAlternateSlug},
   "id": slug.current,
   cliente,
   "industria": { "id": industria->slug.current },

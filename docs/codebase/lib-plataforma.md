@@ -33,17 +33,26 @@ El grafo deja `gsap-ssr-stub.ts` sin consumidores. Lo resuelve `astro.config.mjs
 - Exporta: `Locale`, `localeFromPath`, `localePath`, `isRetiredCatalogPath`, `CHROME`, `EN_NAV_SERVICES`.
 - Depende de: `blog-pairs.ts`, `en-slugs.ts`.
 - Lo usan: `SiteNav.tsx`, `SiteFooter.tsx`, `IndustryServices.tsx` (`isRetiredCatalogPath`), `AboutPageSection.astro` y `src/pages/en/nosotros.astro` (`localePath`), `nav.ts`, `footer.ts`, `scripts/sanity/seed-navigation.ts`.
-- Datos: inglés si el path es `/en` o empieza por `/en/`. `localePath` quita el prefijo, traduce `/servicios/:slug` y `/blog` ↔ `/blogs`, y en inglés antepone `/en`. `RETIRED_CATALOG_PATHS` es `/industrias`, `/servicios` y las dos con `/en`. `CHROME.en` deja en español `menu` («Menú»), `workEmail` («Email de trabajo») y `backToTop` («Volver arriba ↑»). `EN_NAV_SERVICES` traduce nueve slugs españoles; los headings de grupo no pasan por aquí.
+- Datos: inglés si el path es `/en` o empieza por `/en/`. `localePath` quita el prefijo, traduce `/servicios/:slug` ↔ `/services/:slug`, `/industrias/:slug` ↔ `/industries/:slug`, `/portafolio` ↔ `/success-stories`, `/blog` ↔ `/blogs`, y las páginas sueltas (`/calendario` ↔ `/calendar`, `/terminos` ↔ `/terms`, `/aviso-de-privacidad` ↔ `/privacy-policy`, `/nosotros` ↔ `/about-us`); en inglés antepone `/en`. `RETIRED_CATALOG_PATHS` es `/industrias`, `/servicios`, `/en/industries` y `/en/services`. `CHROME.en` deja en español `menu` («Menú»), `workEmail` («Email de trabajo») y `backToTop` («Volver arriba ↑»). `EN_NAV_SERVICES` traduce nueve slugs españoles; los headings de grupo no pasan por aquí.
 - Hallazgos: S-05 (`localePath('/contacto', 'en')` produce `/en/contacto`), S-06, R-04 (el chrome inglés no cubre los rótulos que la home sigue teniendo en español dentro de los componentes; este archivo es la fuente que la auditoría propone para esos rótulos).
 
 ### `src/lib/en-slugs.ts`
 
-- Propósito: slug público inglés de un servicio y la clave española con la que están guardadas fotos e iconos.
-- Por qué está así: cinco servicios cambian de slug al pasar a inglés. El resto se llama igual. Los drafts viejos usan slugs de agencia (`agencia-seo`, `agencia-de-facebook-ads`, …) que hay que devolver al slug corto antes de buscar el asset.
-- Exporta: `EN_SERVICE_SLUG`, `englishServiceSlug`, `serviceContentKey`.
+- Propósito: slug público inglés de servicios e industrias, su inverso al español y la clave con la que están guardadas fotos e iconos.
+- Por qué está así: los doce servicios y las ocho industrias tienen slug inglés propio en Sanity. El selector de idioma traduce la URL sin pedir Sanity, así que el mapa tiene que coincidir con los slugs publicados.
+- Exporta: `englishServiceSlug`, `spanishServiceSlug`, `englishIndustrySlug`, `spanishIndustrySlug`, `serviceContentKey`.
 - Depende de: nada.
-- Lo usan: `locale.ts`, `IndustryServices.tsx`, `ServiceGrid.tsx`, `ServicePageSection.astro`, `src/pages/industrias/[slug].astro`, `src/pages/en/industrias/[slug].astro`, `src/pages/en/servicios/[slug].astro`.
-- Datos: `google-ads` → `google-ads-management-services`, `redes-sociales` → `social-media`, `desarrollo-web` → `web-development`, `crm-automatizacion` → `crm-automation`, `ia-marketing` → `ai-tools-for-marketing`. `serviceContentKey` quita un zero-width space, invierte ese mapa y aplica `SERVICE_SLUG_ALIAS`.
+- Lo usan: `locale.ts`, `IndustryServices.tsx`, `ServiceGrid.tsx`, `ServicePageSection.astro`, `src/pages/industrias/[slug].astro`, `src/pages/en/industries/[slug].astro`, `src/pages/en/services/[slug].astro`.
+- Datos: `EN_SERVICE_SLUG` va del slug público español al inglés (`agencia-seo` → `seo-and-aeo-agency-rank-on-google-and-ai-search`, …) y `EN_INDUSTRY_SLUG` igual para industrias (`agencia-de-marketing-medico` → `healthcare-marketing-agency`, …). `serviceContentKey` acepta slug español o inglés y devuelve la clave corta (`seo`, `google-ads`, …).
+
+### `src/lib/legacy-en-paths.ts`
+
+- Propósito: URL inglesa actual para una URL inglesa vieja.
+- Por qué está así: el sitio en inglés tuvo prefijos y slugs en español, y hiwebmarketing.com usaba otros slugs. El middleware responde 301 directo al destino final, sin cadenas de redirects.
+- Exporta: `legacyEnglishPath`.
+- Depende de: `en-slugs.ts`, `page-meta.ts`.
+- Lo usan: `src/middleware.ts`.
+- Datos: páginas sueltas (`/en/contacto` → `/en/calendar`, `/en/nosotros` → `/en/about-us`, …), prefijos (`/en/servicios/` → `/en/services/`, `/en/industrias/` → `/en/industries/`, `/en/portafolio/` → `/en/success-stories/`), alias de servicios e industrias y los 15 slugs viejos de posts ingleses. Devuelve `undefined` si la ruta ya es la actual.
 - Hallazgos: S-06 (el selector usa este mapa; el hreflang de la ficha usa `alternateSlug`).
 
 ### `src/lib/blog-pairs.ts`

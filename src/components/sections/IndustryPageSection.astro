@@ -115,8 +115,11 @@ const lower = nombre.toLowerCase();
 {
 	section._type === 'industryCta' && (
 		<FinalCta
-			title={section.title || `Agenda un diagnóstico para ${lower}`}
+			title={section.title ||
+				(storiesLocale === 'en' ? `Book a diagnostic for ${lower}` : `Agenda un diagnóstico para ${lower}`)}
+			description={section.description || undefined}
 			headingWidth={section.headingWidth}
+			locale={storiesLocale}
 		/>
 	)
 }

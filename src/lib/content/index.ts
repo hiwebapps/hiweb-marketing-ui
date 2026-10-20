@@ -183,11 +183,13 @@ export async function getService(slug: string, locale: 'es' | 'en' = 'es'): Prom
   return fromSanity ?? undefined;
 }
 
-export async function getCases(): Promise<CaseRecord[]> {
-  return withFallback(sanityCases, collectionsCases, (items) => items.length === 0);
+export async function getCases(locale: 'es' | 'en' = 'es'): Promise<CaseRecord[]> {
+  if (locale === 'en') return sanityCases('en');
+  return withFallback(() => sanityCases('es'), collectionsCases, (items) => items.length === 0);
 }
 
-export async function getCase(slug: string): Promise<CaseRecord | undefined> {
+export async function getCase(slug: string, locale: 'es' | 'en' = 'es'): Promise<CaseRecord | undefined> {
+  if (locale === 'en') return (await sanityCase(slug, 'en')) ?? undefined;
   const fromSanity = await withFallback(
     () => sanityCase(slug),
     async () => {
@@ -327,8 +329,8 @@ export async function serviceStaticPaths(locale: 'es' | 'en' = 'es') {
   }));
 }
 
-export async function caseStaticPaths() {
-  const cases = await getCases();
+export async function caseStaticPaths(locale: 'es' | 'en' = 'es') {
+  const cases = await getCases(locale);
   return cases.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },

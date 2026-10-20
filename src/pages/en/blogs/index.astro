@@ -97,8 +97,10 @@ const serviceFilters = services
 				readingSuffix={page?.readingSuffix ?? 'min read'}
 			/>
 		</SectionBand>
-		<FinalCta
+		<FinalCta locale="en"
 			title={page?.closingTitle ?? 'Want to apply this to your business?'}
+			description={page?.closingDescription ??
+				'Tell us your industry, goal and ideal customer. We send back a clear diagnostic with the next step.'}
 			headingWidth={page?.closingHeadingWidth}
 		/>
 	</main>

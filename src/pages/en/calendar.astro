@@ -13,12 +13,12 @@ const site = await getSiteSettings();
 <Layout
 	title={page.metaTitle || `${page.title} — Hiweb Marketing`}
 	description={page.metaDescription}
-	canonical="/en/calendario"
+	canonical="/en/calendar"
 	lang="en"
-	alternates={{ es: '/calendario', en: '/en/calendario' }}
+	alternates={{ es: '/calendario', en: '/en/calendar' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Home', href: '/en' },
-		{ name: page.title, href: '/en/calendario' },
+		{ name: page.title, href: '/en/calendar' },
 	])}
 >
 	<main>

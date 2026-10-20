@@ -156,7 +156,7 @@ const nombre = entry.data.nombre;
 		<IndustryGrid
 			client:visible
 			locale={locale}
-			hrefPrefix={locale === 'en' ? '/en/industrias' : '/industrias'}
+			hrefPrefix={locale === 'en' ? '/en/industries' : '/industrias'}
 			ctaLabel={locale === 'en' ? 'View industry' : 'Ver el sector'}
 			eyebrow={locale === 'en' ? 'Industries' : 'Industrias'}
 			industries={
@@ -262,10 +262,12 @@ const nombre = entry.data.nombre;
 {
 	section._type === 'serviceCta' && (
 		<FinalCta
-			badge={section.badge}
-			title={section.title || `Agenda un diagnóstico de ${nombre}`}
-			description={section.description}
+			badge={section.badge || undefined}
+			title={section.title ||
+				(locale === 'en' ? `Book a ${nombre} diagnostic` : `Agenda un diagnóstico de ${nombre}`)}
+			description={section.description || undefined}
 			headingWidth={section.headingWidth}
+			locale={locale}
 		/>
 	)
 }

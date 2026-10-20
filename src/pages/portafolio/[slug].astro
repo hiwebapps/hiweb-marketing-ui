@@ -120,6 +120,11 @@ const heroAlt =
 	ogImage={entry.data.seo?.ogImage ?? heroImage}
 	noindex={entry.data.seo?.noindex}
 	canonical={entry.data.seo?.canonicalPath}
+	alternates={
+		entry.alternateSlug
+			? { es: `/portafolio/${entry.id}`, en: `/en/success-stories/${entry.alternateSlug}` }
+			: undefined
+	}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Portafolio', href: '/portafolio' },

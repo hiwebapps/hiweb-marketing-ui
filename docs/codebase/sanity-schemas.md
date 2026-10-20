@@ -14,10 +14,10 @@ Casi todo usa `defineType` / `defineField` / `defineArrayMember`. Los iconos que
 | `homeHero`, `homePillars`, `homeServices`, `homeIndustries`, `homeStories`, `homeProcess`, `homeMetrics`, `homeTeam`, `homeFaq`, `homeCta`, `homeServiceItem` | objeto | Home. `homeServiceItem` es la card dentro de `homeServices` |
 | `aboutPage` | documento | `/nosotros` (`aboutPage`) y `/en/<slug>` (`aboutPage-en`; slug vacío = `nosotros`) |
 | `aboutHero`, `aboutHistory`, `aboutPillars`, `aboutProcess`, `aboutPortal`, `aboutTeam`, `aboutMap`, `aboutCta` | objeto | Nosotros |
-| `service` | documento | `/servicios/[slug]` y `/en/servicios/[slug]` |
+| `service` | documento | `/servicios/[slug]` y `/en/services/[slug]` |
 | `serviceHero`, `serviceOverview`, `serviceFocus`, `servicePitch`, `serviceWhy`, `servicePlans`, `serviceIndustries`, `serviceProcess`, `serviceCases`, `serviceFaq`, `serviceCta` | objeto | Ficha de servicio |
 | `serviceFocusItem`, `serviceWhyCard`, `serviceIndustryItem`, `serviceProcessStep` | objeto | Ítems dentro de esas secciones de servicio |
-| `industry` | documento | `/industrias/[slug]` y `/en/industrias/[slug]` |
+| `industry` | documento | `/industrias/[slug]` y `/en/industries/[slug]` |
 | `industryHero`, `industryWhy`, `industryServices`, `industryCases`, `industryFaq`, `industryCta`, `industryPillar` | objeto | Ficha de industria |
 | `industriesIndex` | documento | Copy del bloque de industrias. `getIndustriesIndex` lo lee la home en inglés. `/industrias` redirige a `/` |
 | `servicesIndex` | documento | Misma fábrica que los índices. `/servicios` redirige a `/` |
@@ -37,7 +37,7 @@ Casi todo usa `defineType` / `defineField` / `defineArrayMember`. Los iconos que
 | `faq` | documento | Solo si una landing apunta `faqRefs`. El resto de FAQ son `faqItem` embebido |
 | `faqItem`, `faqCategory`, `sectionIntro`, `cta`, `titledBlock`, `processStep`, `metric`, `servicePlan`, `serviceBlurb` | objeto | Piezas reutilizadas dentro de secciones. `sectionIntro` y `cta` no tienen preview (C-11) |
 | `contactPage` | documento | `/contacto`. La query solo lee `_id == "contactPage"`. Un redirect publicado manda esa URL a `/calendario` (B-04) |
-| `calendarPage` | documento | `/calendario` (`calendarPage`) y `/en/calendario` (`calendarPage-en`) |
+| `calendarPage` | documento | `/calendario` (`calendarPage`) y `/en/calendar` (`calendarPage-en`) |
 | `portalPage` | documento | `/portal` y `/en/portal` |
 | `portalHero`, `portalStrip`, `portalJourney`, `portalBento`, `portalFaq`, `portalCloser` | objeto | Portal |
 | `legalPage` | documento | `/terminos` (`legal-terms`), `/aviso-de-privacidad` (`legal-privacy`) y los pares `-en` |

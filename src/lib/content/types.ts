@@ -83,6 +83,7 @@ export type IndustryRecord = {
     casesEmpty?: string;
     faqTitle?: string;
     closingTitle?: string;
+    closingDescription?: string;
     sections?: IndustrySection[];
     seo?: SeoFields;
   };
@@ -134,6 +135,7 @@ export type IndustrySection = (
   | {
       _type: 'industryCta';
       title?: string;
+      description?: string;
     }
   | BeforeAfterBlock
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
@@ -359,6 +361,7 @@ export type CasePageSection = (
 
 export type CaseRecord = {
   id: string;
+  alternateSlug?: string;
   data: {
     cliente: string;
     industria: { id: string };
@@ -516,7 +519,7 @@ export type HomeCopy = {
 };
 
 export type AboutCopy = {
-  /** English only. Empty means /en/nosotros. */
+  /** English only. Empty means /en/about-us. */
   slug?: string;
   heroTitle?: string;
   heroDescription?: string;

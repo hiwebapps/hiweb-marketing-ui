@@ -388,7 +388,7 @@ Convención de escritura:
 ### `scripts/sanity/align-en-slugs.mjs`
 
 - Propósito: apunta los servicios en inglés a los slugs públicos de hiwebmarketing.com/en.
-- Por qué está así: el clon EN nació con el slug español. Las rutas `/en/servicios/...` ya estaban publicadas con otro slug, y `astro.config.mjs` redirige seis de los viejos.
+- Por qué está así: el clon EN nació con el slug español. Las rutas `/en/services/...` ya estaban publicadas con otro slug, y `astro.config.mjs` redirige seis de los viejos.
 - Exporta: nada. CLI.
 - Depende de: nada del grafo.
 - Lo usan: nadie en npm.

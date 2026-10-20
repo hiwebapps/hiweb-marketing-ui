@@ -2,7 +2,7 @@
 
 Todo lo de `src/sanity` que no es schema. Los tipos están en [sanity-schemas.md](./sanity-schemas.md). El workspace se llama `hiweb-web`, el host del Studio es `hiweb-web.sanity.studio`, el proyecto es `fxardjr1` y el dataset es `web-2026`. La API es `2026-09-18`.
 
-`sanity.config.ts` (raíz, ficha en [runtime.md](./runtime.md)) engancha estas piezas: Structure, Presentation, Vision, Guía, Blogs, SEO y Galería. El navbar es `StudioNavbar`. El pie de tareas es `DocumentFooter`.
+`sanity.config.ts` (raíz, ficha en [runtime.md](./runtime.md)) engancha estas piezas: Structure, Presentation, Vision, Guía, Pendientes, Blogs, SEO y Galería. El navbar es `StudioNavbar`. El pie de tareas es `DocumentFooter`.
 
 ## Fichas
 
@@ -305,6 +305,16 @@ Todo lo de `src/sanity` que no es schema. Los tipos están en [sanity-schemas.md
 - Lo usan: `sanity.config.ts`.
 - Datos: contenido estático del componente. No escribe en el dataset.
 - Hallazgos: ninguno.
+
+### `src/sanity/tools/pendingTool.ts`
+
+- Propósito: tool «Pendientes», todos los borradores del dataset con publicación en lote.
+- Por qué está así: el Studio no publica varios documentos a la vez y Content Releases es de plan Enterprise. El tool lista cada `drafts.*` (singletons incluidos: navbar, footer, ajustes, cierre), corre la misma validación que el formulario (`useValidationStatus` con referencias publicadas) y solo deja marcar los que no tienen errores. Publica uno por uno con `sanity.action.document.publish` e `ifDraftRevisionId`, así que un fallo no frena a los demás y un borrador que cambió a mitad no se publica.
+- Exporta: `pendingTool` (nombre `pendientes`).
+- Depende de: `src/lib/page-meta.ts` (`pagePath`, `publishedId`, `isEnglish`).
+- Lo usan: `sanity.config.ts`.
+- Datos: `DRAFTS_QUERY` en perspectiva `raw`, sin tipos `sanity.*` ni `system.*`. La última persona que editó sale del endpoint de historial (`/data/history/.../transactions/<draftId>?reverse=true&limit=1`). El nombre de los singletons sale de `SINGLETON_LABELS`, el mismo del desk.
+- Hallazgos: publicar desde aquí no pasa por las acciones de documento, así que `ensureEnglishPair` no crea el par `-en`. El sitio en vivo sigue esperando el rebuild.
 
 ### `src/sanity/tools/blogsTool.ts`
 

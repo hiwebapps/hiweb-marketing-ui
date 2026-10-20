@@ -197,12 +197,13 @@ const portal =
 {
 	section._type === 'aboutCta' && (
 		<FinalCta
-			badge={section.badge}
-			title={section.title}
-			description={section.description}
-			primaryLabel={section.ctaLabel}
+			badge={section.badge || undefined}
+			title={section.title || undefined}
+			description={section.description || undefined}
+			primaryLabel={section.ctaLabel || undefined}
 			primaryHref={href(section.ctaHref)}
 			headingWidth={section.headingWidth}
+			locale={locale}
 		/>
 	)
 }

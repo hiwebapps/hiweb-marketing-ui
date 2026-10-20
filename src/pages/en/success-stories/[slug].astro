@@ -1,0 +1,328 @@
+---
+export const prerender = true;
+
+import Layout from '../../../layouts/Layout.astro';
+import { caseStaticPaths, getCases, getIndustries } from '../../../lib/content';
+import { CaseTelescopeHero } from '../../../components/sections/CaseTelescopeHero';
+import { SectionBand } from '../../../components/sections/primitives/SectionBand';
+import { SectionHeader } from '../../../components/sections/primitives/SectionHeader';
+import { BeforeAfter } from '../../../components/sections/BeforeAfter';
+import { ProcessPhases } from '../../../components/sections/ProcessPhases';
+import { MetricsBand } from '../../../components/sections/MetricsBand';
+import { CaseStories } from '../../../components/sections/CaseStories';
+import { CaseCards } from '../../../components/sections/CasesIndex';
+import FinalCta from '../../../components/sections/FinalCtaBand.astro';
+import InstagramPhone from '../../../components/sections/InstagramPhone.astro';
+import { breadcrumbSchema } from '../../../lib/schema';
+import { postCoverUrl } from '../../../lib/blog';
+import { formatCaseStat } from '../../../lib/content/format';
+import { notFound, resolveEntry } from '../../../lib/content/resolve-entry';
+import type { CasePageSection, CaseRecord } from '../../../lib/content/types';
+import '../../../components/sections/CaseTelescopeHero.css';
+import '../../../components/sections/MetricsBand.css';
+import '../../../components/sections/CaseStories.css';
+import '../../../components/sections/BlogIndex.css';
+
+export async function getStaticPaths() {
+	return caseStaticPaths('en');
+}
+
+interface Props {
+	entry: CaseRecord;
+}
+
+const entry = await resolveEntry<CaseRecord>(Astro.props.entry, Astro.params.slug, () => caseStaticPaths('en'));
+if (!entry) return notFound();
+const industries = await getIndustries('en');
+const industry = industries.find((item) => item.id === entry.data.industria.id);
+const relatedServices = entry.data.servicios;
+const allCases = await getCases('en');
+const related = allCases.filter(
+	(item) => item.id !== entry.id && item.data.industria.id === entry.data.industria.id,
+);
+const path = `/en/success-stories/${entry.id}`;
+const casesHref = '/en/success-stories';
+const contactHref = '/en/calendar';
+
+const projectWords = entry.data.cliente.trim().split(/\s+/);
+const projectMid = Math.max(1, Math.ceil(projectWords.length / 2));
+const titleLeft = projectWords.slice(0, projectMid).join(' ');
+const titleRight = projectWords.slice(projectMid).join(' ');
+
+const sections: CasePageSection[] = entry.data.sections?.length
+	? entry.data.sections.filter((section) => !section.hidden)
+	: [
+			{
+				_type: 'caseHero',
+				anio: entry.data.anio,
+				imagen: entry.data.imagen,
+				imagenAlt: entry.data.imagenAlt,
+				imagenesProyecto: entry.data.imagenesProyecto,
+			},
+			{
+				_type: 'caseContext',
+				retoEyebrow: 'The challenge',
+				retoTitle: 'Starting point',
+				reto: entry.data.reto,
+				estrategiaEyebrow: 'The strategy',
+				estrategiaTitle: 'Services applied',
+				estrategia: entry.data.estrategia,
+			},
+			{
+				_type: 'caseProcess',
+				eyebrow: 'Process',
+				title: 'How the work was done',
+				fases: entry.data.fases,
+			},
+			{
+				_type: 'caseMetrics',
+				eyebrow: 'Results',
+				title: 'Results in numbers',
+				metricas: entry.data.metricas,
+			},
+			...(entry.data.testimonio
+				? [
+						{
+							_type: 'caseTestimonial' as const,
+							eyebrow: 'Testimonial',
+							title: `What ${entry.data.cliente} says`,
+							quote: entry.data.testimonio.quote,
+							name: entry.data.testimonio.name,
+							role: entry.data.testimonio.role,
+							client: entry.data.testimonio.client,
+							photo: entry.data.testimonio.photo,
+						},
+					]
+				: []),
+			{
+				_type: 'caseRelated',
+				eyebrow: 'Case studies',
+				title: 'More case studies in this industry',
+			},
+			{ _type: 'caseCta', title: 'Book a similar diagnostic' },
+		];
+
+const heroSection = sections.find((section) => section._type === 'caseHero');
+const heroImage =
+	(heroSection?._type === 'caseHero' ? heroSection.imagen : undefined) ??
+	entry.data.seo?.ogImage ??
+	industry?.data.heroImage ??
+	postCoverUrl(`caso-${entry.id}`, 1600, 1000);
+const heroAlt =
+	(heroSection?._type === 'caseHero' ? heroSection.imagenAlt : undefined) ||
+	industry?.data.heroImageAlt ||
+	`${entry.data.cliente} case study`;
+---
+
+<Layout
+	lang="en"
+	title={entry.data.seo?.metaTitle ?? entry.data.titulo ?? entry.data.cliente}
+	description={entry.data.seo?.metaDescription ?? entry.data.resumen}
+	ogImage={entry.data.seo?.ogImage ?? heroImage}
+	noindex={entry.data.seo?.noindex}
+	canonical={entry.data.seo?.canonicalPath}
+	alternates={entry.alternateSlug ? { es: `/portafolio/${entry.alternateSlug}`, en: path } : undefined}
+	jsonLd={breadcrumbSchema([
+		{ name: 'Home', href: '/en' },
+		{ name: 'Success Stories', href: casesHref },
+		{ name: entry.data.cliente, href: path },
+	])}
+>
+	<main>
+		{sections.map((section) => {
+			if (section._type === 'caseHero') {
+				return (
+					<CaseTelescopeHero
+						client:load
+						titleLeft={titleLeft}
+						titleRight={titleRight}
+						image={heroImage}
+						imageAlt={heroAlt}
+						floatImages={section.imagenesProyecto ?? []}
+						year={section.anio}
+					/>
+				);
+			}
+			if (section._type === 'caseContext') {
+				return (
+					<SectionBand>
+						<div class="grid gap-10 md:grid-cols-2">
+							<div>
+								<SectionHeader
+									eyebrow={section.retoEyebrow ?? 'The challenge'}
+									title={section.retoTitle ?? 'Starting point'}
+									description={section.reto}
+									badgeVariant="purple"
+									headingWidth={section.headingWidth}
+								/>
+							</div>
+							<div>
+								<SectionHeader
+									eyebrow={section.estrategiaEyebrow ?? 'The strategy'}
+									title={section.estrategiaTitle ?? 'Services applied'}
+									description={section.estrategia}
+									badgeVariant="cyan"
+									headingWidth={section.headingWidth}
+								/>
+								<ul class="mt-6 flex-wrap gap-2 flex">
+									{relatedServices.map((service) => (
+										<li>
+											<a
+												href={`/en/services/${service.id}`}
+												class="rounded-full border border-border px-3 py-1 font-display text-xs font-medium text-ink no-underline"
+											>
+												{service.nombre ?? service.id}
+											</a>
+										</li>
+									))}
+								</ul>
+							</div>
+						</div>
+					</SectionBand>
+				);
+			}
+			if (section._type === 'caseProcess' && section.fases.length) {
+				return (
+					<ProcessPhases
+						client:visible
+						phases={section.fases.map((fase, index) => ({
+							index: String(index + 1).padStart(2, '0'),
+							title: fase.title,
+							description: fase.description,
+							icon: fase.icon,
+						}))}
+						eyebrow={section.eyebrow ?? 'Process'}
+						title={section.title ?? 'How the work was done'}
+						description={section.description ?? ''}
+						headingWidth={section.headingWidth}
+					/>
+				);
+			}
+			if (section._type === 'caseMetrics' && section.metricas.length) {
+				return (
+					<MetricsBand
+						client:visible
+						metrics={section.metricas.map((metric) => ({
+							valor: metric.valor,
+							label: metric.label,
+							prefix: metric.prefix,
+							suffix: metric.suffix,
+							decimals: metric.decimals,
+							detail:
+								metric.antes && metric.despues
+									? `From ${metric.antes} to ${metric.despues}`
+									: metric.despues
+										? metric.despues
+										: undefined,
+						}))}
+						eyebrow={section.eyebrow ?? 'Results'}
+						title={section.title ?? 'Results in numbers'}
+						description={section.description ?? ''}
+						primaryLabel={section.primaryLabel ?? 'Schedule your audit'}
+						primaryHref={section.primaryHref ?? contactHref}
+						secondaryLabel={section.secondaryLabel ?? 'View more case studies'}
+						secondaryHref={section.secondaryHref ?? casesHref}
+						headingWidth={section.headingWidth}
+					/>
+				);
+			}
+			if (section._type === 'caseTestimonial' && section.quote) {
+				return (
+					<CaseStories
+						client:visible
+						id="testimonial"
+						locale="en"
+						eyebrow={section.eyebrow ?? 'Testimonial'}
+						title={section.title ?? `What ${entry.data.cliente} says`}
+						description={section.description ?? ''}
+						stories={[
+							{
+								client: section.client || entry.data.cliente,
+								quote: section.quote,
+								name: section.name ?? entry.data.cliente,
+								role: section.role ?? '',
+								photo: section.photo,
+								cover: entry.data.imagenesProyecto?.[0],
+								stats: (section.quote ? entry.data.metricas : []).slice(0, 2).map(formatCaseStat),
+								href: path,
+							},
+						]}
+						headingWidth={section.headingWidth}
+					/>
+				);
+			}
+			if (section._type === 'caseRelated' && related.length) {
+				return (
+					<SectionBand id="casos" tone="canvas">
+						<div class="blog-index">
+							<SectionHeader
+								eyebrow={section.eyebrow ?? 'Case studies'}
+								title={section.title ?? 'More case studies in this industry'}
+								description={section.description}
+								badgeVariant="lime"
+								headingWidth={section.headingWidth}
+							/>
+							<CaseCards
+								ctaLabel="View case"
+								cases={related.map((item) => ({
+									id: item.id,
+									title: item.data.titulo,
+									description: item.data.resumen,
+									client: item.data.cliente,
+									industry: industry?.data.nombre ?? item.data.cliente,
+									industrySlug: item.data.industria.id,
+									image: item.data.imagen || item.data.seo?.ogImage || postCoverUrl(`caso-${item.id}`, 800, 520),
+									href: `/en/success-stories/${item.id}`,
+								}))}
+							/>
+						</div>
+					</SectionBand>
+				);
+			}
+			if (section._type === 'instagramPhone' && section.username) {
+				return (
+					<InstagramPhone
+						eyebrow={section.eyebrow}
+						title={section.title}
+						description={section.description}
+						tone={section.tone}
+						username={section.username}
+						displayName={section.displayName}
+						bio={section.bio}
+						avatar={section.avatar}
+						avatarAlt={section.avatarAlt}
+						stats={section.stats}
+						posts={section.posts}
+					/>
+				);
+			}
+			if (section._type === 'beforeAfter' && section.pairs.length) {
+				return (
+					<BeforeAfter
+						client:visible
+						eyebrow={section.eyebrow}
+						title={section.title}
+						description={section.description}
+						badgeVariant={(section.badgeVariant || 'orange') as 'orange'}
+						headingWidth={section.headingWidth}
+						pairs={section.pairs}
+					/>
+				);
+			}
+			if (section._type === 'caseCta') {
+				return (
+					<FinalCta locale="en"
+						badge={section.badge ?? 'Next step'}
+						title={section.title ?? 'Book a similar diagnostic'}
+						description={section.description ??
+							'Tell us your industry, goal and ideal customer. We send back a clear diagnostic with the next step.'}
+						primaryLabel={section.primaryLabel ?? 'Book a diagnostic'}
+						primaryHref={section.primaryHref ?? contactHref}
+						headingWidth={section.headingWidth}
+					/>
+				);
+			}
+			return null;
+		})}
+	</main>
+</Layout>

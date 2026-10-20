@@ -94,7 +94,7 @@ const caseStories = cases.map((item) => ({
 	canonical={entry.data.seo?.canonicalPath}
 	alternates={
 		entry.alternateSlug
-			? { es: `/industrias/${entry.id}`, en: `/en/industrias/${entry.alternateSlug}` }
+			? { es: `/industrias/${entry.id}`, en: `/en/industries/${entry.alternateSlug}` }
 			: undefined
 	}
 	jsonLd={[
@@ -164,7 +164,8 @@ const caseStories = cases.map((item) => ({
 			columns={2}
 		/>
 		<FinalCta
-			title={`Agenda un diagnóstico para ${entry.data.nombre.toLowerCase()}`}
+			title={entry.data.closingTitle || `Agenda un diagnóstico para ${entry.data.nombre.toLowerCase()}`}
+			description={entry.data.closingDescription}
 		/>
 		</>
 		)}

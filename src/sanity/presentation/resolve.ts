@@ -45,7 +45,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "calendarPage" && _id in ["calendarPage", "drafts.calendarPage"]`,
     },
     {
-      route: '/en/calendario',
+      route: '/en/calendar',
       filter: `_type == "calendarPage" && _id in ["calendarPage-en", "drafts.calendarPage-en"]`,
     },
     {
@@ -57,7 +57,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "legalPage" && _id in ["legal-terms", "drafts.legal-terms"]`,
     },
     {
-      route: '/en/terminos',
+      route: '/en/terms',
       filter: `_type == "legalPage" && _id in ["legal-terms-en", "drafts.legal-terms-en"]`,
     },
     {
@@ -65,7 +65,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "legalPage" && _id in ["legal-privacy", "drafts.legal-privacy"]`,
     },
     {
-      route: '/en/aviso-de-privacidad',
+      route: '/en/privacy-policy',
       filter: `_type == "legalPage" && _id in ["legal-privacy-en", "drafts.legal-privacy-en"]`,
     },
     {
@@ -73,7 +73,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "service" && slug.current == $slug && coalesce(locale, "es") == "es"`,
     },
     {
-      route: '/en/servicios/:slug',
+      route: '/en/services/:slug',
       filter: `_type == "service" && slug.current == $slug && locale == "en"`,
     },
     {
@@ -81,16 +81,20 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "industry" && slug.current == $slug && coalesce(locale, "es") == "es"`,
     },
     {
-      route: '/en/industrias/:slug',
+      route: '/en/industries/:slug',
       filter: `_type == "industry" && slug.current == $slug && locale == "en"`,
     },
     {
-      route: '/en/industrias',
+      route: '/en/industries',
       filter: `_type == "industriesIndex" && _id in ["industriesIndex-en", "drafts.industriesIndex-en"]`,
     },
     {
       route: '/portafolio/:slug',
       filter: `_type == "caseStudy" && slug.current == $slug && coalesce(locale, "es") == "es"`,
+    },
+    {
+      route: '/en/success-stories/:slug',
+      filter: `_type == "caseStudy" && slug.current == $slug && locale == "en"`,
     },
     {
       route: '/blog/:slug',
@@ -150,7 +154,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       resolve: (doc) => {
         const english = doc?.locale === 'en' || englishId(doc?.id);
         return {
-          locations: [{ title: doc?.title || 'Calendario', href: english ? '/en/calendario' : '/calendario' }],
+          locations: [{ title: doc?.title || 'Calendario', href: english ? '/en/calendar' : '/calendario' }],
         };
       },
     }),
@@ -190,23 +194,23 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       select: { title: 'title' },
       resolve: (doc) => ({
         locations: [
-          { title: doc?.title || 'Industrias', href: '/en/industrias' },
+          { title: doc?.title || 'Industrias', href: '/en/industries' },
           { title: 'Home', href: '/en' },
         ],
       }),
     }),
     caseStudy: defineLocations({
-      select: { title: 'cliente', slug: 'slug.current' },
-      resolve: (doc) => ({
-        locations: [
-          {
-            title: doc?.title || 'Caso',
-            href: doc?.slug ? `/portafolio/${doc.slug}` : '/portafolio',
-          },
-          { title: 'Portafolio', href: '/portafolio' },
-          { title: 'Inicio', href: '/' },
-        ],
-      }),
+      select: { title: 'cliente', slug: 'slug.current', locale: 'locale' },
+      resolve: (doc) => {
+        const index = doc?.locale === 'en' ? '/en/success-stories' : '/portafolio';
+        return {
+          locations: [
+            { title: doc?.title || 'Caso', href: doc?.slug ? `${index}/${doc.slug}` : index },
+            { title: doc?.locale === 'en' ? 'Success Stories' : 'Portafolio', href: index },
+            { title: doc?.locale === 'en' ? 'Home' : 'Inicio', href: doc?.locale === 'en' ? '/en' : '/' },
+          ],
+        };
+      },
     }),
     post: defineLocations({
       select: { title: 'title', slug: 'slug.current', locale: 'locale' },

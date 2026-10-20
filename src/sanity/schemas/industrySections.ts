@@ -195,7 +195,11 @@ export const industryCta = defineType({
   title: 'Cierre',
   type: 'object',
   icon: RocketIcon,
-  fields: [headingTitleField(), headingWidthField()],
+  fields: [
+    headingTitleField(),
+    headingWidthField(),
+    defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 2 }),
+  ],
   preview: sectionPreview('Sección Cierre'),
 });
 

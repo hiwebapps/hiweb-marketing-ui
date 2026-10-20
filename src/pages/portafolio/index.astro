@@ -39,6 +39,7 @@ const cards = cases.map((item) => ({
 	description={page?.seo?.metaDescription ?? WEBFLOW_CASES_INDEX.seo.metaDescription ?? page?.description ?? WEBFLOW_CASES_INDEX.description}
 	noindex={page?.seo?.noindex}
 	canonical={page?.seo?.canonicalPath}
+	alternates={{ es: '/portafolio', en: '/en/success-stories' }}
 	jsonLd={breadcrumbSchema([
 		{ name: 'Inicio', href: '/' },
 		{ name: 'Portafolio', href: '/portafolio' },
@@ -64,6 +65,7 @@ const cards = cases.map((item) => ({
 		</SectionBand>
 		<FinalCta
 			title={page?.closingTitle ?? '¿Un diagnóstico similar al de tu industria?'}
+			description={page?.closingDescription}
 			headingWidth={page?.closingHeadingWidth}
 		/>
 	</main>

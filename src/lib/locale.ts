@@ -1,5 +1,6 @@
 import { EN_BLOG_SLUG, ES_BLOG_SLUG } from './blog-pairs';
-import { englishServiceSlug, serviceContentKey } from './en-slugs';
+import { englishIndustrySlug, englishServiceSlug, spanishIndustrySlug, spanishServiceSlug } from './en-slugs';
+import { DEFAULT_ABOUT_EN_SLUG } from './page-meta';
 
 export type Locale = 'es' | 'en';
 
@@ -7,11 +8,38 @@ export function localeFromPath(pathname: string): Locale {
   return pathname === '/en' || pathname.startsWith('/en/') ? 'en' : 'es';
 }
 
-function translateServicePath(bare: string, locale: Locale) {
-  const match = bare.match(/^\/servicios\/([^/]+)\/?$/);
+function translateCatalogPath(bare: string, locale: Locale) {
+  const match = bare.match(/^\/(servicios|services|industrias|industries|portafolio|success-stories)\/([^/]+)\/?$/);
   if (!match) return bare;
-  const slug = locale === 'en' ? englishServiceSlug(match[1]) : serviceContentKey(match[1]);
-  return `/servicios/${slug}`;
+  const [, section, slug] = match;
+  if (section === 'servicios' || section === 'services') {
+    return locale === 'en' ? `/services/${englishServiceSlug(slug)}` : `/servicios/${spanishServiceSlug(slug)}`;
+  }
+  if (section === 'industrias' || section === 'industries') {
+    return locale === 'en' ? `/industries/${englishIndustrySlug(slug)}` : `/industrias/${spanishIndustrySlug(slug)}`;
+  }
+  return locale === 'en' ? `/success-stories/${slug}` : `/portafolio/${slug}`;
+}
+
+/** Spanish page → English page. Contact has no English page; the calendar replaces it. */
+const EN_PAGE: Record<string, string> = {
+  '/calendario': '/calendar',
+  '/contacto': '/calendar',
+  '/terminos': '/terms',
+  '/aviso-de-privacidad': '/privacy-policy',
+  '/nosotros': `/${DEFAULT_ABOUT_EN_SLUG}`,
+};
+const ES_PAGE: Record<string, string> = {
+  '/calendar': '/calendario',
+  '/terms': '/terminos',
+  '/privacy-policy': '/aviso-de-privacidad',
+  [`/${DEFAULT_ABOUT_EN_SLUG}`]: '/nosotros',
+};
+
+function translatePagePath(bare: string, locale: Locale) {
+  const path = bare.length > 1 ? bare.replace(/\/+$/, '') : bare;
+  if (locale === 'en') return EN_PAGE[path] ?? bare;
+  return ES_PAGE[path] ?? bare;
 }
 
 function translateBlogPath(bare: string, locale: Locale) {
@@ -24,15 +52,30 @@ function translateBlogPath(bare: string, locale: Locale) {
   return bare;
 }
 
+function translateCasesIndexPath(bare: string, locale: Locale) {
+  if (!/^\/(portafolio|success-stories)\/?$/.test(bare)) return bare;
+  return locale === 'en' ? '/success-stories' : '/portafolio';
+}
+
 /** English pages that exist. Anything else under /en redirects to /en. */
 export function localePath(pathname: string, locale: Locale): string {
   const stripped = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
-  const bare = translateBlogPath(translateServicePath(stripped, locale), locale);
+  const bare = translatePagePath(
+    translateCasesIndexPath(translateBlogPath(translateCatalogPath(stripped, locale), locale), locale),
+    locale,
+  );
   if (locale === 'es') return bare;
   return bare === '/' ? '/en' : `/en${bare}`;
 }
 
-const RETIRED_CATALOG_PATHS = new Set(['/industrias', '/servicios', '/en/industrias', '/en/servicios']);
+const RETIRED_CATALOG_PATHS = new Set([
+  '/industrias',
+  '/servicios',
+  '/en/industrias',
+  '/en/servicios',
+  '/en/industries',
+  '/en/services',
+]);
 
 /** Index pages for industries and services are gone. Individual pages stay. */
 export function isRetiredCatalogPath(href: string) {

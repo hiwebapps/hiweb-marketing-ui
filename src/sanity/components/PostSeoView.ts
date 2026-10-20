@@ -68,16 +68,16 @@ function knownPaths(data: PathRows) {
     '/en/blogs',
     '/contacto',
     '/servicios',
-    '/en/servicios',
+    '/en/services',
     '/industrias',
-    '/en/industrias',
+    '/en/industries',
     '/portafolio',
   ]);
   for (const row of data.services ?? []) {
-    paths.add(row.locale === 'en' ? `/en/servicios/${row.slug}` : `/servicios/${row.slug}`);
+    paths.add(row.locale === 'en' ? `/en/services/${row.slug}` : `/servicios/${row.slug}`);
   }
   for (const row of data.industries ?? []) {
-    paths.add(row.locale === 'en' ? `/en/industrias/${row.slug}` : `/industrias/${row.slug}`);
+    paths.add(row.locale === 'en' ? `/en/industries/${row.slug}` : `/industrias/${row.slug}`);
   }
   for (const row of data.posts ?? []) {
     paths.add(row.locale === 'en' ? `/en/blogs/${row.slug}` : `/blog/${row.slug}`);

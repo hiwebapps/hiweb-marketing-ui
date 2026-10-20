@@ -2,6 +2,7 @@ import { perspectiveCookieName } from '@sanity/preview-url-secret/constants';
 import { defineMiddleware } from 'astro:middleware';
 import { PREVIEW_ACCESS_COOKIE, verifyPreviewAccess } from './lib/preview-auth';
 import { runWithPreview } from './lib/preview-context';
+import { legacyEnglishPath } from './lib/legacy-en-paths';
 import { readBinding } from './lib/runtime-env';
 import { ROBOTS_NOINDEX, shouldNoIndex } from './lib/seo';
 import { isStagingSite } from './lib/site-env';
@@ -45,14 +46,20 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect(`${visiblePath}${context.url.search}`);
   }
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  const legacy = path.startsWith('/en/') ? legacyEnglishPath(path) : undefined;
+  if (legacy) {
+    return context.redirect(`${legacy}${context.url.search}`, 301);
+  }
   const englishSection =
-    path.startsWith('/en/servicios/') ||
-    path.startsWith('/en/industrias/') ||
+    path === '/en/success-stories' ||
+    path.startsWith('/en/success-stories/') ||
+    path.startsWith('/en/services/') ||
+    path.startsWith('/en/industries/') ||
     path === '/en/blogs' ||
     path.startsWith('/en/blogs/') ||
-    path === '/en/terminos' ||
-    path === '/en/aviso-de-privacidad' ||
-    path === '/en/calendario' ||
+    path === '/en/terms' ||
+    path === '/en/privacy-policy' ||
+    path === '/en/calendar' ||
     path === '/en/portal' ||
     path === '/en/404';
   // The English About page lives at /en/<slug>, and Studio owns the slug.

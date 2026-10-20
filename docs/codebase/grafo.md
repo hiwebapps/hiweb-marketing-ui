@@ -326,7 +326,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/growth/CalendarTool.tsx
 - Depende de: src/lib/site-identity.ts, src/lib/growth/calendar/calendar-rules.ts, src/lib/growth/calendar/client.ts, src/lib/content/calendar-page.ts, src/lib/growth/calendar/types.ts, src/components/sections/ContactBanner.tsx, src/components/ui/Button.tsx, src/components/ui/TextField.tsx, src/components/sections/ContactForm.css, src/components/growth/CalendarTool.css
-- Lo usan: src/pages/calendario.astro, src/pages/en/calendario.astro
+- Lo usan: src/pages/calendario.astro, src/pages/en/calendar.astro
 
 ### src/components/growth/MarketingQuiz.tsx
 - Depende de: src/components/ui/Button.tsx, src/components/ui/TextField.tsx, src/lib/growth/quiz/questions.ts, src/lib/growth/quiz/session.ts, src/lib/growth/quiz/client.ts, src/lib/growth/quiz/types.ts
@@ -340,7 +340,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/icons/PillarIcons.tsx
 - Depende de: —
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/PillarGrid.tsx, src/components/sections/ServiceFocus.tsx, src/components/sections/ServicePageSection.astro, src/components/sections/ServicePlans.tsx, src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/PillarGrid.tsx, src/components/sections/ServiceFocus.tsx, src/components/sections/ServicePageSection.astro, src/components/sections/ServicePlans.tsx, src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/icons/ServiceIcons.tsx
 - Depende de: src/components/sections/NavIcon.tsx
@@ -448,11 +448,11 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/CaseStories.css
 - Depende de: —
-- Lo usan: src/components/sections/CaseStories.tsx, src/layouts/Layout.astro, src/pages/en/index.astro, src/pages/en/industrias/[slug].astro, src/pages/en/servicios/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro, src/pages/[slug].astro
+- Lo usan: src/components/sections/CaseStories.tsx, src/layouts/Layout.astro, src/pages/en/index.astro, src/pages/en/industries/[slug].astro, src/pages/en/services/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro, src/pages/[slug].astro
 
 ### src/components/sections/CaseStories.tsx
 - Depende de: src/components/ui, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/SectionHeader.tsx, src/components/sections/CaseStories.css
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/industrias/[slug].astro, src/pages/en/servicios/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/industries/[slug].astro, src/pages/en/services/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/CaseTelescopeHero.css
 - Depende de: —
@@ -488,11 +488,11 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/FaqSection.css
 - Depende de: —
-- Lo usan: src/components/sections/FaqSection.tsx, src/layouts/Layout.astro, src/pages/en/index.astro, src/pages/en/industrias/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/[slug].astro
+- Lo usan: src/components/sections/FaqSection.tsx, src/layouts/Layout.astro, src/pages/en/index.astro, src/pages/en/industries/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/[slug].astro
 
 ### src/components/sections/FaqSection.tsx
 - Depende de: src/data/site.ts, src/lib/content/faq-answer.ts, src/lib/content/types.ts, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/SectionHeader.tsx, src/components/sections/FaqSection.css
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/industrias/[slug].astro, src/pages/en/servicios/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/industries/[slug].astro, src/pages/en/services/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/FinalCta.css
 - Depende de: —
@@ -504,7 +504,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/FinalCtaBand.astro
 - Depende de: src/components/sections/FinalCta.tsx, src/lib/content
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/AboutPageSection.astro, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/blog/index.astro, src/pages/blog/[slug].astro, src/pages/en/blogs/index.astro, src/pages/en/blogs/[slug].astro, src/pages/en/index.astro, src/pages/en/industrias/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/servicios/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/portafolio/index.astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/AboutPageSection.astro, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/blog/index.astro, src/pages/blog/[slug].astro, src/pages/en/blogs/index.astro, src/pages/en/blogs/[slug].astro, src/pages/en/index.astro, src/pages/en/industries/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/services/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/portafolio/index.astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/FitSignal.tsx
 - Depende de: src/components/ui, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/SectionHeader.tsx
@@ -548,7 +548,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/IndustryGrid.tsx
 - Depende de: src/components/icons/IndustryIcons.tsx, src/components/ui, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/heading.tsx, src/components/sections/IndustryGrid.css
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/servicios/[slug].astro, src/pages/index.astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/services/[slug].astro, src/pages/index.astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/IndustryHero.css
 - Depende de: —
@@ -556,27 +556,27 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/IndustryHero.tsx
 - Depende de: src/lib/heading.ts, src/components/ui, src/components/sections/primitives/heading.tsx, src/components/sections/IndustryHero.css
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/AboutPageSection.astro, src/components/sections/index.ts, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/industrias/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/servicios/[slug].astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/AboutPageSection.astro, src/components/sections/index.ts, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/industries/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/services/[slug].astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/IndustryPageSection.astro
 - Depende de: src/components/sections/IndustryHero.tsx, src/components/sections/IndustryServices.tsx, src/components/sections/PillarGrid.tsx, src/components/sections/CaseStories.tsx, src/components/sections/BeforeAfter.tsx, src/components/sections/FaqSection.tsx, src/components/sections/FinalCtaBand.astro, src/lib/content/types.ts, src/components/ui
-- Lo usan: src/pages/en/industrias/[slug].astro, src/pages/industrias/[slug].astro
+- Lo usan: src/pages/en/industries/[slug].astro, src/pages/industrias/[slug].astro
 
 ### src/components/sections/IndustryServices.css
 - Depende de: —
-- Lo usan: src/components/sections/IndustryServices.tsx, src/pages/en/industrias/[slug].astro, src/pages/industrias/[slug].astro
+- Lo usan: src/components/sections/IndustryServices.tsx, src/pages/en/industries/[slug].astro, src/pages/industrias/[slug].astro
 
 ### src/components/sections/IndustryServices.tsx
 - Depende de: src/lib/en-slugs.ts, src/lib/locale.ts, src/components/icons/ServiceIcons.tsx, src/components/ui, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/SectionHeader.tsx, src/components/sections/IndustryServices.css
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/pages/en/industrias/[slug].astro, src/pages/industrias/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/pages/en/industries/[slug].astro, src/pages/industrias/[slug].astro
 
 ### src/components/sections/LegalDocument.css
 - Depende de: —
-- Lo usan: src/components/sections/LegalDocument.tsx, src/pages/aviso-de-privacidad.astro, src/pages/en/aviso-de-privacidad.astro, src/pages/en/terminos.astro, src/pages/terminos.astro
+- Lo usan: src/components/sections/LegalDocument.tsx, src/pages/aviso-de-privacidad.astro, src/pages/en/privacy-policy.astro, src/pages/en/terms.astro, src/pages/terminos.astro
 
 ### src/components/sections/LegalDocument.tsx
 - Depende de: src/lib/content/from-sanity.ts, src/components/sections/LegalDocument.css
-- Lo usan: src/pages/aviso-de-privacidad.astro, src/pages/en/aviso-de-privacidad.astro, src/pages/en/terminos.astro, src/pages/terminos.astro
+- Lo usan: src/pages/aviso-de-privacidad.astro, src/pages/en/privacy-policy.astro, src/pages/en/terms.astro, src/pages/terminos.astro
 
 ### src/components/sections/MetricsBand.css
 - Depende de: —
@@ -592,7 +592,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/PageHero.tsx
 - Depende de: src/components/sections/primitives/HeroAtmosphere.tsx, src/components/sections/primitives/Eyebrow.tsx, src/components/sections/primitives/heading.tsx
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/pages/aviso-de-privacidad.astro, src/pages/diagnostico-marketing-digital.astro, src/pages/en/aviso-de-privacidad.astro, src/pages/en/terminos.astro, src/pages/terminos.astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/index.ts, src/pages/aviso-de-privacidad.astro, src/pages/diagnostico-marketing-digital.astro, src/pages/en/privacy-policy.astro, src/pages/en/terms.astro, src/pages/terminos.astro
 
 ### src/components/sections/PillarGrid.css
 - Depende de: —
@@ -600,7 +600,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/PillarGrid.tsx
 - Depende de: src/components/icons/PillarIcons.tsx, src/components/ui, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/SectionHeader.tsx, src/components/sections/PillarGrid.css
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/AboutPageSection.astro, src/components/sections/HomeAfterHero.tsx, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/industrias/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/nosotros.astro, src/pages/en/servicios/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/AboutPageSection.astro, src/components/sections/HomeAfterHero.tsx, src/components/sections/index.ts, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/industries/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/nosotros.astro, src/pages/en/services/[slug].astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/PortalShowcase.css
 - Depende de: —
@@ -628,7 +628,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/ProcessPhases.tsx
 - Depende de: src/lib/motion.ts, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/SectionHeader.tsx, src/components/sections/ProcessPhases.css
-- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/HomePage.tsx, src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/servicios/[slug].astro, src/pages/index.astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/components/sections/HomePage.tsx, src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/components/sections/ServicePageSection.astro, src/pages/en/index.astro, src/pages/en/services/[slug].astro, src/pages/index.astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/SectionsKitPage.tsx
 - Depende de: src/components/ui, src/components/BackgroundMesh.tsx, src/data/webflow-home.ts, src/data/service-focus.ts, src/data/service-pitch.ts, src/data/service-plans.ts, src/components/sections/index.ts
@@ -640,7 +640,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/ServiceFocus.tsx
 - Depende de: src/components/icons/PillarIcons.tsx, src/data/service-focus.ts, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/SectionHeader.tsx, src/components/sections/ServiceFocus.css
-- Lo usan: src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/ServiceGrid.css
 - Depende de: —
@@ -652,7 +652,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/ServicePageSection.astro
 - Depende de: src/components/sections/IndustryHero.tsx, src/components/sections/PillarGrid.tsx, src/components/sections/ServiceFocus.tsx, src/components/sections/ServicePitch.tsx, src/components/sections/ServiceWhy.tsx, src/components/sections/ServicePlans.tsx, src/components/sections/IndustryGrid.tsx, src/components/sections/BeforeAfter.tsx, src/components/sections/ProcessPhases.tsx, src/components/sections/CaseStories.tsx, src/components/sections/FaqSection.tsx, src/components/sections/FinalCtaBand.astro, src/components/icons/PillarIcons.tsx, src/lib/en-slugs.ts, src/data/service-focus.ts, src/data/service-pitch.ts, src/components/icons/IndustryIcons.tsx, src/components/icons/ServiceIcons.tsx, src/components/sections/CaseStories.tsx, src/components/sections/ProcessPhases.tsx, src/components/ui, src/lib/content/types.ts
-- Lo usan: src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/ServicePitch.css
 - Depende de: —
@@ -660,7 +660,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/ServicePitch.tsx
 - Depende de: src/components/ui, src/data/service-pitch.ts, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/heading.tsx, src/components/sections/ServicePitch.css
-- Lo usan: src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/ServicePlans.css
 - Depende de: —
@@ -668,7 +668,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/ServicePlans.tsx
 - Depende de: src/components/ui, src/components/icons/PillarIcons.tsx, src/data/service-plans.ts, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/SectionHeader.tsx, src/components/sections/ServicePlans.css
-- Lo usan: src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/ServiceWhy.css
 - Depende de: —
@@ -676,7 +676,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/ServiceWhy.tsx
 - Depende de: src/lib/motion.ts, src/components/ui, src/components/icons/ServiceIcons.tsx, src/components/sections/primitives/SectionBand.tsx, src/components/sections/primitives/heading.tsx, src/components/sections/ServiceWhy.css
-- Lo usan: src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro
+- Lo usan: src/components/sections/index.ts, src/components/sections/ServicePageSection.astro, src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro
 
 ### src/components/sections/SiteFooter.css
 - Depende de: —
@@ -740,7 +740,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/components/sections/primitives/SectionBand.tsx
 - Depende de: —
-- Lo usan: src/components/portal/PortalPageView.tsx, src/components/sections/AboutHistory.tsx, src/components/sections/AboutTeaser.tsx, src/components/sections/BeforeAfter.tsx, src/components/sections/CasePreview.tsx, src/components/sections/CaseStories.tsx, src/components/sections/ContactDetails.tsx, src/components/sections/ContactPage.tsx, src/components/sections/FaqSection.tsx, src/components/sections/FitSignal.tsx, src/components/sections/HowItWorks.tsx, src/components/sections/index.ts, src/components/sections/IndustryGrid.tsx, src/components/sections/IndustryServices.tsx, src/components/sections/MetricsBand.tsx, src/components/sections/PillarGrid.tsx, src/components/sections/PortalShowcase.tsx, src/components/sections/ProblemPov.tsx, src/components/sections/ProcessPhases.tsx, src/components/sections/ServiceFocus.tsx, src/components/sections/ServiceGrid.tsx, src/components/sections/ServicePitch.tsx, src/components/sections/ServicePlans.tsx, src/components/sections/ServiceWhy.tsx, src/components/sections/SocialProof.tsx, src/components/sections/TeamGrid.tsx, src/components/sections/TrustStrip.tsx, src/components/sections/ValueChapter.tsx, src/pages/aviso-de-privacidad.astro, src/pages/blog/index.astro, src/pages/en/aviso-de-privacidad.astro, src/pages/en/blogs/index.astro, src/pages/en/terminos.astro, src/pages/portafolio/index.astro, src/pages/portafolio/[slug].astro, src/pages/terminos.astro
+- Lo usan: src/components/portal/PortalPageView.tsx, src/components/sections/AboutHistory.tsx, src/components/sections/AboutTeaser.tsx, src/components/sections/BeforeAfter.tsx, src/components/sections/CasePreview.tsx, src/components/sections/CaseStories.tsx, src/components/sections/ContactDetails.tsx, src/components/sections/ContactPage.tsx, src/components/sections/FaqSection.tsx, src/components/sections/FitSignal.tsx, src/components/sections/HowItWorks.tsx, src/components/sections/index.ts, src/components/sections/IndustryGrid.tsx, src/components/sections/IndustryServices.tsx, src/components/sections/MetricsBand.tsx, src/components/sections/PillarGrid.tsx, src/components/sections/PortalShowcase.tsx, src/components/sections/ProblemPov.tsx, src/components/sections/ProcessPhases.tsx, src/components/sections/ServiceFocus.tsx, src/components/sections/ServiceGrid.tsx, src/components/sections/ServicePitch.tsx, src/components/sections/ServicePlans.tsx, src/components/sections/ServiceWhy.tsx, src/components/sections/SocialProof.tsx, src/components/sections/TeamGrid.tsx, src/components/sections/TrustStrip.tsx, src/components/sections/ValueChapter.tsx, src/pages/aviso-de-privacidad.astro, src/pages/blog/index.astro, src/pages/en/privacy-policy.astro, src/pages/en/blogs/index.astro, src/pages/en/terms.astro, src/pages/portafolio/index.astro, src/pages/portafolio/[slug].astro, src/pages/terminos.astro
 
 ### src/components/sections/primitives/SectionHeader.tsx
 - Depende de: src/components/ui, src/components/sections/primitives/heading.tsx
@@ -804,25 +804,25 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/data/industryServices.ts
 - Depende de: —
-- Lo usan: src/lib/content/from-collections.ts, src/pages/en/industrias/[slug].astro, src/pages/industrias/[slug].astro, scripts/sanity/seed-from-collections.ts
+- Lo usan: src/lib/content/from-collections.ts, src/pages/en/industries/[slug].astro, src/pages/industrias/[slug].astro, scripts/sanity/seed-from-collections.ts
 
 ## src/data/service-focus.ts
 
 ### src/data/service-focus.ts
 - Depende de: —
-- Lo usan: src/components/sections/SectionsKitPage.tsx, src/components/sections/ServiceFocus.tsx, src/components/sections/ServicePageSection.astro, src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro, scripts/sanity/fill-service-section-controls.ts
+- Lo usan: src/components/sections/SectionsKitPage.tsx, src/components/sections/ServiceFocus.tsx, src/components/sections/ServicePageSection.astro, src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro, scripts/sanity/fill-service-section-controls.ts
 
 ## src/data/service-pitch.ts
 
 ### src/data/service-pitch.ts
 - Depende de: —
-- Lo usan: src/components/sections/SectionsKitPage.tsx, src/components/sections/ServicePageSection.astro, src/components/sections/ServicePitch.tsx, src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro, scripts/sanity/write-service-sections.ts
+- Lo usan: src/components/sections/SectionsKitPage.tsx, src/components/sections/ServicePageSection.astro, src/components/sections/ServicePitch.tsx, src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro, scripts/sanity/write-service-sections.ts
 
 ## src/data/service-plans.ts
 
 ### src/data/service-plans.ts
 - Depende de: —
-- Lo usan: src/components/sections/SectionsKitPage.tsx, src/components/sections/ServicePlans.tsx, src/pages/en/servicios/[slug].astro, src/pages/servicios/[slug].astro, scripts/sanity/write-service-plans.ts
+- Lo usan: src/components/sections/SectionsKitPage.tsx, src/components/sections/ServicePlans.tsx, src/pages/en/services/[slug].astro, src/pages/servicios/[slug].astro, scripts/sanity/write-service-plans.ts
 
 ## src/data/site.ts
 
@@ -858,7 +858,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/layouts/Layout.astro
 - Depende de: src/styles/global.css, src/components/sections/SiteNav.css, src/components/sections/SiteFooter.css, src/components/sections/FinalCta.css, src/components/sections/IndustryHero.css, src/components/sections/CaseStories.css, src/components/sections/FaqSection.css, src/components/sections/SiteNav.tsx, src/components/sections/SiteFooter.tsx, src/components/effects/ScrollIndicator.tsx, src/lib/content, src/lib/schema.ts, src/lib/seo.ts
-- Lo usan: src/pages/aviso-de-privacidad.astro, src/pages/blog/index.astro, src/pages/blog/[slug].astro, src/pages/calendario.astro, src/pages/contacto.astro, src/pages/design-system.astro, src/pages/diagnostico-marketing-digital.astro, src/pages/en/aviso-de-privacidad.astro, src/pages/en/blogs/index.astro, src/pages/en/blogs/[slug].astro, src/pages/en/calendario.astro, src/pages/en/index.astro, src/pages/en/industrias/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/portal.astro, src/pages/en/servicios/[slug].astro, src/pages/en/terminos.astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/portafolio/index.astro, src/pages/portafolio/[slug].astro, src/pages/portal.astro, src/pages/sections.astro, src/pages/servicios/[slug].astro, src/pages/terminos.astro, src/pages/[slug].astro
+- Lo usan: src/pages/aviso-de-privacidad.astro, src/pages/blog/index.astro, src/pages/blog/[slug].astro, src/pages/calendario.astro, src/pages/contacto.astro, src/pages/design-system.astro, src/pages/diagnostico-marketing-digital.astro, src/pages/en/privacy-policy.astro, src/pages/en/blogs/index.astro, src/pages/en/blogs/[slug].astro, src/pages/en/calendar.astro, src/pages/en/index.astro, src/pages/en/industries/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/portal.astro, src/pages/en/services/[slug].astro, src/pages/en/terms.astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/portafolio/index.astro, src/pages/portafolio/[slug].astro, src/pages/portal.astro, src/pages/sections.astro, src/pages/servicios/[slug].astro, src/pages/terminos.astro, src/pages/[slug].astro
 
 ## src/lib/blog-pairs.ts
 
@@ -888,7 +888,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/lib/content/format.ts
 - Depende de: —
-- Lo usan: src/components/content/SectionRenderer.astro, src/pages/en/industrias/[slug].astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro
+- Lo usan: src/components/content/SectionRenderer.astro, src/pages/en/industries/[slug].astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro
 
 ### src/lib/content/from-collections.ts
 - Depende de: src/data/industryServices.ts, src/data/site.ts, src/data/webflow-home.ts, src/data/webflow-services.ts, src/data/webflow-cases.ts, src/lib/content/types.ts
@@ -912,17 +912,17 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/lib/content/resolve-entry.ts
 - Depende de: —
-- Lo usan: src/pages/blog/[slug].astro, src/pages/en/blogs/[slug].astro, src/pages/en/industrias/[slug].astro, src/pages/en/servicios/[slug].astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro, src/pages/[slug].astro
+- Lo usan: src/pages/blog/[slug].astro, src/pages/en/blogs/[slug].astro, src/pages/en/industries/[slug].astro, src/pages/en/services/[slug].astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro, src/pages/servicios/[slug].astro, src/pages/[slug].astro
 
 ### src/lib/content/types.ts
 - Depende de: src/lib/heading.ts
-- Lo usan: src/components/content/BlogBody.astro, src/components/content/SectionRenderer.astro, src/components/portal/PortalPageView.tsx, src/components/sections/AboutPageSection.astro, src/components/sections/FaqSection.tsx, src/components/sections/HomeAfterHero.tsx, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/data/webflow-cases.ts, src/data/webflow-home.ts, src/data/webflow-services.ts, src/lib/content/faq-answer.ts, src/lib/content/from-collections.ts, src/lib/content/from-sanity.ts, src/lib/content/from-sanity.ts, src/lib/content/hydrate-landing.ts, src/lib/content/index.ts, src/lib/content/map-sanity.ts, src/lib/schema.ts, src/pages/blog/[slug].astro, src/pages/en/blogs/[slug].astro, src/pages/en/industrias/[slug].astro, src/pages/en/portal.astro, src/pages/en/servicios/[slug].astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro, src/pages/portal.astro, src/pages/servicios/[slug].astro, src/pages/[slug].astro
+- Lo usan: src/components/content/BlogBody.astro, src/components/content/SectionRenderer.astro, src/components/portal/PortalPageView.tsx, src/components/sections/AboutPageSection.astro, src/components/sections/FaqSection.tsx, src/components/sections/HomeAfterHero.tsx, src/components/sections/IndustryPageSection.astro, src/components/sections/ServicePageSection.astro, src/data/webflow-cases.ts, src/data/webflow-home.ts, src/data/webflow-services.ts, src/lib/content/faq-answer.ts, src/lib/content/from-collections.ts, src/lib/content/from-sanity.ts, src/lib/content/from-sanity.ts, src/lib/content/hydrate-landing.ts, src/lib/content/index.ts, src/lib/content/map-sanity.ts, src/lib/schema.ts, src/pages/blog/[slug].astro, src/pages/en/blogs/[slug].astro, src/pages/en/industries/[slug].astro, src/pages/en/portal.astro, src/pages/en/services/[slug].astro, src/pages/industrias/[slug].astro, src/pages/portafolio/[slug].astro, src/pages/portal.astro, src/pages/servicios/[slug].astro, src/pages/[slug].astro
 
 ## src/lib/en-slugs.ts
 
 ### src/lib/en-slugs.ts
 - Depende de: —
-- Lo usan: src/components/sections/IndustryServices.tsx, src/components/sections/ServiceGrid.tsx, src/components/sections/ServicePageSection.astro, src/lib/locale.ts, src/pages/en/industrias/[slug].astro, src/pages/en/servicios/[slug].astro, src/pages/industrias/[slug].astro
+- Lo usan: src/components/sections/IndustryServices.tsx, src/components/sections/ServiceGrid.tsx, src/components/sections/ServicePageSection.astro, src/lib/locale.ts, src/pages/en/industries/[slug].astro, src/pages/en/services/[slug].astro, src/pages/industrias/[slug].astro
 
 ## src/lib/footer.ts
 
@@ -1128,7 +1128,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ### src/lib/schema.ts
 - Depende de: src/data/site.ts, src/lib/content/faq-answer.ts, src/lib/content/types.ts, src/lib/site-identity.ts
-- Lo usan: src/layouts/Layout.astro, src/pages/aviso-de-privacidad.astro, src/pages/blog/index.astro, src/pages/blog/[slug].astro, src/pages/calendario.astro, src/pages/contacto.astro, src/pages/diagnostico-marketing-digital.astro, src/pages/en/aviso-de-privacidad.astro, src/pages/en/blogs/index.astro, src/pages/en/blogs/[slug].astro, src/pages/en/calendario.astro, src/pages/en/index.astro, src/pages/en/industrias/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/portal.astro, src/pages/en/servicios/[slug].astro, src/pages/en/terminos.astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/portafolio/index.astro, src/pages/portafolio/[slug].astro, src/pages/portal.astro, src/pages/servicios/[slug].astro, src/pages/terminos.astro, src/pages/[slug].astro
+- Lo usan: src/layouts/Layout.astro, src/pages/aviso-de-privacidad.astro, src/pages/blog/index.astro, src/pages/blog/[slug].astro, src/pages/calendario.astro, src/pages/contacto.astro, src/pages/diagnostico-marketing-digital.astro, src/pages/en/privacy-policy.astro, src/pages/en/blogs/index.astro, src/pages/en/blogs/[slug].astro, src/pages/en/calendar.astro, src/pages/en/index.astro, src/pages/en/industries/[slug].astro, src/pages/en/nosotros.astro, src/pages/en/portal.astro, src/pages/en/services/[slug].astro, src/pages/en/terms.astro, src/pages/index.astro, src/pages/industrias/[slug].astro, src/pages/nosotros.astro, src/pages/portafolio/index.astro, src/pages/portafolio/[slug].astro, src/pages/portal.astro, src/pages/servicios/[slug].astro, src/pages/terminos.astro, src/pages/[slug].astro
 
 ## src/lib/seo.ts
 
@@ -1240,7 +1240,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ## src/pages/en
 
-### src/pages/en/aviso-de-privacidad.astro
+### src/pages/en/privacy-policy.astro
 - Depende de: src/layouts/Layout.astro, src/components/sections/PageHero.tsx, src/components/sections/primitives/SectionBand.tsx, src/components/sections/LegalDocument.tsx, src/lib/content, src/lib/schema.ts, src/components/sections/LegalDocument.css
 - Lo usan: —
 
@@ -1252,7 +1252,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 - Depende de: src/layouts/Layout.astro, src/lib/content, src/components/sections/BlogHero.tsx, src/components/sections/BlogIndex.tsx, src/components/sections/primitives/SectionBand.tsx, src/components/sections/FinalCtaBand.astro, src/lib/schema.ts, src/lib/blog.ts, src/components/sections/BlogHero.css, src/components/sections/BlogIndex.css
 - Lo usan: —
 
-### src/pages/en/calendario.astro
+### src/pages/en/calendar.astro
 - Depende de: src/layouts/Layout.astro, src/components/growth/CalendarTool.tsx, src/lib/content, src/lib/schema.ts
 - Lo usan: —
 
@@ -1260,7 +1260,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 - Depende de: src/layouts/Layout.astro, src/components/sections/HeroStudioA.tsx, src/components/sections/IndustryGrid.tsx, src/components/sections/CaseStories.tsx, src/components/sections/ProcessPhases.tsx, src/components/sections/MetricsBand.tsx, src/components/sections/FaqSection.tsx, src/components/sections/FinalCtaBand.astro, src/components/sections/PillarGrid.tsx, src/components/sections/ServiceGrid.tsx, src/components/sections/TeamGrid.tsx, src/components/sections/BeforeAfter.tsx, src/data/webflow-home.ts, src/components/sections/TeamGrid.css, src/components/sections/FaqSection.css, src/components/sections/CaseStories.css, src/components/sections/MetricsBand.css, src/lib/schema.ts, src/lib/content, src/components/sections/TeamGrid.tsx
 - Lo usan: —
 
-### src/pages/en/industrias/[slug].astro
+### src/pages/en/industries/[slug].astro
 - Depende de: src/layouts/Layout.astro, src/lib/content, src/components/sections/IndustryHero.tsx, src/components/sections/IndustryServices.tsx, src/components/sections/PillarGrid.tsx, src/components/sections/CaseStories.tsx, src/components/sections/FaqSection.tsx, src/components/sections/FinalCtaBand.astro, src/components/sections/IndustryPageSection.astro, src/lib/schema.ts, src/data/industryServices.ts, src/lib/en-slugs.ts, src/components/ui, src/lib/content/format.ts, src/lib/content/resolve-entry.ts, src/lib/content/types.ts, src/components/sections/CaseStories.css, src/components/sections/FaqSection.css, src/components/sections/IndustryServices.css
 - Lo usan: —
 
@@ -1272,11 +1272,11 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 - Depende de: src/layouts/Layout.astro, src/components/portal/PortalPageView.tsx, src/lib/content, src/lib/content/portal-defaults.json, src/lib/content/types.ts, src/lib/schema.ts
 - Lo usan: —
 
-### src/pages/en/servicios/[slug].astro
+### src/pages/en/services/[slug].astro
 - Depende de: src/layouts/Layout.astro, src/lib/content, src/components/sections/IndustryHero.tsx, src/components/sections/PillarGrid.tsx, src/components/sections/ServiceFocus.tsx, src/components/sections/ServicePitch.tsx, src/components/sections/ServiceWhy.tsx, src/components/sections/ServicePlans.tsx, src/components/sections/IndustryGrid.tsx, src/components/sections/ProcessPhases.tsx, src/components/sections/CaseStories.tsx, src/components/sections/FaqSection.tsx, src/components/sections/FinalCtaBand.astro, src/components/sections/ServicePageSection.astro, src/lib/en-slugs.ts, src/lib/schema.ts, src/components/ui, src/components/icons/PillarIcons.tsx, src/data/service-focus.ts, src/data/service-pitch.ts, src/data/service-plans.ts, src/lib/content/resolve-entry.ts, src/lib/content/types.ts, src/components/sections/CaseStories.css
 - Lo usan: —
 
-### src/pages/en/terminos.astro
+### src/pages/en/terms.astro
 - Depende de: src/layouts/Layout.astro, src/components/sections/PageHero.tsx, src/components/sections/primitives/SectionBand.tsx, src/components/sections/LegalDocument.tsx, src/lib/content, src/lib/schema.ts, src/components/sections/LegalDocument.css
 - Lo usan: —
 
