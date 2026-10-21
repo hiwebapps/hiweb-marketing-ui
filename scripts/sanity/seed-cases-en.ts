@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createClient } from '@sanity/client';
 import { CASES_EN } from '../../src/data/cases-en';
+import { markdownToPortableText } from '../../src/lib/content/rich-text';
 
 const WRITE = process.argv.includes('--write');
 const PROJECT_ID = process.env.PUBLIC_SANITY_PROJECT_ID || 'fxardjr1';
@@ -73,10 +74,10 @@ async function main() {
             ...sec,
             retoEyebrow: 'Challenge',
             retoTitle: 'Initial Context',
-            reto: en.reto,
+            reto: markdownToPortableText(en.reto),
             estrategiaEyebrow: 'Strategy',
             estrategiaTitle: 'Applied Services',
-            estrategia: en.estrategia,
+            estrategia: markdownToPortableText(en.estrategia),
           };
         case 'caseProcess':
           return {

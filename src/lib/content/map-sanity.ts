@@ -1,5 +1,6 @@
 import { asHeadingWidth } from '../heading';
 import { urlForWidth } from '../../sanity/image';
+import { richTextToMarkdown } from './rich-text';
 import type {
   AboutCopy,
   BeforeAfterBlock,
@@ -645,10 +646,10 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
           _type: 'caseContext',
           retoEyebrow: asText(section.retoEyebrow),
           retoTitle: asText(section.retoTitle),
-          reto: asText(section.reto),
+          reto: asText(richTextToMarkdown(section.reto)),
           estrategiaEyebrow: asText(section.estrategiaEyebrow),
           estrategiaTitle: asText(section.estrategiaTitle),
-          estrategia: asText(section.estrategia),
+          estrategia: asText(richTextToMarkdown(section.estrategia)),
         },
       ];
     }
@@ -768,9 +769,9 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
       destacado: Boolean(doc.destacado),
       accent,
       metricas: metrics?._type === 'caseMetrics' ? metrics.metricas : asMetrics(doc.metricas),
-      reto: context?._type === 'caseContext' ? (context.reto ?? '') : String(doc.reto ?? ''),
+      reto: context?._type === 'caseContext' ? (context.reto ?? '') : richTextToMarkdown(doc.reto),
       estrategia:
-        context?._type === 'caseContext' ? (context.estrategia ?? '') : String(doc.estrategia ?? ''),
+        context?._type === 'caseContext' ? (context.estrategia ?? '') : richTextToMarkdown(doc.estrategia),
       fases: process?._type === 'caseProcess' ? process.fases : asBlocks(doc.fases),
       testimonio:
         testimonial?._type === 'caseTestimonial' && testimonial.quote

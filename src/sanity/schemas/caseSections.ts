@@ -5,7 +5,7 @@ import { RocketIcon } from '@sanity/icons/Rocket';
 import { TrendUpwardIcon } from '@sanity/icons/TrendUpward';
 import { UsersIcon } from '@sanity/icons/Users';
 import { defineArrayMember, defineField, defineType, type ArrayOfObjectsMember } from 'sanity';
-import { headingTitleField, headingWidthField, imageWithAlt, withVisibility } from './shared';
+import { headingTitleField, headingWidthField, imageWithAlt, richParagraphsField, withVisibility } from './shared';
 
 const dialog = { options: { modal: { type: 'dialog' as const, width: 'medium' as const } } };
 
@@ -73,12 +73,10 @@ export const caseContext = defineType({
   fields: [
     defineField({ name: 'retoEyebrow', title: 'Eyebrow del reto', type: 'string', initialValue: 'Reto' }),
     headingTitleField({ name: 'retoTitle', title: 'Título del reto', initialValue: 'Contexto inicial' }),
-    defineField({
+    richParagraphsField({
       name: 'reto',
       title: 'Reto',
-      type: 'text',
-      rows: 7,
-      description: 'Soporta formato con Markdown: saltos de párrafo (doble enter), viñetas (- elemento), negritas (**texto**) y enlaces [texto](url).',
+      description: 'Usa la barra de herramientas para negritas, cursivas, viñetas, listas numeradas y enlaces.',
     }),
     defineField({
       name: 'estrategiaEyebrow',
@@ -92,12 +90,10 @@ export const caseContext = defineType({
       initialValue: 'Servicios aplicados',
     }),
     headingWidthField(),
-    defineField({
+    richParagraphsField({
       name: 'estrategia',
       title: 'Estrategia',
-      type: 'text',
-      rows: 7,
-      description: 'Soporta formato con Markdown: saltos de párrafo (doble enter), viñetas (- elemento), negritas (**texto**) y enlaces [texto](url).',
+      description: 'Usa la barra de herramientas para negritas, cursivas, viñetas, listas numeradas y enlaces.',
     }),
     defineField({
       name: 'servicios',

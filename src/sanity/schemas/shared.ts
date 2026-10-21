@@ -140,6 +140,48 @@ export function imageWithAlt({
   });
 }
 
+/** Párrafos con negritas, cursivas, viñetas, listas numeradas y enlaces. */
+export function richParagraphsField(options: { name: string; title: string; description?: string }) {
+  return defineField({
+    name: options.name,
+    title: options.title,
+    type: 'array',
+    ...(options.description ? { description: options.description } : {}),
+    of: [
+      defineArrayMember({
+        type: 'block',
+        styles: [{ title: 'Normal', value: 'normal' }],
+        lists: [
+          { title: 'Viñetas', value: 'bullet' },
+          { title: 'Numerada', value: 'number' },
+        ],
+        marks: {
+          decorators: [
+            { title: 'Negrita', value: 'strong' },
+            { title: 'Cursiva', value: 'em' },
+          ],
+          annotations: [
+            {
+              name: 'link',
+              type: 'object',
+              title: 'Enlace',
+              fields: [
+                defineField({
+                  name: 'href',
+                  title: 'URL',
+                  type: 'string',
+                  description: 'Una ruta del sitio, como /servicios/seo o #casos, o una URL completa.',
+                  validation: (rule) => rule.required(),
+                }),
+              ],
+            },
+          ],
+        },
+      }),
+    ],
+  });
+}
+
 export function faqAnswerField() {
   return defineField({
     name: 'answer',
