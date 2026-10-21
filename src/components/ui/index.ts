@@ -6,3 +6,6 @@ export { Badge } from './Badge';
 export type { BadgeVariant } from './Badge';
 export { Checkbox } from './Checkbox';
 export { Toggle } from './Toggle';
+export { FormattedText } from './FormattedText';
+export type { FormattedTextProps } from './FormattedText';
+

@@ -73,7 +73,13 @@ export const caseContext = defineType({
   fields: [
     defineField({ name: 'retoEyebrow', title: 'Eyebrow del reto', type: 'string', initialValue: 'Reto' }),
     headingTitleField({ name: 'retoTitle', title: 'Título del reto', initialValue: 'Contexto inicial' }),
-    defineField({ name: 'reto', title: 'Reto', type: 'text', rows: 5 }),
+    defineField({
+      name: 'reto',
+      title: 'Reto',
+      type: 'text',
+      rows: 7,
+      description: 'Soporta formato con Markdown: saltos de párrafo (doble enter), viñetas (- elemento), negritas (**texto**) y enlaces [texto](url).',
+    }),
     defineField({
       name: 'estrategiaEyebrow',
       title: 'Eyebrow de la estrategia',
@@ -86,7 +92,13 @@ export const caseContext = defineType({
       initialValue: 'Servicios aplicados',
     }),
     headingWidthField(),
-    defineField({ name: 'estrategia', title: 'Estrategia', type: 'text', rows: 5 }),
+    defineField({
+      name: 'estrategia',
+      title: 'Estrategia',
+      type: 'text',
+      rows: 7,
+      description: 'Soporta formato con Markdown: saltos de párrafo (doble enter), viñetas (- elemento), negritas (**texto**) y enlaces [texto](url).',
+    }),
     defineField({
       name: 'servicios',
       title: 'Servicios',

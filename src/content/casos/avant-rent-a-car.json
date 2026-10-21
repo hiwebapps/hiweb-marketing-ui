@@ -37,8 +37,9 @@
       "despues": "Interacciones y consumo de contenido registradas el primer año del proyecto"
     }
   ],
-  "reto": "Avant Rent a Car llegó a Hiweb con tres necesidades principales: Mejorar su posicionamiento orgánico en Google, optimizar el retorno de inversión de sus campañas de Google Ads y resolver fallas técnicas del sitio web que afectaban su rendimiento, seguridad, experiencia de usuario y capacidad de conversión.",
-  "estrategia": "Optimización y contenidos: Reestructuración de contenidos, optimización de metadatos, estrategia de blogs y mejoras técnicas a partir de una auditoría SEO para fortalecer visibilidad orgánica. Publicidad estratégica en buscadores: Implementación de campañas de Google Ads en búsqueda y Display, enfocadas en intención de compra y alineadas a servicios de renta de autos. UX y conversión: Rediseño y reestructuración del sitio con enfoque en experiencia de usuario, CTAs claros, navegación intuitiva y funcionamiento óptimo en móvil y desktop.",
+  "reto": "Avant Rent a Car llegó a Hiweb con tres necesidades principales:\n\n- **Posicionamiento orgánico:** Mejorar su visibilidad en Google para captar usuarios de alto valor.\n- **Retorno de inversión:** Optimizar el rendimiento de sus campañas de Google Ads.\n- **Desempeño técnico:** Resolver fallas en el sitio web que afectaban su seguridad, experiencia de usuario y capacidad de conversión.",
+  "estrategia": "- **Optimización y contenidos:** Reestructuración de contenidos, optimización de metadatos, estrategia de blogs y mejoras técnicas a partir de una auditoría SEO para fortalecer visibilidad orgánica.\n\n- **Publicidad estratégica en buscadores:** Implementación de campañas de Google Ads en búsqueda y Display, enfocadas en intención de compra y alineadas a servicios de renta de autos.\n\n- **UX y conversión:** Rediseño y reestructuración del sitio con enfoque en experiencia de usuario, CTAs claros, navegación intuitiva y funcionamiento óptimo en móvil y desktop.",
+
   "fases": [
     {
       "title": "Optimización y contenidos",

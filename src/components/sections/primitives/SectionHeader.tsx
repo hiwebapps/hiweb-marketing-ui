@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Badge, type BadgeVariant } from '../../ui';
+import { Badge, type BadgeVariant, FormattedText } from '../../ui';
 import { HeadingText, headingProps } from './heading';
 
 type SectionHeaderProps = {
@@ -70,7 +70,13 @@ export function SectionHeader({
       </h2>
 
       {description ? (
-        <p className={['mt-4 !text-base md:!text-lg', descColor].join(' ')}>{description}</p>
+        <FormattedText
+          tone={tone}
+          className={['mt-4 !text-base md:!text-lg', descColor].join(' ')}
+          listClassName={tone === 'on-ink' ? 'marker:text-[#bdff01]' : 'marker:text-[#927afe]'}
+        >
+          {description}
+        </FormattedText>
       ) : null}
 
       {actions ? (
