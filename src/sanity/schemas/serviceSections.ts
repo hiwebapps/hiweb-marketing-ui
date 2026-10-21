@@ -22,6 +22,11 @@ const pillarIcons = [
 ];
 
 const serviceIcons = [
+  { title: 'Datos reales (Gráfica)', value: 'chart' },
+  { title: 'Transparencia (Reporte)', value: 'report' },
+  { title: 'Ajustes a tiempo (Cronómetro)', value: 'timer' },
+  { title: 'Un equipo (Ecosistema)', value: 'network' },
+  { title: 'Bilingüe (Globo)', value: 'globe' },
   { title: 'Actividad', value: 'activity' },
   { title: 'Insignia', value: 'badge' },
   { title: 'Chispa', value: 'spark' },

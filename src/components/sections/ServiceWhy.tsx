@@ -54,6 +54,33 @@ const STATS: WhyStat[] = [
   { valor: 1, prefix: '+$', suffix: 'M USD', label: 'invertidos en ads' },
 ];
 
+export function resolveWhyIcon(icon?: string, title?: string): string {
+  if (
+    icon &&
+    [
+      'chart',
+      'report',
+      'timer',
+      'network',
+      'globe',
+      'datosReales',
+      'transparenciaReporte',
+      'ajustesTiempo',
+      'equipoIntegrado',
+      'espanolIngles',
+    ].includes(icon)
+  ) {
+    return icon;
+  }
+  const cleanTitle = (title ?? '').toLowerCase().trim();
+  if (cleanTitle.includes('dato') || cleanTitle.includes('data')) return 'chart';
+  if (cleanTitle.includes('transparencia') || cleanTitle.includes('report')) return 'report';
+  if (cleanTitle.includes('ajuste') || cleanTitle.includes('tiempo') || cleanTitle.includes('time') || cleanTitle.includes('step')) return 'timer';
+  if (cleanTitle.includes('equipo') || cleanTitle.includes('proveedor') || cleanTitle.includes('team') || cleanTitle.includes('adaptaci')) return 'network';
+  if (cleanTitle.includes('inglés') || cleanTitle.includes('ingles') || cleanTitle.includes('español') || cleanTitle.includes('english') || cleanTitle.includes('bilingual')) return 'globe';
+  return icon || 'chart';
+}
+
 function prefersReducedMotion() {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
@@ -184,7 +211,7 @@ export function ServiceWhy({
                   <h3>{card.title}</h3>
                   <p>{card.description}</p>
                   <span className="service-why__mark" aria-hidden="true">
-                    <ServiceIcon name={card.icon} />
+                    <ServiceIcon name={resolveWhyIcon(card.icon, card.title)} />
                   </span>
                 </li>
               ))}

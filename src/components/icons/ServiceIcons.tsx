@@ -1,5 +1,12 @@
 import type { ComponentType, SVGProps } from 'react';
 import { NavIcon } from '../sections/NavIcon';
+import {
+  IconDatosReales,
+  IconTransparenciaReporte,
+  IconAjustesTiempo,
+  IconEquipoIntegrado,
+  IconEspanolIngles,
+} from './RepresentativeServiceIcons';
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -29,20 +36,44 @@ export const SERVICE_ICON_NAMES = [
   'focus',
   'spark',
   'code',
+  'chart',
+  'report',
+  'timer',
+  'network',
+  'globe',
+  'datosReales',
+  'transparenciaReporte',
+  'ajustesTiempo',
+  'equipoIntegrado',
+  'espanolIngles',
 ] as const;
 
 export type ServiceIconName = (typeof SERVICE_ICON_NAMES)[number];
 
-const ICONS: Record<ServiceIconName, ComponentType<IconProps>> = {
+const ICONS: Record<string, ComponentType<IconProps>> = {
+  // Bespoke representative service icons
+  chart: IconDatosReales,
+  datosReales: IconDatosReales,
+  activity: IconDatosReales, // Upgrades heartbeat to analytics chart
+
+  report: IconTransparenciaReporte,
+  transparenciaReporte: IconTransparenciaReporte,
+  badge: IconTransparenciaReporte, // Upgrades sheriff badge to audit report
+
+  timer: IconAjustesTiempo,
+  ajustesTiempo: IconAjustesTiempo,
+
+  network: IconEquipoIntegrado,
+  equipoIntegrado: IconEquipoIntegrado,
+
+  globe: IconEspanolIngles,
+  espanolIngles: IconEspanolIngles,
+
+  // Standard discipline and legacy icons
   video: (props) => (
     <Svg {...props}>
       <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
       <rect x="2" y="6" width="14" height="12" rx="2" />
-    </Svg>
-  ),
-  activity: (props) => (
-    <Svg {...props}>
-      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
     </Svg>
   ),
   users: (props) => (
@@ -58,12 +89,6 @@ const ICONS: Record<ServiceIconName, ComponentType<IconProps>> = {
       <circle cx="12" cy="12" r="10" />
       <circle cx="12" cy="12" r="6" />
       <circle cx="12" cy="12" r="2" />
-    </Svg>
-  ),
-  badge: (props) => (
-    <Svg {...props}>
-      <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-      <path d="m9 12 2 2 4-4" />
     </Svg>
   ),
   box: (props) => (
@@ -92,12 +117,13 @@ const ICONS: Record<ServiceIconName, ComponentType<IconProps>> = {
   ),
 };
 
-export function ServiceIcon({ name, className }: { name: string; className?: string }) {
+export function ServiceIcon({ name, className }: { name?: string; className?: string }) {
+  if (!name) return null;
   if (name.startsWith('http') || name.startsWith('/')) {
     return <img src={name} alt="" className={className} />;
   }
   if (name in ICONS) {
-    const Icon = ICONS[name as ServiceIconName];
+    const Icon = ICONS[name];
     return <Icon className={className} />;
   }
   return <NavIcon name={name} />;
