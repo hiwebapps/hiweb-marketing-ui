@@ -63,3 +63,8 @@ export { HomeAfterHero, HomeBelowFold } from './HomeAfterHero';
 export { WorkPage } from './WorkPage';
 export { ContactPage } from './ContactPage';
 export { SectionsKitPage } from './SectionsKitPage';
+export { InstagramGridFeed } from './InstagramGridFeed';
+export { InstagramPhoneSwitcher } from './InstagramPhoneSwitcher';
+export { MetaAdsShowcase } from './MetaAdsShowcase';
+export { BlogShowcase } from './BlogShowcase';
+

@@ -1,0 +1,17 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { BlogShowcase } from '../../components/sections/BlogShowcase';
+---
+
+<Layout title="Demo: Blog Editorial Showcase — Hiweb Marketing" noindex>
+	<main class="bg-[#0b0b0c] text-white min-h-screen pt-20">
+		<BlogShowcase
+			client:load
+			eyebrow="Autoridad Editorial & Conocimiento de Industria"
+			title="Artículos con datos reales, benchmarks y criterio estratégico"
+			description="Un componente editorial interactivo con tarjeta 'Spotlight', filtros temáticos por industria/servicio y vista rápida (TL;DR) con las conclusiones clave para el negocio."
+		/>
+	</main>
+</Layout>

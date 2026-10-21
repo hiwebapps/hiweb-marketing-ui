@@ -1,0 +1,60 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Laboratorio de Componentes & Demos — Hiweb Marketing" noindex>
+	<main class="bg-[#0b0b0c] text-white min-h-screen py-24 px-6">
+		<div class="max-w-4xl mx-auto">
+			<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-[#bdff01] uppercase tracking-wider mb-6">
+				Design Lab · Hiweb
+			</div>
+			
+			<h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+				Demos de Nuevos Componentes Interactivos
+			</h1>
+			<p class="text-lg text-white/60 mb-12">
+				Nuevos bloques de contenido interactivo construidos con imágenes y datos reales de clientes de Hiweb para presentar prueba social, campañas de paid media y liderazgo editorial.
+			</p>
+
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				{/* Demo 1 */}
+				<a href="/demo/instagram" class="block p-6 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#bdff01]/40 hover:-translate-y-1 transition-all no-underline group">
+					<div class="text-2xl mb-3">📱</div>
+					<h3 class="text-xl font-bold text-white group-hover:text-[#bdff01] transition-colors mb-2">
+						Feed de Instagram
+					</h3>
+					<p class="text-sm text-white/60 leading-relaxed mb-4">
+						2 opciones de feed: Grid Desktop estilo Instagram Web y Mockup de iPhone con selector interactivo de marcas.
+					</p>
+					<span class="text-xs font-semibold text-[#bdff01]">Ver demo →</span>
+				</a>
+
+				{/* Demo 2 */}
+				<a href="/demo/ads-and-blog#meta-ads" class="block p-6 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#bdff01]/40 hover:-translate-y-1 transition-all no-underline group">
+					<div class="text-2xl mb-3">🎯</div>
+					<h3 class="text-xl font-bold text-white group-hover:text-[#bdff01] transition-colors mb-2">
+						Anuncios de Meta Ads
+					</h3>
+					<p class="text-sm text-white/60 leading-relaxed mb-4">
+						Tarjetas de feed patrocinadas de Facebook e Instagram con carrusel deslizable, copy persuasivo y métricas de ROAS/CPL.
+					</p>
+					<span class="text-xs font-semibold text-[#bdff01]">Ver demo →</span>
+				</a>
+
+				{/* Demo 3 */}
+				<a href="/demo/blog" class="block p-6 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#bdff01]/40 hover:-translate-y-1 transition-all no-underline group">
+					<div class="text-2xl mb-3">📰</div>
+					<h3 class="text-xl font-bold text-white group-hover:text-[#bdff01] transition-colors mb-2">
+						Blog Showcase & TL;DR
+					</h3>
+					<p class="text-sm text-white/60 leading-relaxed mb-4">
+						Módulo editorial con Spotlight hero card, filtros por categoría (IA, SEO, B2B) y modal de resumen ejecutivo rápido.
+					</p>
+					<span class="text-xs font-semibold text-[#bdff01]">Ver demo →</span>
+				</a>
+			</div>
+		</div>
+	</main>
+</Layout>

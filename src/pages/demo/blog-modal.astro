@@ -1,0 +1,18 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { BlogShowcase } from '../../components/sections/BlogShowcase';
+---
+
+<Layout title="Demo: Modal TL;DR de Blog — Hiweb Marketing" noindex>
+	<main class="bg-[#0b0b0c] text-white min-h-screen pt-20">
+		<BlogShowcase
+			client:load
+			initialModalArticleId="art-chatgpt-ads"
+			eyebrow="Autoridad Editorial & Conocimiento de Industria"
+			title="Artículos con datos reales, benchmarks y criterio estratégico"
+			description="Vista previa con el modal de resumen ejecutivo (TL;DR) abierto para lectura rápida sin salir de la página."
+		/>
+	</main>
+</Layout>

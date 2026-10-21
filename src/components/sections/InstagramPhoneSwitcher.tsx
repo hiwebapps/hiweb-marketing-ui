@@ -1,0 +1,299 @@
+import { useState } from 'react';
+import { SOCIAL_BRANDS, type BrandProfile, type SocialPost } from './social-feed-data';
+import { Badge, Button } from '../ui';
+import './InstagramPhoneSwitcher.css';
+
+export type InstagramPhoneSwitcherProps = {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+};
+
+export function InstagramPhoneSwitcher({
+  eyebrow = 'En las manos de tu audiencia',
+  title = 'Perfiles cuidados hasta el último píxel',
+  description = 'Haz clic en cada marca para interactuar con su feed en vivo. Diseñamos cuadrículas armónicas, producimos Reels con ritmo y redactamos copys que conectan.',
+}: InstagramPhoneSwitcherProps) {
+  const [selectedBrandIndex, setSelectedBrandIndex] = useState(0);
+  const [selectedPost, setSelectedPost] = useState<SocialPost | null>(null);
+
+  const brand: BrandProfile = SOCIAL_BRANDS[selectedBrandIndex] || SOCIAL_BRANDS[0];
+
+  return (
+    <section className="ig-switcher-section" id="feed-phone-switcher">
+      <div className="ig-switcher-section__inner">
+        {/* Brand Stories Selector */}
+        <div className="ig-story-selector">
+          <p className="ig-story-selector__title">Elige una marca para explorar su feed:</p>
+          <div className="ig-story-selector__track">
+            {SOCIAL_BRANDS.map((item, idx) => {
+              const isActive = idx === selectedBrandIndex;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`ig-story-circle ${isActive ? 'is-active' : ''}`}
+                  onClick={() => {
+                    setSelectedBrandIndex(idx);
+                    setSelectedPost(null);
+                  }}
+                >
+                  <div className="ig-story-circle__ring">
+                    <img src={item.avatar} alt={item.name} className="ig-story-circle__img" />
+                  </div>
+                  <span className="ig-story-circle__name">{item.name.split(' ')[0]}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 2-Column Showcase */}
+        <div className="ig-switcher-layout">
+          {/* Left Column: Context & Metrics */}
+          <div className="ig-switcher-copy">
+            <Badge variant="lime" tone="on-ink">{eyebrow}</Badge>
+            <h2 className="hw-section-title ig-switcher-copy__title">{title}</h2>
+            <p className="ig-switcher-copy__lead">{description}</p>
+
+            {/* Dynamic Brand Insight Card */}
+            <div className="ig-brand-card">
+              <div className="ig-brand-card__header">
+                <img src={brand.avatar} alt="" className="ig-brand-card__avatar" />
+                <div>
+                  <h3 className="ig-brand-card__name">{brand.name}</h3>
+                  <span className="ig-brand-card__handle">@{brand.handle}</span>
+                </div>
+              </div>
+
+              <p className="ig-brand-card__bio">{brand.bio}</p>
+
+              <div className="ig-brand-card__metrics">
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">{brand.stats.followers}</span>
+                  <span className="ig-brand-metric__lbl">Seguidores</span>
+                </div>
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">{brand.stats.posts}</span>
+                  <span className="ig-brand-metric__lbl">Publicaciones</span>
+                </div>
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">
+                    {brand.posts[0]?.outcomeTag || 'Impacto probado'}
+                  </span>
+                  <span className="ig-brand-metric__lbl">Resultado clave</span>
+                </div>
+              </div>
+
+              {brand.posts[0]?.caseSlug && (
+                <Button
+                  href={`/portafolio/${brand.posts[0].caseSlug}`}
+                  variant="secondary"
+                  size="sm"
+                  className="no-underline w-full justify-center mt-4"
+                >
+                  Ver caso de estudio de {brand.name} →
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Right Column: Realistic iPhone Device */}
+          <div className="ig-phone-col">
+            <div className="ig-mockup">
+              {/* Outer Titanium Frame */}
+              <div className="ig-mockup__frame">
+                {/* Screen Bezel */}
+                <div className="ig-mockup__screen">
+                  {/* Dynamic Island */}
+                  <div className="ig-mockup__island">
+                    <span className="ig-mockup__camera" />
+                  </div>
+
+                  {/* Status Bar */}
+                  <div className="ig-status-bar">
+                    <span className="ig-status-bar__time">9:41</span>
+                    <div className="ig-status-bar__icons">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.27 19.55 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4z"/></svg>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="18" height="10" rx="3" fill="none" stroke="currentColor" strokeWidth="2"/><rect x="4" y="9" width="12" height="6" rx="1.5"/><path d="M22 11v2"/></svg>
+                    </div>
+                  </div>
+
+                  {/* Main App Body */}
+                  <div className="ig-app-content">
+                    {/* View A: Profile View */}
+                    {!selectedPost ? (
+                      <div className="ig-app-profile">
+                        {/* Profile Header Bar */}
+                        <div className="ig-app-topbar">
+                          <span className="ig-app-topbar__back">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                          </span>
+                          <span className="ig-app-topbar__user">{brand.handle}</span>
+                          <span className="ig-app-topbar__more">•••</span>
+                        </div>
+
+                        {/* Profile Info */}
+                        <div className="ig-app-info">
+                          <div className="ig-app-info__row">
+                            <div className="ig-app-avatar-ring">
+                              <img src={brand.avatar} alt="" className="ig-app-avatar" />
+                            </div>
+                            <div className="ig-app-stats">
+                              <div className="ig-app-stat">
+                                <strong>{brand.stats.posts}</strong>
+                                <span>posts</span>
+                              </div>
+                              <div className="ig-app-stat">
+                                <strong>{brand.stats.followers}</strong>
+                                <span>seguidores</span>
+                              </div>
+                              <div className="ig-app-stat">
+                                <strong>{brand.stats.following}</strong>
+                                <span>seguidos</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="ig-app-bio">
+                            <h4 className="ig-app-bio__title">{brand.name}</h4>
+                            <p className="ig-app-bio__category">{brand.category}</p>
+                            <p className="ig-app-bio__text">{brand.bio}</p>
+                            {brand.linkText && (
+                              <p className="ig-app-bio__link">🔗 {brand.linkText}</p>
+                            )}
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="ig-app-actions">
+                            <button type="button" className="ig-app-btn ig-app-btn--primary">Seguir</button>
+                            <button type="button" className="ig-app-btn">Mensaje</button>
+                            <button type="button" className="ig-app-btn">Contacto</button>
+                          </div>
+
+                          {/* Story Highlights */}
+                          {brand.highlights.length > 0 && (
+                            <div className="ig-app-highlights">
+                              {brand.highlights.map((h, i) => (
+                                <div key={i} className="ig-app-highlight">
+                                  <div className="ig-app-highlight__circle">
+                                    <img src={h.cover} alt="" />
+                                  </div>
+                                  <span>{h.title}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Tab bar (Grid / Reels) */}
+                          <div className="ig-app-tabs">
+                            <button type="button" className="ig-app-tab is-active" aria-label="Cuadrícula">
+                              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M3 3h7v7H3zm11 0h7v7h-7zm0 11h7v7h-7zM3 14h7v7H3z"/></svg>
+                            </button>
+                            <button type="button" className="ig-app-tab" aria-label="Reels">
+                              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m10 8.5 6 3.5-6 3.5v-7Z" fill="currentColor"/></svg>
+                            </button>
+                          </div>
+
+                          {/* 3x3 Post Grid */}
+                          <div className="ig-app-grid">
+                            {brand.posts.map((post) => (
+                              <button
+                                key={post.id}
+                                type="button"
+                                className="ig-app-grid__item"
+                                onClick={() => setSelectedPost(post)}
+                              >
+                                <img src={post.cover} alt="" />
+                                {post.kind === 'reel' && (
+                                  <span className="ig-app-grid__icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 7.5v9l7-4.5-7-4.5Z"/></svg>
+                                  </span>
+                                )}
+                                {post.kind === 'carousel' && (
+                                  <span className="ig-app-grid__icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="7" y="7" width="12" height="12" rx="2"/><rect x="4" y="4" width="12" height="12" rx="2" fill="currentColor"/></svg>
+                                  </span>
+                                )}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      /* View B: Single Post Inside Phone */
+                      <div className="ig-app-post-view">
+                        <div className="ig-app-topbar">
+                          <button
+                            type="button"
+                            className="ig-app-topbar__back"
+                            onClick={() => setSelectedPost(null)}
+                          >
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                          </button>
+                          <span className="ig-app-topbar__user">Publicación</span>
+                          <span className="ig-app-topbar__more">•••</span>
+                        </div>
+
+                        {/* Post Header */}
+                        <div className="ig-post-head">
+                          <img src={selectedPost.brandAvatar} alt="" className="ig-post-head__avatar" />
+                          <div>
+                            <p className="ig-post-head__user">{selectedPost.brandHandle}</p>
+                            <span className="ig-post-head__cat">{selectedPost.brandCategory}</span>
+                          </div>
+                        </div>
+
+                        {/* Post Media */}
+                        <div className="ig-post-media">
+                          <img src={selectedPost.cover} alt="" />
+                        </div>
+
+                        {/* Post Action Icons */}
+                        <div className="ig-post-bar">
+                          <div className="ig-post-bar__left">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" color="#ff3040"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="m22 2-7 20-4-9-9-4Z"/></svg>
+                          </div>
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+
+                        {/* Caption & Stats */}
+                        <div className="ig-post-copy">
+                          {selectedPost.stats.likes && (
+                            <p className="ig-post-likes">Les gusta a <strong>{selectedPost.stats.likes} personas</strong></p>
+                          )}
+                          <p className="ig-post-caption">
+                            <strong>{selectedPost.brandHandle}</strong> {selectedPost.caption}
+                          </p>
+                          <button
+                            type="button"
+                            className="ig-post-back-btn"
+                            onClick={() => setSelectedPost(null)}
+                          >
+                            ← Volver al perfil
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Instagram Bottom Tab Bar */}
+                    <div className="ig-app-bottombar" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/></svg>
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                      <img src={brand.avatar} alt="" className="ig-app-bottombar__avatar" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

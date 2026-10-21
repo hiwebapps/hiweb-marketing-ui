@@ -1,0 +1,80 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { MetaAdsShowcase } from '../../components/sections/MetaAdsShowcase';
+import { BlogShowcase } from '../../components/sections/BlogShowcase';
+---
+
+<Layout title="Demo: Componentes de Meta Ads y Blog Editorial — Hiweb Marketing" noindex>
+	<main class="bg-[#0b0b0c] text-white min-h-screen">
+		{/* Intro Header */}
+		<header class="max-w-[1240px] mx-auto pt-24 pb-12 px-6 border-b border-white/10">
+			<div class="flex items-center gap-3 mb-4 flex-wrap">
+				<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-[#bdff01] uppercase tracking-wider">
+					Laboratorio de Diseño · Hiweb
+				</span>
+				<a href="/demo/instagram" class="text-xs text-white/50 hover:text-white transition-colors">
+					← Ver Demos de Instagram Feed
+				</a>
+			</div>
+			
+			<h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-white">
+				Showcase de Anuncios en Meta & Blog Editorial
+			</h1>
+			<p class="mt-4 text-lg text-white/60 max-w-3xl leading-relaxed">
+				Dos nuevos componentes diseñados con datos e imágenes reales del sitio para presentar autoridad en paid media (Facebook/Instagram Ads con ROAS real) y liderazgo de opinión (artículos con resumen ejecutivo TL;DR).
+			</p>
+
+			<div class="flex flex-wrap gap-4 mt-8">
+				<a href="#meta-ads" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-white/90 transition-all no-underline">
+					Ver Anuncios de Meta (Paid Media) ↓
+				</a>
+				<a href="#blog-hub" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 text-white font-semibold text-sm border border-white/15 hover:bg-white/20 transition-all no-underline">
+					Ver Blog Editorial (Knowledge Hub) ↓
+				</a>
+			</div>
+		</header>
+
+		{/* Componente 1: Meta Ads Showcase */}
+		<section id="meta-ads" class="scroll-mt-20">
+			<div class="max-w-[1240px] mx-auto pt-14 px-6">
+				<div class="flex items-center gap-3">
+					<span class="text-xs font-bold uppercase tracking-widest text-[#1877f2] bg-[#1877f2]/15 px-3 py-1 rounded-md border border-[#1877f2]/30">
+						Componente 1 · Meta Ads Showcase
+					</span>
+					<span class="text-xs text-white/40">Ideal para páginas de servicio: Paid Media, Facebook Ads, Campañas de Tráfico</span>
+				</div>
+			</div>
+			
+			<MetaAdsShowcase
+				client:load
+				eyebrow="Paid Media & Creatividad de Conversión"
+				title="Anuncios en Meta estructurados para generar retorno medible"
+				description="Simulación auténtica de formatos de feed con copy de respuesta directa, creativos reales de clientes y badges de retorno (ROAS, CPL y volumen de conversiones)."
+			/>
+		</section>
+
+		{/* Divider */}
+		<div class="max-w-[1240px] mx-auto my-6 border-t border-dashed border-white/15"></div>
+
+		{/* Componente 2: Blog Showcase */}
+		<section id="blog-hub" class="scroll-mt-20">
+			<div class="max-w-[1240px] mx-auto pt-14 px-6">
+				<div class="flex items-center gap-3">
+					<span class="text-xs font-bold uppercase tracking-widest text-[#bdff01] bg-[#bdff01]/15 px-3 py-1 rounded-md border border-[#bdff01]/30">
+						Componente 2 · Blog Editorial & Knowledge Hub
+					</span>
+					<span class="text-xs text-white/40">Ideal para páginas de servicio, industrias B2B o el home para posicionar autoridad de marca</span>
+				</div>
+			</div>
+
+			<BlogShowcase
+				client:load
+				eyebrow="Autoridad de Marca & Criterio Estratégico"
+				title="Artículos con datos duros, benchmarks y takeaways accionables"
+				description="Un formato editorial contemporáneo con tarjeta destacada 'Spotlight', filtros temáticos y vista rápida ejecutiva (TL;DR) para captar la atención de directores y gerentes de marketing."
+			/>
+		</section>
+	</main>
+</Layout>
