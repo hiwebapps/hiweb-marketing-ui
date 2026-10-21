@@ -109,7 +109,8 @@
   animation-delay: -12s; /* 50% phase offset creates a natural, staggered rhythm */
 }
 
-.service-why__col:hover .service-why__group {
+.service-why__stage:hover .service-why__group,
+.service-why__viewport:hover .service-why__group {
   animation-play-state: paused;
 }
 
