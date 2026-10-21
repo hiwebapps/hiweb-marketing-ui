@@ -54,7 +54,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'spark',
         accent: 'cyan',
         title: 'SEO y AEO en una sola estrategia.',
         description: 'Optimizamos cada página para que tu marca se posicione en los resultados de Google y sea citada en respuestas de Inteligencia Artificial.',
@@ -70,7 +70,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'code',
         accent: 'purple',
         title: 'Resolución técnica directa.',
         description: 'Si el sitio web presenta problemas de velocidad o indexación, nuestro equipo de desarrollo los atiende directamente en el código.',
@@ -78,7 +78,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'target',
         accent: 'lime',
         title: 'Estrategia enfocada en retorno de inversión.',
         description: 'Priorizamos términos de búsqueda con intención comercial para que el crecimiento de tráfico orgánico se traduzca en prospectos calificados y ventas.',
@@ -86,7 +86,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'code',
         accent: 'green',
         title: 'Arquitectura técnica limpia.',
         description: 'Diseñamos la estructura de URLs, el enlazado interno y los Core Web Vitals para que los motores de búsqueda rastreen el sitio sin fricción.',
@@ -94,7 +94,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'search',
         accent: 'cyan',
         title: 'Contenido enfocado en intención comercial.',
         description: 'Redactamos y estructuramos páginas pensadas para responder las consultas de prospectos listos para contratar tus servicios.',
@@ -104,7 +104,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'spark',
         accent: 'cyan',
         title: 'SEO and AEO in one strategy.',
         description: 'We structure and optimize every page so your brand ranks in Google search results and earns citations across AI engines.',
@@ -120,7 +120,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'code',
         accent: 'purple',
         title: 'Direct technical resolution.',
         description: 'If your site experiences speed or indexing bottlenecks, our development team resolves them directly in the codebase.',
@@ -128,7 +128,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'target',
         accent: 'lime',
         title: 'Revenue-focused keyword strategy.',
         description: 'We prioritize commercial-intent search terms so organic visibility translates directly into qualified inquiries and measurable revenue.',
@@ -136,7 +136,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'code',
         accent: 'green',
         title: 'Clean technical architecture.',
         description: 'We engineer URL hierarchy, internal links, and Core Web Vitals so search engines can crawl and index your site efficiently.',
@@ -144,7 +144,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'search',
         accent: 'cyan',
         title: 'Commercial-intent content.',
         description: 'We research, write, and structure pages designed to capture queries from high-intent prospects seeking your services.',
@@ -188,7 +188,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'search',
         accent: 'green',
         title: 'Control de términos de búsqueda.',
         description: 'Monitoreamos las consultas de forma continua e incorporamos palabras clave negativas para concentrar la inversión en tráfico calificado.',
@@ -196,7 +196,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'code',
         accent: 'orange',
         title: 'Páginas de destino especializadas.',
         description: 'Desarrollamos landing pages específicas para cada grupo de anuncios con el objetivo de elevar la tasa de contacto y calificación.',
@@ -238,7 +238,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'search',
         accent: 'green',
         title: 'Active search term monitoring.',
         description: 'We actively audit search queries and add negative keywords to ensure ad spend stays focused on qualified commercial searches.',
@@ -246,7 +246,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'code',
         accent: 'orange',
         title: 'Dedicated landing pages.',
         description: 'We build dedicated landing pages for each campaign segment to lift conversion rates and lead quality.',
@@ -258,7 +258,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'target',
         accent: 'cyan',
         title: 'Enfoque en costo de adquisición.',
         description: 'Calibramos la segmentación y el presupuesto diario para conseguir prospectos calificados y ventas al menor costo posible.',
@@ -266,7 +266,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'shield',
         accent: 'orange',
         title: 'Facturación directa en la plataforma.',
         description: 'Configuramos la inversión para que se facture directamente a tu cuenta comercial de Meta, garantizando total propiedad y visibilidad de tus fondos.',
@@ -282,7 +282,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'palette',
         accent: 'lime',
         title: 'Diseño y análisis en el mismo equipo.',
         description: 'Nuestro equipo creativo evalúa semanalmente las métricas de respuesta para actualizar imágenes, videos y textos según el rendimiento real.',
@@ -308,7 +308,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'target',
         accent: 'cyan',
         title: 'Focus on acquisition cost.',
         description: 'We calibrate daily audience targeting and budgets to generate qualified leads and sales at the lowest possible cost.',
@@ -316,7 +316,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'shield',
         accent: 'orange',
         title: 'Direct platform billing.',
         description: 'We configure media billing directly within your Meta business account, ensuring full client ownership and visibility over ad spend.',
@@ -332,7 +332,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'palette',
         accent: 'lime',
         title: 'Integrated design and analytics.',
         description: 'Our creative team reviews campaign data weekly to produce and iterate visuals, video formats, and copy based on conversion performance.',
@@ -376,7 +376,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'palette',
         accent: 'purple',
         title: 'Producción de contenido integral.',
         description: 'Nos encargamos de la conceptualización, el diseño gráfico, la fotografía y la edición de video para cuidar la coherencia de tu marca.',
@@ -392,7 +392,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'video',
         accent: 'green',
         title: 'Contenido en video vertical.',
         description: 'Diseñamos y editamos videos para Reels y TikTok pensados para captar atención y explicar tus servicios de forma clara y atractiva.',
@@ -400,7 +400,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'chat',
         accent: 'orange',
         title: 'Tono de comunicación definido.',
         description: 'Redactamos los textos de cada publicación siguiendo la personalidad y el tono institucional de tu empresa en todas las plataformas.',
@@ -426,7 +426,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'palette',
         accent: 'purple',
         title: 'End-to-end content production.',
         description: 'We manage the full creative pipeline—concept development, graphic design, photography, and video editing—to ensure brand consistency.',
@@ -442,7 +442,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'video',
         accent: 'green',
         title: 'Short-form vertical video.',
         description: 'We script and edit videos for Reels and TikTok designed to grab attention and explain your services clearly.',
@@ -450,7 +450,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'chat',
         accent: 'orange',
         title: 'Defined brand voice.',
         description: 'We write captions and responses tailored to your company\'s tone and brand guidelines across every digital touchpoint.',
@@ -462,7 +462,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'code',
         accent: 'cyan',
         title: 'Buenas prácticas de SEO en el código.',
         description: 'Configuramos la estructura semántica, los metadatos, los esquemas de datos y el mapa del sitio desde el lanzamiento para facilitar el posicionamiento.',
@@ -470,7 +470,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'target',
         accent: 'orange',
         title: 'Estructura orientada a la interacción.',
         description: 'Diseñamos cada sección para resolver inquietudes frecuentes de los visitantes y canalizarlos de forma directa hacia llamadas a la acción claras.',
@@ -486,7 +486,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'users',
         accent: 'lime',
         title: 'Capacitación para autogestión de contenidos.',
         description: 'Capacitamos y entregamos guías a tu equipo para que puedan actualizar textos, publicar artículos y administrar páginas con total independencia.',
@@ -494,7 +494,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'timer',
         accent: 'green',
         title: 'Velocidad de carga optimizada.',
         description: 'Construimos sitios ligeros con compresión de recursos y código limpio para garantizar tiempos de respuesta rápidos en cualquier dispositivo.',
@@ -502,7 +502,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'code',
         accent: 'purple',
         title: 'Diseño responsivo para móviles.',
         description: 'Adaptamos la navegación, los formularios y la jerarquía visual para que la experiencia de consulta sea fluida tanto en teléfonos como en computadoras.',
@@ -512,7 +512,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'code',
         accent: 'cyan',
         title: 'SEO best practices in code.',
         description: 'We implement semantic HTML, metadata, structured schema, and sitemaps directly in the codebase before launch to support search rankings.',
@@ -520,7 +520,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'target',
         accent: 'orange',
         title: 'Interaction-focused structure.',
         description: 'We architect each page section to answer common prospect questions and guide visitors smoothly toward direct points of contact.',
@@ -536,7 +536,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'users',
         accent: 'lime',
         title: 'Self-managed content enablement.',
         description: 'We train your staff and provide documentation so your team can edit copy, publish articles, and manage pages independently.',
@@ -544,7 +544,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'timer',
         accent: 'green',
         title: 'Optimized loading speed.',
         description: 'We build lightweight sites with compressed assets and clean code to ensure fast loading speeds on any network and device.',
@@ -552,7 +552,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'code',
         accent: 'purple',
         title: 'Responsive mobile design.',
         description: 'We calibrate navigation, form elements, and visual hierarchy for effortless reading and interaction across smartphones and desktops.',
@@ -564,7 +564,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'cart',
         accent: 'cyan',
         title: 'Experiencia de compra optimizada para móviles.',
         description: 'Diseñamos la navegación del catálogo, los filtros y la pantalla de pago pensando en la comodidad del usuario al comprar desde un smartphone.',
@@ -572,7 +572,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'shield',
         accent: 'orange',
         title: 'Configuración técnica completa.',
         description: 'Dejamos probadas y listas las pasarelas de pago, los métodos de envío, los impuestos y las herramientas de analítica antes de abrir la tienda.',
@@ -588,7 +588,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'users',
         accent: 'lime',
         title: 'Capacitación para administración de pedidos.',
         description: 'Preparamos a tu personal con sesiones prácticas para dar de alta productos, ajustar inventarios y procesar pedidos de manera autónoma.',
@@ -596,7 +596,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'cart',
         accent: 'green',
         title: 'Proceso de pago simplificado.',
         description: 'Configuramos flujos de compra breves, métodos de pago locales y secuencias automatizadas para recuperar carritos que quedaron inconclusos.',
@@ -614,7 +614,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'cart',
         accent: 'cyan',
         title: 'Mobile-optimized shopping experience.',
         description: 'We design catalog browsing, product filtering, and payment screens specifically for a seamless thumb-first mobile shopping experience.',
@@ -622,7 +622,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'shield',
         accent: 'orange',
         title: 'Complete technical setup.',
         description: 'We test and verify payment gateways, shipping rules, tax calculations, and transaction tracking before launching your store.',
@@ -638,7 +638,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'users',
         accent: 'lime',
         title: 'Order management training.',
         description: 'We provide hands-on training for your staff to manage product listings, inventory levels, and order fulfillment independently.',
@@ -646,7 +646,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'cart',
         accent: 'green',
         title: 'Streamlined checkout process.',
         description: 'We implement streamlined checkout flows, trusted payment options, and automated abandoned cart recovery sequences out of the box.',
@@ -674,7 +674,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'search',
         accent: 'orange',
         title: 'Artículos estructurados para búsqueda y consulta.',
         description: 'Redactamos y estructuramos contenidos exhaustivos para responder dudas clave del sector y facilitar su citación en Google y plataformas de IA.',
@@ -682,7 +682,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'target',
         accent: 'purple',
         title: 'Metodología adaptada a ventas B2B.',
         description: 'Elaboramos materiales comparativos y técnicos pensados para respaldar procesos comerciales que involucran a múltiples tomadores de decisión.',
@@ -698,7 +698,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'palette',
         accent: 'green',
         title: 'Recursos descargables especializados.',
         description: 'Desarrollamos guías técnicas, calculadoras y casos de estudio con valor práctico para directivos y responsables de compra.',
@@ -706,7 +706,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'users',
         accent: 'cyan',
         title: 'Clasificación y seguimiento de prospectos.',
         description: 'Configuramos secuencias automatizadas de correo para nutrir y calificar a los prospectos según su sector e interés antes del contacto comercial.',
@@ -724,7 +724,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'search',
         accent: 'orange',
         title: 'Search-structured articles.',
         description: 'We write and structure in-depth resources to answer industry questions and facilitate visibility across Google and AI search engines.',
@@ -732,7 +732,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'target',
         accent: 'purple',
         title: 'B2B-focused methodology.',
         description: 'We develop technical documentation and comparative guides designed to support complex B2B sales cycles with multiple stakeholders.',
@@ -748,7 +748,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'palette',
         accent: 'green',
         title: 'Specialized downloadable resources.',
         description: 'We develop practical technical whitepapers, calculators, and verified case studies tailored to the needs of business decision-makers.',
@@ -756,7 +756,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'users',
         accent: 'cyan',
         title: 'Lead scoring and automated follow-up.',
         description: 'We configure automated email workflows to nurture and score leads based on industry and interest level prior to sales engagement.',
@@ -768,7 +768,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'target',
         accent: 'cyan',
         title: 'Estrategia previa al diseño.',
         description: 'Investigamos y definimos el posicionamiento comercial, la propuesta de valor y los atributos de la marca antes de comenzar la etapa visual.',
@@ -776,7 +776,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'palette',
         accent: 'orange',
         title: 'Sistemas visuales para entornos digitales.',
         description: 'Creamos logotipos, tipografías y paletas cromáticas diseñados para mantener nitidez y legibilidad tanto en pantallas como en soportes físicos.',
@@ -784,7 +784,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'code',
         accent: 'purple',
         title: 'Plantillas para uso diario.',
         description: 'Entregamos formatos listos para presentaciones corporativas, documentos y redes sociales para que tu equipo aplique la marca con consistencia.',
@@ -792,7 +792,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'users',
         accent: 'lime',
         title: 'Proceso de selección colaborativo.',
         description: 'Presentamos rutas visuales diferenciadas y sustentadas en objetivos de negocio para evaluar y definir juntos la identidad definitiva.',
@@ -800,7 +800,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'chat',
         accent: 'green',
         title: 'Guía de tono y redacción.',
         description: 'Establecemos lineamientos de lenguaje, vocabulario y ejemplos prácticos para que las comunicaciones escritas reflejen siempre la misma voz.',
@@ -808,7 +808,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'report',
         accent: 'cyan',
         title: 'Manual de identidad accesible.',
         description: 'Ponemos a tu disposición un repositorio digital con normativas de uso y enlaces de descarga de todos los recursos gráficos de la marca.',
@@ -818,7 +818,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'target',
         accent: 'cyan',
         title: 'Strategy before visual design.',
         description: 'We analyze and define your commercial positioning, value proposition, and brand attributes before commencing visual identity work.',
@@ -826,7 +826,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'palette',
         accent: 'orange',
         title: 'Visual systems for digital environments.',
         description: 'We craft logos, typography, and color palettes engineered for clear legibility across digital screens and physical touchpoints.',
@@ -834,7 +834,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'code',
         accent: 'purple',
         title: 'Practical day-to-day templates.',
         description: 'We deliver ready-to-use presentation decks, document templates, and social media formats so your team can deploy the brand consistently.',
@@ -842,7 +842,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'users',
         accent: 'lime',
         title: 'Collaborative selection process.',
         description: 'We present distinct creative directions grounded in strategic business goals to review, test, and refine together.',
@@ -850,7 +850,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'chat',
         accent: 'green',
         title: 'Voice and writing guidelines.',
         description: 'We establish verbal guidelines, vocabulary principles, and practical copy examples to ensure consistent messaging across all communications.',
@@ -858,7 +858,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'report',
         accent: 'cyan',
         title: 'Accessible brand guidelines.',
         description: 'We host accessible cloud documentation with clear usage rules and download links for all your brand\'s visual assets.',
@@ -870,7 +870,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'chat',
         accent: 'cyan',
         title: 'Atención profesional con criterios claros.',
         description: 'Gestionamos las respuestas siguiendo el protocolo institucional de tu empresa y canalizamos oportunamente las dudas técnicas o complejas.',
@@ -894,7 +894,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'shield',
         accent: 'lime',
         title: 'Protocolo para atención de incidentes.',
         description: 'Aplicamos lineamientos aprobados para responder a quejas o inconformidades con objetividad, rapidez y respeto por la imagen de tu empresa.',
@@ -902,7 +902,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'users',
         accent: 'green',
         title: 'Canalización directa de prospectos.',
         description: 'Turnamos las solicitudes de cotización o disponibilidad directamente a tu equipo de ventas a través de WhatsApp o tu sistema CRM.',
@@ -910,7 +910,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'timer',
         accent: 'purple',
         title: 'Horarios de atención establecidos.',
         description: 'Mantenemos cobertura en los horarios de mayor actividad de tu comunidad para proporcionar información en el momento oportuno.',
@@ -920,7 +920,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'chat',
         accent: 'cyan',
         title: 'Professional moderation with clear protocols.',
         description: 'We manage audience interactions according to your company\'s guidelines and route technical or specialized inquiries promptly.',
@@ -944,7 +944,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'shield',
         accent: 'lime',
         title: 'Incident response protocol.',
         description: 'We apply pre-approved guidelines to address customer complaints or sensitive feedback promptly, objectively, and professionally.',
@@ -952,7 +952,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'users',
         accent: 'green',
         title: 'Direct sales inquiry routing.',
         description: 'We route pricing and sales inquiries straight to your sales representatives via WhatsApp or your CRM.',
@@ -960,7 +960,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'timer',
         accent: 'purple',
         title: 'Dedicated coverage hours.',
         description: 'We maintain active inbox coverage during your audience\'s peak activity hours to ensure timely customer responses.',
@@ -980,7 +980,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'code',
         accent: 'orange',
         title: 'Desarrollo de integraciones a la medida.',
         description: 'Desarrollamos enlaces entre tu CRM, formularios web, canales de chat y bases de datos según las necesidades operativas de tu empresa.',
@@ -988,7 +988,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'users',
         accent: 'purple',
         title: 'Acompañamiento en la adopción.',
         description: 'Brindamos capacitación práctica y soporte continuo a tu equipo comercial para asegurar que el sistema se integre a su rutina de trabajo.',
@@ -1004,7 +1004,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'chat',
         accent: 'green',
         title: 'Alertas automáticas para vendedores.',
         description: 'Programamos notificaciones automáticas vía WhatsApp o correo electrónico para avisar a tu equipo comercial en cuanto entra una solicitud prioritaria.',
@@ -1012,7 +1012,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'shield',
         accent: 'cyan',
         title: 'Mantenimiento y depuración de contactos.',
         description: 'Aplicamos rutinas para detectar registros duplicados, verificar datos de contacto y organizar la base de clientes por segmento o sector.',
@@ -1030,7 +1030,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-2',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'code',
         accent: 'orange',
         title: 'Custom workflow integrations.',
         description: 'We build custom integrations connecting your CRM, web forms, messaging platforms, and internal databases to match your workflow.',
@@ -1038,7 +1038,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'users',
         accent: 'purple',
         title: 'User onboarding and adoption support.',
         description: 'We provide practical user training and ongoing support to ensure your sales team adopts and leverages the system seamlessly.',
@@ -1054,7 +1054,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'chat',
         accent: 'green',
         title: 'Automated sales alerts.',
         description: 'We program automated WhatsApp or email alerts to notify your sales reps the moment a high-priority prospect submits an inquiry.',
@@ -1062,7 +1062,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'report',
+        icon: 'shield',
         accent: 'cyan',
         title: 'Database hygiene and organization.',
         description: 'We maintain automated rules to identify duplicate contacts, validate emails, and segment your database cleanly by industry or account tier.',
@@ -1074,7 +1074,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'spark',
         accent: 'cyan',
         title: 'Herramientas evaluadas previamente.',
         description: 'Implementamos tecnologías de inteligencia artificial que han demostrado utilidad comprobada en entornos reales de mercadotecnia y ventas.',
@@ -1090,7 +1090,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'users',
         accent: 'purple',
         title: 'Supervisión humana en procesos clave.',
         description: 'Configuramos la tecnología para atender consultas iniciales y transferir de inmediato los casos de asesoría comercial al equipo correspondiente.',
@@ -1106,7 +1106,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'chat',
         accent: 'green',
         title: 'Respuestas basadas en información de tu empresa.',
         description: 'Entrenamos los modelos con tus catálogos, listas de precios y manuales de servicio para garantizar respuestas fieles a tus políticas.',
@@ -1114,7 +1114,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'timer',
         accent: 'cyan',
         title: 'Automatización de tareas repetitivas.',
         description: 'Automatizamos la captura de prospectos, la extracción de datos y la generación de notas para liberar tiempo operativo en tu equipo.',
@@ -1124,7 +1124,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'spark',
         accent: 'cyan',
         title: 'Pre-tested AI solutions.',
         description: 'We deploy AI technologies vetted for measurable utility and stability in real-world marketing and sales workflows.',
@@ -1140,7 +1140,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-3',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'users',
         accent: 'purple',
         title: 'Human oversight in key processes.',
         description: 'We configure assistants to resolve preliminary inquiries and escalate consultative or complex matters directly to your team.',
@@ -1156,7 +1156,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'network',
+        icon: 'chat',
         accent: 'green',
         title: 'Answers grounded in your company data.',
         description: 'We train models using your actual catalogs, pricing policies, and service manuals to ensure accurate, on-brand responses.',
@@ -1164,7 +1164,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'timer',
         accent: 'cyan',
         title: 'Automation of repetitive tasks.',
         description: 'We automate lead logging, data extraction, and call summaries to free up valuable time for your commercial team.',
@@ -1176,7 +1176,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'search',
         accent: 'cyan',
         title: 'Fundamento en intención de búsqueda.',
         description: 'Aprovechamos nuestra experiencia en campañas de Google y Meta para estructurar mensajes dirigidos a usuarios con necesidades puntuales.',
@@ -1200,7 +1200,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'code',
         accent: 'lime',
         title: 'Medición y configuración técnica inicial.',
         description: 'Verificamos parámetros de seguimiento, páginas de destino y captura en CRM antes de poner en marcha la difusión de anuncios.',
@@ -1208,7 +1208,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'chat',
         accent: 'green',
         title: 'Redacción adaptada a formatos de consulta.',
         description: 'Redactamos contenidos claros e informativos pensados para integrarse de forma natural en entornos donde los usuarios buscan respuestas concretas.',
@@ -1216,7 +1216,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'globe',
         accent: 'cyan',
         title: 'Alcance en mercados binacionales.',
         description: 'Gestionamos campañas segmentadas para audiencias en México, Estados Unidos y Canadá que utilizan plataformas de IA para investigar compras.',
@@ -1226,7 +1226,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-1',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'search',
         accent: 'cyan',
         title: 'Grounded in search intent.',
         description: 'We leverage our experience managing search and social campaigns to craft messaging directed at users seeking specific solutions.',
@@ -1250,7 +1250,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-4',
         _type: 'serviceWhyCard',
-        icon: 'timer',
+        icon: 'code',
         accent: 'lime',
         title: 'Technical setup and measurement.',
         description: 'We test and verify tracking parameters, destination pages, and CRM capture workflows prior to launching ad campaigns.',
@@ -1258,7 +1258,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-5',
         _type: 'serviceWhyCard',
-        icon: 'globe',
+        icon: 'chat',
         accent: 'green',
         title: 'Copy adapted for conversational formats.',
         description: 'We craft informative, consultative copy designed to integrate seamlessly into environments where users seek direct answers.',
@@ -1266,7 +1266,7 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
       {
         _key: 'why-6',
         _type: 'serviceWhyCard',
-        icon: 'chart',
+        icon: 'globe',
         accent: 'cyan',
         title: 'Bilingual cross-border reach.',
         description: 'We manage targeted campaigns for audiences across Mexico, the US, and Canada who utilize AI platforms to research purchasing decisions.',

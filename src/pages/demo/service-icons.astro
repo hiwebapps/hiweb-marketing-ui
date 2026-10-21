@@ -8,51 +8,141 @@ import {
   IconAjustesTiempo,
   IconEquipoIntegrado,
   IconEspanolIngles,
+  IconVideoVertical,
+  IconCodigoTecnico,
+  IconDisenoIdentidad,
+  IconMensajesChat,
+  IconTiendaEcommerce,
+  IconSeguridadEscudo,
+  IconBusquedaIntencion,
+  IconObjetivoConversion,
+  IconComunidadUsuarios,
+  IconInteligenciaArtificial,
 } from '../../components/icons/RepresentativeServiceIcons';
 import '../../components/sections/ServiceWhy.css';
 
-// Exact cards in the exact order as displayed on the live service page
-const CARDS = [
+const SHOWCASE_ICONS = [
   {
-    title: 'Ajustes a tiempo.',
-    description:
-      'El plan se mueve cuando cambia el mercado, la plataforma o el objetivo de tu negocio. No esperamos al cierre de mes para corregir.',
-    accent: '#927afe', // purple
-    id: 'ajustes',
+    name: 'Datos Reales (Gráfica)',
+    icon: 'chart',
+    accent: '#01e7ff',
+    component: IconDatosReales,
+    title: 'Planificación guiada por métricas.',
+    description: 'Diseñamos estrategias y calendarios analizando qué formatos generan mayor tracción.',
   },
   {
-    title: 'Datos reales, sin adivinar.',
-    description:
-      'Cada decisión sale de tus resultados y de lo que está haciendo tu competencia.',
-    accent: '#01e7ff', // cyan
-    id: 'datos',
+    name: 'Transparencia (Reporte)',
+    icon: 'report',
+    accent: '#fe621c',
+    component: IconTransparenciaReporte,
+    title: 'Reportes periódicos claros.',
+    description: 'Cada mes te presentamos un informe con el avance en métricas y próximos pasos.',
   },
   {
-    title: 'Transparencia en cada reporte.',
-    description:
-      'Cada mes ves qué hicimos, qué se logró y qué sigue. Si hay inversión en publicidad, la pagas directamente a la plataforma.',
-    accent: '#fe621c', // orange
-    id: 'transparencia',
+    name: 'Ajustes a Tiempo (Cronómetro)',
+    icon: 'timer',
+    accent: '#927afe',
+    component: IconAjustesTiempo,
+    title: 'Velocidad de carga optimizada.',
+    description: 'Optimizamos recursos y código para asegurar tiempos de respuesta inmediatos.',
   },
   {
-    title: 'Un equipo, no cinco proveedores.',
-    description:
-      'SEO, publicidad, redes sociales, sitio web y CRM trabajan hacia el mismo objetivo. Todo lo que tu marca hace en digital habla el mismo idioma.',
-    accent: '#74c465', // green
-    id: 'equipo',
+    name: 'Un Equipo (Ecosistema)',
+    icon: 'network',
+    accent: '#74c465',
+    component: IconEquipoIntegrado,
+    title: 'Estrategia coordinada de canales.',
+    description: 'Conectamos las campañas con la web y los flujos de seguimiento comercial.',
   },
   {
-    title: 'Español e inglés.',
-    description:
-      'Trabajamos con marcas en México, Estados Unidos y Canadá. Cada pieza se escribe para su mercado, no se traduce.',
-    accent: '#01e7ff', // cyan
-    id: 'bilingue',
+    name: 'Bilingüe / Cross-Border (Globo)',
+    icon: 'globe',
+    accent: '#01e7ff',
+    component: IconEspanolIngles,
+    title: 'Campañas en español e inglés.',
+    description: 'Gestionamos cuentas binacionales para México, EE. UU. y Canadá con redacción nativa.',
+  },
+  {
+    name: 'Video Vertical (Reels / TikTok)',
+    icon: 'video',
+    accent: '#74c465',
+    component: IconVideoVertical,
+    title: 'Contenido en video vertical.',
+    description: 'Diseñamos y editamos videos para Reels y TikTok pensados para captar atención.',
+  },
+  {
+    name: 'Código Técnico (Desarrollo Web)',
+    icon: 'code',
+    accent: '#927afe',
+    component: IconCodigoTecnico,
+    title: 'Buenas prácticas de SEO en el código.',
+    description: 'Estructuramos el HTML semántico, etiquetas y arquitectura para indexación limpia.',
+  },
+  {
+    name: 'Diseño e Identidad (Paleta)',
+    icon: 'palette',
+    accent: '#fe621c',
+    component: IconDisenoIdentidad,
+    title: 'Sistemas visuales para entornos digitales.',
+    description: 'Diseñamos logotipos, tipografías y gráficos adaptados a pantallas y redes.',
+  },
+  {
+    name: 'Mensajes y Chat (WhatsApp)',
+    icon: 'chat',
+    accent: '#01e7ff',
+    component: IconMensajesChat,
+    title: 'Atención profesional y respuesta ágil.',
+    description: 'Respondemos consultas en redes y canalizamos prospectos en tiempo y forma.',
+  },
+  {
+    name: 'Tienda y Carrito (E-commerce)',
+    icon: 'cart',
+    accent: '#01e7ff',
+    component: IconTiendaEcommerce,
+    title: 'Experiencia de compra en móviles.',
+    description: 'Diseñamos catálogos y un proceso de checkout ágil para evitar carritos abandonados.',
+  },
+  {
+    name: 'Seguridad y Protección (Escudo)',
+    icon: 'shield',
+    accent: '#fe621c',
+    component: IconSeguridadEscudo,
+    title: 'Facturación directa y seguridad.',
+    description: 'Inversión facturada directamente a tu cuenta comercial con total propiedad de datos.',
+  },
+  {
+    name: 'Búsqueda e Intención (Lupa)',
+    icon: 'search',
+    accent: '#74c465',
+    component: IconBusquedaIntencion,
+    title: 'Control de términos de búsqueda.',
+    description: 'Monitoreamos consultas y agregamos palabras clave negativas para cuidar tu inversión.',
+  },
+  {
+    name: 'Objetivo y Conversión (Diana)',
+    icon: 'target',
+    accent: '#01e7ff',
+    component: IconObjetivoConversion,
+    title: 'Enfoque en costo de adquisición.',
+    description: 'Calibramos la segmentación para conseguir prospectos y ventas al menor costo posible.',
+  },
+  {
+    name: 'Comunidad y Usuarios',
+    icon: 'users',
+    accent: '#927afe',
+    component: IconComunidadUsuarios,
+    title: 'Acompañamiento y capacitación.',
+    description: 'Capacitamos a tu equipo comercial para que aproveche las herramientas en su rutina.',
+  },
+  {
+    name: 'Inteligencia Artificial (Chispa)',
+    icon: 'spark',
+    accent: '#927afe',
+    component: IconInteligenciaArtificial,
+    title: 'Herramientas de IA evaluadas.',
+    description: 'Implementamos tecnologías de IA con utilidad comprobada en mercadotecnia y ventas.',
   },
 ];
-
-// Replicate the infinite loop track from ServiceWhy
-const half = [...CARDS, CARDS[0]];
-const loopCards = [...half, ...half];
 ---
 
 <Layout title="Nuevos Iconos de Servicios — Hiweb Marketing" noindex>
@@ -72,41 +162,37 @@ const loopCards = [...half, ...half];
         </p>
       </div>
 
-      <!-- 1:1 Stage with Fade View (Exact replica of user screenshot) -->
-      <section class="mb-16" id="comparativa">
+      <!-- 15 New Icons Full Grid -->
+      <section class="mb-16" id="catalogo">
         <div class="mb-6">
-          <h2 class="text-xl font-bold text-gray-900">1. Stage 1:1 con tu captura (Con el fade y saturación al 18%)</h2>
+          <h2 class="text-xl font-bold text-gray-900">1. Catálogo Completo de los 15 Iconos Congruentes</h2>
           <p class="text-sm text-gray-500">
-            Fondo original, trazo fino stroke 1.7 sin rellenos, gradiente radial tenue y el efecto de fade superior e inferior.
+            Cada icono corresponde de forma directa y específica a lo que dice su tarjeta (stroke 1.7, trazo sutil al 18% como marca de agua).
           </p>
         </div>
 
-        <div class="max-w-[640px] mx-auto p-6 md:p-8 rounded-3xl border border-gray-200 bg-white shadow-sm">
-          <div class="service-why__stage" style="height: 33rem;">
-            <div
-              class="service-why__viewport"
-              style="height: 100%; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);"
-            >
-              <ul class="service-why__track" style="animation: none; transform: translateY(-16px);">
-                {loopCards.slice(0, 6).map((card) => (
-                  <li
-                    class="service-why__card"
-                    style={`--why-accent: ${card.accent};`}
-                  >
-                    <h3>{card.title}</h3>
-                    <p>{card.description}</p>
-                    <span class="service-why__mark" aria-hidden="true">
-                      {card.id === 'datos' && <IconDatosReales />}
-                      {card.id === 'transparencia' && <IconTransparenciaReporte />}
-                      {card.id === 'ajustes' && <IconAjustesTiempo />}
-                      {card.id === 'equipo' && <IconEquipoIntegrado />}
-                      {card.id === 'bilingue' && <IconEspanolIngles />}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {SHOWCASE_ICONS.map((card) => {
+            const Icon = card.component;
+            return (
+              <div class="flex flex-col gap-2">
+                <div class="text-xs font-semibold text-gray-700 uppercase tracking-wide flex items-center justify-between">
+                  <span>{card.name}</span>
+                  <span class="font-mono text-gray-400 lowercase">{card.icon}</span>
+                </div>
+                <div
+                  class="service-why__card"
+                  style={`--why-accent: ${card.accent}; min-height: 12.5rem; width: 100%;`}
+                >
+                  <h3 class="font-semibold text-gray-900">{card.title}</h3>
+                  <p class="text-sm text-gray-600">{card.description}</p>
+                  <span class="service-why__mark" aria-hidden="true">
+                    <Icon />
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -114,8 +200,8 @@ const loopCards = [...half, ...half];
       <section class="mb-16">
         <div class="flex items-center justify-between mb-6">
           <div>
-            <h2 class="text-xl font-bold text-gray-900">2. Vista Completa de la Sección (Con animación de scroll)</h2>
-            <p class="text-sm text-gray-500">Cómo convive con el título, descripción y métricas de la página del servicio.</p>
+            <h2 class="text-xl font-bold text-gray-900">2. Vista en Escenario Dinámico (Scroll Continuo)</h2>
+            <p class="text-sm text-gray-500">Cómo conviven los nuevos iconos en la marquesina infinita del componente ServiceWhy.</p>
           </div>
           <div class="flex items-center gap-3">
             <button
@@ -135,10 +221,10 @@ const loopCards = [...half, ...half];
             <!-- Left Copy -->
             <div class="service-why__copy">
               <h2 class="service-why__title" style="font-size: 2.5rem; line-height: 1.15;">
-                ¿Por qué elegir a Hiweb como tu Agencia SEO en México?
+                ¿Por qué elegir a Hiweb para tu empresa?
               </h2>
               <p class="service-why__lead">
-                Un partner que piensa en tu negocio, no solo en el servicio que contratas.
+                Un partner estratégico que piensa en tu negocio, no solo en entregables aislados.
               </p>
               <a
                 href="/contacto"
@@ -165,22 +251,21 @@ const loopCards = [...half, ...half];
                 style="height: 100%; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);"
               >
                 <ul id="animated-track" class="service-why__track">
-                  {loopCards.map((card, idx) => (
-                    <li
-                      class="service-why__card"
-                      style={`--why-accent: ${card.accent};`}
-                    >
-                      <h3>{card.title}</h3>
-                      <p>{card.description}</p>
-                      <span class="service-why__mark" aria-hidden="true">
-                        {card.id === 'datos' && <IconDatosReales />}
-                        {card.id === 'transparencia' && <IconTransparenciaReporte />}
-                        {card.id === 'ajustes' && <IconAjustesTiempo />}
-                        {card.id === 'equipo' && <IconEquipoIntegrado />}
-                        {card.id === 'bilingue' && <IconEspanolIngles />}
-                      </span>
-                    </li>
-                  ))}
+                  {[...SHOWCASE_ICONS.slice(0, 8), ...SHOWCASE_ICONS.slice(0, 8)].map((card) => {
+                    const Icon = card.component;
+                    return (
+                      <li
+                        class="service-why__card"
+                        style={`--why-accent: ${card.accent};`}
+                      >
+                        <h3>{card.title}</h3>
+                        <p>{card.description}</p>
+                        <span class="service-why__mark" aria-hidden="true">
+                          <Icon />
+                        </span>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>

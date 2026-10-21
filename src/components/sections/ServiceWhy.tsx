@@ -63,21 +63,50 @@ export function resolveWhyIcon(icon?: string, title?: string): string {
       'timer',
       'network',
       'globe',
+      'video',
+      'code',
+      'palette',
+      'chat',
+      'cart',
+      'shield',
+      'search',
+      'target',
+      'users',
+      'spark',
       'datosReales',
       'transparenciaReporte',
       'ajustesTiempo',
       'equipoIntegrado',
       'espanolIngles',
+      'videoVertical',
+      'codigoTecnico',
+      'disenoIdentidad',
+      'mensajesChat',
+      'tiendaEcommerce',
+      'seguridadEscudo',
+      'busquedaIntencion',
+      'objetivoConversion',
+      'comunidadUsuarios',
+      'inteligenciaArtificial',
     ].includes(icon)
   ) {
     return icon;
   }
   const cleanTitle = (title ?? '').toLowerCase().trim();
-  if (cleanTitle.includes('dato') || cleanTitle.includes('data')) return 'chart';
-  if (cleanTitle.includes('transparencia') || cleanTitle.includes('report')) return 'report';
-  if (cleanTitle.includes('ajuste') || cleanTitle.includes('tiempo') || cleanTitle.includes('time') || cleanTitle.includes('step')) return 'timer';
-  if (cleanTitle.includes('equipo') || cleanTitle.includes('proveedor') || cleanTitle.includes('team') || cleanTitle.includes('adaptaci')) return 'network';
-  if (cleanTitle.includes('inglés') || cleanTitle.includes('ingles') || cleanTitle.includes('español') || cleanTitle.includes('english') || cleanTitle.includes('bilingual')) return 'globe';
+  if (cleanTitle.includes('video') || cleanTitle.includes('reels') || cleanTitle.includes('tiktok')) return 'video';
+  if (cleanTitle.includes('código') || cleanTitle.includes('codigo') || cleanTitle.includes('code') || cleanTitle.includes('técnic') || cleanTitle.includes('tecnic') || cleanTitle.includes('desarrollo') || cleanTitle.includes('arquitectura')) return 'code';
+  if (cleanTitle.includes('diseño') || cleanTitle.includes('diseno') || cleanTitle.includes('design') || cleanTitle.includes('brand') || cleanTitle.includes('visual')) return 'palette';
+  if (cleanTitle.includes('mensaje') || cleanTitle.includes('chat') || cleanTitle.includes('whatsapp') || cleanTitle.includes('conversaci')) return 'chat';
+  if (cleanTitle.includes('tienda') || cleanTitle.includes('store') || cleanTitle.includes('carrito') || cleanTitle.includes('cart') || cleanTitle.includes('compra') || cleanTitle.includes('checkout') || cleanTitle.includes('ecommerce')) return 'cart';
+  if (cleanTitle.includes('seguridad') || cleanTitle.includes('security') || cleanTitle.includes('respaldo') || cleanTitle.includes('backup') || cleanTitle.includes('protocolo')) return 'shield';
+  if (cleanTitle.includes('búsqueda') || cleanTitle.includes('busqueda') || cleanTitle.includes('search') || cleanTitle.includes('palabra') || cleanTitle.includes('keyword')) return 'search';
+  if (cleanTitle.includes('objetivo') || cleanTitle.includes('target') || cleanTitle.includes('retorno') || cleanTitle.includes('roi') || cleanTitle.includes('adquisición') || cleanTitle.includes('adquisicion') || cleanTitle.includes('costo')) return 'target';
+  if (cleanTitle.includes('comunidad') || cleanTitle.includes('community') || cleanTitle.includes('usuario') || cleanTitle.includes('equipo') || cleanTitle.includes('team') || cleanTitle.includes('vendedor')) return 'users';
+  if (cleanTitle.includes('ia') || cleanTitle.includes('inteligencia') || cleanTitle.includes('ai') || cleanTitle.includes('spark')) return 'spark';
+  if (cleanTitle.includes('dato') || cleanTitle.includes('data') || cleanTitle.includes('métrica') || cleanTitle.includes('metrica')) return 'chart';
+  if (cleanTitle.includes('transparencia') || cleanTitle.includes('report') || cleanTitle.includes('informe')) return 'report';
+  if (cleanTitle.includes('ajuste') || cleanTitle.includes('tiempo') || cleanTitle.includes('time') || cleanTitle.includes('velocidad') || cleanTitle.includes('horario')) return 'timer';
+  if (cleanTitle.includes('inglés') || cleanTitle.includes('ingles') || cleanTitle.includes('español') || cleanTitle.includes('english') || cleanTitle.includes('bilingual') || cleanTitle.includes('binacional') || cleanTitle.includes('internacional')) return 'globe';
   return icon || 'chart';
 }
 

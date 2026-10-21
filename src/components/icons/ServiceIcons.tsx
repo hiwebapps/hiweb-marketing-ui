@@ -6,6 +6,16 @@ import {
   IconAjustesTiempo,
   IconEquipoIntegrado,
   IconEspanolIngles,
+  IconVideoVertical,
+  IconCodigoTecnico,
+  IconDisenoIdentidad,
+  IconMensajesChat,
+  IconTiendaEcommerce,
+  IconSeguridadEscudo,
+  IconBusquedaIntencion,
+  IconObjetivoConversion,
+  IconComunidadUsuarios,
+  IconInteligenciaArtificial,
 } from './RepresentativeServiceIcons';
 
 type IconProps = SVGProps<SVGSVGElement>;
@@ -41,11 +51,26 @@ export const SERVICE_ICON_NAMES = [
   'timer',
   'network',
   'globe',
+  'palette',
+  'chat',
+  'cart',
+  'shield',
+  'search',
   'datosReales',
   'transparenciaReporte',
   'ajustesTiempo',
   'equipoIntegrado',
   'espanolIngles',
+  'videoVertical',
+  'codigoTecnico',
+  'disenoIdentidad',
+  'mensajesChat',
+  'tiendaEcommerce',
+  'seguridadEscudo',
+  'busquedaIntencion',
+  'objetivoConversion',
+  'comunidadUsuarios',
+  'inteligenciaArtificial',
 ] as const;
 
 export type ServiceIconName = (typeof SERVICE_ICON_NAMES)[number];
@@ -54,11 +79,11 @@ const ICONS: Record<string, ComponentType<IconProps>> = {
   // Bespoke representative service icons
   chart: IconDatosReales,
   datosReales: IconDatosReales,
-  activity: IconDatosReales, // Upgrades heartbeat to analytics chart
+  activity: IconDatosReales,
 
   report: IconTransparenciaReporte,
   transparenciaReporte: IconTransparenciaReporte,
-  badge: IconTransparenciaReporte, // Upgrades sheriff badge to audit report
+  badge: IconTransparenciaReporte,
 
   timer: IconAjustesTiempo,
   ajustesTiempo: IconAjustesTiempo,
@@ -69,28 +94,37 @@ const ICONS: Record<string, ComponentType<IconProps>> = {
   globe: IconEspanolIngles,
   espanolIngles: IconEspanolIngles,
 
-  // Standard discipline and legacy icons
-  video: (props) => (
-    <Svg {...props}>
-      <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
-      <rect x="2" y="6" width="14" height="12" rx="2" />
-    </Svg>
-  ),
-  users: (props) => (
-    <Svg {...props}>
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </Svg>
-  ),
-  target: (props) => (
-    <Svg {...props}>
-      <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="12" r="6" />
-      <circle cx="12" cy="12" r="2" />
-    </Svg>
-  ),
+  video: IconVideoVertical,
+  videoVertical: IconVideoVertical,
+
+  code: IconCodigoTecnico,
+  codigoTecnico: IconCodigoTecnico,
+
+  palette: IconDisenoIdentidad,
+  disenoIdentidad: IconDisenoIdentidad,
+
+  chat: IconMensajesChat,
+  mensajesChat: IconMensajesChat,
+
+  cart: IconTiendaEcommerce,
+  tiendaEcommerce: IconTiendaEcommerce,
+
+  shield: IconSeguridadEscudo,
+  seguridadEscudo: IconSeguridadEscudo,
+
+  search: IconBusquedaIntencion,
+  busquedaIntencion: IconBusquedaIntencion,
+
+  target: IconObjetivoConversion,
+  objetivoConversion: IconObjetivoConversion,
+
+  users: IconComunidadUsuarios,
+  comunidadUsuarios: IconComunidadUsuarios,
+
+  spark: IconInteligenciaArtificial,
+  inteligenciaArtificial: IconInteligenciaArtificial,
+
+  // Standard legacy geometry
   box: (props) => (
     <Svg {...props}>
       <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
@@ -102,17 +136,6 @@ const ICONS: Record<string, ComponentType<IconProps>> = {
     <Svg {...props}>
       <circle cx="12" cy="12" r="10" />
       <circle cx="12" cy="12" r="4" />
-    </Svg>
-  ),
-  spark: (props) => (
-    <Svg {...props}>
-      <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
-    </Svg>
-  ),
-  code: (props) => (
-    <Svg {...props}>
-      <polyline points="16 18 22 12 16 6" />
-      <polyline points="8 6 2 12 8 18" />
     </Svg>
   ),
 };
