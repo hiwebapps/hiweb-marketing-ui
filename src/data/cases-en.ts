@@ -76,8 +76,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Total engagement and content interactions logged during the first full year of optimization.',
       },
     ],
-    reto: 'Avant Rent a Car partnered with Hiweb to address three critical challenges:\n\n- **Organic search visibility:** Improve rankings on Google to capture high-value travel demand.\n- **Return on ad spend:** Maximize ROAS across targeted Google Ads search campaigns.\n- **Technical performance:** Resolve website bottlenecks that compromised site security, UX, and online booking conversion rates.',
-    estrategia: '- **Optimization & Content Strategy:** Content restructuring, metadata enhancement, strategic blogging, and technical fixes derived from a comprehensive SEO audit to strengthen organic visibility.\n\n- **High-Intent Search Advertising:** Implementation of Google Search and Performance Max campaigns targeting high-intent travel queries and car rental keywords.\n\n- **UX & Conversion Optimization:** Redesign and architectural restructuring focused on frictionless user experience, clear calls-to-action, intuitive booking navigation, and seamless performance across mobile and desktop devices.',
+    reto: "Avant Rent a Car partnered with Hiweb to address three critical challenges:\n\n- **Organic search visibility:** Improve rankings on Google to capture high-value travel demand.\n- **Return on ad spend:** Maximize ROAS across targeted Google Ads search campaigns.\n- **Technical performance:** Resolve website bottlenecks that compromised performance, security, UX, and conversion rates.",
+    estrategia: "- **Optimization & Content Strategy:** Content restructuring, metadata enhancement, strategic blogging, and technical fixes derived from a comprehensive SEO audit to strengthen organic visibility.\n- **High-Intent Search Advertising:** Implementation of Google Search and Performance Max campaigns targeting high-intent travel queries and car rental keywords.\n- **UX & Conversion Optimization:** Redesign and architectural restructuring focused on frictionless user experience, clear calls-to-action, intuitive booking navigation, and seamless performance across mobile and desktop devices.",
     fases: [
       {
         title: 'Optimization & Content Architecture',
@@ -148,8 +148,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Increased interaction across educational posts on job site control, budget management, and PropTech innovation.',
       },
     ],
-    reto: 'Diazar needed to establish national search visibility, modernize its web platform, and build a commanding brand presence across digital channels. Coming to Hiweb organically through Google, their goal was to generate industry authority, educate construction decision-makers, and scale qualified B2B lead generation via website and social touchpoints.',
-    estrategia: 'Brand Authority & Thought Leadership: Strategic B2B social content positioning the ERP platform, highlighting operational savings, and cementing thought leadership within the construction industry. National SEO Architecture: National search strategy encompassing technical SEO, site restructuring, optimized metadata, and in-depth blog guides targeting construction management software keywords. High-Conversion Website: Complete overhaul of the website prioritizing clear value propositions, interactive feature breakdowns, intuitive UX, and frictionless demo booking.',
+    reto: "Diazar partnered with Hiweb organically through Google search with three core strategic goals:\n\n- **National search positioning:** Gain dominant Google visibility for construction management ERP software.\n- **Website modernization:** Transform their corporate site into an active inbound engine for enterprise B2B leads.\n- **Brand authority:** Establish Diazar as the premier software solution for builders and developers across Mexico.",
+    estrategia: "- **National SEO strategy:** Search-optimized website architecture, metadata restructuring, technical content marketing, and high-intent keyword positioning for construction software.\n- **Strategic web redesign:** Complete website overhaul focusing on ERP value propositions, intuitive UX, and conversion funnels for enterprise demo requests.\n- **Brand presence & social authority:** Editorial B2B content strategy showcasing ERP capabilities and reinforcing credibility among senior construction executives.",
     fases: [
       {
         title: 'Brand Authority & B2B Content',
@@ -217,8 +217,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Substantial jump in organic search clicks driven by top-ranking industrial search terms.',
       },
     ],
-    reto: 'Eagle Superabrasives needed to revamp its digital footprint in Mexico, not only upgrading its visual identity, but overhauling its site architecture, technical product catalog, and localized SEO. The primary objective was securing top rankings in industrial search engines and accurately translating complex engineering specifications for Spanish-speaking manufacturing buyers.',
-    estrategia: 'Scalable B2B Web Architecture: Ground-up website redesign built for speed, technical precision, and industrial usability, providing engineers and procurement specialists with effortless access to wheel specifications. Industrial SEO Localization: Targeted technical SEO strategy for the Mexican industrial market, optimizing core web vitals, structured metadata, and custom keyword mapping for abrasive engineering solutions.',
+    reto: "Eagle Superabrasives sought to establish a commanding digital presence in Mexico for precision industrial abrasives:\n\n- **Search engine visibility:** Rank on page 1 of Google for specialized superabrasive grinding wheels and tooling.\n- **Technical market localization:** Translate and structure their technical catalog in Spanish with industrial precision.\n- **Modern web infrastructure:** Build a fast, authoritative website designed to generate qualified industrial RFQs.",
+    estrategia: "- **Specialized industrial SEO:** Technical search optimization, product category taxonomy, and targeting high-value queries for Mexican aerospace, automotive, and manufacturing plants.\n- **Functional, scalable web design:** Comprehensive overhaul engineered for engineering buyers, featuring fast load times, technical documentation access, and frictionless RFQ forms.",
     fases: [
       {
         title: 'Scalable Industrial Web Design',
@@ -280,8 +280,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Measurable uptick in local brand recognition among fashion-conscious shoppers.',
       },
     ],
-    reto: 'El Secreto sought to expand its brand awareness and solidify its market standing as a premier concept boutique in a competitive retail landscape. The challenge was translating their distinctive in-store aesthetic into social media channels to attract stylish clientele, elevate local recognition, and drive customer traffic through targeted lifestyle campaigns.',
-    estrategia: 'Visual Brand Storytelling: Tailored social media curation establishing visual cohesion, elevated creative direction, and an emotional bond with modern female shoppers. Targeted Awareness Media: High-impact paid campaigns across Instagram and Facebook focused on local reach, collection launches, and connecting with high-affinity fashion audiences.',
+    reto: "El Secreto aimed to solidify its market position within a competitive boutique fashion landscape:\n\n- **Brand identity & positioning:** Establish its reputation as Mérida’s premier exclusive concept boutique.\n- **Customer acquisition:** Attract discerning shoppers seeking curated contemporary fashion and limited-edition garments.\n- **Visual prestige:** Elevate perceived product value through high-end digital storytelling.",
+    estrategia: "- **Brand management & curation:** High-impact visual social media management creating aesthetic consistency and deep emotional affinity with fashion-forward buyers.\n- **Discovery & conversion ad campaigns:** Targeted Meta Ads campaigns driving brand awareness, boutique foot traffic, and repeat orders from regional and national customers.",
     fases: [
       {
         title: 'Brand Identity & Content Curation',
@@ -342,8 +342,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Increase in qualified inquiries submitted through the contact form and direct messages.',
       },
     ],
-    reto: 'Enfoque 21 aimed to cement its standing as Mérida’s leading destination wedding photography studio, attracting couples seeking luxury venue shoots while standing out from local competitors. Coming to Hiweb organically, their goal was to generate high-intent inquiries from couples planning destination weddings in Yucatán and nearby colonial haciendas.',
-    estrategia: 'Destination SEO Optimization: Localized search engine strategy centered on luxury destination wedding photography, wedding venues in Yucatán, and high-ticket bridal intent. Curated Visual Storytelling: Multi-channel social media strategy highlighting emotional real-wedding galleries, editorial reels, and cinematic behind-the-scenes footage. High-Impact Visibility Campaigns: Strategic ad campaigns amplifying portfolio highlights to affluent newly-engaged couples actively planning destination celebrations.',
+    reto: "Enfoque 21 reached Hiweb organically through Google search aiming to solve three core challenges:\n\n- **Destination wedding capture:** Attract domestic and international couples planning luxury weddings in Yucatán and the Riviera Maya.\n- **Artistic differentiation:** Highlight their documentary photography style and visual excellence against local competitors.\n- **High-ticket inquiries:** Drive consistent, qualified booking consultations for premium full-day wedding packages.",
+    estrategia: "- **Local & destination SEO:** Targeted keyword strategy and content architecture ranking for destination wedding photography in Mérida, haciendas, and coastal venues.\n- **Visual social portfolio:** Curated Instagram storytelling showcasing emotional real wedding stories to engage couples during their planning window.\n- **Conversion ad campaigns:** Geotargeted paid social media funnels capturing high-intent bridal audiences and guiding them to private consultations.",
     fases: [
       {
         title: 'Destination SEO Positioning',
@@ -410,8 +410,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Users tapping through to explore directions, Google Maps listings, and WhatsApp inquiries.',
       },
     ],
-    reto: 'Gaios needed to build strong local awareness, stand out against established dining options, and consistently drive diner foot traffic to their newly expanded dining room. The goal was leveraging visual social media and targeted local ads to spark appetite, communicate their unique brunch menu, and turn online engagement into busy tables.',
-    estrategia: 'Community Curation: Social media management focused on mouthwatering food showcases, warm hospitality, and engaging local neighborhood residents. Hyper-Local Paid Advertising: Geo-targeted campaigns across Facebook and Instagram targeting breakfast lovers and brunch enthusiasts within a precise local radius. High-Definition Audiovisual Production: On-site photo and video shoots capturing signature dishes, artisan drinks, and vibrant morning ambiance.',
+    reto: "Gaios sought to stand out in a competitive gastronomic corridor and maintain consistent dining room occupancy:\n\n- **Physical table turnover:** Convert social media engagement into filled dining tables throughout the week.\n- **Culinary concept positioning:** Showcase their scratch-made brunch, house-baked pastries, and specialty coffee.\n- **Hyperlocal dominance:** Dominate dining recommendations and food searches across North Mérida.",
+    estrategia: "- **Community management & visual craving:** High-resolution photo and short-form video reels highlighting culinary craft, freshness, and cozy ambience.\n- **Geotargeted paid media:** Hyperlocal Meta Ads campaigns timed specifically ahead of peak brunch and weekend reservation windows.\n- **Audiovisual production:** Recurring photo and video shoots capturing seasonal dishes, baking processes, and real restaurant atmosphere.",
     fases: [
       {
         title: 'Community & Appetite Building',
@@ -475,8 +475,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Direct traffic driven from social platforms directly into checkout and product landing pages.',
       },
     ],
-    reto: 'Happy Store wanted to break through stagnant online growth, build consumer trust against counterfeit cosmetics in the market, and accelerate e-commerce sales. The objective was outshining competing digital shops by showcasing authenticity, educating buyers on skincare routines, and launching conversion-focused ad funnels.',
-    estrategia: 'Audience Nurturing & Lifestyle Content: Social media strategy designed around skincare routines, ingredient spotlights, and authentic self-care education. E-Commerce Paid Acquisition: Multi-tier ad funnels targeting impulse and intent buyers, optimized for catalog sales, retargeting, and add-to-cart conversions. Short-Form Video Production: Dynamic video creation demonstrating product unboxings, textures, application routines, and verified authenticity seals.',
+    reto: "Happy Store aimed to accelerate online revenue in an e-commerce beauty market crowded with counterfeit products:\n\n- **Trust & authenticity:** Prove 100% authentic sourcing for imported Korean and American skincare favorites.\n- **E-commerce sales scalability:** Build a profitable paid advertising funnel to drive consistent direct-to-consumer orders.\n- **Educational brand differentiation:** Create routine-based beauty content tailored to specific skincare concerns.",
+    estrategia: "- **Performance ad campaigns:** Dynamic product catalog ads and retargeting sequences across Meta Ads designed to maximize ROAS.\n- **Social media management & education:** Fast-paced TikTok and Instagram content featuring unboxings, ingredient routines, and verified customer reviews.\n- **Visual & commercial asset production:** Studio photography and lifestyle video highlighting original packaging, formulas, and real results.",
     fases: [
       {
         title: 'Audience Growth & Trust',
@@ -544,8 +544,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Sustained average monthly qualified organic visits throughout the campaign period.',
       },
     ],
-    reto: 'Industrial Basanlo needed to strengthen its digital footprint in Monterrey and northern Mexico, capturing high-value machinery rental and equipment purchase intent from construction and manufacturing contractors. Their website suffered from limited visibility on critical industrial queries, missing out on valuable equipment inquiries.',
-    estrategia: 'Machinery Catalog SEO: In-depth search engine optimization structuring dedicated landing pages for equipment models, specifications, and rental terms. High-Speed Web Development: Re-engineered website emphasizing lightning-fast loading speeds, mobile responsiveness for site supervisors, and prominent RFQ touchpoints. B2B Industrial Keyword Dominance: Comprehensive content optimization targeting high-intent industrial queries such as crane rentals, heavy machinery logistics, and lifting equipment.',
+    reto: "Industrial Basanlo reached Hiweb purely through organic search to solve key B2B acquisition priorities:\n\n- **Qualified industrial lead generation:** Capture high-intent inquiries from contractors seeking equipment rental and purchase.\n- **Digital presence overhaul:** Build a robust corporate website communicating industrial reliability and technical capabilities.\n- **Organic search foundations:** Establish an organic SEO baseline in northern Mexico from the ground up.",
+    estrategia: "- **Industrial SEO & taxonomy:** Search-optimized category architecture, technical SEO schema, and keyword positioning for heavy machinery rental queries.\n- **Quote-driven web development:** Fast, clean, mobile-optimized site featuring equipment spec sheets and direct RFQ contact integration via CRM and WhatsApp.",
     fases: [
       {
         title: 'Technical Site Optimization',
@@ -607,8 +607,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Significant increase in diagnostic test submissions, consultation calls, and program enrollments.',
       },
     ],
-    reto: 'Pass Your TOEFL required a high-converting digital presence capable of commanding premium pricing for high-ticket prep courses. Arriving at Hiweb organically from Google, they wanted to move away from low-margin tutoring perception, expand international student reach across the Americas, and build a predictable admissions funnel.',
-    estrategia: 'Global EdTech SEO: Implementation of educational content clusters and international SEO targeting TOEFL preparation queries, score requirements, and test strategies. High-Ticket Conversion Funnel: Ground-up website redesign highlighting curriculum rigor, diagnostic score guarantees, student success stories, and seamless placement call booking. High-Intent Search Ads: Google Search campaigns targeting professionals actively preparing for university admissions, immigration exams, or medical board certifications.',
+    reto: "Pass Your TOEFL connected with Hiweb organically from Google seeking to scale its test preparation business globally:\n\n- **High-ticket program enrollment:** Shift positioning from low-margin tutoring to premium intensive preparation masterclasses.\n- **International search authority:** Rank prominently across Latin America and North America for TOEFL preparation.\n- **Conversion-focused web platform:** Overhaul the website to highlight verified student score improvements and streamline registrations.",
+    estrategia: "- **International educational SEO:** Content marketing and keyword positioning capturing students actively preparing for standardized exams across multiple markets.\n- **Conversion-driven website design:** Clean program landing pages, social proof case studies, and streamlined application funnels.\n- **Targeted paid acquisition:** Complementary Google and Meta ad campaigns aligned with international university admission cycles.",
     fases: [
       {
         title: 'International EdTech SEO',
@@ -681,8 +681,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Uptick in direct messages on WhatsApp and Instagram asking for table availability and specials.',
       },
     ],
-    reto: 'Paulo’s Pizza aimed to solidify its reputation as the neighborhood’s favorite craft pizzeria, distinguishing its stone-oven technique from industrial fast-food chains. Their goal was engaging pizza lovers across social channels, highlighting the authenticity of their ingredients, and converting mouthwatering visuals into busy dining rooms and weekend takeout orders.',
-    estrategia: 'Sensory Food Storytelling: Creative video reels and photography capturing bubbling mozzarella, wood-fired flames, hand-stretched dough, and genuine kitchen passion. Hyper-Local Craving Ads: Targeted Meta advertising focused on evening and weekend hunger peaks within delivery and dining radiuses. Interactive Social Management: Community management featuring weekly flavor spotlights, behind-the-counter banter, and rapid responses to diner questions.',
+    reto: "Paulo’s Pizza wanted to expand its market share and boost dining volume against corporate pizza chains:\n\n- **Artisanal differentiation:** Highlight their 48-hour slow-fermented sourdough and stone-oven craftsmanship.\n- **Dine-in & delivery revenue:** Drive busy tables on weekends and increase direct takeout orders.\n- **Loyal local following:** Build an engaged neighborhood community that advocates for the brand organically.",
+    estrategia: "- **High-craving social content:** Community management featuring dynamic preparation clips, live wood-fired baking, and weekly specials.\n- **Hyperlocal conversion campaigns:** Geo-targeted Meta Ads served during peak dinner hours with single-tap WhatsApp ordering links.\n- **Commercial food photography:** Professional photo and video production highlighting bubbling mozzarella, crust airy crumb, and rustic dining atmosphere.",
     fases: [
       {
         title: 'Wood-Fired Visual Storytelling',
@@ -744,8 +744,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Consistent increase in direct inquiries requesting custom tour quotes and private bookings.',
       },
     ],
-    reto: 'Península Project needed to elevate its brand recognition in a crowded tourist corridor, distinguishing its authentic, tailored cultural journeys from cookie-cutter commercial bus tours. The challenge was inspiring sophisticated travelers seeking meaningful off-the-beaten-path experiences and guiding them toward private booking consultations.',
-    estrategia: 'Evocative Travel Storytelling: Visual social media narrative centered on secret cenotes, Mayan traditions, culinary encounters, and responsible travel. Discovery Advertising Campaigns: Paid Meta advertising reaching high-intent travelers researching upcoming trips to the Yucatán peninsula. Community Engagement: Interactive travel guides and real guest testimonials showcasing the magic of customized, private itineraries.',
+    reto: "Península Project aimed to position its bespoke, responsible travel experiences against conventional mass tourism:\n\n- **Premium value positioning:** Communicate the magic of personalized, respectful cultural journeys off the beaten path.\n- **Conscious traveler acquisition:** Connect with independent domestic and international travelers seeking meaningful itineraries.\n- **Direct booking consultations:** Build a digital funnel guiding prospective explorers into tailored travel consultations.",
+    estrategia: "- **Visual storytelling & community:** Social media curation emphasizing authentic local encounters, cenotes, and Mayan heritage.\n- **Discovery ad campaigns:** Targeted Meta Ads reaching experiential travelers with affinities for ecotourism, culture, and private expeditions.\n- **Consultation conversion path:** Streamlined communication funnels turning initial social inquiries into confirmed bookings.",
     fases: [
       {
         title: 'Authentic Visual Storytelling',
@@ -811,8 +811,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Steady expansion of an active community of property buyers and real estate investors.',
       },
     ],
-    reto: 'Residenciales Mérida needed to command market attention and generate qualified property buyer leads in one of Latin America’s most fiercely competitive real estate booms. The challenge was standing out among hundreds of brokers, filtering out unqualified inquiries, and consistently feeding sales advisors with serious investors.',
-    estrategia: 'Cinematic Property Showcases: High-production video tours, drone flyovers, and architectural walkthroughs across Instagram, Facebook, and TikTok detailing amenities and investment value. Performance Lead Advertising: Segmented Meta Ad funnels targeted by purchasing power, geographical investor hubs (Mexico City, Monterrey, USA/Canada), and lifestyle affinity. Brand Trust & Educational Content: Infographics and market analysis videos breaking down capital appreciation, legal security, and return on investment in Yucatán.',
+    reto: "Residenciales Mérida faced the challenge of capturing market attention in one of Mexico's most competitive real estate booms:\n\n- **Qualified property buyer leads:** Generate serious investor inquiries with verified purchasing capacity.\n- **Development differentiation:** Highlight master-planned amenities, prime northern locations, and historic land appreciation.\n- **Lower acquisition costs:** Maintain low cost-per-lead (CPL) while filtering out unqualified prospects for the sales floor.",
+    estrategia: "- **High-intent lead generation ads:** Laser-targeted Meta Ads funnels aimed at capital investors, family relocations, and retirees.\n- **Multi-channel social strategy:** Instagram, Facebook, and TikTok editorial content educating buyers on legal certainty and yield potentials.\n- **Real estate media production:** High-production video tours, drone aerials, and lifestyle showcases of community clubhouses and model homes.",
     fases: [
       {
         title: 'Strategic Real Estate Content',
@@ -878,8 +878,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Stronger brand recall and professional prestige across the regional dental community.',
       },
     ],
-    reto: 'Restaura needed to establish itself as the premier specialized digital dental laboratory for clinics and prosthodontists. Their challenge was communicating technical precision, high-grade materials, and rapid turnaround times to busy dentists who demand uncompromised clinical quality.',
-    estrategia: 'Technical B2B Communication: Professional social media content translating dental technology, milling precision, and clinical case studies into compelling visual proof. Clinician-Targeted Paid Campaigns: Focused ad campaigns reaching practicing dentists, oral surgeons, and cosmetic clinics across Yucatán and the southeast. Educational Authority: Showcases on CAD/CAM workflows, digital smile design, and ceramic artistry reinforcing Restaura’s technological leadership.',
+    reto: "Restaura aimed to establish its reputation as the premier digital dental laboratory for prosthodontists and dental clinics:\n\n- **Professional reputation:** Distinguish their lab through CAD/CAM milling precision, certified materials, and prompt delivery.\n- **B2B clinic partnerships:** Win long-term accounts with high-volume restorative and implant specialists.\n- **Clinical authority communication:** Present undeniable technical mastery and laboratory technology across digital touchpoints.",
+    estrategia: "- **Specialized clinical communication:** Social media curation showcasing microscopic marginal fit, 3D intraoral scan workflows, and material science.\n- **B2B dental professional ads:** Precision-targeted digital ad campaigns reaching active dentists and clinic owners across the region.\n- **Doctor-technician trust building:** Content detailing seamless digital case submission protocols, fit warranties, and direct clinical collaboration.",
     fases: [
       {
         title: 'Technical B2B Communication',
@@ -935,8 +935,8 @@ export const CASES_EN: Record<string, EnglishCaseData> = {
         despues: 'Steady net-new community growth of active local shoppers throughout the campaign.',
       },
     ],
-    reto: 'Zapatería La Península wanted to increase foot traffic across its 4 physical store locations in Mérida, revitalize brand perception among younger generations, and increase customer basket size in a competitive footwear market dominated by department store chains.',
-    estrategia: 'Trend-Driven Video Production: Viral, relatable TikTok and Instagram Reels featuring seasonal footwear trends, back-to-school essentials, and store try-ons. Retail Conversion Advertising: Geo-targeted promotional campaigns announcing flash sales, seasonal discounts, and new collection arrivals directly to shoppers within minutes of each store. Multi-Branch Store Promotion: Clear highlight of branch addresses, local parking, and WhatsApp inventory checks to simplify the in-store buying journey.',
+    reto: "Zapatería La Península needed to modernize its retail footprint and increase foot traffic across its 4 physical store locations in Mérida:\n\n- **Next-generation customer reach:** Revitalize brand appeal among younger shoppers while preserving heritage customer loyalty.\n- **Retail foot traffic acceleration:** Bridge digital campaign promotions directly to store visits and register checkouts.\n- **Seasonal revenue activation:** Capitalize on back-to-school, holiday, and summer season peaks with high-converting digital campaigns.",
+    estrategia: "- **Comprehensive retail social media:** Engaging social media campaigns focused on wearable trends, comfort footwear, and limited-time discounts.\n- **Foot-traffic paid advertising:** Localized Meta Ads campaigns driving foot traffic to branch locations with dynamic seasonal offers.\n- **Visual product production:** Lifestyle photography and short-form video reels highlighting shoe durability, comfort, and family footwear collections.",
     fases: [
       {
         title: 'Brand Modernization & Social Management',

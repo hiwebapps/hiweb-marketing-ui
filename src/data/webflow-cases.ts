@@ -63,8 +63,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Mayor recordación de marca entre nuevas audiencias interesadas en moda local."
       }
     ],
-    "reto": "El Secreto buscaba aumentar su visibilidad y fortalecer su posicionamiento como concept boutique en un mercado altamente competitivo. Su objetivo era destacar su identidad de marca, atraer nuevas clientas y generar reconocimiento a través de redes sociales y campañas de pauta enfocadas en branding y alcance.",
-    "estrategia": "Gestión de marca: Gestión de redes sociales enfocada en construir identidad visual, coherencia de marca y conexión emocional con una audiencia femenina. Pauta de visibilidad: Implementación de campañas publicitarias enfocadas en alcance, reconocimiento de marca y atracción de nuevas clientas.",
+    "reto": "El Secreto buscaba consolidar su presencia de marca en un mercado retail altamente competitivo:\n\n- **Identidad y posicionamiento:** Destacar su propuesta como concept boutique exclusiva en Mérida.\n- **Atracción de nuevas clientas:** Captar compradoras interesadas en moda contemporánea y piezas de edición limitada.\n- **Reconocimiento visual:** Elevar el valor percibido de sus colecciones a través de canales digitales.",
+    "estrategia": "- **Gestión y dirección de marca:** Creación de contenido visual de alto impacto para redes sociales, construyendo coherencia estética y conexión emocional con una audiencia femenina selecta.\n- **Pauta publicitaria de alcance y venta:** Campañas segmentadas en Meta Ads enfocadas en descubrimiento de marca, tráfico a boutique y conversión de clientas locales y foráneas.",
     "fases": [
       {
         "title": "Gestión de marca",
@@ -129,8 +129,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Mayor recordación de marca dentro del sector odontológico local y regional."
       }
     ],
-    "reto": "Restaura buscaba aumentar su visibilidad y posicionarse como un laboratorio dental confiable y especializado ante odontólogos y clínicas. Su objetivo era fortalecer el reconocimiento de marca, comunicar su nivel técnico y atraer nuevos contactos profesionales a través de redes sociales y campañas de pauta digital.",
-    "estrategia": "Comunicación técnica: Gestión de redes sociales enfocada en comunicar procesos, tecnología y valor técnico del laboratorio de forma clara y profesional.",
+    "reto": "Restaura buscaba posicionarse ante odontólogos y clínicas como un laboratorio dental especializado y de alta tecnología:\n\n- **Reconocimiento profesional:** Diferenciarse por su precisión digital CAD/CAM, materiales certificados y tiempos de entrega.\n- **Captación de nuevas clínicas:** Abrir convenios de trabajo continuo con especialistas en prótesis, implantes y estética dental.\n- **Comunicación técnica y confiable:** Transmitir respaldo clínico y tecnológico en canales digitales.",
+    "estrategia": "- **Comunicación técnica especializada:** Gestión de redes sociales enfocada en mostrar casos clínicos, ajustes microscópicos y tecnología de escaneo 3D.\n- **Pauta digital B2B para odontólogos:** Campañas publicitarias segmentadas a cirujanos dentistas y clínicas especializadas en la región.\n- **Construcción de confianza:** Contenido educativo sobre protocolos de envío digital, garantías de ajuste y soporte directo entre técnicos y doctores.",
     "fases": [
       {
         "title": "Comunicación técnica",
@@ -188,8 +188,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Incremento en clics provenientes de búsquedas orgánicas tras optimización SEO del sitio."
       }
     ],
-    "reto": "Eagle Superabrasives buscaba renovar su sitio web en México, no solo a nivel visual, sino también en estructura, funcionalidad y optimización SEO. Su objetivo era posicionarse entre los primeros resultados en buscadores en México y adaptar correctamente su contenido técnico al español para atraer leads industriales calificados.",
-    "estrategia": "Web funcional y escalable: Rediseño del sitio web con enfoque en usabilidad, claridad técnica, velocidad y experiencia de usuario para un público industrial B2B. Posicionamiento industrial: Estrategia SEO enfocada en posicionamiento en México, optimización técnica, estructura del sitio y adaptación de palabras clave industriales al mercado local.",
+    "reto": "Eagle Superabrasives buscaba renovar su presencia digital en México para capturar demanda industrial especializada:\n\n- **Presencia en buscadores:** Posicionarse en los primeros resultados de Google para ruedas y herramientas superabrasivas.\n- **Adaptación técnica al mercado local:** Estructurar y traducir su catálogo técnico al español con precisión para compradores industriales.\n- **Renovación de plataforma:** Desarrollar un sitio web moderno, rápido y orientado a solicitudes de cotización B2B.",
+    "estrategia": "- **SEO industrial especializado:** Optimización técnica profunda, arquitectura de URLs por familias de producto y posicionamiento en términos de manufactura y rectificado de precisión en México.\n- **Web funcional y escalable:** Rediseño completo con enfoque en usabilidad técnica, velocidad de carga y presentación clara de especificaciones para ingenieros de planta y compradores industriales.",
     "fases": [
       {
         "title": "Web funcional y escalable",
@@ -252,8 +252,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Un video orgánico logró alto alcance y generó más de 1,000 nuevos seguidores en poco tiempo."
       }
     ],
-    "reto": "Península Project buscaba aumentar su visibilidad y reconocimiento de marca en un mercado turístico competitivo, destacando su propuesta de valor basada en experiencias auténticas y personalizadas. Su objetivo era atraer nuevos viajeros, generar interés real en sus rutas y posicionarse como una alternativa al turismo convencional mediante redes sociales y pauta digital.",
-    "estrategia": "Storytelling de marca: Gestión de redes sociales enfocada en storytelling visual, construcción de comunidad y posicionamiento de experiencias auténticas de viaje en Yucatán. Pauta de descubrimiento: Implementación de campañas publicitarias enfocadas en alcance, reconocimiento de marca y atracción de viajeros interesados en experiencias personalizadas.",
+    "reto": "Península Project buscaba posicionar su propuesta de viajes auténticos frente a los tours comerciales tradicionales:\n\n- **Posicionamiento de valor:** Comunicar experiencias culturales personalizadas lejos del turismo masivo.\n- **Atracción de viajeros conscientes:** Conectar con personas interesadas en explorar la península de forma privada y respetuosa.\n- **Generación de consultas directas:** Diseñar un canal digital que facilitara la planeación y cotización de itinerarios.",
+    "estrategia": "- **Storytelling visual y comunidad:** Gestión de redes sociales centrada en relatos de viaje, paisajes naturales y cultura maya viva.\n- **Pauta de descubrimiento de marca:** Campañas en Meta Ads segmentadas a viajeros con afinidad por turismo de naturaleza, aventura y cultura.\n- **Acompañamiento a conversión:** Mensajes estructurados para guiar al usuario desde el primer contacto en redes hasta la reserva personalizada.",
     "fases": [
       {
         "title": "Storytelling de marca",
@@ -324,8 +324,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Usuarios dirigidos desde redes sociales para consultar ubicación, contacto y más información."
       }
     ],
-    "reto": "Gaios buscaba aumentar su visibilidad local, atraer más comensales a su restaurante y fortalecer el reconocimiento de marca en una zona con alta competencia gastronómica. Su objetivo era utilizar redes sociales y pauta digital para mostrar su propuesta de comida, generar antojo y convertir la atención digital en visitas físicas al restaurante.",
-    "estrategia": "Gestión de comunidad: Gestión de redes sociales enfocada en visibilidad local, antojo visual y conexión constante con la comunidad del restaurante. Pauta local: Implementación de campañas publicitarias para alcance local, atracción de nuevos clientes y promoción del restaurante en su zona de influencia. Contenido audiovisual y fotográfico: Producción de fotografía y video para mostrar platillos, ambiente, experiencias y momentos reales dentro del restaurante.",
+    "reto": "Gaios buscaba destacar en una zona con alta oferta culinaria y consolidar su flujo de comensales:\n\n- **Atracción de visitas presenciales:** Convertir la atención de redes sociales en mesas ocupadas de martes a domingo.\n- **Posicionamiento de concepto:** Comunicar la calidad de su cocina artesanal, desayunos y café de especialidad.\n- **Presencia en su radio de influencia:** Dominar las búsquedas y recomendaciones en la zona norte de Mérida.",
+    "estrategia": "- **Gestión de comunidad y antojo visual:** Contenido en video y fotografía de alta resolución enfocado en textura, preparación artesanal y experiencia en mesa.\n- **Pauta publicitaria geolocalizada:** Campañas de Meta Ads hiperlocales con optimización horaria para impulsar reservaciones y visitas espontáneas durante fines de semana.\n- **Producción audiovisual y fotográfica:** Sesiones continuas para capturar nuevos platillos, panadería horneada en casa y el ambiente del restaurante.",
     "fases": [
       {
         "title": "Gestión de comunidad",
@@ -392,8 +392,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Usuarios dirigidos directamente desde redes sociales para conocer productos y realizar compras."
       }
     ],
-    "reto": "Happy Store buscaba aumentar su visibilidad de marca, generar mayor alcance en redes sociales y fortalecer sus ventas online en un mercado altamente competitivo. Su objetivo era destacar frente a otras tiendas digitales, atraer nuevos clientes y comunicar confianza a través de contenido visual atractivo y campañas de pauta enfocadas en conversión.",
-    "estrategia": "Gestión y crecimiento: Gestión de redes sociales enfocada en visibilidad, posicionamiento de marca y conexión con audiencias interesadas en belleza, cuidado personal y bienestar. Pauta para e-commerce: Implementación de campañas publicitarias enfocadas en alcance, tráfico y conversión para impulsar ventas online y reconocimiento de marca. Contenido audiovisual y fotográfico: Producción de contenido fotográfico y de video para mostrar productos, rutinas, beneficios y generar confianza en la experiencia de compra.",
+    "reto": "Happy Store buscaba acelerar su crecimiento comercial en un mercado de cosméticos saturado de réplicas:\n\n- **Confianza y autenticidad:** Comunicar la procedencia 100% original de productos importados de skincare coreano y estadounidense.\n- **Escalabilidad de ventas online:** Diseñar un embudo digital rentable para aumentar pedidos en su tienda en línea.\n- **Diferenciación en redes sociales:** Crear contenido educativo que guiara a las usuarias según su tipo de piel.",
+    "estrategia": "- **Pauta de rendimiento (Performance Ads):** Campañas de Meta Ads con catálogo dinámico, segmentación por intereses de belleza y retargeting orientado a maximizar ROAS.\n- **Estrategia y gestión de redes sociales:** Contenido dinámico con unboxings, comparativas de rutina y testimonios reales de clientas.\n- **Producción fotográfica y audiovisual:** Generación de contenido visual de producto, destacando texturas, empaques originales y beneficios inmediatos de uso.",
     "fases": [
       {
         "title": "Gestión y crecimiento",
@@ -465,8 +465,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Crecimiento constante de seguidores a lo largo del año mediante contenido orgánico y estrategias de redes sociales."
       }
     ],
-    "reto": "Zapatería La Península buscaba aumentar su visibilidad de marca en un mercado altamente competitivo, fortalecer el reconocimiento de su negocio y elevar su ticket promedio. Su objetivo era atraer nuevos clientes, impulsar ventas desde redes sociales y posicionarse como una zapatería referente para su público objetivo.",
-    "estrategia": "Gestión de marca: Gestión integral de redes sociales enfocada en visibilidad, posicionamiento de marca y conexión constante con clientes potenciales mediante contenido atractivo. Pauta para retail: Ejecución de campañas publicitarias orientadas a alcance, tráfico y conversión para impulsar ventas y reconocimiento de marca. Contenido audiovisual y gráfico: Creación y grabación de contenido audiovisual y gráfico enfocado en productos, tendencias y estilo de vida para fortalecer la identidad visual de la marca.",
+    "reto": "Zapatería La Península buscaba modernizar su presencia comercial e incrementar el ticket promedio en sus sucursales:\n\n- **Atracción de nuevas generaciones:** Rejuvenecer la percepción de la marca manteniendo la fidelidad de sus clientes tradicionales.\n- **Impulso de tráfico a tiendas físicas:** Conectar las promociones y novedades digitales con visitas directas a sucursales en Mérida.\n- **Activación de ventas por temporada:** Dinamizar las temporadas escolares, festivas y de cambio de colección mediante canales digitales.",
+    "estrategia": "- **Gestión integral de redes sociales:** Contenido dinámico con enfoque en moda accesible, confort, recomendaciones de estilo y promociones vigentes.\n- **Pauta publicitaria para retail:** Campañas en Meta Ads con segmentación local enfocadas en tráfico a tiendas, catálogo de calzado y ofertas de temporada.\n- **Producción de contenido visual:** Sesiones fotográficas y reels dinámicos destacando tendencias, durabilidad de materiales y variedad para toda la familia.",
     "fases": [
       {
         "title": "Gestión de marca",
@@ -533,8 +533,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Mayor interacción con contenido del portafolio, historias y publicaciones de bodas reales."
       }
     ],
-    "reto": "Enfoque 21 buscaba posicionarse en Mérida como un fotógrafo de bodas reconocido, aumentar su visibilidad digital y fortalecer su presencia de marca. Llegaron a Hiweb de forma orgánica desde Google, con el objetivo de atraer parejas interesadas en fotografía de bodas de destino y diferenciarse en un mercado altamente competitivo.",
-    "estrategia": "Posicionamiento local: Optimización SEO enfocada en visibilidad local, estructura del sitio y palabras clave relacionadas con fotografía de bodas en Mérida y bodas de destino. Presencia de marca: Estrategia de contenido para redes sociales enfocada en mostrar el portafolio, reforzar la identidad de marca y aumentar el alcance entre parejas interesadas en bodas de destino. Impulso de visibilidad: Implementación de campañas publicitarias para aumentar la visibilidad del estudio, dirigir tráfico al sitio web y reforzar el posicionamiento de marca en un mercado competitivo.",
+    "reto": "Enfoque 21 llegó a Hiweb de forma orgánica desde Google con tres objetivos claros:\n\n- **Posicionamiento en bodas de destino:** Captar parejas nacionales y extranjeras que eligen Yucatán y la Riviera Maya para casarse.\n- **Diferenciación artística:** Resaltar su estilo documental y la calidad visual de su portafolio frente a la competencia.\n- **Generación de consultas de alto valor:** Aumentar las solicitudes de cotización para paquetes de fotografía premium.",
+    "estrategia": "- **SEO local y de destino:** Optimización técnica y de contenidos orientada a búsquedas de alto valor como fotografía de bodas en Mérida, haciendas y playas de la península.\n- **Estrategia visual en redes sociales:** Curaduría de portafolio y narrativa visual en Instagram para conectar con parejas en etapa activa de planeación.\n- **Campañas de pauta publicitaria:** Pauta digital segmentada geográficamente para captar tráfico calificado y dirigirlo a un formulario de contacto de alta conversión.",
     "fases": [
       {
         "title": "Posicionamiento local",
@@ -605,8 +605,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Incremento en formularios, clics y acciones clave orientadas a venta."
       }
     ],
-    "reto": "Pass Your buscaba un sitio web más profesional y enfocado en conversión, aumentar su visibilidad orgánica y generar ventas de programas de alto ticket. Llegaron a Hiweb de forma completamente orgánica desde Google, con el objetivo de escalar su presencia digital y atraer prospectos calificados mediante una estrategia integral.",
-    "estrategia": "Estrategia orgánica: Implementación de una estrategia SEO enfocada en posicionamiento, contenidos educativos y visibilidad internacional para atraer tráfico calificado interesado en certificaciones TOEFL. UX y conversión: Rediseño del sitio web con enfoque en claridad, jerarquía de información y conversión, alineado a la venta de programas de alto ticket. Escalamiento de resultados: Apoyo con campañas digitales y contenidos en redes sociales para reforzar visibilidad, captación de leads y posicionamiento de marca.",
+    "reto": "Pass Your TOEFL llegó a Hiweb de forma orgánica buscando escalar su modelo educativo a nivel internacional:\n\n- **Captación de programas de alto ticket:** Transicionar de asesorías individuales a programas intensivos de alto valor.\n- **Autoridad y alcance global:** Posicionar su metodología ante estudiantes y profesionistas de toda América Latina.\n- **Plataforma web de alta conversión:** Rediseñar su sitio para comunicar resultados comprobados y facilitar la inscripción.",
+    "estrategia": "- **SEO internacional de contenidos:** Estrategia de contenidos educativos y posicionamiento en Google para búsquedas de preparación y simuladores TOEFL en múltiples países.\n- **Rediseño web orientado a conversión:** Jerarquía de información clara, páginas de programa estructuradas con testimonios y pasarelas de registro sin fricción.\n- **Pauta digital y contenidos:** Campañas de apoyo en Google y Meta para captar alumnos en periodos de convocatorias universitarias y laborales.",
     "fases": [
       {
         "title": "Estrategia orgánica",
@@ -679,8 +679,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Incremento sostenido de la audiencia interesada en el mercado inmobiliario de Yucatán."
       }
     ],
-    "reto": "Residenciales Mérida buscaba aumentar su visibilidad y generación de leads en un entorno inmobiliario altamente competitivo. Su objetivo era destacar sus marcas, impulsar nuevas ventas y captar prospectos calificados a través de redes sociales y campañas de pauta enfocadas en conversión y posicionamiento de marca.",
-    "estrategia": "Contenido estratégico: Gestión de redes sociales (Facebook, Instagram y TikTok) enfocada en visibilidad, storytelling inmobiliario y presentación clara de proyectos para atraer y conectar con compradores potenciales. Pauta orientada a leads: Implementación de campañas publicitarias enfocadas en generación de leads, aumento de alcance y posicionamiento de marcas inmobiliarias en redes sociales. Contenido audiovisual y gráfico: Grabación y creación de contenido audiovisual y gráfico para redes sociales, enfocado en mostrar propiedades, estilos de vida y proyectos de forma atractiva y comercial.",
+    "reto": "Residenciales Mérida buscaba destacar en uno de los mercados inmobiliarios más competidos del país:\n\n- **Captación de prospectos calificados:** Generar leads con perfil financiero real para compra e inversión patrimonial.\n- **Diferenciación de desarrollos:** Comunicar la plusvalía, amenidades y ubicación estratégica de cada privada residencial.\n- **Filtrado y costo por adquisición:** Reducir el costo por lead manteniendo un estándar estricto de calificación para el equipo de ventas.",
+    "estrategia": "- **Pauta publicitaria orientada a leads:** Campañas segmentadas en Meta Ads enfocadas en inversionistas patrimoniales, compradores de primera vivienda y retiro en Mérida.\n- **Estrategia y gestión de redes sociales:** Contenido en Facebook, Instagram y TikTok enfocado en plusvalía, recorridos y estilo de vida residencial.\n- **Producción audiovisual y recorridos:** Levantamiento de video y fotografía profesional mostrando avances de obra, amenidades y arquitectura.",
     "fases": [
       {
         "title": "Contenido estratégico",
@@ -752,8 +752,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Incremento acelerado de seguidores impulsado por contenido visual atractivo y presencia constante."
       }
     ],
-    "reto": "Paulo’s Pizza buscaba aumentar su visibilidad local, atraer más clientes al restaurante y fortalecer el reconocimiento de marca en un mercado gastronómico altamente competitivo. Su objetivo era utilizar redes sociales, pauta digital y contenido visual para generar antojo, diferenciar su propuesta artesanal y convertir la atención digital en visitas presenciales.",
-    "estrategia": "Gestión de comunidad: Gestión de redes sociales enfocada en visibilidad local, antojo visual y conexión constante con la comunidad y clientes del restaurante. Pauta local: Implementación de campañas publicitarias para alcance local, promoción de productos y atracción de nuevos clientes al restaurante. Contenido audiovisual y fotográfico: Producción de fotografía y video para mostrar pizzas, horno de piedra, procesos artesanales y ambiente real del restaurante.",
+    "reto": "Paulo’s Pizza buscaba consolidar su presencia de marca y elevar su flujo de pedidos en un mercado saturado:\n\n- **Visibilidad y diferenciación:** Destacar su masa madre con 48 horas de fermentación y horno de piedra frente a cadenas comerciales.\n- **Aumento de pedidos y visitas:** Impulsar el consumo tanto en salón como en pedidos directos a domicilio.\n- **Comunidad local activa:** Construir una audiencia fiel en redes sociales que recomendara la marca orgánicamente.",
+    "estrategia": "- **Contenido visual y antojo en redes:** Gestión de comunidad enfocada en videos dinámicos de preparación, horneado en vivo y promociones semanales.\n- **Pauta local de alta intención:** Campañas de Meta Ads geolocalizadas dirigidas a radios cercanos en horarios clave (jueves a domingo) con enlace directo a WhatsApp.\n- **Producción fotográfica y audiovisual:** Sesiones profesionales para resaltar la calidad de los ingredientes, el queso fundido y el ambiente cálido del local.",
     "fases": [
       {
         "title": "Gestión de comunidad",
@@ -824,8 +824,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Promedio mensual de visitas orgánicas sostenidas durante el periodo del proyecto."
       }
     ],
-    "reto": "Industrial Basanlo buscaba construir un sitio web visualmente atractivo que transmitiera solidez industrial y, al mismo tiempo, lograra un buen posicionamiento orgánico en Google. Llegaron a Hiweb de forma completamente orgánica, con el objetivo de aumentar su visibilidad digital, atraer tráfico calificado y sentar bases sólidas de crecimiento SEO desde el inicio del proyecto.",
-    "estrategia": "Código optimizado y funcional.: Desarrollamos la página web pensando en la optimización del sitio desde el día 1. Posicionamiento clave para la página.: Desarrollo e implementación de una estrategia SEO integral enfocada en estructura, contenidos y posicionamiento orgánico para generar visibilidad sostenida en buscadores.",
+    "reto": "Industrial Basanlo llegó a Hiweb de forma 100% orgánica con metas claras de captación B2B:\n\n- **Generación de prospectos calificados:** Atraer contratistas y empresas que requieren renta y compra de maquinaria.\n- **Construcción de presencia digital:** Diseñar un sitio web moderno que transmitiera respaldo, capacidad técnica y catálogo de equipo.\n- **Posicionamiento orgánico desde cero:** Establecer cimientos sólidos de SEO industrial en el norte de México.",
+    "estrategia": "- **SEO industrial y catálogo:** Arquitectura web estructurada por categorías de maquinaria, optimización técnica y posicionamiento para consultas de renta de equipo industrial.\n- **Desarrollo web enfocado en cotizaciones:** Plataforma rápida, intuitiva y responsive con fichas técnicas claras y botones directos a WhatsApp comercial y formularios B2B.",
     "fases": [
       {
         "title": "Código optimizado y funcional.",
@@ -894,8 +894,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Mayor interacción en publicaciones educativas sobre control, gestión y tecnología para obra."
       }
     ],
-    "reto": "Diazar buscaba posicionarse en buscadores a nivel nacional, renovar su sitio web y fortalecer su presencia de marca en canales digitales. Llegaron a Hiweb de forma orgánica desde Google, con el objetivo de generar visibilidad, construir autoridad en su industria y aumentar la captación de leads calificados a través del sitio web y redes sociales.",
-    "estrategia": "Presencia de marca: Estrategia de contenido para redes sociales orientada a posicionar la marca, comunicar beneficios del ERP y otros productos, así como reforzar autoridad en el sector de la construcción. Posicionamiento nacional: Estrategia SEO enfocada en posicionamiento a nivel nacional, estructura del sitio, metadatos, contenido (blogs) y palabras clave relacionadas con software y gestión de proyectos de construcción. Web estratégica: Renovación del sitio web con enfoque en claridad, propuesta de valor, experiencia de usuario y captación de leads.",
+    "reto": "Diazar llegó a Hiweb de forma orgánica desde Google con tres objetivos estratégicos:\n\n- **Posicionamiento nacional:** Ganar visibilidad en buscadores para términos clave de software y gestión de obra.\n- **Renovación web:** Transformar su sitio corporativo en un canal activo de captación de prospectos B2B.\n- **Autoridad de marca:** Diferenciarse como la solución ERP de referencia para constructoras y desarrolladoras en México.",
+    "estrategia": "- **Posicionamiento SEO nacional:** Arquitectura web optimizada, metadatos, estrategia de contenidos técnicos y posicionamiento en Google para palabras clave de alto valor en la industria de la construcción.\n- **Sitio web estratégico:** Rediseño centrado en la propuesta de valor del software, usabilidad, jerarquía visual y embudos de conversión para demos comerciales.\n- **Presencia y autoridad de marca:** Estrategia editorial en redes sociales orientada a comunicar beneficios del ERP y reforzar credibilidad ante tomadores de decisión.",
     "fases": [
       {
         "title": "Presencia de marca",
@@ -968,8 +968,8 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
         "despues": "Interacciones y consumo de contenido registradas el primer año del proyecto"
       }
     ],
-    "reto": "Avant Rent a Car llegó a Hiweb con tres necesidades principales:\n\n- **Posicionamiento orgánico:** Mejorar su visibilidad en Google para captar usuarios de alto valor.\n- **Retorno de inversión:** Optimizar el rendimiento de sus campañas de Google Ads.\n- **Desempeño técnico:** Resolver fallas en el sitio web que afectaban su seguridad, experiencia de usuario y capacidad de conversión.",
-    "estrategia": "- **Optimización y contenidos:** Reestructuración de contenidos, optimización de metadatos, estrategia de blogs y mejoras técnicas a partir de una auditoría SEO para fortalecer visibilidad orgánica.\n\n- **Publicidad estratégica en buscadores:** Implementación de campañas de Google Ads en búsqueda y Display, enfocadas en intención de compra y alineadas a servicios de renta de autos.\n\n- **UX y conversión:** Rediseño y reestructuración del sitio con enfoque en experiencia de usuario, CTAs claros, navegación intuitiva y funcionamiento óptimo en móvil y desktop.",
+    "reto": "Avant Rent a Car llegó a Hiweb con tres necesidades principales:\n\n- **Posicionamiento orgánico:** Mejorar su visibilidad en Google para captar usuarios de alto valor.\n- **Retorno de inversión:** Optimizar el rendimiento de sus campañas de Google Ads.\n- **Desempeño técnico:** Resolver fallas en el sitio web que afectaban su rendimiento, seguridad, experiencia de usuario y capacidad de conversión.",
+    "estrategia": "- **Optimización y contenidos:** Reestructuración de contenidos, optimización de metadatos, estrategia de blogs y mejoras técnicas a partir de una auditoría SEO para fortalecer visibilidad orgánica.\n- **Publicidad estratégica en buscadores:** Implementación de campañas de Google Ads en búsqueda y Display, enfocadas en intención de compra y alineadas a servicios de renta de autos.\n- **UX y conversión:** Rediseño y reestructuración del sitio con enfoque en experiencia de usuario, CTAs claros, navegación intuitiva y funcionamiento óptimo en móvil y desktop.",
     "fases": [
       {
         "title": "Optimización y contenidos",
