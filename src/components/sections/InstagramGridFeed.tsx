@@ -17,6 +17,8 @@ export type InstagramGridFeedProps = {
   description?: string;
   headingWidth?: string;
   tone?: 'canvas' | 'surface' | 'wash';
+  align?: 'left' | 'center';
+  posts?: SocialPost[];
 };
 
 export function InstagramGridFeed({
@@ -26,11 +28,17 @@ export function InstagramGridFeed({
   description = 'Publicaciones reales producidas y gestionadas para nuestros clientes: dirección de arte, video de alto impacto y copys diseñados para vender.',
   headingWidth,
   tone = 'canvas',
+  align = 'left',
+  posts: customPosts,
 }: InstagramGridFeedProps) {
   const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [activePost, setActivePost] = useState<SocialPost | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  const postsPool = useMemo(() => {
+    return customPosts && customPosts.length > 0 ? customPosts : ALL_POSTS;
+  }, [customPosts]);
 
   // Brands belonging to the selected industry
   const availableBrands = useMemo(() => {
@@ -40,14 +48,14 @@ export function InstagramGridFeed({
 
   // Posts filtered by industry and brand
   const filteredPosts = useMemo(() => {
-    return ALL_POSTS.filter((post) => {
+    return postsPool.filter((post) => {
       const matchIndustry =
         selectedIndustry === 'all' || post.industryId === selectedIndustry;
       const matchBrand =
         selectedBrand === 'all' || post.brandId === selectedBrand;
       return matchIndustry && matchBrand;
     });
-  }, [selectedIndustry, selectedBrand]);
+  }, [postsPool, selectedIndustry, selectedBrand]);
 
   useEffect(() => {
     setCurrentSlideIndex(0);
@@ -75,7 +83,7 @@ export function InstagramGridFeed({
         eyebrow={eyebrow}
         title={title}
         description={description}
-        align="center"
+        align={align}
         badgeVariant="orange"
         headingWidth={headingWidth}
       />
@@ -290,19 +298,17 @@ export function InstagramGridFeed({
                       alt={activePost.brandName}
                       className="ig-modal-sidebar__avatar"
                     />
-                    <div>
-                      <div className="ig-modal-sidebar__name-row">
-                        <h4 className="ig-modal-sidebar__handle">{activePost.brandHandle}</h4>
-                        <span className="ig-modal-sidebar__bullet">•</span>
-                        <span className="ig-modal-sidebar__follow">Hiweb Client</span>
-                      </div>
+                    <div className="ig-modal-sidebar__brand-meta">
+                      <h4 className="ig-modal-sidebar__handle">{activePost.brandHandle}</h4>
                       <p className="ig-modal-sidebar__category">
-                        {activePost.industryName || activePost.brandCategory}
+                        {activePost.brandName}
                       </p>
                     </div>
                   </div>
                   {activePost.industryName && (
-                    <Badge variant="orange">{activePost.industryName}</Badge>
+                    <div className="ig-modal-sidebar__tag-wrap">
+                      <Badge variant="orange">{activePost.industryName}</Badge>
+                    </div>
                   )}
                 </div>
 

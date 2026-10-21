@@ -52,5 +52,12 @@
       "title": "Impulso de visibilidad",
       "description": "Implementación de campañas publicitarias para aumentar la visibilidad del estudio, dirigir tráfico al sitio web y reforzar el posicionamiento de marca en un mercado competitivo."
     }
-  ]
+  ],
+  "ubicacion": "Mérida, México",
+  "sitioWeb": "https://enfoque21.com/",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/enfoque21fotografia/",
+    "handle": "@enfoque21fotografia"
+  }
 }

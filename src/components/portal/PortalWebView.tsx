@@ -1,4 +1,5 @@
 import { useEffect, useState, type MouseEvent } from 'react';
+import { Icon } from './PortalDemo';
 
 export type WebPin = {
   id: string;
@@ -165,7 +166,7 @@ export function WebBoard({
               <span><Check on={page.checks.desktop} />{page.checks.desktop ? copy.desktopOk : copy.desktopNo}</span>
               <span><Check on={page.checks.mobile} />{page.checks.mobile ? copy.mobileOk : copy.mobileNo}</span>
             </div>
-            <button type="button" className="rrss-solid" onClick={() => onOpen(page.id)}>
+            <button type="button" className="btn sm btn-ink" onClick={() => onOpen(page.id)}>
               {page.status === 'revision' ? copy.reviewBtn : copy.viewBtn}
             </button>
           </div>
@@ -216,17 +217,19 @@ export function WebPageViewer({
   };
   return (
     <div className="site-view">
-      <header className="site-view__bar">
-        <button type="button" className="rrss-ghost" onClick={onBack}>{copy.back}</button>
-        <div>
+      <header className="rvtop">
+        <button type="button" className="icon-btn" onClick={onBack} aria-label={copy.back}>
+          <Icon name="back" />
+        </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 0, flex: 1 }}>
           <span className="small muted">{copy.kicker}</span>
-          <strong>{page.title}</strong>
+          <b style={{ fontFamily: 'var(--display)', fontSize: 16, color: 'var(--ink)' }}>{page.title}</b>
         </div>
-        <div className="rrss-seg is-dark">
-          <button type="button" className={vp === 'desktop' ? 'is-on' : ''} onClick={() => setVp('desktop')}>{copy.desktop}</button>
-          <button type="button" className={vp === 'mobile' ? 'is-on' : ''} onClick={() => setVp('mobile')}>{copy.mobile}</button>
+        <div className="seg dark">
+          <button type="button" className={vp === 'desktop' ? 'on' : ''} onClick={() => setVp('desktop')}>{copy.desktop}</button>
+          <button type="button" className={vp === 'mobile' ? 'on' : ''} onClick={() => setVp('mobile')}>{copy.mobile}</button>
         </div>
-        <span className="badge sm site-rev">{copy.round(page.round)}</span>
+        <span className="badge sm b-ora">{copy.round(page.round)}</span>
       </header>
       <div className="site-view__body">
         <section>
@@ -235,22 +238,22 @@ export function WebPageViewer({
             <div className="site-browser">
               <div className="site-browser__bar"><i /><i /><i /><span>{copy.preview}</span></div>
               <div className="site-mock" onClick={drop}>
-                <span className="badge sm site-rev">{copy.badge}</span>
+                <span className="badge sm b-pur">{copy.badge}</span>
                 <h2>{copy.headline}</h2>
                 <p>{copy.body}</p>
                 <div>
-                  <span className="rrss-solid">{copy.buy}</span>
-                  <span className="site-ghost">{copy.menu}</span>
+                  <span className="btn sm btn-p">{copy.buy}</span>
+                  <span className="btn sm btn-g" style={{ color: '#fff', border: '1px solid rgba(255,255,255,0.25)' }}>{copy.menu}</span>
                 </div>
                 {pins.map((pin, index) => <span key={pin.id} className="site-pin" style={{ left: `${pin.x}%`, top: `${pin.y}%` }}>{index + 1}</span>)}
               </div>
             </div>
           ) : (
             <div className="site-phone" onClick={drop}>
-              <span className="badge sm site-rev">{copy.mobileBadge}</span>
+              <span className="badge sm b-pur">{copy.mobileBadge}</span>
               <h2>{copy.mobileHeadline}</h2>
               <p>{copy.mobileBody}</p>
-              <span className="rrss-solid">{copy.buy}</span>
+              <span className="btn sm btn-p" style={{ alignSelf: 'flex-start' }}>{copy.buy}</span>
               {pins.map((pin, index) => <span key={pin.id} className="site-pin" style={{ left: `${pin.x}%`, top: `${pin.y}%` }}>{index + 1}</span>)}
             </div>
           )}
@@ -264,8 +267,8 @@ export function WebPageViewer({
           <label><input type="checkbox" checked={page.checks.desktop} disabled={approved} onChange={() => onCheck('desktop')} />{copy.checkDesktop}</label>
           <label><input type="checkbox" checked={page.checks.mobile} disabled={approved} onChange={() => onCheck('mobile')} />{copy.checkMobile}</label>
           <div className="site-view__actions">
-            <button type="button" className="rrss-ghost" onClick={askChanges} disabled={approved}>{copy.changes}</button>
-            <button type="button" className="rrss-solid" data-tour="approve" disabled={!ready || approved} onClick={onApprove}>
+            <button type="button" className="btn btn-ink" onClick={askChanges} disabled={approved}>{copy.changes}</button>
+            <button type="button" className="btn btn-p" data-tour="approve" disabled={!ready || approved} onClick={onApprove}>
               {approved ? copy.done : copy.approve}
             </button>
           </div>

@@ -2,23 +2,23 @@
   "es": {
     "title": "Portal de clientes",
     "metaTitle": "Portal de clientes — Hiweb Marketing",
-    "metaDescription": "El visor interactivo para aprobar redes, sitios, artículos SEO y reportes. Sin cadenas de correo ni audios de WhatsApp.",
+    "metaDescription": "El portal exclusivo para clientes de Hiweb: revisa y aprueba redes sociales, sitios web, artículos SEO y reportes con total transparencia y agilidad.",
     "sections": [
       {
         "_key": "hero",
         "_type": "portalHero",
         "badge": "",
-        "badgeNote": "Portal de Clientes Hiweb",
-        "title": "Tus clientes aprueban rápido. Tus proyectos fluyen.",
-        "description": "El visor interactivo que elimina las cadenas eternas de correos y audios de WhatsApp. Redes sociales, sitios web responsivos, artículos SEO y reportes en una experiencia fluida de marca.",
+        "badgeNote": "Experiencia de Servicio Hiweb",
+        "title": "Apruebas en un clic. Tus proyectos nunca se detienen.",
+        "description": "Gestionar tus campañas y proyectos no debería significar perder tiempo entre cadenas de correos, enlaces caducados y mensajes dispersos. En Hiweb centralizamos cada entregable, revisión y visto bueno en tiempo real para que tu equipo tome decisiones con total agilidad.",
         "clientName": "Aura Café & Roastery",
         "windowTitle": "Portal de Clientes",
-        "proofTitle": "Diseñado para marcas de alto calibre",
-        "proofText": "Aprobado por clientes y agencias en México y LATAM",
-        "tourLabel": "Iniciar Tour Guiado",
-        "viewerLabel": "Modo Visor Completo",
-        "coachLabel": "Tour Guiado",
-        "coachText": "Observa cómo aprueba un cliente o haz clic en cualquier lugar para explorar libremente.",
+        "proofTitle": "Transparencia y control total",
+        "proofText": "Una experiencia ágil y estructurada para cada uno de nuestros clientes",
+        "tourLabel": "Ver cómo funciona",
+        "viewerLabel": "Explorar el portal",
+        "coachLabel": "Tour Interactivo",
+        "coachText": "Descubre cómo revisas tus entregables o haz clic en cualquier sección para explorar con libertad.",
         "samples": [
           { "_key": "s1", "module": "rrss", "title": "Carrusel Origen Chiapas", "detail": "4 diapositivas · octubre" },
           { "_key": "s2", "module": "web", "title": "Banner principal tienda", "detail": "Desktop y móvil" },
@@ -30,93 +30,93 @@
       {
         "_key": "strip",
         "_type": "portalStrip",
-        "text": "Entregables listos para aprobar, con sincronización directa para tu equipo.",
+        "text": "Todos tus entregables centralizados con visibilidad en tiempo real",
         "badges": [
-          { "_key": "b1", "label": "Instagram Feed & Reels", "variant": "orange" },
-          { "_key": "b2", "label": "Sitios Webflow & Next.js", "variant": "cyan" },
-          { "_key": "b3", "label": "Artículos SEO", "variant": "lime" },
-          { "_key": "b4", "label": "Reportes PDF", "variant": "purple" }
+          { "_key": "b1", "label": "Redes Sociales & Reels", "variant": "orange" },
+          { "_key": "b2", "label": "Sitios web y Landing Pages", "variant": "cyan" },
+          { "_key": "b3", "label": "Artículos de Blog y SEO", "variant": "lime" },
+          { "_key": "b4", "label": "Reportes de Rendimiento", "variant": "purple" }
         ]
       },
       {
         "_key": "journey",
         "_type": "portalJourney",
-        "eyebrow": "Flujo de Aprobación Sin Caos",
-        "title": "De la entrega al visto bueno. En 3 pasos simples.",
-        "description": "Elimina las notas sueltas en chats y las cadenas eternas de correo. Una experiencia clara tanto para tu equipo creativo como para tus clientes.",
+        "eyebrow": "Colaboración Transparente",
+        "title": "De la entrega al visto bueno en 3 pasos simples",
+        "description": "Eliminamos el desorden de mensajes sueltos y versiones confusas. Un proceso estructurado donde siempre tienes el control y sabes qué esperar.",
         "steps": [
           {
             "_key": "j1",
             "index": "01",
-            "title": "Entrega Organizada",
-            "description": "Carruseles, webs y artículos centralizados con fecha exacta de salida.",
+            "title": "Entrega centralizada y clara",
+            "description": "Accedes a tu calendario mensual con cada pieza, diseño y contenido programado con fecha exacta de salida.",
             "badge": "Paso 01",
             "badgeVariant": "lime",
-            "panelTitle": "El cliente ve su mes de un vistazo",
-            "panelText": "En lugar de carpetas dispersas en Drive, el cliente entra y ve su calendario, conteo de piezas pendientes y la fecha de publicación de cada entregable. Octubre 2026 · Aura Café. 4 entregables esperando visto bueno. Carrusel Origen Chiapas, pendiente."
+            "panelTitle": "Ves tu mes completo de un vistazo",
+            "panelText": "Olvídate de buscar enlaces en chats o carpetas desordenadas de Drive. Entras a tu portal y tienes a la mano todos los entregables del mes listos para revisión."
           },
           {
             "_key": "j2",
             "index": "02",
-            "title": "Feedback con Pines",
-            "description": "Comentarios visuales sobre el píxel exacto o el párrafo señalado.",
+            "title": "Feedback directo con pines",
+            "description": "Haces clic en el punto exacto de la imagen o del párrafo para dejarnos tu comentario sin malentendidos.",
             "badge": "Paso 02",
             "badgeVariant": "purple",
-            "panelTitle": "Notas visuales directamente sobre la pantalla",
-            "panelText": "El cliente hace clic sobre el banner, el botón o la diapositiva específica para dejar una nota puntual. El equipo ve el contexto exacto sin interpretaciones erróneas. Pin 1: Cambiar la foto del cold brew por la nueva sesión."
+            "panelTitle": "Comentarios precisos directamente sobre la pieza",
+            "panelText": "Señalas directamente sobre el banner, texto o video el cambio que necesitas. Nuestro equipo creativo lo recibe al instante con la coordenada exacta para resolverlo con rapidez."
           },
           {
             "_key": "j3",
             "index": "03",
-            "title": "Aprobación en 1 Clic",
-            "description": "Visto bueno registrado con fecha, hora y rol. Cero «¿me lo mandas otra vez?».",
+            "title": "Aprobación y publicación",
+            "description": "Das tu visto bueno en un solo clic y tu equipo de Hiweb se encarga de publicar y monitorear los resultados.",
             "badge": "Paso 03",
             "badgeVariant": "lime",
-            "panelTitle": "Aprobación formal registrada al instante",
-            "panelText": "Cuando el cliente da su visto bueno, el sistema registra el usuario, la fecha y hora exacta. El estado cambia a Programado y el equipo recibe la confirmación al momento. Visto bueno de Sofia M., registrado en el sistema."
+            "panelTitle": "Control formal y sin fricción",
+            "panelText": "Tu aprobación queda registrada de inmediato con fecha y hora. La pieza pasa a estado programado y se publica automáticamente según la estrategia acordada."
           }
         ]
       },
       {
         "_key": "bento",
         "_type": "portalBento",
-        "eyebrow": "Funcionalidades Diseñadas para Aprobación",
-        "title": "Todo lo que tu cliente necesita. En un solo lugar.",
-        "description": "Cada formato tiene su propia vista especializada para que la revisión sea rápida, cómoda e intuitiva.",
+        "eyebrow": "Diferenciador Hiweb",
+        "title": "Por qué nuestros clientes nunca se van",
+        "description": "El portal no es un extra técnico: es el estándar con el que garantizamos agilidad, cero fricción y control absoluto de tu inversión sin perseguir a nadie.",
         "cards": [
           {
             "_key": "c1",
             "eyebrow": "Redes sociales",
             "title": "Visor de Carruseles y Reproductor de Reels",
-            "description": "Revisa cada diapositiva en proporción real, navega con miniaturas y copia el copy listo para Instagram con un solo botón.",
+            "description": "Revisa tus publicaciones en tamaño real, verifica las diapositivas y lee el copy propuesto antes de que salga al aire.",
             "module": "rrss"
           },
           {
             "_key": "c2",
             "eyebrow": "Diseño y desarrollo web",
-            "title": "Desktop y móvil con pines",
-            "description": "Alterna entre vista Desktop 1440px y Móvil 390px con casillas de validación obligatorias.",
+            "title": "Desktop y móvil con pines de ajuste",
+            "description": "Navega las versiones de escritorio y móvil de tus nuevas páginas o landing pages con casillas de verificación interactivas.",
             "module": "web"
           },
           {
             "_key": "c3",
             "eyebrow": "Contenido y SEO",
-            "title": "Modo editorial y notas por párrafo",
-            "description": "Revisión tipográfica limpia, recuento de palabras y comentarios precisos al margen del texto.",
+            "title": "Modo editorial y notas al margen",
+            "description": "Lee los artículos redactados para tu blog con tipografía limpia, conteo de palabras y comentarios precisos por párrafo.",
             "module": "seo"
           },
           {
             "_key": "c4",
-            "eyebrow": "Documentos y reportes",
-            "title": "Reportes mensuales y KPIs",
-            "description": "Métricas de alcance, engagement y conversiones condensadas en un PDF descargable.",
+            "eyebrow": "Métricas y resultados",
+            "title": "Reportes mensuales y KPIs clave",
+            "description": "Consulta tus métricas de alcance, conversiones, ventas e inversión publicitaria en dashboards claros y descargables.",
             "module": "docs"
           },
           {
             "_key": "c5",
-            "eyebrow": "HiLinks bio",
-            "title": "Link en bio integrado",
-            "description": "La página de enlaces móviles de tu cliente siempre visible y sincronizada con sus promociones activas.",
+            "eyebrow": "Conversión móvil",
+            "title": "Link en bio integrado y sincronizado",
+            "description": "Supervisa la página de enlaces móviles de tu marca, siempre visible y alineada con tus promociones activas.",
             "module": "hilinks"
           }
         ]
@@ -125,86 +125,86 @@
         "_key": "faq",
         "_type": "portalFaq",
         "eyebrow": "Dudas Frecuentes",
-        "title": "Preguntas y Respuestas",
-        "description": "Todo lo que necesitas saber sobre el funcionamiento del portal para agencias y clientes.",
-        "searchPlaceholder": "Escribe para buscar (ej. roles, pines, integraciones, formatos)...",
+        "title": "Cómo funciona el servicio con nuestro portal",
+        "description": "Todo lo que necesitas saber sobre cómo interactúas con Hiweb durante tus proyectos y campañas.",
+        "searchPlaceholder": "Escribe para buscar (ej. entregables, roles, pines, acceso)...",
         "items": [
           {
             "_key": "f1",
             "badge": "Multiformato",
             "category": "Entregables y formatos",
-            "question": "¿Qué tipo de entregables puede revisar mi cliente en el portal?",
-            "answer": "El portal soporta los 5 entregables esenciales de agencias y marcas: Redes Sociales (carruseles deslizables en alta resolución, reels con reproductor y copys listos para copiar), Sitios Web (con visor responsivo Desktop 1440px y Móvil 390px), Artículos SEO (modo lectura limpia y revisión de párrafos), Reportes de Rendimiento (documentos PDF con KPIs clave) y HiLinks (enlace en bio móvil)."
+            "question": "¿Qué tipo de entregables podré revisar y aprobar en mi portal?",
+            "answer": "Tendrás acceso a todo el trabajo que Hiweb produce para ti: publicaciones de redes sociales (carruseles y reels con copy final), páginas web y landing pages responsivas, artículos de blog optimizados para SEO, reportes mensuales de rendimiento con tus KPIs clave y tu página de enlaces HiLinks."
           },
           {
             "_key": "f2",
             "badge": "Cero fricción",
             "category": "Experiencia del cliente",
-            "question": "¿Mis clientes necesitan crear contraseñas o registrarse?",
-            "answer": "No. El acceso está diseñado para eliminar cualquier barrera: cada cliente ingresa a través de enlaces seguros directos (Magic Links o tokens encriptados) enviados por correo electrónico o WhatsApp. Acceden en 1 segundo desde cualquier teléfono o computadora sin recordar contraseñas."
+            "question": "¿Necesito crear contraseñas o instalar algún software para usarlo?",
+            "answer": "No necesitas instalar nada ni recordar contraseñas. Cada miembro autorizado de tu equipo recibe un enlace de acceso directo y seguro (Magic Link) por correo electrónico o WhatsApp, permitiéndote entrar en 1 segundo desde tu celular, tablet o computadora."
           },
           {
             "_key": "f3",
             "badge": "Precisión visual",
             "category": "Feedback visual",
             "question": "¿Cómo funciona el sistema de comentarios con pines visuales?",
-            "answer": "El cliente simplemente hace clic sobre la diapositiva del carrusel o sobre la sección del sitio web donde desea un ajuste y escribe su comentario. El equipo de diseño y contenido recibe la coordenada exacta (X, Y) junto con la captura de pantalla, erradicando confusiones como «¿en qué imagen iba el cambio?»."
+            "answer": "Si necesitas un ajuste en un diseño o sitio web, solo haces clic en la parte exacta de la pantalla y escribes tu nota. Nuestro equipo recibe la coordenada exacta y la captura de pantalla, eliminando confusiones y acelerando el tiempo de respuesta."
           },
           {
             "_key": "f4",
             "badge": "Roles flexibles",
             "category": "Permisos y gobernanza",
-            "question": "¿Puedo definir roles diferentes para el equipo del cliente?",
-            "answer": "Sí. Puedes asignar permisos diferenciados: Aprobador (quien tiene la autoridad de dar el visto bueno final y programar), Revisor (miembros del equipo del cliente que aportan comentarios y notas) y Lector (quienes solo pueden consultar entregables sin modificar estados)."
+            "question": "¿Pueden ingresar varias personas de mi equipo con roles distintos?",
+            "answer": "Sí. Configuramos permisos a la medida: puedes definir quién tiene la autoridad para dar el visto bueno final y programar, quién participa dejando comentarios o revisiones, y quién tiene acceso de solo lectura para consultar avances y reportes."
           },
           {
             "_key": "f5",
-            "badge": "Webhooks en tiempo real",
-            "category": "Integraciones y automatización",
-            "question": "¿Cómo se conecta con herramientas como ClickUp, Slack o n8n?",
-            "answer": "En la versión de producción conectada, cada acción del cliente (aprobación, solicitud de cambios o comentarios) dispara webhooks instantáneos que actualizan las tareas en ClickUp, notifican al canal de Slack de la cuenta y activan flujos automatizados de publicación o seguimiento."
+            "badge": "Comunicación en tiempo real",
+            "category": "Sincronización con el equipo",
+            "question": "¿Cómo se comunica el portal con el equipo de Hiweb que atiende mi cuenta?",
+            "answer": "Toda acción que realizas en el portal (aprobaciones, notas o solicitudes) se sincroniza en tiempo real con el gestor de proyectos y los especialistas dedicados a tu cuenta, garantizando que los ajustes se atiendan de inmediato sin depender de correos extraviados."
           },
           {
             "_key": "f6",
-            "badge": "White-label",
-            "category": "Marca blanca",
-            "question": "¿Es posible personalizar la marca para que parezca de mi propia agencia?",
-            "answer": "Totalmente. El portal se personaliza con el logotipo, colores corporativos, tipografía y subdominio de tu propia marca (por ejemplo, clientes.tumarca.mx), transmitiendo una imagen profesional ante tus clientes."
+            "badge": "Incluido en tu servicio",
+            "category": "Beneficio exclusivo",
+            "question": "¿El portal tiene algún costo adicional dentro de mis servicios con Hiweb?",
+            "answer": "Ninguno. El portal es parte de nuestro estándar de servicio y está incluido para todos nuestros clientes de iguala mensual y proyectos de desarrollo, como garantía de transparencia, orden y agilidad operativa."
           }
         ]
       },
       {
         "_key": "closer",
         "_type": "portalCloser",
-        "lead": "¿Listo para transformar la experiencia de tus clientes?",
-        "title": "Aprobaciones a la primera.",
-        "description": "Ofrece a tus clientes el portal más intuitivo y elegante del mercado. Diseñado para acelerar tus proyectos y fidelizar cuentas.",
-        "primaryLabel": "Probar Tour Guiado",
-        "secondaryLabel": "Pantalla Completa",
-        "trust": ["100% interactivo", "Cero instalaciones", "Diseñado por Hiweb"]
+        "lead": "Una experiencia de servicio diseñada para ti",
+        "title": "Agilidad, orden y transparencia total",
+        "description": "Supervisar el crecimiento de tu marca no debería significar perseguir entregables ni descifrar versiones en chats. Con Hiweb, tienes control absoluto, claridad y rapidez en un solo clic.",
+        "primaryLabel": "Explorar el Visor Interactivo",
+        "secondaryLabel": "Agenda tu auditoría",
+        "trust": ["Acceso sin contraseñas", "Visibilidad en tiempo real", "Incluido en tu servicio"]
       }
     ]
   },
   "en": {
     "title": "Client portal",
     "metaTitle": "Client portal — Hiweb Marketing",
-    "metaDescription": "The interactive viewer for approving social, websites, SEO articles, and reports. No email threads or WhatsApp voice notes.",
+    "metaDescription": "The exclusive client portal from Hiweb: review and approve social media, websites, SEO articles, and reports with full transparency and speed.",
     "sections": [
       {
         "_key": "hero",
         "_type": "portalHero",
         "badge": "",
-        "badgeNote": "Hiweb Client Portal",
-        "title": "Your clients approve faster. Your projects keep moving.",
-        "description": "The interactive viewer that ends the endless email threads and WhatsApp voice notes. Social, responsive websites, SEO articles, and reports in one branded experience.",
+        "badgeNote": "Hiweb Client Experience",
+        "title": "Approve in one click. Your projects never stop.",
+        "description": "Managing campaigns shouldn't mean losing time across endless email threads, expired links, and scattered messages. At Hiweb, we centralize every deliverable, feedback pin, and approval in real time so your team makes decisions with total agility.",
         "clientName": "Aura Café & Roastery",
         "windowTitle": "Client Portal",
-        "proofTitle": "Designed for high-caliber brands",
-        "proofText": "Approved by clients and agencies in Mexico and LATAM",
-        "tourLabel": "Start guided tour",
-        "viewerLabel": "Full viewer mode",
-        "coachLabel": "Guided tour",
-        "coachText": "Watch how a client approves, or click anywhere to explore on your own.",
+        "proofTitle": "Total transparency and control",
+        "proofText": "A structured, fast experience designed for each of our clients",
+        "tourLabel": "See how it works",
+        "viewerLabel": "Explore the portal",
+        "coachLabel": "Interactive Tour",
+        "coachText": "Discover how you review your deliverables or click anywhere to explore freely.",
         "samples": [
           { "_key": "s1", "module": "rrss", "title": "Chiapas Origin carousel", "detail": "4 slides · October" },
           { "_key": "s2", "module": "web", "title": "Store hero banner", "detail": "Desktop and mobile" },
@@ -216,93 +216,93 @@
       {
         "_key": "strip",
         "_type": "portalStrip",
-        "text": "Deliverables ready to approve, with a direct sync for your team.",
+        "text": "All your deliverables in one place with real-time visibility",
         "badges": [
-          { "_key": "b1", "label": "Instagram Feed & Reels", "variant": "orange" },
-          { "_key": "b2", "label": "Webflow & Next.js sites", "variant": "cyan" },
-          { "_key": "b3", "label": "SEO articles", "variant": "lime" },
-          { "_key": "b4", "label": "PDF reports", "variant": "purple" }
+          { "_key": "b1", "label": "Social Media & Reels", "variant": "orange" },
+          { "_key": "b2", "label": "Websites & Landing Pages", "variant": "cyan" },
+          { "_key": "b3", "label": "Blog & SEO Articles", "variant": "lime" },
+          { "_key": "b4", "label": "Performance Reports", "variant": "purple" }
         ]
       },
       {
         "_key": "journey",
         "_type": "portalJourney",
-        "eyebrow": "Approval flow without the chaos",
-        "title": "From delivery to sign-off. In 3 simple steps.",
-        "description": "Drop the loose notes in chats and the endless email threads. A clear experience for your creative team and your clients.",
+        "eyebrow": "Transparent Collaboration",
+        "title": "From delivery to sign-off in 3 simple steps",
+        "description": "We eliminate scattered chat messages and confusing versions. A structured process where you always have control and clarity.",
         "steps": [
           {
             "_key": "j1",
             "index": "01",
-            "title": "Organized delivery",
-            "description": "Carousels, websites, and articles in one place, each with an exact publish date.",
+            "title": "Organized and clear delivery",
+            "description": "Access your monthly calendar with every post, design, and page scheduled with its exact go-live date.",
             "badge": "Step 01",
             "badgeVariant": "lime",
-            "panelTitle": "The client sees the month at a glance",
-            "panelText": "Instead of folders scattered across Drive, the client opens the portal and sees the calendar, the count of pending pieces, and the publish date of each deliverable. October 2026 · Aura Café. 4 deliverables waiting for sign-off. Chiapas Origin carousel, pending."
+            "panelTitle": "See your entire month at a glance",
+            "panelText": "No more searching for links in chat threads or messy Drive folders. Open your portal and access all monthly deliverables ready for review."
           },
           {
             "_key": "j2",
             "index": "02",
-            "title": "Feedback with pins",
-            "description": "Visual comments on the exact pixel or the marked paragraph.",
+            "title": "Direct pin feedback",
+            "description": "Click the exact spot on an image or paragraph to leave clear notes without any guesswork.",
             "badge": "Step 02",
             "badgeVariant": "purple",
-            "panelTitle": "Visual notes directly on the screen",
-            "panelText": "The client clicks the banner, the button, or the specific slide to leave a precise note. The team sees the exact context, without guesswork. Pin 1: Change the cold brew photo for the new shoot."
+            "panelTitle": "Precise feedback directly on the piece",
+            "panelText": "Point directly to the banner, copy, or video to specify the change you need. Our team receives it instantly with exact coordinates."
           },
           {
             "_key": "j3",
             "index": "03",
-            "title": "Approval in 1 click",
-            "description": "Sign-off recorded with date, time, and role. No more “can you send it again?”",
+            "title": "Approval and publishing",
+            "description": "Give your sign-off in a single click, and your Hiweb team handles publishing and monitoring.",
             "badge": "Step 03",
             "badgeVariant": "lime",
-            "panelTitle": "A formal approval recorded instantly",
-            "panelText": "When the client signs off, the system records the user and the exact date and time. The status changes to Scheduled and the team gets the confirmation right away. Sign-off from Sofia M., recorded in the system."
+            "panelTitle": "Seamless, formal sign-off",
+            "panelText": "Your approval is recorded immediately with date and timestamp. The deliverable moves to scheduled status and launches according to plan."
           }
         ]
       },
       {
         "_key": "bento",
         "_type": "portalBento",
-        "eyebrow": "Features designed for approval",
-        "title": "Everything your client needs. In one place.",
-        "description": "Each format has its own view so the review stays fast, comfortable, and intuitive.",
+        "eyebrow": "Hiweb Differentiator",
+        "title": "Why our clients never leave",
+        "description": "The portal is not a software novelty: it is our operational standard ensuring speed, zero friction, and absolute control without chasing anyone.",
         "cards": [
           {
             "_key": "c1",
-            "eyebrow": "Social",
-            "title": "Carousel viewer and Reels player",
-            "description": "Review each slide at real proportion, move through thumbnails, and copy the Instagram caption with one button.",
+            "eyebrow": "Social media",
+            "title": "Carousel Viewer & Reels Player",
+            "description": "Review your posts at full size, browse slides, and verify copy before it goes live.",
             "module": "rrss"
           },
           {
             "_key": "c2",
-            "eyebrow": "Web design and development",
-            "title": "Desktop and mobile with pins",
-            "description": "Switch between a 1440px desktop view and a 390px mobile view, with required validation checks.",
+            "eyebrow": "Web design & development",
+            "title": "Desktop & mobile with feedback pins",
+            "description": "Browse desktop and mobile versions of your new pages or landing pages with interactive validation checklists.",
             "module": "web"
           },
           {
             "_key": "c3",
-            "eyebrow": "Content and SEO",
-            "title": "Editorial view and notes by paragraph",
-            "description": "A clean typographic review, word count, and precise comments in the margin of the text.",
+            "eyebrow": "Content & SEO",
+            "title": "Editorial view & paragraph notes",
+            "description": "Read blog articles written for your brand with clean typography, word count, and precise comments in the margin.",
             "module": "seo"
           },
           {
             "_key": "c4",
-            "eyebrow": "Documents and reports",
-            "title": "Monthly reports and KPIs",
-            "description": "Reach, engagement, and conversion metrics condensed into a downloadable PDF.",
+            "eyebrow": "Metrics & results",
+            "title": "Monthly reports & key KPIs",
+            "description": "Check reach, conversion, sales, and ad spend metrics in clear, downloadable executive summaries.",
             "module": "docs"
           },
           {
             "_key": "c5",
-            "eyebrow": "HiLinks bio",
-            "title": "Integrated link in bio",
-            "description": "Your client’s mobile links page, always visible and synced with their active promotions.",
+            "eyebrow": "Mobile conversion",
+            "title": "Integrated & synced link in bio",
+            "description": "Oversee your brand's mobile links page, always aligned with your active campaigns and promotions.",
             "module": "hilinks"
           }
         ]
@@ -310,64 +310,64 @@
       {
         "_key": "faq",
         "_type": "portalFaq",
-        "eyebrow": "Common questions",
-        "title": "Questions and answers",
-        "description": "What you need to know about how the portal works for agencies and clients.",
-        "searchPlaceholder": "Search (for example roles, pins, integrations, formats)...",
+        "eyebrow": "Common Questions",
+        "title": "How our client portal powers your service",
+        "description": "Everything you need to know about how you collaborate with Hiweb during your projects and campaigns.",
+        "searchPlaceholder": "Search (deliverables, roles, pins, access)...",
         "items": [
           {
             "_key": "f1",
             "badge": "Multi-format",
-            "category": "Deliverables and formats",
-            "question": "What kinds of deliverables can my client review in the portal?",
-            "answer": "The portal supports the 5 essential deliverables for agencies and brands: Social (high-resolution carousels, reels with a player, and captions ready to copy), Websites (a responsive viewer at Desktop 1440px and Mobile 390px), SEO articles (a clean reading view and paragraph review), Performance reports (PDF documents with key KPIs), and HiLinks (a mobile link in bio)."
+            "category": "Deliverables & formats",
+            "question": "What kind of deliverables will I be able to review in my portal?",
+            "answer": "You will have access to all work produced by Hiweb: social media posts (carousels and reels with final copy), responsive web pages and landing pages, SEO-optimized blog articles, monthly performance reports with your KPIs, and your HiLinks mobile bio."
           },
           {
             "_key": "f2",
             "badge": "Zero friction",
             "category": "Client experience",
-            "question": "Do my clients need to create passwords or sign up?",
-            "answer": "No. Access is built to remove the barrier: each client enters through a secure direct link (magic links or encrypted tokens) sent by email or WhatsApp. They get in within a second from any phone or computer, without remembering a password."
+            "question": "Do I need to create passwords or install any software?",
+            "answer": "No installation and no passwords required. Authorized members of your team receive a secure direct access link (Magic Link) via email or WhatsApp, letting you log in within 1 second from your phone, tablet, or computer."
           },
           {
             "_key": "f3",
             "badge": "Visual precision",
             "category": "Visual feedback",
             "question": "How do visual pin comments work?",
-            "answer": "The client clicks the carousel slide or the website section they want changed and writes the comment. The design and content team receives the exact X, Y coordinate together with the screenshot, so questions like “which image was that change on?” go away."
+            "answer": "Whenever you want an adjustment, simply click on the exact part of the design or web page and write your note. Our team receives the coordinate and screenshot immediately, eliminating confusion and speeding turnaround."
           },
           {
             "_key": "f4",
             "badge": "Flexible roles",
-            "category": "Permissions and governance",
-            "question": "Can I set different roles for the client’s team?",
-            "answer": "Yes. You can assign different permissions: Approver (the person who can give the final sign-off and schedule), Reviewer (client-team members who leave comments and notes), and Reader (people who can view deliverables without changing status)."
+            "category": "Permissions & governance",
+            "question": "Can multiple people from my team access with different roles?",
+            "answer": "Yes. We configure custom permissions: you can define who has final sign-off authority, who contributes with reviews and notes, and who has view-only access to consult progress and reports."
           },
           {
             "_key": "f5",
-            "badge": "Real-time webhooks",
-            "category": "Integrations and automation",
-            "question": "How does it connect with tools like ClickUp, Slack, or n8n?",
-            "answer": "In the connected production version, each client action (approval, change request, or comment) fires instant webhooks that update ClickUp tasks, notify the account’s Slack channel, and trigger automated publishing or follow-up flows."
+            "badge": "Real-time communication",
+            "category": "Team synchronization",
+            "question": "How does the portal sync with the Hiweb team managing my account?",
+            "answer": "Every action you take in the portal (approvals, notes, or requests) syncs in real time with the project manager and specialists assigned to your account, ensuring prompt attention without lost emails."
           },
           {
             "_key": "f6",
-            "badge": "White-label",
-            "category": "White label",
-            "question": "Can the brand be customized so it looks like my own agency?",
-            "answer": "Yes. The portal is customized with your logo, brand colors, type, and subdomain (for example, clientes.tumarca.mx), so it reads as your own in front of your clients."
+            "badge": "Included in service",
+            "category": "Exclusive benefit",
+            "question": "Does the portal carry any extra charge within my Hiweb services?",
+            "answer": "None. The portal is an integral part of our service standard and is included for all retainer and development clients as a guarantee of transparency, order, and agility."
           }
         ]
       },
       {
         "_key": "closer",
         "_type": "portalCloser",
-        "lead": "Ready to change how your clients experience the work?",
-        "title": "Approvals on the first pass.",
-        "description": "Give your clients the most intuitive, elegant portal on the market. Built to speed up your projects and keep accounts close.",
-        "primaryLabel": "Try the guided tour",
-        "secondaryLabel": "Full screen",
-        "trust": ["100% interactive", "Zero installs", "Designed by Hiweb"]
+        "lead": "A service experience designed for you",
+        "title": "Agility, order, and total transparency",
+        "description": "Overseeing your brand shouldn't mean chasing deliverables or sorting out confusing versions in chats. With Hiweb, you have absolute control, clarity, and speed in one click.",
+        "primaryLabel": "Explore the Interactive Viewer",
+        "secondaryLabel": "Book your audit",
+        "trust": ["Passwordless access", "Real-time visibility", "Included in your service"]
       }
     ]
   }

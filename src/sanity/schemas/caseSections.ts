@@ -39,6 +39,12 @@ export const caseHero = defineType({
       validation: (rule) => rule.max(12),
     }),
     defineField({
+      name: 'ubicacion',
+      title: 'Ubicación',
+      type: 'string',
+      description: 'Sobre el título principal (ej. Mérida, México). Si se omite, se usa la ubicación del caso.',
+    }),
+    defineField({
       name: 'imagenesProyecto',
       title: 'Imágenes del proyecto',
       type: 'array',
@@ -101,6 +107,46 @@ export const caseContext = defineType({
       type: 'array',
       description: 'Aparecen como etiquetas junto a la estrategia.',
       of: [defineArrayMember({ type: 'reference', to: [{ type: 'service' }] })],
+    }),
+    defineField({
+      name: 'sitioWeb',
+      title: 'Sitio web del cliente',
+      type: 'url',
+      description: 'Enlace al sitio web oficial del cliente. Si se omite, se usa el sitio web definido en el caso.',
+    }),
+    defineField({
+      name: 'redSocial',
+      title: 'Red Social del Cliente',
+      type: 'object',
+      description: 'Enlace a red social del cliente (ej. Instagram). Si se omite, se usa la del caso.',
+      fields: [
+        defineField({
+          name: 'plataforma',
+          title: 'Plataforma',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Instagram', value: 'instagram' },
+              { title: 'Facebook', value: 'facebook' },
+              { title: 'LinkedIn', value: 'linkedin' },
+              { title: 'TikTok', value: 'tiktok' },
+              { title: 'X / Twitter', value: 'x' },
+              { title: 'YouTube', value: 'youtube' },
+            ],
+          },
+          initialValue: 'instagram',
+        }),
+        defineField({
+          name: 'url',
+          title: 'URL del perfil',
+          type: 'url',
+        }),
+        defineField({
+          name: 'handle',
+          title: 'Usuario / Handle',
+          type: 'string',
+        }),
+      ],
     }),
   ],
   preview: sectionPreview('Sección Contexto', 'retoTitle'),

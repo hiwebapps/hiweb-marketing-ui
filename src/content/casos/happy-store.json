@@ -57,5 +57,12 @@
     "quote": "Con el apoyo de Hiweb logramos que la marca se viera más profesional y cercana. Hoy sentimos una conexión más real con quienes nos compran.",
     "name": "Amanda D.",
     "role": "Fundadora, Happy Store"
+  },
+  "ubicacion": "Mérida, México",
+  "sitioWeb": "https://happystore.mx/",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/happystore.mx/",
+    "handle": "@happystore.mx"
   }
 }

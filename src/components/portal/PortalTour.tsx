@@ -17,85 +17,85 @@ const TOUR: Record<Locale, TourStep[]> = {
   es: [
     {
       id: 'welcome',
-      title: 'Así aprueba un cliente',
+      title: 'Así apruebas como cliente',
       body: 'Cinco puntos dentro de esta ventana. Avanza cuando quieras, o deja que la guía siga sola.',
     },
     {
       id: 'pending',
       target: 'pending',
-      title: 'Pendientes en un número',
-      body: 'El badge junta redes, páginas y artículos que esperan visto bueno.',
+      title: 'Tus pendientes en un número',
+      body: 'Aquí ves todas tus redes, páginas y artículos que esperan tu visto bueno.',
     },
     {
       id: 'band',
       target: 'band',
-      title: 'El mes, de un vistazo',
-      body: 'Piezas, páginas y artículos. El cierre de revisión está a 2 días.',
+      title: 'Tu mes, de un vistazo',
+      body: 'Tus piezas, páginas y reportes organizados con fechas claras de publicación.',
     },
     {
       id: 'social',
       target: 'social',
-      title: 'Cada pieza, con contexto',
-      body: 'Formato, fecha de publicación y ronda de revisión en la misma fila.',
+      title: 'Cada entrega, con contexto',
+      body: 'Formato, fecha de salida y ronda de revisión en la misma fila.',
     },
     {
       id: 'approve',
       target: 'approve',
       title: 'Aprobación en un clic',
-      body: 'El cliente deja un comentario o da el visto bueno. El contador baja al momento.',
+      body: 'Dejas una nota puntual o das tu visto bueno. Tu equipo en Hiweb lo recibe de inmediato.',
     },
     {
       id: 'web',
       target: 'web',
-      title: 'Sitio y blog, en la misma cola',
-      body: 'Las páginas y el artículo SEO esperan el visto bueno junto a las redes.',
+      title: 'Sitio web y blog, todo centralizado',
+      body: 'Tus páginas y artículos SEO listos para revisión junto a tus redes sociales.',
     },
     {
       id: 'end',
-      title: 'Eso es el flujo',
-      body: 'El cliente aprueba aquí. El equipo deja de perseguir correos.',
+      title: 'Transparencia y agilidad',
+      body: 'Tú tienes el control en un clic. Nosotros nos encargamos de que tu marketing nunca se detenga.',
     },
   ],
   en: [
     {
       id: 'welcome',
-      title: 'This is how a client approves',
-      body: 'Five points inside this window. Move ahead when you want, or let the guide continue on its own.',
+      title: 'How you approve as a client',
+      body: 'Five key features inside this window. Move ahead when you want, or let the guide continue on its own.',
     },
     {
       id: 'pending',
       target: 'pending',
-      title: 'Pending in one number',
-      body: 'The badge gathers social, pages, and articles waiting for sign-off.',
+      title: 'Your pending items at a glance',
+      body: 'See all your social posts, web pages, and articles waiting for your sign-off.',
     },
     {
       id: 'band',
       target: 'band',
-      title: 'The month at a glance',
-      body: 'Pieces, pages, and articles. Review closes in 2 days.',
+      title: 'Your month, organized',
+      body: 'Posts, pages, and reports scheduled with clear publish dates.',
     },
     {
       id: 'social',
       target: 'social',
-      title: 'Each piece, with context',
-      body: 'Format, publish date, and review round on the same row.',
+      title: 'Every deliverable, with context',
+      body: 'Format, publish date, and review round all in one place.',
     },
     {
       id: 'approve',
       target: 'approve',
       title: 'Approval in one click',
-      body: 'The client leaves a comment or signs off. The count drops right away.',
+      body: 'Leave a pinpoint comment or give your sign-off. Your Hiweb team receives it instantly.',
     },
     {
       id: 'web',
       target: 'web',
-      title: 'Website and blog, in the same queue',
-      body: 'Pages and the SEO article wait for sign-off alongside social.',
+      title: 'Website and blog, all in one queue',
+      body: 'Your web pages and SEO articles ready for review alongside your social media.',
     },
     {
       id: 'end',
-      title: "That's the flow",
-      body: 'The client approves here. The team stops chasing email threads.',
+      title: 'Transparency and speed',
+      body: 'You stay in control with one click. We ensure your marketing keeps moving forward.',
     },
   ],
 };
@@ -181,6 +181,22 @@ export function PortalTour({
     const mid = placed.top + placed.height / 2;
     if (placed.top < 96 || placed.bottom > window.innerHeight - 96) {
       window.scrollBy({ top: mid - window.innerHeight / 2, behavior: 'auto' });
+    }
+
+    // Punto 05 / 05: Forzar scroll del viewport hacia abajo para que el card del tour y la fila objetivo queden totalmente visibles
+    if (current.id === 'web' || featureIndex === 4) {
+      setTimeout(() => {
+        const targetRect = el.getBoundingClientRect();
+        const cardEl = cardRef.current;
+        const cardRect = cardEl?.getBoundingClientRect();
+        const bottomEdge = Math.max(targetRect.bottom, cardRect?.bottom ?? 0);
+        const desiredLimit = window.innerHeight - 60;
+        if (bottomEdge > desiredLimit) {
+          window.scrollBy({ top: bottomEdge - desiredLimit + 80, behavior: 'smooth' });
+        } else if (targetRect.top > window.innerHeight * 0.45) {
+          window.scrollBy({ top: targetRect.top - window.innerHeight * 0.4, behavior: 'smooth' });
+        }
+      }, 50);
     }
     const frameBox = frame.getBoundingClientRect();
     const target = el.getBoundingClientRect();

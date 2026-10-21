@@ -47,5 +47,12 @@
       "title": "Comunicación técnica",
       "description": "Gestión de redes sociales enfocada en comunicar procesos, tecnología y valor técnico del laboratorio de forma clara y profesional."
     }
-  ]
+  ],
+  "ubicacion": "Mérida, México",
+  "sitioWeb": "https://restauradental.com/",
+  "redSocial": {
+    "plataforma": "facebook",
+    "url": "https://www.facebook.com/restauralaboratoriodental",
+    "handle": "Restaura Dental"
+  }
 }

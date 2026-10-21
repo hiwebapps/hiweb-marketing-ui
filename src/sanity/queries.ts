@@ -18,6 +18,7 @@ const instagramPhoneProjection = /* groq */ `
       title,
       description,
       tone,
+      brandId,
       username,
       displayName,
       bio,
@@ -190,6 +191,12 @@ const serviceSectionsProjection = /* groq */ `
       title,
       columns,
       items[]{ question, answer }
+    },
+    _type == "serviceSocialFeed" => {
+      eyebrow,
+      title,
+      description,
+      tone
     },
     _type == "serviceCta" => { badge, title, description },
     ${beforeAfterProjection}
@@ -906,6 +913,7 @@ sections[]{
   headingWidth,
   _type == "caseHero" => {
     anio,
+    ubicacion,
     imagen ${imageProjection},
     imagenesProyecto[] ${imageProjection}
   },
@@ -916,6 +924,8 @@ sections[]{
     estrategiaEyebrow,
     estrategiaTitle,
     estrategia,
+    sitioWeb,
+    redSocial{ plataforma, url, handle },
     servicios[]->{ "id": slug.current, nombre, "heroImage": coalesce(heroImage, sections[_type == "serviceHero"][0].image) ${imageProjection} }
   },
   _type == "caseProcess" => {
@@ -965,6 +975,9 @@ const caseBodyProjection = /* groq */ `
   "fases": coalesce(sections[_type == "caseProcess"][0].fases[]{ title, description, ${processIconField} }, fases[]{ title, description, ${processIconField} }),
   "testimonio": coalesce(sections[_type == "caseTestimonial"][0]${testimonialFields}, testimonio{ quote, name, role }),
   "anio": coalesce(sections[_type == "caseHero"][0].anio, anio),
+  "ubicacion": coalesce(sections[_type == "caseHero"][0].ubicacion, ubicacion),
+  "sitioWeb": coalesce(sections[_type == "caseContext"][0].sitioWeb, sitioWeb),
+  "redSocial": coalesce(sections[_type == "caseContext"][0].redSocial, redSocial),
   "imagenesProyecto": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[] ${imageProjection}, imagenesProyecto[] ${imageProjection}),
   ${caseSectionsProjection}
 `;

@@ -48,5 +48,12 @@
       "title": "Posicionamiento industrial",
       "description": "Estrategia SEO enfocada en posicionamiento en México, optimización técnica, estructura del sitio y adaptación de palabras clave industriales al mercado local."
     }
-  ]
+  ],
+  "ubicacion": "Hickory, Estados Unidos",
+  "sitioWeb": "https://eaglesuperabrasives.com/",
+  "redSocial": {
+    "plataforma": "linkedin",
+    "url": "https://www.linkedin.com/company/eagle-superabrasives-inc/",
+    "handle": "Eagle Superabrasives"
+  }
 }

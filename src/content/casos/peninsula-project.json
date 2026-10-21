@@ -54,5 +54,12 @@
     "quote": "Ahora las personas entienden mejor lo que hacemos. Las redes nos ayudaron a contar la experiencia de viajar con Península Project, no solo a mostrar destinos.",
     "name": "Lydia R.",
     "role": "Área de Experiencias, Península Project"
+  },
+  "ubicacion": "Mérida, México",
+  "sitioWeb": "https://peninsulaproject.mx/",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/peninsulaproject.mx/",
+    "handle": "@peninsulaproject.mx"
   }
 }

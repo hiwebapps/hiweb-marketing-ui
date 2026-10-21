@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Icon } from './PortalDemo';
 
 export type SeoStatus = 'revision' | 'correccion' | 'aprobado' | 'publicado';
 
@@ -103,9 +104,9 @@ export function SeoBoard({
         </div>
         <h1 className="h1">{copy.title}</h1>
       </header>
-      <div className="rrss-seg" role="tablist">
+      <div className="seg dark" role="tablist">
         {TABS.map((key) => (
-          <button key={key} type="button" className={tab === key ? 'is-on' : ''} onClick={() => setTab(key)}>
+          <button key={key} type="button" className={tab === key ? 'on' : ''} onClick={() => setTab(key)}>
             {labels[key]}{key === 'revision' || key === 'correccion' ? ` · ${articles.filter((article) => article.status === key).length}` : ''}
           </button>
         ))}
@@ -115,8 +116,8 @@ export function SeoBoard({
           {visible.map((article) => (
             <button key={article.id} type="button" className="blog-card" onClick={() => onOpen(article.id)}>
               <div>
-                <span className="badge sm blog-kicker">{article.num}</span>
-                <span className={article.status === 'revision' ? 'badge sm site-rev' : 'badge sm site-ok'}>
+                <span className="badge sm b-pur">{article.num}</span>
+                <span className={article.status === 'revision' ? 'badge sm b-ora' : 'badge sm b-grn'}>
                   {article.status === 'revision' ? copy.reviewBadge(article.round) : labels[article.status]}
                 </span>
                 <span className="small muted">{article.readTime}</span>
@@ -125,7 +126,7 @@ export function SeoBoard({
               <p>{article.paras[0]?.slice(0, 160)}…</p>
               <footer>
                 <span className="small muted">{locale === 'en' ? 'Round' : 'Ronda'} {article.round} · {article.date}</span>
-                <span className="rrss-solid">{copy.read}</span>
+                <span className="btn sm btn-ink">{copy.read}</span>
               </footer>
             </button>
           ))}
@@ -165,17 +166,19 @@ export function SeoArticle({
   };
   return (
     <div className="blog-read">
-      <header>
-        <button type="button" className="rrss-ghost" onClick={onBack}>{copy.back}</button>
-        <div>
+      <header className="rvtop">
+        <button type="button" className="icon-btn" onClick={onBack} aria-label={copy.back}>
+          <Icon name="back" />
+        </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 0, flex: 1 }}>
           <span className="small muted">SEO · {article.num}</span>
-          <strong>{article.title}</strong>
+          <b style={{ fontFamily: 'var(--display)', fontSize: 16, color: 'var(--ink)' }}>{article.title}</b>
         </div>
-        <div className="rrss-seg is-dark">
-          <button type="button" className={mode === 'read' ? 'is-on' : ''} onClick={() => setMode('read')}>{copy.modeRead}</button>
-          <button type="button" className={mode === 'comment' ? 'is-on' : ''} onClick={() => setMode('comment')}>{copy.modeComment}</button>
+        <div className="seg dark">
+          <button type="button" className={mode === 'read' ? 'on' : ''} onClick={() => setMode('read')}>{copy.modeRead}</button>
+          <button type="button" className={mode === 'comment' ? 'on' : ''} onClick={() => setMode('comment')}>{copy.modeComment}</button>
         </div>
-        <span className="badge sm">{article.readTime}</span>
+        <span className="badge sm b-pur">{article.readTime}</span>
       </header>
       <div className="blog-read__body">
         <article className={mode === 'comment' ? 'is-comment' : ''}>
@@ -201,8 +204,8 @@ export function SeoArticle({
             </p>
           )) : <p className="site-note is-empty">{copy.emptyComments}</p>}
           <div className="site-view__actions">
-            <button type="button" className="rrss-ghost" onClick={send} disabled={approved}>{copy.send}</button>
-            <button type="button" className="rrss-solid" data-tour="approve" onClick={onApprove} disabled={approved}>
+            <button type="button" className="btn btn-ink" onClick={send} disabled={approved}>{copy.send}</button>
+            <button type="button" className="btn btn-p" data-tour="approve" onClick={onApprove} disabled={approved}>
               {approved ? copy.done : copy.approve}
             </button>
           </div>

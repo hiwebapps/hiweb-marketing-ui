@@ -52,5 +52,11 @@
       "title": "Contenido audiovisual y gráfico",
       "description": "Creación y grabación de contenido audiovisual y gráfico enfocado en productos, tendencias y estilo de vida para fortalecer la identidad visual de la marca."
     }
-  ]
+  ],
+  "ubicacion": "Mérida, México",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/zapaterialapeninsula/",
+    "handle": "@zapaterialapeninsula"
+  }
 }

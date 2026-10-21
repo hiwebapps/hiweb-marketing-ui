@@ -8,8 +8,8 @@ import defaults from '../lib/content/portal-defaults.json';
 import type { PortalSection } from '../lib/content/types';
 import { breadcrumbSchema } from '../lib/schema';
 
-const remote = await getPortal('es');
 const fallback = defaults.es;
+const remote = import.meta.env.DEV ? null : await getPortal('es');
 const sections = (remote?.sections?.length ? remote.sections : fallback.sections) as PortalSection[];
 ---
 

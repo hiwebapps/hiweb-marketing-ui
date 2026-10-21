@@ -463,6 +463,40 @@ export const serviceCta = defineType({
   preview: titled('Sección Cierre'),
 });
 
+export const serviceSocialFeed = defineType({
+  name: 'serviceSocialFeed',
+  title: 'Feed de Redes Sociales (Grid)',
+  type: 'object',
+  icon: ThLargeIcon,
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Feed en vivo' }),
+    headingTitleField({ initialValue: 'Contenido que despierta deseo y llena agendas' }),
+    headingWidthField(),
+    defineField({
+      name: 'description',
+      title: 'Descripción',
+      type: 'text',
+      rows: 3,
+      initialValue:
+        'Publicaciones reales producidas y gestionadas para nuestros clientes: dirección de arte, video de alto impacto y copys diseñados para vender.',
+    }),
+    defineField({
+      name: 'tone',
+      title: 'Fondo',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Canvas (Blanco)', value: 'canvas' },
+          { title: 'Surface (Gris suave)', value: 'surface' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'canvas',
+    }),
+  ],
+  preview: titled('Sección Feed de Redes Sociales (Grid)'),
+});
+
 export const serviceSectionMembers: ArrayOfObjectsMember[] = [
   defineArrayMember({ type: 'serviceHero', ...dialog }),
   defineArrayMember({ type: 'serviceOverview', ...dialog }),
@@ -472,6 +506,7 @@ export const serviceSectionMembers: ArrayOfObjectsMember[] = [
   defineArrayMember({ type: 'servicePlans', ...dialog }),
   defineArrayMember({ type: 'serviceIndustries', ...dialog }),
   defineArrayMember({ type: 'serviceProcess', ...dialog }),
+  defineArrayMember({ type: 'serviceSocialFeed', ...dialog }),
   defineArrayMember({ type: 'serviceCases', ...dialog }),
   defineArrayMember({ type: 'serviceFaq', ...dialog }),
   defineArrayMember({ type: 'serviceCta', ...dialog }),
@@ -492,6 +527,7 @@ export const serviceSectionTypes = [
     servicePlansSection,
     serviceIndustries,
     serviceProcess,
+    serviceSocialFeed,
     serviceCases,
     serviceFaq,
     serviceCta,

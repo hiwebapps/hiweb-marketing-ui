@@ -57,5 +57,12 @@
     "quote": "Las campañas de Google Ads fueron claras, estratégicas y enfocadas en generar clientes con intención real de renta.",
     "name": "Sebastian S.",
     "role": "Área de Marketing, Avant Rent a Car"
+  },
+  "ubicacion": "Cancún, México",
+  "sitioWeb": "https://www.avantrentacar.com/",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/avant_rentacar/",
+    "handle": "@avant_rentacar"
   }
 }

@@ -8,6 +8,7 @@ import { ServicePlans } from './ServicePlans';
 import { IndustryGrid } from './IndustryGrid';
 import { BeforeAfter } from './BeforeAfter';
 import { ProcessPhases } from './ProcessPhases';
+import { InstagramGridFeed } from './InstagramGridFeed';
 import { CaseStories } from './CaseStories';
 import { FaqSection } from './FaqSection';
 import FinalCta from './FinalCtaBand.astro';
@@ -196,6 +197,18 @@ const nombre = entry.data.nombre;
 			title={section.title || `Proceso de ${nombre}`}
 			description={section.description || 'De la auditoría al reporte. Un sistema medible, no un paquete suelto de tácticas.'}
 			tone="canvas"
+			headingWidth={section.headingWidth}
+		/>
+	)
+}
+{
+	section._type === 'serviceSocialFeed' && (
+		<InstagramGridFeed
+			client:visible
+			eyebrow={section.eyebrow}
+			title={section.title}
+			description={section.description}
+			tone={section.tone || 'canvas'}
 			headingWidth={section.headingWidth}
 		/>
 	)

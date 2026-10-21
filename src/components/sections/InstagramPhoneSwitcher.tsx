@@ -17,16 +17,45 @@ export type InstagramPhoneSwitcherProps = {
   description?: string;
   headingWidth?: string;
   tone?: 'canvas' | 'surface' | 'wash';
+  brandId?: string;
+  brand?: BrandProfile;
+  hideSwitcher?: boolean;
+  align?: 'left' | 'center';
 };
 
 export function InstagramPhoneSwitcher({
   id = 'feed-phone-switcher',
-  eyebrow = 'En las manos de tu audiencia',
-  title = 'Perfiles cuidados hasta el último píxel',
-  description = 'Interactúa con feeds reales en vivo. Diseñamos cuadrículas armónicas, producimos contenido visual con ritmo y redactamos copys que conectan con la intención de compra.',
+  eyebrow,
+  title,
+  description,
   headingWidth,
   tone = 'surface',
+  brandId,
+  brand: customBrand,
+  hideSwitcher = false,
+  align,
 }: InstagramPhoneSwitcherProps) {
+  const isSingleBrand = Boolean(hideSwitcher || brandId || customBrand);
+
+  const matchedBrand = useMemo(() => {
+    if (customBrand) return customBrand;
+    if (brandId) {
+      const clean = brandId.toLowerCase().trim();
+      return (
+        SOCIAL_BRANDS.find(
+          (b) =>
+            b.id.toLowerCase() === clean ||
+            b.handle.toLowerCase() === clean ||
+            clean.includes(b.id.toLowerCase()) ||
+            b.id.toLowerCase().includes(clean) ||
+            b.name.toLowerCase().includes(clean) ||
+            clean.includes(b.name.toLowerCase()),
+        ) || null
+      );
+    }
+    return null;
+  }, [customBrand, brandId]);
+
   const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
   const [selectedBrandIndex, setSelectedBrandIndex] = useState(0);
   const [selectedPost, setSelectedPost] = useState<SocialPost | null>(null);
@@ -38,72 +67,91 @@ export function InstagramPhoneSwitcher({
 
   // Keep selected brand valid if industry filter changes
   const brand: BrandProfile =
-    visibleBrands[selectedBrandIndex] || visibleBrands[0] || SOCIAL_BRANDS[0];
+    matchedBrand ||
+    (isSingleBrand
+      ? SOCIAL_BRANDS[0]
+      : visibleBrands[selectedBrandIndex] || visibleBrands[0] || SOCIAL_BRANDS[0]);
+
+  const resolvedEyebrow =
+    eyebrow ?? (isSingleBrand ? 'Feed de Instagram' : 'En las manos de tu audiencia');
+  const resolvedTitle =
+    title ??
+    (isSingleBrand
+      ? `Feed de ${brand.name}`
+      : 'Perfiles cuidados hasta el último píxel');
+  const resolvedDescription =
+    description ??
+    (isSingleBrand
+      ? `Estrategia visual, cuadrícula y publicaciones producidas para ${brand.name}.`
+      : 'Interactúa con feeds reales en vivo. Diseñamos cuadrículas armónicas, producimos contenido visual con ritmo y redactamos copys que conectan con la intención de compra.');
+  const resolvedAlign = align ?? (isSingleBrand ? 'left' : 'center');
 
   return (
     <SectionBand id={id} tone={tone} className="ig-switcher-band">
       {/* Kit Section Header */}
       <SectionHeader
-        eyebrow={eyebrow}
-        title={title}
-        description={description}
-        align="center"
+        eyebrow={resolvedEyebrow}
+        title={resolvedTitle}
+        description={resolvedDescription}
+        align={resolvedAlign}
         badgeVariant="lime"
         headingWidth={headingWidth}
       />
 
-      {/* Filter by Industry */}
-      <div className="ig-switcher-controls">
-        <div className="ig-switcher-industry-filters" role="group" aria-label="Filtrar por industria">
-          {SOCIAL_INDUSTRIES.map((ind) => {
-            const active = selectedIndustry === ind.id;
-            return (
-              <Button
-                key={ind.id}
-                type="button"
-                size="sm"
-                variant={active ? 'primary' : 'secondary'}
-                glow={active}
-                aria-pressed={active}
-                onClick={() => {
-                  setSelectedIndustry(ind.id);
-                  setSelectedBrandIndex(0);
-                  setSelectedPost(null);
-                }}
-              >
-                {ind.name}
-              </Button>
-            );
-          })}
-        </div>
-
-        {/* Brand Stories Selector */}
-        <div className="ig-story-selector">
-          <p className="ig-story-selector__title">Elige una marca para explorar su cuenta:</p>
-          <div className="ig-story-selector__track">
-            {visibleBrands.map((item, idx) => {
-              const isActive = item.id === brand.id;
+      {/* Filter by Industry (Omitted in single-brand mode) */}
+      {!isSingleBrand ? (
+        <div className="ig-switcher-controls">
+          <div className="ig-switcher-industry-filters" role="group" aria-label="Filtrar por industria">
+            {SOCIAL_INDUSTRIES.map((ind) => {
+              const active = selectedIndustry === ind.id;
               return (
-                <button
-                  key={item.id}
+                <Button
+                  key={ind.id}
                   type="button"
-                  className={`ig-story-circle ${isActive ? 'is-active' : ''}`}
+                  size="sm"
+                  variant={active ? 'primary' : 'secondary'}
+                  glow={active}
+                  aria-pressed={active}
                   onClick={() => {
-                    setSelectedBrandIndex(idx);
+                    setSelectedIndustry(ind.id);
+                    setSelectedBrandIndex(0);
                     setSelectedPost(null);
                   }}
                 >
-                  <div className="ig-story-circle__ring">
-                    <img src={item.avatar} alt={item.name} className="ig-story-circle__img" />
-                  </div>
-                  <span className="ig-story-circle__name">{item.name.split(' ')[0]}</span>
-                  <span className="ig-story-circle__ind">{item.industryName.split(' ')[0]}</span>
-                </button>
+                  {ind.name}
+                </Button>
               );
             })}
           </div>
+
+          {/* Brand Stories Selector */}
+          <div className="ig-story-selector">
+            <p className="ig-story-selector__title">Elige una marca para explorar su cuenta:</p>
+            <div className="ig-story-selector__track">
+              {visibleBrands.map((item, idx) => {
+                const isActive = item.id === brand.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`ig-story-circle ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setSelectedBrandIndex(idx);
+                      setSelectedPost(null);
+                    }}
+                  >
+                    <div className="ig-story-circle__ring">
+                      <img src={item.avatar} alt={item.name} className="ig-story-circle__img" />
+                    </div>
+                    <span className="ig-story-circle__name">{item.name.split(' ')[0]}</span>
+                    <span className="ig-story-circle__ind">{item.industryName.split(' ')[0]}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
+      ) : null}
 
       {/* 2-Column Showcase */}
       <div className="ig-switcher-layout">
@@ -115,7 +163,7 @@ export function InstagramPhoneSwitcher({
               <div className="ig-brand-card__meta">
                 <div className="ig-brand-card__row">
                   <h3 className="ig-brand-card__name">{brand.name}</h3>
-                  <Badge variant="orange">{brand.industryName}</Badge>
+                  {brand.industryName ? <Badge variant="orange">{brand.industryName}</Badge> : null}
                 </div>
                 <span className="ig-brand-card__handle">@{brand.handle}</span>
               </div>
@@ -123,24 +171,41 @@ export function InstagramPhoneSwitcher({
 
             <p className="ig-brand-card__bio">{brand.bio}</p>
 
-            <div className="ig-brand-card__metrics">
-              <div className="ig-brand-metric">
-                <span className="ig-brand-metric__val">{brand.stats.followers}</span>
-                <span className="ig-brand-metric__lbl">Seguidores</span>
+            {!isSingleBrand ? (
+              <div className="ig-brand-card__metrics">
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">{brand.stats.followers}</span>
+                  <span className="ig-brand-metric__lbl">Seguidores</span>
+                </div>
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">{brand.stats.posts}</span>
+                  <span className="ig-brand-metric__lbl">Publicaciones</span>
+                </div>
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">
+                    {brand.posts[0]?.outcomeTag || 'Impacto probado'}
+                  </span>
+                  <span className="ig-brand-metric__lbl">Resultado clave</span>
+                </div>
               </div>
-              <div className="ig-brand-metric">
-                <span className="ig-brand-metric__val">{brand.stats.posts}</span>
-                <span className="ig-brand-metric__lbl">Publicaciones</span>
+            ) : (
+              <div className="ig-brand-card__metrics">
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">{brand.stats.followers}</span>
+                  <span className="ig-brand-metric__lbl">Seguidores</span>
+                </div>
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">{brand.stats.posts}</span>
+                  <span className="ig-brand-metric__lbl">Publicaciones</span>
+                </div>
+                <div className="ig-brand-metric">
+                  <span className="ig-brand-metric__val">Continuo</span>
+                  <span className="ig-brand-metric__lbl">Entregables</span>
+                </div>
               </div>
-              <div className="ig-brand-metric">
-                <span className="ig-brand-metric__val">
-                  {brand.posts[0]?.outcomeTag || 'Impacto probado'}
-                </span>
-                <span className="ig-brand-metric__lbl">Resultado clave</span>
-              </div>
-            </div>
+            )}
 
-            {brand.posts[0]?.caseSlug && (
+            {!isSingleBrand && brand.posts[0]?.caseSlug && (
               <div className="ig-brand-card__cta">
                 <Button
                   href={`/portafolio/${brand.posts[0].caseSlug}`}
@@ -187,7 +252,7 @@ export function InstagramPhoneSwitcher({
                 </div>
 
                 {/* Main App Body */}
-                <div className="ig-app-content">
+                <div className={`ig-app-content ${selectedPost ? 'is-post-active' : ''}`}>
                   {!selectedPost ? (
                     /* View A: Profile View */
                     <div className="ig-app-profile">

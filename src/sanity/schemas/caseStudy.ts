@@ -28,6 +28,56 @@ export const caseStudy = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'ubicacion',
+      title: 'Ubicación',
+      type: 'string',
+      group: 'datos',
+      description: 'Ciudad, Estado / País que se muestra en el tag superior (ej. Mérida, México; Cancún, México; Hickory, Estados Unidos)',
+    }),
+    defineField({
+      name: 'sitioWeb',
+      title: 'Sitio web del cliente',
+      type: 'url',
+      group: 'datos',
+      description: 'URL oficial del sitio web o catálogo del cliente (ej. https://diazar.com)',
+    }),
+    defineField({
+      name: 'redSocial',
+      title: 'Red Social del Cliente',
+      type: 'object',
+      group: 'datos',
+      fields: [
+        defineField({
+          name: 'plataforma',
+          title: 'Plataforma',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Instagram', value: 'instagram' },
+              { title: 'Facebook', value: 'facebook' },
+              { title: 'LinkedIn', value: 'linkedin' },
+              { title: 'TikTok', value: 'tiktok' },
+              { title: 'X / Twitter', value: 'x' },
+              { title: 'YouTube', value: 'youtube' },
+            ],
+          },
+          initialValue: 'instagram',
+        }),
+        defineField({
+          name: 'url',
+          title: 'URL del perfil',
+          type: 'url',
+          description: 'Enlace al perfil de la red social (ej. https://www.instagram.com/diazarcontrol/)',
+        }),
+        defineField({
+          name: 'handle',
+          title: 'Usuario / Handle',
+          type: 'string',
+          description: 'Opcional (ej. @diazarcontrol)',
+        }),
+      ],
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',

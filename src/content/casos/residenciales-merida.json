@@ -54,5 +54,12 @@
       "title": "Contenido audiovisual y gráfico",
       "description": "Grabación y creación de contenido audiovisual y gráfico para redes sociales, enfocado en mostrar propiedades, estilos de vida y proyectos de forma atractiva y comercial."
     }
-  ]
+  ],
+  "ubicacion": "Mérida, México",
+  "sitioWeb": "https://residencialesmerida.com/",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/residencialesmerida/",
+    "handle": "@residencialesmerida"
+  }
 }

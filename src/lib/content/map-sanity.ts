@@ -437,6 +437,15 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
           items,
         };
       }
+      if (type === 'serviceSocialFeed') {
+        return {
+          _type: 'serviceSocialFeed' as const,
+          eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
+          title: section.title ? String(section.title) : undefined,
+          description: section.description ? String(section.description) : undefined,
+          tone: asTone(section.tone),
+        };
+      }
       if (type === 'serviceCases') {
         const items = Array.isArray(section.items)
           ? section.items.flatMap((item) => {
@@ -630,6 +639,7 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
         {
           _type: 'caseHero',
           anio: asText(section.anio),
+          ubicacion: asText(section.ubicacion),
           imagen: imageUrl(imagen, 1600),
           imagenAlt: imageAlt(imagen),
           imagenesProyecto: Array.isArray(section.imagenesProyecto)
@@ -650,6 +660,15 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
           estrategiaEyebrow: asText(section.estrategiaEyebrow),
           estrategiaTitle: asText(section.estrategiaTitle),
           estrategia: asText(richTextToMarkdown(section.estrategia)),
+          sitioWeb: asText(section.sitioWeb),
+          redSocial:
+            section.redSocial && typeof section.redSocial === 'object' && 'url' in (section.redSocial as object)
+              ? {
+                  plataforma: asText((section.redSocial as { plataforma?: unknown }).plataforma),
+                  url: asText((section.redSocial as { url?: unknown }).url) ?? '',
+                  handle: asText((section.redSocial as { handle?: unknown }).handle),
+                }
+              : undefined,
         },
       ];
     }
@@ -733,6 +752,79 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
   });
 }
 
+const CASE_FALLBACK_METADATA: Record<
+  string,
+  { ubicacion: string; sitioWeb?: string; redSocial?: CaseSocialLink }
+> = {
+  'avant-rent-a-car': {
+    ubicacion: 'Cancún, México',
+    sitioWeb: 'https://www.avantrentacar.com/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/avant_rentacar/', handle: '@avant_rentacar' },
+  },
+  'diazar': {
+    ubicacion: 'Mérida, México',
+    sitioWeb: 'https://diazar.com/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/diazarcontrol/', handle: '@diazarcontrol' },
+  },
+  'eagle-superabrasives': {
+    ubicacion: 'Hickory, Estados Unidos',
+    sitioWeb: 'https://eaglesuperabrasives.com/',
+    redSocial: { plataforma: 'linkedin', url: 'https://www.linkedin.com/company/eagle-superabrasives-inc/', handle: 'Eagle Superabrasives' },
+  },
+  'el-secreto': {
+    ubicacion: 'Mérida, México',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/el.secretomx/', handle: '@el.secretomx' },
+  },
+  'enfoque-21': {
+    ubicacion: 'Mérida, México',
+    sitioWeb: 'https://enfoque21.com/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/enfoque21fotografia/', handle: '@enfoque21fotografia' },
+  },
+  'gaios': {
+    ubicacion: 'Mérida, México',
+    sitioWeb: 'https://menu.gaios.mx/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/gaios.merida/', handle: '@gaios.merida' },
+  },
+  'happy-store': {
+    ubicacion: 'Mérida, México',
+    sitioWeb: 'https://happystore.mx/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/happystore.mx/', handle: '@happystore.mx' },
+  },
+  'industrial-basanlo': {
+    ubicacion: 'Monterrey, México',
+    sitioWeb: 'https://www.industrialbasanlo.com/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/industrialbasanlo/', handle: '@industrialbasanlo' },
+  },
+  'pass-your-toefl': {
+    ubicacion: 'Mérida, México',
+    sitioWeb: 'https://passyourtoefl.com/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/passyourtoefl/', handle: '@passyourtoefl' },
+  },
+  'paulos-pizza': {
+    ubicacion: 'Mérida, México',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/paulospizzamid/', handle: '@paulospizzamid' },
+  },
+  'peninsula-project': {
+    ubicacion: 'Mérida, México',
+    sitioWeb: 'https://peninsulaproject.mx/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/peninsulaproject.mx/', handle: '@peninsulaproject.mx' },
+  },
+  'residenciales-merida': {
+    ubicacion: 'Mérida, México',
+    sitioWeb: 'https://residencialesmerida.com/',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/residencialesmerida/', handle: '@residencialesmerida' },
+  },
+  'restaura': {
+    ubicacion: 'Mérida, México',
+    sitioWeb: 'https://restauradental.com/',
+    redSocial: { plataforma: 'facebook', url: 'https://www.facebook.com/restauralaboratoriodental', handle: 'Restaura Dental' },
+  },
+  'zapateria-la-peninsula': {
+    ubicacion: 'Mérida, México',
+    redSocial: { plataforma: 'instagram', url: 'https://www.instagram.com/zapaterialapeninsula/', handle: '@zapaterialapeninsula' },
+  },
+};
+
 export function mapCase(doc: Record<string, unknown>): CaseRecord {
   const servicios = Array.isArray(doc.servicios)
     ? (doc.servicios as Array<{ id?: string; nombre?: string; heroImage?: CmsImage }>)
@@ -755,6 +847,10 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
   const metrics = sections.find((section) => section._type === 'caseMetrics');
   const testimonial = sections.find((section) => section._type === 'caseTestimonial');
   const legacyQuote = doc.testimonio as CaseRecord['data']['testimonio'];
+
+  const docSlug = String(doc.id ?? '');
+  const baseSlug = docSlug.replace(/-en$/, '');
+  const metaFallback = CASE_FALLBACK_METADATA[docSlug] ?? CASE_FALLBACK_METADATA[baseSlug];
 
   return {
     id: String(doc.id),
@@ -785,6 +881,23 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
             }
           : asTestimonial(legacyQuote) ?? legacyQuote,
       anio: hero?._type === 'caseHero' ? hero.anio : asText(doc.anio),
+      ubicacion:
+        (hero?._type === 'caseHero' ? hero.ubicacion : undefined) ??
+        asText(doc.ubicacion) ??
+        metaFallback?.ubicacion,
+      sitioWeb:
+        (context?._type === 'caseContext' ? context.sitioWeb : undefined) ??
+        asText(doc.sitioWeb) ??
+        metaFallback?.sitioWeb,
+      redSocial:
+        (context?._type === 'caseContext' ? context.redSocial : undefined) ??
+        (doc.redSocial && typeof doc.redSocial === 'object' && 'url' in (doc.redSocial as object)
+          ? {
+              plataforma: asText((doc.redSocial as { plataforma?: unknown }).plataforma),
+              url: asText((doc.redSocial as { url?: unknown }).url) ?? '',
+              handle: asText((doc.redSocial as { handle?: unknown }).handle),
+            }
+          : metaFallback?.redSocial),
       imagen: hero?._type === 'caseHero' ? hero.imagen : undefined,
       imagenAlt: hero?._type === 'caseHero' ? hero.imagenAlt : undefined,
       imagenesProyecto:
@@ -1442,6 +1555,7 @@ export function mapLandingSection(doc: Record<string, unknown>): LandingSection 
       const avatar = doc.avatar as CmsImage | undefined;
       return {
         _type: 'instagramPhone' as const,
+        brandId: doc.brandId ? String(doc.brandId) : undefined,
         eyebrow: doc.eyebrow ? String(doc.eyebrow) : undefined,
         title: doc.title ? String(doc.title) : undefined,
         description: doc.description ? String(doc.description) : undefined,

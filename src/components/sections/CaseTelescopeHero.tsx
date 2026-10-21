@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { Badge, type BadgeVariant } from '../ui';
 import './CaseTelescopeHero.css';
 
 gsap.registerPlugin(useGSAP);
@@ -14,6 +15,8 @@ type CaseTelescopeHeroProps = {
   imageAlt?: string;
   floatImages?: ReadonlyArray<string>;
   year?: string;
+  location?: string;
+  accent?: 'cyan' | 'orange' | 'purple';
   eyebrow?: string;
 };
 
@@ -27,6 +30,8 @@ export function CaseTelescopeHero({
   imageAlt = '',
   floatImages = [],
   year,
+  location,
+  accent = 'cyan',
   eyebrow,
 }: CaseTelescopeHeroProps) {
   const rootRef = useRef<HTMLElement>(null);
@@ -121,7 +126,27 @@ export function CaseTelescopeHero({
       {eyebrow ? <p className="case-telescope__eyebrow">{eyebrow}</p> : null}
 
       <div className="case-telescope__heading">
-        {year ? <p className="case-telescope__year">{year}</p> : null}
+        <div className="case-telescope__meta">
+          {location ? (
+            <Badge variant="lime" tone="on-ink" className="case-telescope__badge">
+              <svg
+                className="case-telescope__pin-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span>{location}</span>
+            </Badge>
+          ) : null}
+          {year ? <p className="case-telescope__year">{year}</p> : null}
+        </div>
         <h1 className="case-telescope__title">
           <span className="case-telescope__title-left">{titleLeft}</span>
           {titleRight ? (

@@ -56,5 +56,12 @@
       "title": "Contenido audiovisual y fotográfico",
       "description": "Producción de fotografía y video para mostrar platillos, ambiente, experiencias y momentos reales dentro del restaurante."
     }
-  ]
+  ],
+  "ubicacion": "Mérida, México",
+  "sitioWeb": "https://menu.gaios.mx/",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/gaios.merida/",
+    "handle": "@gaios.merida"
+  }
 }

@@ -42,6 +42,7 @@ type Piece = {
   caption: string;
   tags: string;
   note?: string;
+  meta?: string;
 };
 
 type Deliverable = {
@@ -53,6 +54,7 @@ type Deliverable = {
   status: 'revision' | 'correccion' | 'aprobado' | 'publicado';
   round?: number;
   updated?: string;
+  kicker?: string;
   checks?: { desktop: boolean; mobile: boolean };
   pins?: WebPin[];
   num?: string;
@@ -160,81 +162,81 @@ const COPY = {
 
 const PIECES: Record<'es' | 'en', Piece[]> = {
   es: [
-    { id: 'p1', title: 'Guía de Extracción V60: Proporción 1:16, molienda y vertido', fmt: 'carrusel', month: 'Octubre', date: '14 oct 2026', day: 14, status: 'pendiente', round: 1, notes: 1, caption: 'Proporción 1:16, molienda media y un vertido lento. La guía para preparar el V60 en casa.', tags: '#AuraCafé #V60 #CaféDeEspecialidad' },
-    { id: 'p2', title: 'Detrás de Barra: Tueste Artesanal de Origen Chiapas', fmt: 'reel', month: 'Octubre', date: '19 oct 2026', day: 19, status: 'pendiente', round: 1, notes: 1, caption: 'El tueste de origen Chiapas, visto desde la barra.', tags: '#AuraCafé #Tueste #Chiapas' },
-    { id: 'p3', title: 'Lanzamiento de Temporada: Café Gesha Lavado Finca Santa Anita', fmt: 'post', month: 'Octubre', date: '24 oct 2026', day: 24, status: 'pendiente', round: 1, caption: 'Llega el Gesha lavado de Finca Santa Anita. Temporada limitada.', tags: '#AuraCafé #Gesha #SantaAnita' },
-    { id: 'p4', title: 'Historias de Barista: Agenda de Catas Guiadas este Fin de Semana', fmt: 'story', month: 'Octubre', date: '28 oct 2026', day: 28, status: 'pendiente', round: 1, caption: 'Catas guiadas este fin de semana. Los cupos están en la barra.', tags: '#AuraCafé #Cata #Barista' },
-    { id: 'p5', title: '3 errores comunes al almacenar café en grano en casa', fmt: 'carrusel', month: 'Septiembre', date: '18 sept 2026', status: 'publicado', round: 1, caption: 'Evita el refrigerador, usa un frasco hermético y muele solo lo que vas a preparar.', tags: '#AuraCafé #Almacenaje' },
-    { id: 'p6', title: 'Diferencia en taza: proceso lavado y proceso natural', fmt: 'reel', month: 'Septiembre', date: '25 sept 2026', status: 'publicado', round: 1, caption: 'El lavado deja la taza más clara. El natural concentra el dulzor de la fruta.', tags: '#AuraCafé #Proceso' },
-    { id: 'i1', title: 'Parrilla de noviembre, semana 1: tueste medio y tueste oscuro', fmt: 'carrusel', month: 'Noviembre', date: 'Semana 1 · nov', status: 'idea', round: 1, caption: 'Tema en planeación. Todavía no hay copy.', tags: '' },
-    { id: 'i2', title: 'Parrilla de noviembre, semana 2: maridaje con repostería', fmt: 'post', month: 'Noviembre', date: 'Semana 2 · nov', status: 'idea', round: 1, caption: 'Tema en planeación. Todavía no hay copy.', tags: '' },
+    { id: 'p1', title: 'Guía de Extracción V60: Proporción 1:16, molienda y vertido', fmt: 'carrusel', month: 'Octubre · Semana 4', date: '14 oct 2026', day: 14, status: 'pendiente', round: 1, notes: 1, meta: '4 diapositivas · 2 notas pendientes', caption: 'Proporción 1:16, molienda media y un vertido lento. La guía para preparar el V60 en casa.', tags: '#AuraCafé #V60 #CaféDeEspecialidad' },
+    { id: 'p2', title: 'Detrás de Barra: Tueste Artesanal de Origen Chiapas', fmt: 'reel', month: 'Octubre · Semana 4', date: '19 oct 2026', day: 19, status: 'pendiente', round: 1, notes: 1, meta: 'Video 45s · 1 nota pendiente', caption: 'El tueste de origen Chiapas, visto desde la barra.', tags: '#AuraCafé #Tueste #Chiapas' },
+    { id: 'p3', title: 'Lanzamiento de Temporada: Café Gesha Lavado Finca Santa Anita', fmt: 'post', month: 'Octubre · Semana 4', date: '24 oct 2026', day: 24, status: 'pendiente', round: 1, meta: 'Diseño estático · Alta prioridad', caption: 'Llega el Gesha lavado de Finca Santa Anita. Temporada limitada.', tags: '#AuraCafé #Gesha #SantaAnita' },
+    { id: 'p4', title: 'Historias de Barista: Agenda de Catas Guiadas este Fin de Semana', fmt: 'story', month: 'Octubre · Semana 4', date: '28 oct 2026', day: 28, status: 'pendiente', round: 1, meta: 'Secuencia 3 historias · Fin de semana', caption: 'Catas guiadas este fin de semana. Los cupos están en la barra.', tags: '#AuraCafé #Cata #Barista' },
+    { id: 'p5', title: '3 errores comunes al almacenar café en grano en casa', fmt: 'carrusel', month: 'Septiembre', date: '18 sept 2026', status: 'publicado', round: 1, meta: '4 diapositivas · Publicado', caption: 'Evita el refrigerador, usa un frasco hermético y muele solo lo que vas a preparar.', tags: '#AuraCafé #Almacenaje' },
+    { id: 'p6', title: 'Diferencia en taza: proceso lavado y proceso natural', fmt: 'reel', month: 'Septiembre', date: '25 sept 2026', status: 'publicado', round: 1, meta: 'Video 30s · Publicado', caption: 'El lavado deja la taza más clara. El natural concentra el dulzor de la fruta.', tags: '#AuraCafé #Proceso' },
+    { id: 'i1', title: 'Parrilla de noviembre, semana 1: tueste medio y tueste oscuro', fmt: 'carrusel', month: 'Noviembre', date: 'Semana 1 · nov', status: 'idea', round: 1, meta: 'En planeación', caption: 'Tema en planeación. Todavía no hay copy.', tags: '' },
+    { id: 'i2', title: 'Parrilla de noviembre, semana 2: maridaje con repostería', fmt: 'post', month: 'Noviembre', date: 'Semana 2 · nov', status: 'idea', round: 1, meta: 'En planeación', caption: 'Tema en planeación. Todavía no hay copy.', tags: '' },
   ],
   en: [
-    { id: 'p1', title: 'V60 brew guide: 1:16 ratio, grind and pour', fmt: 'carrusel', month: 'October', date: '14 Oct 2026', day: 14, status: 'pendiente', round: 1, notes: 1, caption: 'A 1:16 ratio, a medium grind, and a slow pour. The guide for brewing V60 at home.', tags: '#AuraCafe #V60 #SpecialtyCoffee' },
-    { id: 'p2', title: 'Behind the bar: Chiapas origin roast', fmt: 'reel', month: 'October', date: '19 Oct 2026', day: 19, status: 'pendiente', round: 1, notes: 1, caption: 'The Chiapas origin roast, seen from behind the bar.', tags: '#AuraCafe #Roast #Chiapas' },
-    { id: 'p3', title: 'Season launch: washed Gesha, Finca Santa Anita', fmt: 'post', month: 'October', date: '24 Oct 2026', day: 24, status: 'pendiente', round: 1, caption: 'The washed Gesha from Finca Santa Anita is here. A limited season.', tags: '#AuraCafe #Gesha #SantaAnita' },
-    { id: 'p4', title: 'Barista stories: guided cupping this weekend', fmt: 'story', month: 'October', date: '28 Oct 2026', day: 28, status: 'pendiente', round: 1, caption: 'Guided cuppings this weekend. Seats are at the bar.', tags: '#AuraCafe #Cupping #Barista' },
-    { id: 'p5', title: '3 mistakes when storing whole-bean coffee at home', fmt: 'carrusel', month: 'September', date: '18 Sep 2026', status: 'publicado', round: 1, caption: 'Skip the fridge, use an airtight jar, and grind only what you will brew.', tags: '#AuraCafe #Storage' },
-    { id: 'p6', title: 'In the cup: washed process and natural process', fmt: 'reel', month: 'September', date: '25 Sep 2026', status: 'publicado', round: 1, caption: 'Washed coffees taste clearer. Naturals concentrate the fruit sweetness.', tags: '#AuraCafe #Process' },
-    { id: 'i1', title: 'November grid, week 1: medium roast and dark roast', fmt: 'carrusel', month: 'November', date: 'Week 1 · Nov', status: 'idea', round: 1, caption: 'Still in planning. No caption yet.', tags: '' },
-    { id: 'i2', title: 'November grid, week 2: pairing with pastry', fmt: 'post', month: 'November', date: 'Week 2 · Nov', status: 'idea', round: 1, caption: 'Still in planning. No caption yet.', tags: '' },
+    { id: 'p1', title: 'V60 brew guide: 1:16 ratio, grind and pour', fmt: 'carrusel', month: 'October · Week 4', date: '14 Oct 2026', day: 14, status: 'pendiente', round: 1, notes: 1, meta: '4 slides · 2 pending notes', caption: 'A 1:16 ratio, a medium grind, and a slow pour. The guide for brewing V60 at home.', tags: '#AuraCafe #V60 #SpecialtyCoffee' },
+    { id: 'p2', title: 'Behind the bar: Chiapas origin roast', fmt: 'reel', month: 'October · Week 4', date: '19 Oct 2026', day: 19, status: 'pendiente', round: 1, notes: 1, meta: 'Video 45s · 1 pending note', caption: 'The Chiapas origin roast, seen from behind the bar.', tags: '#AuraCafe #Roast #Chiapas' },
+    { id: 'p3', title: 'Season launch: washed Gesha, Finca Santa Anita', fmt: 'post', month: 'October · Week 4', date: '24 Oct 2026', day: 24, status: 'pendiente', round: 1, meta: 'Static post · High priority', caption: 'The washed Gesha from Finca Santa Anita is here. A limited season.', tags: '#AuraCafe #Gesha #SantaAnita' },
+    { id: 'p4', title: 'Barista stories: guided cupping this weekend', fmt: 'story', month: 'October · Week 4', date: '28 Oct 2026', day: 28, status: 'pendiente', round: 1, meta: '3 stories sequence · Weekend', caption: 'Guided cuppings this weekend. Seats are at the bar.', tags: '#AuraCafe #Cupping #Barista' },
+    { id: 'p5', title: '3 mistakes when storing whole-bean coffee at home', fmt: 'carrusel', month: 'September', date: '18 Sep 2026', status: 'publicado', round: 1, meta: '4 slides · Published', caption: 'Skip the fridge, use an airtight jar, and grind only what you will brew.', tags: '#AuraCafe #Storage' },
+    { id: 'p6', title: 'In the cup: washed process and natural process', fmt: 'reel', month: 'September', date: '25 Sep 2026', status: 'publicado', round: 1, meta: 'Video 30s · Published', caption: 'Washed coffees taste clearer. Naturals concentrate the fruit sweetness.', tags: '#AuraCafe #Process' },
+    { id: 'i1', title: 'November grid, week 1: medium roast and dark roast', fmt: 'carrusel', month: 'November', date: 'Week 1 · Nov', status: 'idea', round: 1, meta: 'In planning', caption: 'Still in planning. No caption yet.', tags: '' },
+    { id: 'i2', title: 'November grid, week 2: pairing with pastry', fmt: 'post', month: 'November', date: 'Week 2 · Nov', status: 'idea', round: 1, meta: 'In planning', caption: 'Still in planning. No caption yet.', tags: '' },
   ],
 };
 
 const DELIVERABLES: Record<'es' | 'en', Deliverable[]> = {
   es: [
-    { id: 'w1', kind: 'web', label: 'Sitio Web', title: 'Homepage / Hero, Barra de Tueste y Catálogo', meta: 'Ronda 2 · 2 pines', status: 'revision', round: 2, updated: '12 oct', checks: { desktop: false, mobile: false }, pins: [
+    { id: 'w1', kind: 'web', label: 'Sitio web', kicker: 'Desktop y móvil', title: 'Homepage / Hero, Barra de Tueste y Catálogo', meta: 'Ronda 2 · 2 notas visuales', status: 'revision', round: 2, updated: '12 oct', checks: { desktop: false, mobile: false }, pins: [
       { id: 'wc1', vp: 'desktop', x: 28, y: 36, text: 'Hacer el botón Comprar en grano con mayor contraste en el hero.' },
       { id: 'wc2', vp: 'mobile', x: 50, y: 44, text: 'El espacio entre el titular y el badge de origen se ve muy ajustado en móvil.' },
     ] },
-    { id: 'w2', kind: 'web', label: 'Sitio Web', title: 'Nuestra Carta y Métodos de Extracción en Barra', meta: 'Ronda 1', status: 'aprobado', round: 1, updated: '28 sept', checks: { desktop: true, mobile: true }, pins: [] },
-    { id: 'w3', kind: 'web', label: 'Sitio Web', title: 'Historia, Fincas Cafetaleras y Comercio Directo', meta: 'Ronda 1', status: 'revision', round: 1, updated: '05 oct', checks: { desktop: false, mobile: false }, pins: [] },
-    { id: 'w4', kind: 'web', label: 'Sitio Web', title: 'Suscripciones Mensuales de Café y Tienda Online', meta: 'Ronda 1', status: 'aprobado', round: 1, updated: '20 sept', checks: { desktop: true, mobile: true }, pins: [] },
-    { id: 'a1', kind: 'seo', label: 'SEO · Blog', num: 'Blog 01', title: 'Guía completa del café de especialidad: variedades, procesos y tueste', meta: 'Ronda 1 · 10 oct 2026', status: 'revision', round: 1, readTime: '5 min de lectura', date: '10 oct 2026', paras: [
+    { id: 'w2', kind: 'web', label: 'Sitio web', kicker: 'Desktop y móvil', title: 'Nuestra Carta y Métodos de Extracción en Barra', meta: 'Ronda 1 · Aprobado', status: 'aprobado', round: 1, updated: '28 sept', checks: { desktop: true, mobile: true }, pins: [] },
+    { id: 'w3', kind: 'web', label: 'Sitio web', kicker: 'Desktop y móvil', title: 'Historia, Fincas Cafetaleras y Comercio Directo', meta: 'Ronda 1 · 1 nota pendiente', status: 'revision', round: 1, updated: '05 oct', checks: { desktop: false, mobile: false }, pins: [] },
+    { id: 'w4', kind: 'web', label: 'Sitio web', kicker: 'Desktop y móvil', title: 'Suscripciones Mensuales de Café y Tienda Online', meta: 'Ronda 1 · Aprobado', status: 'aprobado', round: 1, updated: '20 sept', checks: { desktop: true, mobile: true }, pins: [] },
+    { id: 'a1', kind: 'seo', label: 'SEO', kicker: 'Blog institucional', num: 'Blog 01', title: 'Guía completa del café de especialidad: variedades, procesos y tueste', meta: '1,250 palabras · Modo lectura', status: 'revision', round: 1, readTime: '5 min de lectura', date: '10 oct 2026', paras: [
       'El café de especialidad no es solo una etiqueta. Es una cadena de trazabilidad en la que cada grano supera 80 puntos según la Specialty Coffee Association.',
       'En México, Chiapas, Oaxaca y Veracruz tienen microclimas bajo sombra que maduran la cereza despacio y concentran azúcares y aroma.',
       'Bourbon, Typica y Gesha, y la diferencia entre lavado y natural, cambian por completo lo que llega a la taza.',
       'En Aura tostamos lotes pequeños cada semana para que el café se beba en su mejor momento, con notas florales y acidez brillante.',
     ], comments: [{ id: 'sc1', para: 1, quote: 'En México, Chiapas, Oaxaca…', text: 'Mencionar también los microlotes de la Sierra Mixteca de Oaxaca.' }] },
-    { id: 'a2', kind: 'seo', label: 'SEO · Blog', num: 'Blog 02', title: 'Cómo calibrar tu molino en casa para una extracción limpia en V60', meta: 'Ronda 1 · 02 oct 2026', status: 'correccion', round: 1, readTime: '4 min de lectura', date: '02 oct 2026', paras: [
+    { id: 'a2', kind: 'seo', label: 'SEO', kicker: 'Blog institucional', num: 'Blog 02', title: 'Cómo calibrar tu molino en casa para una extracción limpia en V60', meta: 'Ronda 1 · 02 oct 2026', status: 'correccion', round: 1, readTime: '4 min de lectura', date: '02 oct 2026', paras: [
       'La molienda decide la extracción. Demasiado fina amarga la taza. Demasiado gruesa la deja ácida y vacía.',
       'Esta guía calibra molinos cónicos, manuales y eléctricos, con una referencia simple de tamaño.',
     ], comments: [{ id: 'sc2', para: -1, quote: '', text: 'El equipo está agregando la tabla comparativa por marca de molino.' }] },
-    { id: 'a3', kind: 'seo', label: 'SEO · Blog', num: 'Blog 03', title: 'Café de sombra y comercio directo: el impacto en fincas de Chiapas', meta: 'Ronda 1 · 24 sept 2026', status: 'aprobado', round: 1, readTime: '6 min de lectura', date: '24 sept 2026', paras: [
+    { id: 'a3', kind: 'seo', label: 'SEO', kicker: 'Blog institucional', num: 'Blog 03', title: 'Café de sombra y comercio directo: el impacto en fincas de Chiapas', meta: 'Ronda 1 · 24 sept 2026', status: 'aprobado', round: 1, readTime: '6 min de lectura', date: '24 sept 2026', paras: [
       'El comercio directo acorta intermediarios y hace que más del valor de la taza regrese a las familias de Finca El Triunfo.',
     ], comments: [] },
-    { id: 'a4', kind: 'seo', label: 'SEO · Blog', num: 'Blog 04', title: 'Las 5 notas de cata más comunes y cómo identificarlas', meta: 'Ronda 1 · 15 sept 2026', status: 'publicado', round: 1, readTime: '3 min de lectura', date: '15 sept 2026', paras: [
+    { id: 'a4', kind: 'seo', label: 'SEO', kicker: 'Blog institucional', num: 'Blog 04', title: 'Las 5 notas de cata más comunes y cómo identificarlas', meta: 'Ronda 1 · 15 sept 2026', status: 'publicado', round: 1, readTime: '3 min de lectura', date: '15 sept 2026', paras: [
       'De la acidez málica de la manzana verde al jazmín y la miel: un ejercicio corto para entrenar el paladar.',
     ], comments: [] },
   ],
   en: [
-    { id: 'w1', kind: 'web', label: 'Website', title: 'Homepage / hero, brew bar and catalog', meta: 'Round 2 · 2 pins', status: 'revision', round: 2, updated: '12 Oct', checks: { desktop: false, mobile: false }, pins: [
+    { id: 'w1', kind: 'web', label: 'Website', kicker: 'Desktop & mobile', title: 'Homepage / hero, brew bar and catalog', meta: 'Round 2 · 2 visual notes', status: 'revision', round: 2, updated: '12 Oct', checks: { desktop: false, mobile: false }, pins: [
       { id: 'wc1', vp: 'desktop', x: 28, y: 36, text: 'Give the Buy whole bean button more contrast in the hero.' },
       { id: 'wc2', vp: 'mobile', x: 50, y: 44, text: 'The gap between the headline and the origin badge is too tight on mobile.' },
     ] },
-    { id: 'w2', kind: 'web', label: 'Website', title: 'Bar menu and brew methods', meta: 'Round 1', status: 'aprobado', round: 1, updated: '28 Sep', checks: { desktop: true, mobile: true }, pins: [] },
-    { id: 'w3', kind: 'web', label: 'Website', title: 'Story, farms and direct trade', meta: 'Round 1', status: 'revision', round: 1, updated: '05 Oct', checks: { desktop: false, mobile: false }, pins: [] },
-    { id: 'w4', kind: 'web', label: 'Website', title: 'Monthly coffee subscriptions and shop', meta: 'Round 1', status: 'aprobado', round: 1, updated: '20 Sep', checks: { desktop: true, mobile: true }, pins: [] },
-    { id: 'a1', kind: 'seo', label: 'SEO · Blog', num: 'Blog 01', title: 'A complete guide to specialty coffee: varieties, process and roast', meta: 'Round 1 · 10 Oct 2026', status: 'revision', round: 1, readTime: '5 min read', date: '10 Oct 2026', paras: [
+    { id: 'w2', kind: 'web', label: 'Website', kicker: 'Desktop & mobile', title: 'Bar menu and brew methods', meta: 'Round 1 · Approved', status: 'aprobado', round: 1, updated: '28 Sep', checks: { desktop: true, mobile: true }, pins: [] },
+    { id: 'w3', kind: 'web', label: 'Website', kicker: 'Desktop & mobile', title: 'Story, farms and direct trade', meta: 'Round 1 · 1 pending note', status: 'revision', round: 1, updated: '05 Oct', checks: { desktop: false, mobile: false }, pins: [] },
+    { id: 'w4', kind: 'web', label: 'Website', kicker: 'Desktop & mobile', title: 'Monthly coffee subscriptions and shop', meta: 'Round 1 · Approved', status: 'aprobado', round: 1, updated: '20 Sep', checks: { desktop: true, mobile: true }, pins: [] },
+    { id: 'a1', kind: 'seo', label: 'SEO', kicker: 'Editorial blog', num: 'Blog 01', title: 'A complete guide to specialty coffee: varieties, process and roast', meta: '1,250 words · Reading mode', status: 'revision', round: 1, readTime: '5 min read', date: '10 Oct 2026', paras: [
       'Specialty coffee is a traceable chain. Each lot scores above 80 points on the Specialty Coffee Association scale.',
       'In Mexico, Chiapas, Oaxaca and Veracruz ripen cherries slowly under shade, and that builds sugar and aroma.',
       'Bourbon, Typica and Gesha, and the gap between washed and natural, change what lands in the cup.',
       'At Aura we roast small lots every week so the coffee is drunk at its best, floral and bright.',
     ], comments: [{ id: 'sc1', para: 1, quote: 'In Mexico, Chiapas, Oaxaca…', text: 'Also mention the micro-lots from the Sierra Mixteca in Oaxaca.' }] },
-    { id: 'a2', kind: 'seo', label: 'SEO · Blog', num: 'Blog 02', title: 'How to calibrate a home grinder for a clean V60', meta: 'Round 1 · 02 Oct 2026', status: 'correccion', round: 1, readTime: '4 min read', date: '02 Oct 2026', paras: [
+    { id: 'a2', kind: 'seo', label: 'SEO', kicker: 'Editorial blog', num: 'Blog 02', title: 'How to calibrate a home grinder for a clean V60', meta: 'Round 1 · 02 Oct 2026', status: 'correccion', round: 1, readTime: '4 min read', date: '02 Oct 2026', paras: [
       'Grind size decides the extraction. Too fine and the cup turns bitter. Too coarse and it stays sour and thin.',
       'This guide calibrates cone grinders, hand and electric, against a simple size reference.',
     ], comments: [{ id: 'sc2', para: -1, quote: '', text: 'The team is adding a comparison table by grinder brand.' }] },
-    { id: 'a3', kind: 'seo', label: 'SEO · Blog', num: 'Blog 03', title: 'Shade-grown coffee and direct trade in Chiapas', meta: 'Round 1 · 24 Sep 2026', status: 'aprobado', round: 1, readTime: '6 min read', date: '24 Sep 2026', paras: [
+    { id: 'a3', kind: 'seo', label: 'SEO', kicker: 'Editorial blog', num: 'Blog 03', title: 'Shade-grown coffee and direct trade in Chiapas', meta: 'Round 1 · 24 Sep 2026', status: 'aprobado', round: 1, readTime: '6 min read', date: '24 Sep 2026', paras: [
       'Direct trade shortens the chain and sends more of the cup’s value back to the families at Finca El Triunfo.',
     ], comments: [] },
-    { id: 'a4', kind: 'seo', label: 'SEO · Blog', num: 'Blog 04', title: 'Five common cupping notes and how to spot them', meta: 'Round 1 · 15 Sep 2026', status: 'publicado', round: 1, readTime: '3 min read', date: '15 Sep 2026', paras: [
+    { id: 'a4', kind: 'seo', label: 'SEO', kicker: 'Editorial blog', num: 'Blog 04', title: 'Five common cupping notes and how to spot them', meta: 'Round 1 · 15 Sep 2026', status: 'publicado', round: 1, readTime: '3 min read', date: '15 Sep 2026', paras: [
       'From green-apple acidity to jasmine and honey: a short drill for training your palate.',
     ], comments: [] },
   ],
 };
 
-function Icon({ name }: { name: string }) {
+export function Icon({ name }: { name: string }) {
   const paths: Record<string, string> = {
     home: 'M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z',
     ig: 'M7 4h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3zm5 4.2A3.8 3.8 0 1 0 15.8 12 3.8 3.8 0 0 0 12 8.2zM17.2 7.3h.01',
@@ -245,6 +247,10 @@ function Icon({ name }: { name: string }) {
     help: 'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 11.2h.01M9.8 9.5a2.2 2.2 0 0 1 4.2.8c0 1.4-2 1.6-2 2.7',
     gear: 'M12 9.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6zM12 4.5v1.6M12 17.9V19.5M4.5 12H6.1M17.9 12h1.6M6.7 6.7l1.1 1.1M16.2 16.2l1.1 1.1M17.3 6.7l-1.1 1.1M7.8 16.2l-1.1 1.1',
     arrow: 'M6 12h12M13 7l5 5-5 5',
+    back: 'M19 12H5M11 18l-6-6 6-6',
+    next: 'M9 18l6-6-6-6',
+    prev: 'M15 18l-6-6 6-6',
+    clock: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 4v5l3 2',
   };
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -430,14 +436,17 @@ export function PortalDemo({
                   <span>Hiweb</span>
                 </div>
                 <div className="brand-sw">
-                  <span className="avatar">A</span>
-                  <span>{brand}</span>
+                  <span className="avatar" style={{ background: '#D96B27' }}>A</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0, flex: 1, overflow: 'hidden' }}>
+                    <span className="trunc" style={{ fontWeight: 600, fontSize: 13, color: 'var(--ink)' }}>{brand}</span>
+                    <span className="small muted" style={{ fontSize: 11 }}>{locale === 'en' ? 'Active Client' : 'Cliente Activo'}</span>
+                  </div>
                 </div>
                 <nav className="nav" aria-label={copy.pending}>
                   <button type="button" data-tour="pending" className={activeRoute === 'inicio' ? 'on' : ''} onClick={() => go('inicio')}>
                     <Icon name="home" />
                     <span>{copy.pending}</span>
-                    {counts.total ? <span className="cnt">{counts.total}</span> : null}
+                    {counts.total ? <span className="cnt" style={{ background: 'var(--inv)', color: 'var(--on-inv)' }}>{counts.total}</span> : null}
                   </button>
                 </nav>
                 <nav className="nav" aria-label={copy.services}>
@@ -477,6 +486,13 @@ export function PortalDemo({
                     <span>{copy.prefs}</span>
                   </button>
                 </nav>
+                <div className="side-user" style={{ marginTop: 'auto', paddingTop: 14, borderTop: '1px solid var(--line)', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span className="avatar" style={{ background: 'var(--inv)', color: 'var(--on-inv)', width: 30, height: 30, fontSize: 11, borderRadius: '999px' }}>SM</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 0, flex: 1, overflow: 'hidden' }}>
+                    <span className="trunc" style={{ fontWeight: 600, fontSize: 13, color: 'var(--ink)' }}>Sofia M.</span>
+                    <span className="small muted" style={{ fontSize: 11 }}>{locale === 'en' ? 'Approver' : 'Aprobador'}</span>
+                  </div>
+                </div>
               </aside>
               <div className="main">
                 <div className="mobile-bar">
@@ -592,42 +608,85 @@ export function PortalDemo({
                       </div>
                     </div>
                     <section className="card" data-tour={pendingPieces.length ? undefined : 'social'}>
-                      <div className="card-head">
-                        <strong>{copy.socialHead} <span>· {copy.socialSub}</span></strong>
+                      <div
+                        className="card-head"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '15px 18px',
+                          background: 'var(--solid)',
+                          color: '#fff',
+                        }}
+                      >
+                        <strong style={{ fontFamily: 'var(--display)', fontSize: 18, color: '#fff' }}>
+                          {copy.socialHead} <span style={{ fontWeight: 400, opacity: 0.72 }}>· {copy.socialSub}</span>
+                        </strong>
                         <span className="badge b-lime sm">{copy.business}</span>
                       </div>
                       {pendingPieces.map((piece, index) => (
-                        <button key={piece.id} type="button" className="lrow" data-tour={index === 0 ? 'social' : undefined} onClick={() => setOpenId(piece.id)}>
-                          <span className="hide-m">
-                            <span className="badge b-pur sm">{fmtLabel(piece.fmt, locale)}</span>
-                            <span className="small muted" style={{ display: 'block' }}>{piece.month}</span>
+                        <button
+                          key={piece.id}
+                          type="button"
+                          className="lrow"
+                          data-tour={index === 0 ? 'social' : undefined}
+                          onClick={() => setOpenId(piece.id)}
+                        >
+                          <span className="col hide-m" style={{ gap: 4, alignItems: 'flex-start' }}>
+                            <span className="badge b-pur sm">{locale === 'en' ? 'Social media' : 'Redes sociales'}</span>
+                            <span className="small muted">{piece.month}</span>
                           </span>
-                          <span>
-                            <span className="piece-title">{piece.title}</span>
-                            <span className="small muted" style={{ display: 'block' }}>
-                              {locale === 'en' ? 'Publish date' : 'Fecha de publicación'} · {piece.date}
-                            </span>
+                          <span className="col" style={{ gap: 2, minWidth: 0 }}>
+                            <b className="piece-title" style={{ fontFamily: 'var(--display)', fontSize: 16, color: 'var(--ink)' }}>
+                              {piece.title}
+                            </b>
+                            <span className="small muted">{piece.meta || piece.date}</span>
                           </span>
-                          <span className="badge b-neu sm hide-m">{copy.review} · R{piece.round}</span>
-                          <span className="arrow" aria-hidden="true"><Icon name="arrow" /></span>
+                          <span className="hide-m row" style={{ gap: 6, justifyContent: 'flex-end' }}>
+                            <span className="badge b-neu sm">{copy.review}</span>
+                          </span>
+                          <span className="icon-btn sm" style={{ background: 'var(--inv)', color: 'var(--on-inv)', border: 0 }}>
+                            <Icon name="arrow" />
+                          </span>
                         </button>
                       ))}
                     </section>
                     <section className="card" data-tour="web">
-                      <div className="card-head soft">
-                        <strong>{copy.webHead} <span>· {copy.webSub}</span></strong>
+                      <div
+                        className="card-head soft"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '15px 18px',
+                          background: 'var(--surface)',
+                          color: 'var(--ink)',
+                        }}
+                      >
+                        <strong style={{ fontFamily: 'var(--display)', fontSize: 18, color: 'var(--ink)' }}>
+                          {copy.webHead} <span style={{ fontWeight: 400, opacity: 0.6 }}>· {copy.webSub}</span>
+                        </strong>
                       </div>
                       {[...pendingWeb, ...pendingSeo].map((item) => (
                         <button key={item.id} type="button" className="lrow" onClick={() => setOpenId(item.id)}>
-                          <span className="hide-m">
-                            <span className={`badge sm ${item.kind === 'web' ? 'b-ora' : 'b-cyan'}`}>{item.label}</span>
+                          <span className="col hide-m" style={{ gap: 4, alignItems: 'flex-start' }}>
+                            <span className={`badge sm ${item.kind === 'web' ? 'b-ora' : 'b-cyan'}`}>
+                              {item.kind === 'web' ? (locale === 'en' ? 'Website' : 'Sitio web') : 'SEO'}
+                            </span>
+                            <span className="small muted">{item.kicker || (item.kind === 'web' ? 'Desktop & mobile' : 'Editorial')}</span>
                           </span>
-                          <span>
-                            <span className="piece-title">{item.title}</span>
-                            <span className="small muted" style={{ display: 'block' }}>{item.meta}</span>
+                          <span className="col" style={{ gap: 2, minWidth: 0 }}>
+                            <b className="piece-title" style={{ fontFamily: 'var(--display)', fontSize: 16, color: 'var(--ink)' }}>
+                              {item.title}
+                            </b>
+                            <span className="small muted">{item.meta}</span>
                           </span>
-                          <span className={`badge sm hide-m ${item.kind === 'web' ? 'b-ora' : 'b-neu'}`}>{copy.review}</span>
-                          <span className="arrow" aria-hidden="true"><Icon name="arrow" /></span>
+                          <span className="hide-m row" style={{ gap: 6, justifyContent: 'flex-end' }}>
+                            <span className={`badge sm ${item.kind === 'web' ? 'b-ora' : 'b-neu'}`}>{copy.review}</span>
+                          </span>
+                          <span className="icon-btn sm" style={{ background: 'var(--inv)', color: 'var(--on-inv)', border: 0 }}>
+                            <Icon name="arrow" />
+                          </span>
                         </button>
                       ))}
                     </section>
@@ -732,34 +791,51 @@ function SocialViewer({
 
   return (
     <div className="rrss-view">
-      <header className="rrss-view__bar">
-        <button type="button" className="rrss-back" onClick={onBack}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-            <path d="M15 6 9 12l6 6" />
-          </svg>
-          <span>RRSS · {piece.month}</span>
+      <header className="rvtop">
+        <button type="button" className="icon-btn" onClick={onBack} aria-label={copy.back}>
+          <Icon name="back" />
         </button>
-        <div className="rrss-view__tools">
-          <button type="button" className={history ? 'rrss-pill is-on' : 'rrss-pill'} onClick={() => setHistory((open) => !open)}>
-            {copy.history} · {piece.round}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, minWidth: 0 }}>
+          <span className="small muted">RRSS · {piece.month}</span>
+          <span style={{ fontFamily: 'var(--display)', fontWeight: 600, fontSize: 14 }}>{fmtLabel(piece.fmt, locale)}</span>
+        </div>
+        <span className="grow" />
+        <div className="row" style={{ gap: 8 }}>
+          <button type="button" className="btn sm" onClick={() => setHistory((open) => !open)}>
+            <Icon name="clock" />
+            <span>{copy.history}</span>
           </button>
-          <span className="rrss-pager">
-            <button type="button" aria-label={locale === 'en' ? 'Previous piece' : 'Pieza anterior'} disabled={index <= 0} onClick={() => pieces[index - 1] && onOpen(pieces[index - 1].id)}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 6 9 12l6 6" /></svg>
+          <div className="row" style={{ gap: 4, flex: '0 0 auto' }}>
+            <button
+              type="button"
+              className="icon-btn sm"
+              aria-label={locale === 'en' ? 'Previous piece' : 'Pieza anterior'}
+              disabled={index <= 0}
+              onClick={() => pieces[index - 1] && onOpen(pieces[index - 1].id)}
+            >
+              <Icon name="prev" />
             </button>
-            <span>{copy.pieceOf(index + 1, total)}</span>
-            <button type="button" aria-label={locale === 'en' ? 'Next piece' : 'Pieza siguiente'} disabled={index >= total - 1} onClick={() => pieces[index + 1] && onOpen(pieces[index + 1].id)}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+            <span className="small muted" style={{ whiteSpace: 'nowrap' }}>
+              {copy.pieceOf(index + 1, total)}
+            </span>
+            <button
+              type="button"
+              className="icon-btn sm"
+              aria-label={locale === 'en' ? 'Next piece' : 'Pieza siguiente'}
+              disabled={index >= total - 1}
+              onClick={() => pieces[index + 1] && onOpen(pieces[index + 1].id)}
+            >
+              <Icon name="next" />
             </button>
-          </span>
+          </div>
         </div>
       </header>
       {history ? <p className="rrss-history">{copy.review} · R{piece.round} · {piece.date}</p> : null}
       <div className="rrss-view__body">
         <div className="rrss-stage">
-          <div className="rrss-toggle" role="group" aria-label={copy.video}>
-            <button type="button" className={mode === 'video' ? 'is-on' : ''} onClick={() => setMode('video')}>{copy.video}</button>
-            <button type="button" className={mode === 'cover' ? 'is-on' : ''} onClick={() => { setMode('cover'); setPlaying(false); }}>{copy.cover}</button>
+          <div className="seg dark" role="group" aria-label={copy.video}>
+            <button type="button" className={mode === 'video' ? 'on' : ''} onClick={() => setMode('video')}>{copy.video}</button>
+            <button type="button" className={mode === 'cover' ? 'on' : ''} onClick={() => { setMode('cover'); setPlaying(false); }}>{copy.cover}</button>
           </div>
           <div className={`rrss-phone is-${piece.fmt}`}>
             <div className="rrss-screen" />
@@ -790,8 +866,8 @@ function SocialViewer({
         </div>
         <aside className="rrss-side">
           <div className="rrss-badges">
-            <span className="rrss-fmt">{fmtLabel(piece.fmt, locale)}</span>
-            <span className={signedOff ? 'rrss-status is-ok' : 'rrss-status'}>
+            <span className="badge sm b-pur">{fmtLabel(piece.fmt, locale)}</span>
+            <span className={signedOff ? 'badge sm b-grn' : 'badge sm b-ora'}>
               {signedOff ? copy.approved : `${copy.pendingOne} · R${piece.round}`}
             </span>
           </div>
@@ -805,8 +881,8 @@ function SocialViewer({
           <p className="rrss-kicker">{copy.comments} · {commentCount}</p>
           {piece.note ? <p className="rrss-note">{piece.note}</p> : <p className="rrss-empty">{copy.noComments}</p>}
           <div className="rrss-actions">
-            <button type="button" onClick={onComment}>{copy.comment}</button>
-            <button type="button" className="is-primary" data-tour="approve" onClick={onApprove} disabled={piece.status !== 'pendiente'}>
+            <button type="button" className="btn btn-ink" onClick={onComment}>{copy.comment}</button>
+            <button type="button" className="btn btn-p" data-tour="approve" onClick={onApprove} disabled={piece.status !== 'pendiente'}>
               {signedOff ? copy.approved : copy.approve}
             </button>
           </div>
@@ -847,8 +923,8 @@ function Detail({
       <span className="badge">{status}</span>
       {note ? <p className="note">{note}</p> : null}
       <div className="detail-actions">
-        <button type="button" onClick={onComment}>{comment}</button>
-        <button type="button" className="is-primary" data-tour="approve" onClick={onApprove}>{approve}</button>
+        <button type="button" className="btn btn-ink" onClick={onComment}>{comment}</button>
+        <button type="button" className="btn btn-p" data-tour="approve" onClick={onApprove}>{approve}</button>
       </div>
     </div>
   );

@@ -63,5 +63,11 @@
     "quote": "Desde que empezamos a trabajar con Hiweb, hemos notado un cambio muy positivo en nuestras ventas. Antes dependíamos mucho de las sucursales físicas, pero ahora, gracias a su estrategia digital, hemos logrado atraer más clientes y aumentar nuestros ingresos. El equipo es profesional, creativo y siempre está pendiente de nuestros resultados. Sin duda, una gran inversión para nuestro negocio.",
     "name": "Julia T.",
     "role": "Gerente de Marketing, Paulo’s Pizza"
+  },
+  "ubicacion": "Mérida, México",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/paulospizzamid/",
+    "handle": "@paulospizzamid"
   }
 }

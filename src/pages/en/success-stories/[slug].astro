@@ -12,7 +12,8 @@ import { MetricsBand } from '../../../components/sections/MetricsBand';
 import { CaseStories } from '../../../components/sections/CaseStories';
 import { CaseCards } from '../../../components/sections/CasesIndex';
 import FinalCta from '../../../components/sections/FinalCtaBand.astro';
-import InstagramPhone from '../../../components/sections/InstagramPhone.astro';
+import { InstagramPhoneSwitcher } from '../../../components/sections/InstagramPhoneSwitcher';
+import { SOCIAL_BRANDS, type BrandProfile } from '../../../components/sections/social-feed-data';
 import { breadcrumbSchema } from '../../../lib/schema';
 import { postCoverUrl } from '../../../lib/blog';
 import { formatCaseStat } from '../../../lib/content/format';
@@ -49,12 +50,23 @@ const projectMid = Math.max(1, Math.ceil(projectWords.length / 2));
 const titleLeft = projectWords.slice(0, projectMid).join(' ');
 const titleRight = projectWords.slice(projectMid).join(' ');
 
+const matchingSocialBrand = SOCIAL_BRANDS.find(
+	(b) =>
+		b.id.toLowerCase() === entry.id.toLowerCase() ||
+		b.handle.toLowerCase() === entry.id.toLowerCase() ||
+		entry.id.toLowerCase().includes(b.id.toLowerCase()) ||
+		b.id.toLowerCase().includes(entry.id.toLowerCase()) ||
+		b.name.toLowerCase().includes(entry.data.cliente.toLowerCase()) ||
+		entry.data.cliente.toLowerCase().includes(b.name.toLowerCase()),
+);
+
 const sections: CasePageSection[] = entry.data.sections?.length
 	? entry.data.sections.filter((section) => !section.hidden)
 	: [
 			{
 				_type: 'caseHero',
 				anio: entry.data.anio,
+				ubicacion: entry.data.ubicacion,
 				imagen: entry.data.imagen,
 				imagenAlt: entry.data.imagenAlt,
 				imagenesProyecto: entry.data.imagenesProyecto,
@@ -67,6 +79,8 @@ const sections: CasePageSection[] = entry.data.sections?.length
 				estrategiaEyebrow: 'The strategy',
 				estrategiaTitle: 'Services applied',
 				estrategia: entry.data.estrategia,
+				sitioWeb: entry.data.sitioWeb,
+				redSocial: entry.data.redSocial,
 			},
 			{
 				_type: 'caseProcess',
@@ -140,6 +154,8 @@ const heroAlt =
 						imageAlt={heroAlt}
 						floatImages={section.imagenesProyecto ?? []}
 						year={section.anio}
+						location={section.ubicacion ?? entry.data.ubicacion}
+						accent={entry.data.accent}
 					/>
 				);
 			}
@@ -176,6 +192,75 @@ const heroAlt =
 										</li>
 									))}
 								</ul>
+								{((section.sitioWeb ?? entry.data.sitioWeb) || (section.redSocial ?? entry.data.redSocial)) ? (
+									<div class="mt-5 pt-4 border-t border-border/40 flex flex-wrap items-center gap-2.5">
+										{(section.sitioWeb ?? entry.data.sitioWeb) ? (
+											<a
+												href={section.sitioWeb ?? entry.data.sitioWeb}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="group inline-flex items-center gap-2 rounded-full border border-border/80 bg-surface/60 px-3.5 py-1.5 font-display text-xs font-medium text-ink transition-all hover:border-cyan hover:text-cyan hover:bg-surface no-underline"
+											>
+												<svg class="h-3.5 w-3.5 text-muted transition-colors group-hover:text-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+													<circle cx="12" cy="12" r="10" />
+													<line x1="2" y1="12" x2="22" y2="12" />
+													<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+												</svg>
+												<span>Visit official website</span>
+												<svg class="h-3 w-3 text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+													<path d="M7 17L17 7M17 7H7M17 7V17" />
+												</svg>
+											</a>
+										) : null}
+
+										{(section.redSocial ?? entry.data.redSocial) ? (() => {
+											const social = section.redSocial ?? entry.data.redSocial!;
+											const isIg = !social.plataforma || social.plataforma === 'instagram';
+											const isLi = social.plataforma === 'linkedin';
+											const isFb = social.plataforma === 'facebook';
+											const label = social.handle || (isIg ? 'Official Instagram' : isLi ? 'Official LinkedIn' : isFb ? 'Official Facebook' : 'Social link');
+											const hoverClass = isIg ? 'hover:border-orange hover:text-orange' : 'hover:border-cyan hover:text-cyan';
+											const iconHoverClass = isIg ? 'group-hover:text-orange' : 'group-hover:text-cyan';
+
+											return (
+												<a
+													href={social.url}
+													target="_blank"
+													rel="noopener noreferrer"
+													class={`group inline-flex items-center gap-2 rounded-full border border-border/80 bg-surface/60 px-3.5 py-1.5 font-display text-xs font-medium text-ink transition-all ${hoverClass} hover:bg-surface no-underline`}
+												>
+													{isIg ? (
+														<svg class={`h-3.5 w-3.5 text-muted transition-colors ${iconHoverClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+															<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+															<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+															<line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+														</svg>
+													) : isLi ? (
+														<svg class={`h-3.5 w-3.5 text-muted transition-colors ${iconHoverClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+															<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+															<rect width="4" height="12" x="2" y="9"/>
+															<circle cx="4" cy="4" r="2"/>
+														</svg>
+													) : isFb ? (
+														<svg class={`h-3.5 w-3.5 text-muted transition-colors ${iconHoverClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+															<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+														</svg>
+													) : (
+														<svg class={`h-3.5 w-3.5 text-muted transition-colors ${iconHoverClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+															<circle cx="12" cy="12" r="10"/>
+															<line x1="2" y1="12" x2="22" y2="12"/>
+															<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+														</svg>
+													)}
+													<span>{label}</span>
+													<svg class={`h-3 w-3 text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${iconHoverClass}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+														<path d="M7 17L17 7M17 7H7M17 7V17" />
+													</svg>
+												</a>
+											);
+										})() : null}
+									</div>
+								) : null}
 							</div>
 						</div>
 					</SectionBand>
@@ -183,18 +268,77 @@ const heroAlt =
 			}
 			if (section._type === 'caseProcess' && section.fases.length) {
 				return (
-					<ProcessPhases
+					<>
+						<ProcessPhases
+							client:visible
+							phases={section.fases.map((fase, index) => ({
+								index: String(index + 1).padStart(2, '0'),
+								title: fase.title,
+								description: fase.description,
+								icon: fase.icon,
+							}))}
+							eyebrow={section.eyebrow ?? 'Process'}
+							title={section.title ?? 'How the work was done'}
+							description={section.description ?? ''}
+							headingWidth={section.headingWidth}
+						/>
+						{matchingSocialBrand && !sections.some((s) => s._type === 'instagramPhone') ? (
+							<InstagramPhoneSwitcher
+								client:visible
+								brand={matchingSocialBrand}
+								eyebrow="Instagram Feed"
+								title={`Live Feed for ${matchingSocialBrand.name}`}
+								description={`Visual strategy, feed curation, and content produced for ${matchingSocialBrand.name}.`}
+								hideSwitcher={true}
+								tone="canvas"
+							/>
+						) : null}
+					</>
+				);
+			}
+			if (section._type === 'instagramPhone') {
+				const brandFromSection: BrandProfile | undefined = section.username ? {
+					id: section.username,
+					name: section.displayName || entry.data.cliente,
+					handle: section.username,
+					category: section.bio || '',
+					industryId: '',
+					industryName: '',
+					avatar: section.avatar || matchingSocialBrand?.avatar || '',
+					bio: section.bio || matchingSocialBrand?.bio || '',
+					stats: {
+						posts: String(section.posts?.length || matchingSocialBrand?.stats.posts || '120'),
+						followers: section.stats?.[0]?.value || matchingSocialBrand?.stats.followers || '12.4k',
+						following: section.stats?.[1]?.value || matchingSocialBrand?.stats.following || '350',
+					},
+					highlights: matchingSocialBrand?.highlights || [],
+					posts: (section.posts && section.posts.length > 0)
+						? section.posts.map((p, pIdx) => ({
+								id: `${section.username}-${pIdx}`,
+								brandId: section.username ?? '',
+								brandName: section.displayName || entry.data.cliente,
+								brandHandle: section.username ?? '',
+								brandAvatar: section.avatar || '',
+								brandCategory: '',
+								kind: p.kind,
+								cover: p.poster || p.slides?.[0]?.src || '',
+								slides: p.slides || [],
+								caption: p.caption || '',
+								stats: {},
+							}))
+						: matchingSocialBrand?.posts || [],
+				} : matchingSocialBrand;
+
+				return (
+					<InstagramPhoneSwitcher
 						client:visible
-						phases={section.fases.map((fase, index) => ({
-							index: String(index + 1).padStart(2, '0'),
-							title: fase.title,
-							description: fase.description,
-							icon: fase.icon,
-						}))}
-						eyebrow={section.eyebrow ?? 'Process'}
-						title={section.title ?? 'How the work was done'}
-						description={section.description ?? ''}
-						headingWidth={section.headingWidth}
+						brandId={section.brandId || matchingSocialBrand?.id}
+						brand={brandFromSection}
+						eyebrow={section.eyebrow ?? 'Instagram Feed'}
+						title={section.title}
+						description={section.description}
+						tone={section.tone || 'canvas'}
+						hideSwitcher={true}
 					/>
 				);
 			}

@@ -29,6 +29,7 @@ type ProcessPhasesProps = {
   description?: string;
   tone?: 'canvas' | 'surface';
   headingWidth?: string;
+  align?: 'left' | 'center';
 };
 
 const ACCENTS: ProcessAccent[] = ['purple', 'cyan', 'orange', 'lime'];
@@ -58,6 +59,7 @@ export function ProcessPhases({
   description = 'Cuatro fases. Un sistema. El mismo criterio de evidencia en cada ciclo.',
   tone = 'canvas',
   headingWidth,
+  align = 'left',
 }: ProcessPhasesProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const count = Math.max(phases.length, 1);
@@ -113,7 +115,7 @@ export function ProcessPhases({
           eyebrow={eyebrow}
           title={title}
           description={description}
-          align="center"
+          align={align}
           badgeVariant="purple"
           headingWidth={headingWidth}
         />

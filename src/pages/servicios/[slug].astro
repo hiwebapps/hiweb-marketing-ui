@@ -11,6 +11,7 @@ import { ServiceWhy } from '../../components/sections/ServiceWhy';
 import { ServicePlans } from '../../components/sections/ServicePlans';
 import { IndustryGrid } from '../../components/sections/IndustryGrid';
 import { ProcessPhases } from '../../components/sections/ProcessPhases';
+import { InstagramGridFeed } from '../../components/sections/InstagramGridFeed';
 import { CaseStories } from '../../components/sections/CaseStories';
 import { FaqSection } from '../../components/sections/FaqSection';
 import FinalCta from '../../components/sections/FinalCtaBand.astro';
@@ -68,7 +69,28 @@ const serviceOverviewPillars = entry.data.cards.map((card, index) => ({
 const pitch = servicePitch(entry.id);
 const plans = entry.data.planes ?? servicePlans(entry.id);
 const allSections = entry.data.sections ?? [];
-const sections = allSections.filter((section) => !section.hidden);
+let sections = allSections.filter((section) => !section.hidden);
+const isSocialService =
+	contentKey === 'redes-sociales' ||
+	entry.id === 'gestion-de-redes-sociales' ||
+	entry.id === 'redes-sociales';
+
+if (isSocialService && !sections.some((s) => s._type === 'serviceSocialFeed')) {
+	const processIdx = sections.findIndex((s) => s._type === 'serviceProcess');
+	const insertIdx = processIdx !== -1 ? processIdx + 1 : sections.findIndex((s) => s._type === 'serviceCases');
+	const feedBlock: ServiceSection = {
+		_type: 'serviceSocialFeed',
+		eyebrow: 'Feed en vivo',
+		title: 'Contenido que despierta deseo y llena agendas',
+		description: 'Publicaciones reales producidas y gestionadas para nuestros clientes: dirección de arte, video de alto impacto y copys diseñados para vender.',
+		tone: 'canvas',
+	};
+	if (insertIdx !== -1) {
+		sections.splice(insertIdx, 0, feedBlock);
+	} else {
+		sections.push(feedBlock);
+	}
+}
 const faqFromSections = sections.find((section) => section._type === 'serviceFaq');
 const pageFaqs = faqFromSections?._type === 'serviceFaq' && faqFromSections.items?.length
   ? faqFromSections.items
@@ -172,6 +194,15 @@ const caseStories = displayCases.flatMap((item) => {
 					description="De la auditoría al reporte. Un sistema medible, no un paquete suelto de tácticas."
 					tone="canvas"
 				/>
+				{isSocialService ? (
+					<InstagramGridFeed
+						client:visible
+						eyebrow="Feed en vivo"
+						title="Contenido que despierta deseo y llena agendas"
+						description="Publicaciones reales producidas y gestionadas para nuestros clientes: dirección de arte, video de alto impacto y copys diseñados para vender."
+						tone="canvas"
+					/>
+				) : null}
 				<CaseStories
 					client:visible
 					eyebrow="Casos"

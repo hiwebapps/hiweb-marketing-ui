@@ -110,10 +110,16 @@ export const instagramPhone = defineType({
       initialValue: 'canvas',
     }),
     defineField({
+      name: 'brandId',
+      title: 'Identificador de Marca / Caso',
+      type: 'string',
+      description:
+        'Opcional (ej: gaios, el-secreto, paulos-pizza, zapateria-la-peninsula, peninsula-project, happy-store). Si se deja vacío, toma automáticamente la marca del caso de éxito actual.',
+    }),
+    defineField({
       name: 'username',
       title: 'Usuario',
       type: 'string',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'displayName',

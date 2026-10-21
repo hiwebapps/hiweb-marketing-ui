@@ -48,5 +48,12 @@
       "title": "Posicionamiento clave para la página.",
       "description": "Desarrollo e implementación de una estrategia SEO integral enfocada en estructura, contenidos y posicionamiento orgánico para generar visibilidad sostenida en buscadores."
     }
-  ]
+  ],
+  "ubicacion": "Monterrey, México",
+  "sitioWeb": "https://www.industrialbasanlo.com/",
+  "redSocial": {
+    "plataforma": "instagram",
+    "url": "https://www.instagram.com/industrialbasanlo/",
+    "handle": "@industrialbasanlo"
+  }
 }

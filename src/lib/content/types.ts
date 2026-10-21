@@ -241,6 +241,13 @@ export type ServiceSection = (
       columns?: number;
       items?: FaqItem[];
     }
+  | {
+      _type: 'serviceSocialFeed';
+      eyebrow?: string;
+      title?: string;
+      description?: string;
+      tone?: 'canvas' | 'surface';
+    }
   | { _type: 'serviceCta'; badge?: string; title?: string; description?: string }
   | BeforeAfterBlock
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
@@ -285,10 +292,17 @@ export type ServiceRecord = {
   };
 };
 
+export type CaseSocialLink = {
+  plataforma?: 'instagram' | 'facebook' | 'linkedin' | 'tiktok' | 'x' | 'youtube' | string;
+  url: string;
+  handle?: string;
+};
+
 export type CasePageSection = (
   | {
       _type: 'caseHero';
       anio?: string;
+      ubicacion?: string;
       imagen?: string;
       imagenAlt?: string;
       imagenesProyecto?: string[];
@@ -301,6 +315,8 @@ export type CasePageSection = (
       estrategiaEyebrow?: string;
       estrategiaTitle?: string;
       estrategia?: string;
+      sitioWeb?: string;
+      redSocial?: CaseSocialLink;
     }
   | {
       _type: 'caseProcess';
@@ -353,13 +369,14 @@ export type CasePageSection = (
       title?: string;
       description?: string;
       tone?: 'canvas' | 'surface';
-      username: string;
+      brandId?: string;
+      username?: string;
       displayName?: string;
       bio?: string;
       avatar?: string;
       avatarAlt?: string;
-      stats: { value: string; label: string }[];
-      posts: {
+      stats?: { value: string; label: string }[];
+      posts?: {
         kind: 'photo' | 'carousel' | 'reel';
         caption?: string;
         slides: { src: string; alt: string }[];
@@ -387,6 +404,9 @@ export type CaseRecord = {
     fases: TitledBlock[];
     testimonio?: { quote: string; name: string; role: string; client?: string; photo?: string; stats?: StoryStat[] };
     anio?: string;
+    ubicacion?: string;
+    sitioWeb?: string;
+    redSocial?: CaseSocialLink;
     imagen?: string;
     imagenAlt?: string;
     imagenesProyecto?: string[];
@@ -725,13 +745,14 @@ export type LandingSection = (
       title?: string;
       description?: string;
       tone?: 'canvas' | 'surface';
-      username: string;
+      brandId?: string;
+      username?: string;
       displayName?: string;
       bio?: string;
       avatar?: string;
       avatarAlt?: string;
-      stats: { value: string; label: string }[];
-      posts: {
+      stats?: { value: string; label: string }[];
+      posts?: {
         kind: 'photo' | 'carousel' | 'reel';
         caption?: string;
         slides: { src: string; alt: string }[];
