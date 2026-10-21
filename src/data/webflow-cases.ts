@@ -30,7 +30,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+52% alcance en redes",
     "titulo": "Concept boutique en Mérida, México, con una propuesta femenina, libre y atemporal, enfocada en prendas y piezas que expresan estilo, identidad y autenticidad.",
-    "resumen": "Conoce cómo Hiweb impulsó la visibilidad y el reconocimiento de El Secreto mediante redes sociales y pauta digital, fortaleciendo su identidad como concept boutique en Mérida.",
+    "resumen": "Renovamos la presencia en redes y lanzamos campañas digitales para atraer más visitas a la boutique y reforzar su identidad en Mérida.",
     "destacado": false,
     "accent": "orange",
     "metricas": [
@@ -96,7 +96,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+35% engagement",
     "titulo": "Laboratorio dental especializado en prótesis y restauraciones de alta precisión, enfocado en apoyar a odontólogos con tecnología digital, materiales premium y resultados consistentes.",
-    "resumen": "Conoce cómo Hiweb impulsó la visibilidad y captación de Restaura Laboratorio Dental mediante redes sociales y pauta digital, conectando con odontólogos que buscan precisión y calidad.",
+    "resumen": "Contenido técnico y anuncios dirigidos a odontólogos y clínicas para generar confianza y cerrar convenios de trabajo con el laboratorio.",
     "destacado": false,
     "accent": "purple",
     "metricas": [
@@ -158,7 +158,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+1,600 usuarios nuevos",
     "titulo": "Empresa americana especializada en el diseño y fabricación de discos de esmeril de alto rendimiento en diamante, CBN y CDX, con presencia internacional y enfoque en soluciones industriales personalizadas.",
-    "resumen": "Conoce cómo Hiweb rediseñó y optimizó el sitio web de Eagle Superabrasives en México, fortaleciendo su estructura, SEO y posicionamiento en buscadores para el mercado industrial.",
+    "resumen": "Rediseñamos su web y pulimos el SEO técnico para que compradores industriales encuentren sus productos y soliciten cotizaciones en Google.",
     "destacado": false,
     "accent": "cyan",
     "metricas": [
@@ -221,7 +221,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+315.4% alcance en redes",
     "titulo": "Empresa especializada en diseñar viajes por carretera que conectan con la esencia auténtica de Yucatán, a través de experiencias personalizadas y un enfoque artesanal.",
-    "resumen": "Descubre cómo Hiweb impulsó la visibilidad y el reconocimiento de Península Project mediante redes sociales y pauta digital, posicionando experiencias de viaje auténticas en Yucatán.",
+    "resumen": "Historias visuales auténticas y campañas digitales para dar a conocer expediciones únicas por Yucatán y convertirlas en reservas.",
     "destacado": true,
     "accent": "cyan",
     "metricas": [
@@ -290,7 +290,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+71.4% visitas al perfil",
     "titulo": "Restaurante de desayunos y almuerzos ubicado en Gran San Pedro Cholul, Mérida, con una propuesta variada, accesible y pensada para disfrutar en cualquier momento del día.",
-    "resumen": "Descubre cómo Hiweb impulsó la visibilidad y afluencia de Gaios mediante redes sociales, pauta digital y contenido audiovisual para un restaurante en Mérida.",
+    "resumen": "Producción de video con antojo real y pauta local para llenar mesas y mantener el restaurante siempre presente en la mente de Mérida.",
     "destacado": false,
     "accent": "orange",
     "metricas": [
@@ -361,7 +361,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+76,300 visualizaciones",
     "titulo": "Tienda online especializada en productos importados originales de maquillaje, cuidado personal, cuidado masculino, vitaminas y suplementos de marcas reconocidas.",
-    "resumen": "Conoce cómo Hiweb impulsó la visibilidad, el alcance y las ventas de Happy Store mediante redes sociales, pauta digital y producción de contenido audiovisual para e-commerce.",
+    "resumen": "Videos dinámicos para redes y anuncios segmentados que aumentaron los pedidos en línea y el ticket promedio de compra.",
     "destacado": true,
     "accent": "purple",
     "metricas": [
@@ -434,7 +434,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+450,000 visualizaciones en tiktok",
     "titulo": "Zapatería enfocada en moda y calzado para todas las edades, con 4 sucursales en Mérida, Yucatán",
-    "resumen": "Conoce cómo Hiweb impulsó la visibilidad y el reconocimiento de Zapatería La Península mediante redes sociales y pauta, fortaleciendo marca y aumentando el ticket promedio en retail.",
+    "resumen": "Videos entretenidos en TikTok que superaron las 450 mil vistas, revitalizaron la marca y llevaron más clientes a las tiendas físicas.",
     "destacado": false,
     "accent": "purple",
     "metricas": [
@@ -502,7 +502,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+236 usuarios nuevos",
     "titulo": "Estudio de fotografía de bodas de destino en Mérida, Yucatán, enfocado en capturar historias auténticas y emocionales para parejas que buscan experiencias únicas.",
-    "resumen": "Descubre cómo Hiweb ayudó a Enfoque 21 a posicionarse como fotógrafo de bodas en Mérida mediante SEO y redes sociales, aumentando visibilidad local y tráfico calificado.",
+    "resumen": "Estrategia de SEO local y contenido visual para posicionar el estudio entre parejas que viajan a casarse a Yucatán.",
     "destacado": false,
     "accent": "cyan",
     "metricas": [
@@ -573,7 +573,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+2,300 usuarios nuevos",
     "titulo": "Asesoría y entrenamiento TOEFL diseñado para hispanohablantes que buscan obtener puntajes altos.",
-    "resumen": "Conoce cómo Hiweb impulsó el crecimiento digital de Pass Your TOEFL mediante SEO, web y Ads, aumentando visibilidad, tráfico orgánico y generación de leads para programas TOEFL de alto ticket.",
+    "resumen": "Campañas estructuradas en Google y una web optimizada para captar estudiantes decididos a prepararse y certificar su nivel de inglés.",
     "destacado": false,
     "accent": "orange",
     "metricas": [
@@ -647,7 +647,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+197,900 visualizaciones",
     "titulo": "Empresa líder en asesoría inmobiliaria en Yucatán, especializada en la promoción y venta de desarrollos residenciales en un mercado altamente competitivo.",
-    "resumen": "Descubre cómo Hiweb impulsó la visibilidad y generación de leads de Residenciales Mérida mediante redes sociales y pauta digital en un mercado inmobiliario altamente competitivo.",
+    "resumen": "Recorridos en video y campañas segmentadas en Meta para conectar con compradores e inversionistas interesados en desarrollos inmobiliarios.",
     "destacado": false,
     "accent": "purple",
     "metricas": [
@@ -716,7 +716,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+14.6% visitas al perfil",
     "titulo": "Pizzería artesanal en horno de piedra ubicada en Mérida, Yucatán, enfocada en ofrecer pizzas de calidad, sabor auténtico y una experiencia casual y cercana.",
-    "resumen": "Descubre cómo Hiweb impulsó la visibilidad y afluencia de Paulo’s Pizza mediante redes sociales, pauta digital y contenido audiovisual para una pizzería artesanal en Mérida.",
+    "resumen": "Videos frescos para redes y pauta en zonas cercanas que incrementaron los pedidos a domicilio y las visitas a la pizzería.",
     "destacado": false,
     "accent": "cyan",
     "metricas": [
@@ -794,7 +794,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+5,300 usuarios nuevos",
     "titulo": "Empresa especializada en soluciones logísticas y en la renta y venta de maquinaria pesada para proyectos industriales, ubicada en Monterrey, Nuevo León.",
-    "resumen": "Descubre cómo Hiweb impulsó el crecimiento orgánico y el posicionamiento SEO de Industrial Basanlo, aumentando visibilidad, tráfico calificado y rendimiento del sitio web.",
+    "resumen": "Estrategia SEO enfocada en búsquedas comerciales para atraer cotizaciones de empresas y contratistas de forma orgánica y constante.",
     "destacado": false,
     "accent": "orange",
     "metricas": [
@@ -863,7 +863,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+2,100 usuarios únicos nuevos",
     "titulo": "Software ERP especializado en proyectos de construcción en México, enfocado en optimizar procesos, control y toma de decisiones para constructoras y desarrolladores.",
-    "resumen": "Conoce cómo Hiweb impulsó el posicionamiento digital de Diazar mediante SEO, web, redes sociales y Ads, construyendo visibilidad nacional y generando intención comercial para su ERP de construcción.",
+    "resumen": "Llevamos un software ERP de no tener tracción digital a posicionarse en los primeros lugares de Google y generar prospectos calificados en todo el país.",
     "destacado": true,
     "accent": "orange",
     "metricas": [
@@ -939,7 +939,7 @@ export const WEBFLOW_CASES: Record<string, WebflowCaseCopy> = {
     ],
     "resultadoFrase": "+37,000 nuevos usuarios orgánicos",
     "titulo": "Empresa de renta de autos en Cancún con enfoque turístico, especializada en ofrecer soluciones confiables de movilidad a clientes nacionales e internacionales.",
-    "resumen": "Descubre cómo Hiweb optimizó SEO, Google Ads y el sitio web de Avant Rent a Car para mejorar visibilidad, rendimiento y captación de clientes en Cancún y el extranjero.",
+    "resumen": "Optimizamos el sitio web y creamos campañas bilingües en Google Ads para que viajeros de México y el extranjero reserven directo, sumando más de 4,500 conversiones.",
     "destacado": true,
     "accent": "cyan",
     "metricas": [
