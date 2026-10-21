@@ -2,64 +2,54 @@
 export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
+import { Badge } from '../../components/ui/Badge';
 import { InstagramGridFeed } from '../../components/sections/InstagramGridFeed';
 import { InstagramPhoneSwitcher } from '../../components/sections/InstagramPhoneSwitcher';
 ---
 
 <Layout title="Demo: Componentes de Feed de Instagram — Hiweb Marketing" noindex>
-	<main class="bg-[#0b0b0c] text-white min-h-screen">
-		{/* Intro Header */}
-		<header class="max-w-[1200px] mx-auto pt-24 pb-12 px-6 border-b border-white/10">
-			<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-[#bdff01] uppercase tracking-wider mb-4">
-				Laboratorio de Diseño · Hiweb
+	<main class="bg-canvas text-ink min-h-screen">
+		{/* Intro Header aligned to kit */}
+		<header class="max-w-[var(--section-max)] mx-auto pt-20 pb-10 px-6 border-b border-border">
+			<div class="mb-4">
+				<Badge variant="lime">Laboratorio de Diseño · Hiweb</Badge>
 			</div>
-			<h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-white">
-				Dos conceptos de Feed de Instagram con contenido real
+			<h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-ink max-w-3xl">
+				Componentes de Feed de Instagram con contenido real
 			</h1>
-			<p class="mt-4 text-lg text-white/60 max-w-2xl leading-relaxed">
-				Diseñados exclusivamente para la página del servicio de redes sociales, industrias visuales (restaurantes, turismo, retail) y casos de éxito.
+			<p class="mt-4 text-lg text-muted max-w-2xl leading-relaxed">
+				Diseñados para la página de servicio de redes sociales, industrias visuales (restaurantes, turismo, retail) y casos de éxito. Filtrables por industria y alineados a la gramática del kit.
 			</p>
 
-			<div class="flex flex-wrap gap-4 mt-8">
-				<a href="#opcion-a" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-white/90 transition-all no-underline">
-					Ver Opción A: Grid Desktop Inmersivo ↓
+			<div class="flex flex-wrap gap-3 mt-8">
+				<a href="#opcion-a" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-ink text-canvas font-semibold text-sm hover:bg-ink/90 transition-all no-underline">
+					Opción A: Grid Inmersivo por Industrias ↓
 				</a>
-				<a href="#opcion-b" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 text-white font-semibold text-sm border border-white/15 hover:bg-white/20 transition-all no-underline">
-					Ver Opción B: Teléfono Switcher Multimarca ↓
+				<a href="#opcion-b" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface text-ink font-semibold text-sm border border-border hover:border-ink transition-all no-underline">
+					Opción B: Teléfono Switcher Multimarca ↓
 				</a>
 			</div>
 		</header>
 
 		{/* Opción A */}
 		<div id="opcion-a" class="scroll-mt-20">
-			<div class="max-w-[1200px] mx-auto pt-16 px-6">
-				<span class="text-xs font-bold uppercase tracking-widest text-[#0095f6] bg-[#0095f6]/10 px-3 py-1 rounded-md border border-[#0095f6]/20">
-					Opción A · Grid Desktop Inmersivo
-				</span>
-			</div>
 			<InstagramGridFeed
 				client:load
 				eyebrow="Feed Desktop de Redes Sociales"
 				title="Contenido producido para marcas reales"
-				description="Simula la experiencia de Instagram Web pero con filtros por cliente, formato (Reels, Carruseles, Fotos) y un modal interactivo con métricas reales."
+				description="Explora publicaciones reales filtradas por industria (Restaurantes, Retail, Turismo, E-commerce) con métricas reales y modal interactivo."
+				tone="canvas"
 			/>
 		</div>
 
-		{/* Divider */}
-		<div class="max-w-[1200px] mx-auto my-12 border-t border-dashed border-white/15"></div>
-
 		{/* Opción B */}
 		<div id="opcion-b" class="scroll-mt-20">
-			<div class="max-w-[1200px] mx-auto pt-10 px-6">
-				<span class="text-xs font-bold uppercase tracking-widest text-[#bdff01] bg-[#bdff01]/10 px-3 py-1 rounded-md border border-[#bdff01]/20">
-					Opción B · Mockup de iPhone con Switcher de Marcas
-				</span>
-			</div>
 			<InstagramPhoneSwitcher
 				client:load
 				eyebrow="Mockup en Vivo Multimarca"
 				title="Toca cada marca para cambiar el teléfono"
-				description="El selector superior tipo 'historias de Instagram' cambia el perfil completo, bio, highlights y publicaciones del iPhone interactivo en tiempo real."
+				description="Filtra por industria o selecciona una marca en las historias para explorar su perfil completo, bio, highlights y publicaciones en tiempo real."
+				tone="surface"
 			/>
 		</div>
 	</main>

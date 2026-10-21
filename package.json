@@ -60,5 +60,9 @@
     "@types/node": "^26.6.1",
     "tsx": "^4.23.13",
     "wrangler": "^4.135.0"
+  },
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom"
   }
 }

@@ -1,28 +1,38 @@
-.ig-switcher-section {
-  position: relative;
-  background-color: #0b0b0c;
-  color: #fff;
-  padding: 6rem 1.5rem;
-  font-family: var(--font-sans, Inter, system-ui, sans-serif);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+/* InstagramPhoneSwitcher — Hiweb Design Kit Aligned */
+
+.ig-switcher-band {
+  overflow: hidden;
 }
 
-.ig-switcher-section__inner {
-  max-width: 1200px;
-  margin: 0 auto;
+.ig-switcher-controls {
+  margin-top: 2.5rem;
+  margin-bottom: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.ig-switcher-industry-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 /* Stories / Brand Selector */
 .ig-story-selector {
-  margin-bottom: 3.5rem;
+  width: 100%;
   text-align: center;
 }
 
 .ig-story-selector__title {
-  font-size: 0.85rem;
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-muted);
   margin-bottom: 1.25rem;
   font-weight: 600;
 }
@@ -39,11 +49,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   background: transparent;
   border: none;
   cursor: pointer;
   transition: transform 0.2s ease;
+  outline: none;
 }
 
 .ig-story-circle:hover {
@@ -51,17 +62,17 @@
 }
 
 .ig-story-circle__ring {
-  width: 68px;
-  height: 68px;
+  width: 66px;
+  height: 66px;
   border-radius: 999px;
   padding: 3px;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--color-border);
   transition: all 0.3s ease;
 }
 
 .ig-story-circle.is-active .ig-story-circle__ring {
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-  box-shadow: 0 0 16px rgba(220, 39, 67, 0.4);
+  box-shadow: 0 4px 16px rgba(220, 39, 67, 0.35);
 }
 
 .ig-story-circle__img {
@@ -69,176 +80,187 @@
   height: 100%;
   border-radius: 999px;
   object-fit: cover;
-  background: #000;
-  border: 2px solid #0b0b0c;
+  background: var(--color-canvas);
+  border: 2px solid var(--color-surface);
 }
 
 .ig-story-circle__name {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-size: 0.82rem;
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.ig-story-circle__ind {
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-size: 0.7rem;
+  color: var(--color-muted);
   font-weight: 500;
 }
 
-.ig-story-circle.is-active .ig-story-circle__name {
-  color: #fff;
-  font-weight: 700;
-}
-
-/* 2-Column Layout */
+/* 2-Column Showcase Layout */
 .ig-switcher-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3.5rem;
+  gap: 3rem;
   align-items: center;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1024px) {
   .ig-switcher-layout {
-    grid-template-columns: 1fr 1fr;
-    gap: 4.5rem;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 4rem;
   }
 }
 
+/* Left Column: Brand Insight Card */
 .ig-switcher-copy {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 1.5rem;
 }
 
-.ig-switcher-copy__title {
-  color: #fff !important;
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  margin-top: 0.85rem;
-  line-height: 1.15;
-}
-
-.ig-switcher-copy__lead {
-  color: rgba(245, 245, 245, 0.65);
-  font-size: 1.1rem;
-  margin-top: 0.85rem;
-  line-height: 1.55;
-}
-
-/* Brand Card */
 .ig-brand-card {
-  margin-top: 2rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.25rem;
-  padding: 1.5rem;
-  width: 100%;
-  backdrop-filter: blur(10px);
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 8px 30px -10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .ig-brand-card__header {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 0.85rem;
 }
 
 .ig-brand-card__avatar {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 999px;
   object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--color-border);
+}
+
+.ig-brand-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.ig-brand-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .ig-brand-card__name {
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-ink);
   margin: 0;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #fff;
 }
 
 .ig-brand-card__handle {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-size: 0.85rem;
+  color: var(--color-muted);
 }
 
 .ig-brand-card__bio {
-  font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.45;
-  margin: 0 0 1.25rem;
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-ink);
+  margin: 0;
 }
 
 .ig-brand-card__metrics {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
 }
 
 .ig-brand-metric {
   display: flex;
   flex-direction: column;
+  gap: 0.2rem;
 }
 
 .ig-brand-metric__val {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #bdff01;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 .ig-brand-metric__lbl {
-  font-size: 0.7rem;
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-size: 0.72rem;
+  color: var(--color-muted);
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-  margin-top: 0.15rem;
+  letter-spacing: 0.04em;
+  font-weight: 500;
 }
 
-/* Phone Column & Mockup */
+.ig-brand-card__cta {
+  padding-top: 0.5rem;
+}
+
+/* Right Column: Realistic iPhone Device */
 .ig-phone-col {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .ig-mockup {
-  perspective: 1000px;
+  position: relative;
+  width: 100%;
+  max-width: 360px;
 }
 
 .ig-mockup__frame {
-  width: 340px;
-  height: 690px;
-  background: #18181a;
+  position: relative;
   border-radius: 48px;
   padding: 10px;
+  background: #1c1c1e;
   box-shadow:
-    0 0 0 3px #353538,
-    0 0 0 5px #18181a,
-    0 25px 60px rgba(0, 0, 0, 0.8),
-    inset 0 0 15px rgba(255, 255, 255, 0.1);
-  position: relative;
+    0 0 0 2px #3a3a3c,
+    0 25px 60px -15px rgba(0, 0, 0, 0.35);
 }
 
 .ig-mockup__screen {
-  width: 100%;
-  height: 100%;
-  background: #000;
-  border-radius: 40px;
-  overflow: hidden;
   position: relative;
+  background: #000;
+  color: #fff;
+  border-radius: 38px;
+  overflow: hidden;
+  height: 680px;
   display: flex;
   flex-direction: column;
 }
 
+/* Dynamic Island */
 .ig-mockup__island {
   position: absolute;
-  top: 9px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 94px;
+  width: 95px;
   height: 25px;
   background: #000;
   border-radius: 999px;
-  z-index: 100;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -246,11 +268,11 @@
 }
 
 .ig-mockup__camera {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
-  background: #111e38;
-  border: 1px solid #1a2c50;
+  background: #111;
+  box-shadow: inset 0 0 2px #222;
 }
 
 /* Status Bar */
@@ -258,43 +280,42 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px 6px;
-  font-size: 0.75rem;
+  padding: 12px 24px 8px;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: #fff;
-  z-index: 90;
+  z-index: 40;
 }
 
 .ig-status-bar__icons {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 6px;
 }
 
-/* App Body inside Screen */
+/* Main App Body */
 .ig-app-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  background: #000;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
-.ig-app-profile,
-.ig-app-post-view {
-  flex: 1;
+/* View A: Profile View */
+.ig-app-profile {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  flex: 1;
 }
 
-/* Topbar */
 .ig-app-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 16px;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .ig-app-topbar__back {
@@ -302,6 +323,7 @@
   border: none;
   color: #fff;
   cursor: pointer;
+  padding: 0;
   display: flex;
   align-items: center;
 }
@@ -309,28 +331,27 @@
 .ig-app-topbar__user {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #fff;
 }
 
 .ig-app-topbar__more {
-  color: #fff;
-  letter-spacing: 2px;
+  color: #8e8e93;
+  letter-spacing: -1px;
 }
 
-/* Profile Info in phone */
 .ig-app-info {
-  padding: 12px 14px;
+  padding: 8px 16px 16px;
 }
 
 .ig-app-info__row {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
+  margin-bottom: 12px;
 }
 
 .ig-app-avatar-ring {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: 999px;
   padding: 2px;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
@@ -351,70 +372,65 @@
   align-items: center;
   justify-content: space-around;
   flex: 1;
-  text-align: center;
 }
 
 .ig-app-stat {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .ig-app-stat strong {
   font-size: 0.95rem;
-  color: #fff;
+  font-weight: 700;
 }
 
 .ig-app-stat span {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.ig-app-bio {
-  margin-top: 10px;
+  font-size: 0.72rem;
+  color: #8e8e93;
 }
 
 .ig-app-bio__title {
-  margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  color: #fff;
+  margin: 0;
 }
 
 .ig-app-bio__category {
-  margin: 0.1rem 0;
-  font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+  color: #8e8e93;
+  margin: 1px 0 4px;
 }
 
 .ig-app-bio__text {
-  margin: 0.3rem 0;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.35;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin: 0;
 }
 
 .ig-app-bio__link {
-  margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   color: #0095f6;
   font-weight: 600;
+  margin: 4px 0 0;
 }
 
+/* Action Buttons */
 .ig-app-actions {
-  display: flex;
-  gap: 0.4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
   margin-top: 12px;
 }
 
 .ig-app-btn {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.1);
+  background: #262626;
   color: #fff;
   border: none;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 600;
   padding: 6px 0;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -425,8 +441,9 @@
 /* Highlights */
 .ig-app-highlights {
   display: flex;
-  gap: 0.75rem;
-  margin: 14px 0 10px;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
   overflow-x: auto;
   padding-bottom: 4px;
 }
@@ -435,17 +452,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  gap: 4px;
   flex-shrink: 0;
 }
 
 .ig-app-highlight__circle {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 999px;
   padding: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: #000;
+  background: #333;
 }
 
 .ig-app-highlight__circle img {
@@ -453,37 +469,40 @@
   height: 100%;
   border-radius: 999px;
   object-fit: cover;
+  border: 1px solid #000;
 }
 
 .ig-app-highlight span {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.68rem;
+  color: #efefef;
 }
 
-/* Tabs */
+/* Tab Bar */
 .ig-app-tabs {
   display: flex;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 10px;
+  border-top: 1px solid #262626;
+  margin-top: 12px;
 }
 
 .ig-app-tab {
   flex: 1;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.4);
-  padding: 8px 0;
-  cursor: pointer;
+  color: #8e8e93;
+  padding: 10px 0;
   display: flex;
+  align-items: center;
   justify-content: center;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
 }
 
 .ig-app-tab.is-active {
   color: #fff;
-  border-bottom: 1.5px solid #fff;
+  border-bottom: 1px solid #fff;
 }
 
-/* Grid */
+/* 3x3 Grid */
 .ig-app-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -507,52 +526,42 @@
   object-fit: cover;
 }
 
-.ig-app-grid__icon {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 16px;
-  height: 16px;
-  color: #fff;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+/* View B: Post View Inside Phone */
+.ig-app-post-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
-.ig-app-grid__icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Single Post inside Phone */
 .ig-post-head {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 10px;
   padding: 8px 12px;
 }
 
 .ig-post-head__avatar {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 999px;
   object-fit: cover;
 }
 
 .ig-post-head__user {
-  margin: 0;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  color: #fff;
+  margin: 0;
 }
 
 .ig-post-head__cat {
-  font-size: 0.62rem;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.7rem;
+  color: #8e8e93;
 }
 
 .ig-post-media {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: #000;
+  background: #111;
 }
 
 .ig-post-media img {
@@ -565,59 +574,66 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  color: #fff;
+  padding: 10px 12px 6px;
 }
 
 .ig-post-bar__left {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 14px;
 }
 
 .ig-post-copy {
   padding: 0 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .ig-post-likes {
-  margin: 0 0 4px;
-  font-size: 0.72rem;
-  color: #fff;
+  font-size: 0.78rem;
+  margin: 0;
 }
 
 .ig-post-caption {
+  font-size: 0.8rem;
+  line-height: 1.4;
   margin: 0;
-  font-size: 0.72rem;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.85);
 }
 
 .ig-post-back-btn {
-  margin-top: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: #0095f6;
-  font-size: 0.7rem;
+  background: transparent;
+  border: 1px solid #333;
+  color: #fff;
+  font-size: 0.75rem;
   font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+  align-self: flex-start;
   cursor: pointer;
 }
 
-/* Bottom Tabbar in Phone */
+.ig-post-back-btn:hover {
+  background: #222;
+}
+
+/* Instagram Bottom Tab Bar */
 .ig-app-bottombar {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 10px 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  color: #fff;
+  padding: 10px 12px 16px;
+  border-top: 1px solid #1c1c1e;
   background: #000;
+  color: #fff;
+  margin-top: auto;
 }
 
 .ig-app-bottombar__avatar {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 999px;
   object-fit: cover;
+  border: 1px solid #fff;
 }

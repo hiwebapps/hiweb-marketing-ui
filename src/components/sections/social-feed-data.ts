@@ -3,6 +3,19 @@ export type SocialPostSlide = {
   alt: string;
 };
 
+export type SocialIndustry = {
+  id: string;
+  name: string;
+};
+
+export const SOCIAL_INDUSTRIES: SocialIndustry[] = [
+  { id: 'all', name: 'Todas las industrias' },
+  { id: 'restaurantes', name: 'Restaurantes & Gastronomía' },
+  { id: 'retail', name: 'Moda & Retail' },
+  { id: 'turismo', name: 'Turismo & Destinos' },
+  { id: 'ecommerce', name: 'E-commerce' },
+];
+
 export type SocialPost = {
   id: string;
   brandId: string;
@@ -10,6 +23,8 @@ export type SocialPost = {
   brandHandle: string;
   brandAvatar: string;
   brandCategory: string;
+  industryId?: string;
+  industryName?: string;
   kind: 'photo' | 'carousel' | 'reel';
   cover: string;
   slides: SocialPostSlide[];
@@ -30,6 +45,8 @@ export type BrandProfile = {
   name: string;
   handle: string;
   category: string;
+  industryId: string;
+  industryName: string;
   avatar: string;
   bio: string;
   linkText?: string;
@@ -52,6 +69,8 @@ export const SOCIAL_BRANDS: BrandProfile[] = [
     name: 'Gaios Restaurante',
     handle: 'gaios.merida',
     category: 'Restaurante / Desayunos y Brunch',
+    industryId: 'restaurantes',
+    industryName: 'Restaurantes & Gastronomía',
     avatar: 'https://cdn.sanity.io/images/fxardjr1/web-2026/6af10203ad1bef25da64dcc5b2b2916e35f0c19a-1920x1080.webp',
     bio: 'Desayunos, almuerzos y café de especialidad en Gran San Pedro Cholul. Sabor honesto todos los días. ☕🥐✨',
     linkText: 'menu.gaios.mx',
@@ -130,6 +149,8 @@ export const SOCIAL_BRANDS: BrandProfile[] = [
     name: 'El Secreto Boutique',
     handle: 'elsecretomx',
     category: 'Boutique & Moda Femenina',
+    industryId: 'retail',
+    industryName: 'Moda & Retail',
     avatar: 'https://cdn.sanity.io/images/fxardjr1/web-2026/6b7de00665af0256a45e514993369de06c993f42-1920x1080.webp',
     bio: 'Prendas con identidad, atemporales y libres. Concept store en Mérida, Yucatán. Envíos a todo México. 🐚🕊️',
     linkText: 'elsecretoboutique.com',
@@ -189,6 +210,8 @@ export const SOCIAL_BRANDS: BrandProfile[] = [
     name: 'Paulo’s Pizza',
     handle: 'paulospizzamx',
     category: 'Pizzería Artesanal & Trattoria',
+    industryId: 'restaurantes',
+    industryName: 'Restaurantes & Gastronomía',
     avatar: 'https://cdn.sanity.io/images/fxardjr1/web-2026/e07bb8167651341deac1779dfc1dae9e199835a7-1920x1080.webp',
     bio: 'Fermentación lenta de 48 hrs y horno de piedra. El auténtico sabor de la pizza napolitana en Mérida. 🍕🔥',
     linkText: 'pedidos.paulospizza.mx',
@@ -229,6 +252,8 @@ export const SOCIAL_BRANDS: BrandProfile[] = [
     name: 'Zapatería La Península',
     handle: 'zapaterialapeninsula',
     category: 'Calzado & Moda Retail',
+    industryId: 'retail',
+    industryName: 'Moda & Retail',
     avatar: 'https://cdn.sanity.io/images/fxardjr1/web-2026/9fe36aaf4ce941a7cc02a2964bae3a048d352d9d-1920x1080.webp',
     bio: 'Más de 40 años vistiendo los pasos de las familias en Yucatán. Calidad, comodidad y estilo para toda la familia. 👟✨',
     stats: {
@@ -267,6 +292,8 @@ export const SOCIAL_BRANDS: BrandProfile[] = [
     name: 'Península Project',
     handle: 'peninsulaproject',
     category: 'Turismo & Viajes por Carretera',
+    industryId: 'turismo',
+    industryName: 'Turismo & Destinos',
     avatar: 'https://cdn.sanity.io/images/fxardjr1/web-2026/16c5eab0cf3bf56af56a34ab5e7f4d2019748616-1920x1080.webp',
     bio: 'Viajes por carretera para reconectar con lo auténtico de Yucatán. Rutas artesanales y experiencias que no están en las guías comunes. 🚙🌿',
     linkText: 'peninsulaproject.com',
@@ -306,6 +333,8 @@ export const SOCIAL_BRANDS: BrandProfile[] = [
     name: 'Happy Store MX',
     handle: 'happystore.mx',
     category: 'E-commerce & Maquillaje',
+    industryId: 'ecommerce',
+    industryName: 'E-commerce',
     avatar: 'https://cdn.sanity.io/images/fxardjr1/web-2026/fe5cc1d38a198d4eae1e9d32defc7e803e9166ff-1920x1080.webp',
     bio: 'Maquillaje, skincare y suplementos importados 100% originales. Envíos exprés a todo México. ✨💄📦',
     linkText: 'happystore.mx',
@@ -342,4 +371,10 @@ export const SOCIAL_BRANDS: BrandProfile[] = [
   },
 ];
 
-export const ALL_POSTS = SOCIAL_BRANDS.flatMap((b) => b.posts);
+export const ALL_POSTS: SocialPost[] = SOCIAL_BRANDS.flatMap((b) =>
+  b.posts.map((p) => ({
+    ...p,
+    industryId: b.industryId,
+    industryName: b.industryName,
+  }))
+);

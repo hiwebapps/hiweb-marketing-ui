@@ -73,7 +73,9 @@ export default defineConfig({
         studioUrl: SANITY_STUDIO_URL,
       },
     }),
-    react(),
+    react({
+      experimentalDisableStreaming: true,
+    }),
     stagingSsr(),
     sanityRedirects(),
   ],
@@ -101,6 +103,7 @@ export default defineConfig({
     // named exports, so `astro dev` dies before it listens. Production builds
     // do not use this prebundle step.
     optimizeDeps: {
+      include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime'],
       exclude: ['styled-components', '@sanity/ui', 'sanity', '@sanity/visual-editing'],
     },
   },
