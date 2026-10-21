@@ -1,6 +1,6 @@
 export const SITE = {
   name: 'Hiweb',
-  legalName: 'Hiweb Marketing',
+  legalName: 'Hiweb',
   tagline:
     'Partner estratégico con la eficiencia de un equipo interno y el alcance de una agencia enterprise.',
   url: 'https://hiweb.com.mx',

@@ -224,7 +224,7 @@ export function SiteFooter({
 
           <div className="site-footer__legal">
             <p>
-              © {year} {copy.legalName}
+              © {year} {(copy.legalName || 'Hiweb').replace(/Hiweb Marketing/gi, 'Hiweb')}
             </p>
             <nav aria-label="Legal">
               {copy.legalLinks.map((item) => (
@@ -241,7 +241,7 @@ export function SiteFooter({
       </div>
 
       <div className="site-footer__mark-wrap" aria-hidden="true">
-        <p className="site-footer__mark">{site.name}</p>
+        <p className="site-footer__mark">{(site.name || 'Hiweb').replace(/Hiweb Marketing/gi, 'Hiweb')}</p>
       </div>
     </footer>
   );

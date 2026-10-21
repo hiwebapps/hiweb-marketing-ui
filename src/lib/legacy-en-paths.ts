@@ -6,6 +6,7 @@ const PREFIXES: [string, string][] = [
   ['/en/servicios', '/en/services'],
   ['/en/industrias', '/en/industries'],
   ['/en/portafolio', '/en/success-stories'],
+  ['/en/portfolio', '/en/success-stories'],
 ];
 
 const PAGES: Record<string, string> = {
@@ -14,6 +15,7 @@ const PAGES: Record<string, string> = {
   '/en/industrias': '/en',
   '/en/industries': '/en',
   '/en/portafolio': '/en/success-stories',
+  '/en/portfolio': '/en/success-stories',
   '/en/marketing-portafolio': '/en/success-stories',
   '/en/calendario': '/en/calendar',
   '/en/contacto': '/en/calendar',

@@ -87,9 +87,13 @@ export default defineConfig({
     '/contact': '/contacto',
     '/industrias': '/',
     '/servicios': '/',
+    '/en/portfolio': '/en/success-stories',
   },
   vite: {
     plugins: [gsapSsrStubPlugin(), tailwindcss()],
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+    },
     ssr: {
       noExternal: ['gsap'],
     },
