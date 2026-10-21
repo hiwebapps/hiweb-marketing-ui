@@ -65,12 +65,64 @@
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    #000 18%,
-    #000 82%,
+    #000 16%,
+    #000 84%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 16%,
+    #000 84%,
     transparent 100%
   );
 }
 
+.service-why__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  height: 100%;
+}
+
+.service-why__col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  overflow: hidden;
+}
+
+.service-why__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+.service-why__col--left .service-why__group {
+  animation: service-why-scroll 24s linear infinite;
+}
+
+.service-why__col--right .service-why__group {
+  animation: service-why-scroll 24s linear infinite;
+  animation-delay: -12s; /* 50% phase offset creates a natural, staggered rhythm */
+}
+
+.service-why__col:hover .service-why__group {
+  animation-play-state: paused;
+}
+
+@keyframes service-why-scroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(calc(-100% - 0.85rem));
+  }
+}
+
+/* Legacy track support */
 .service-why__track {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -79,6 +131,15 @@
   padding: 0;
   list-style: none;
   animation: service-why-up 22s linear infinite;
+}
+
+@keyframes service-why-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
 }
 
 .service-why__card {
@@ -162,7 +223,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .service-why__track {
+  .service-why__track,
+  .service-why__col .service-why__group {
     animation: none;
   }
 }

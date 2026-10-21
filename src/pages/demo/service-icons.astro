@@ -244,29 +244,74 @@ const SHOWCASE_ICONS = [
               </ul>
             </div>
 
-            <!-- Right Stage with fade and 2-column track -->
+            <!-- Right Stage with 2 independent columns -->
             <div class="service-why__stage" style="height: 34rem;">
-              <div
-                class="service-why__viewport"
-                style="height: 100%; overflow: hidden; mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);"
-              >
-                <ul id="animated-track" class="service-why__track">
-                  {[...SHOWCASE_ICONS.slice(0, 8), ...SHOWCASE_ICONS.slice(0, 8)].map((card) => {
-                    const Icon = card.component;
-                    return (
-                      <li
-                        class="service-why__card"
-                        style={`--why-accent: ${card.accent};`}
-                      >
-                        <h3>{card.title}</h3>
-                        <p>{card.description}</p>
-                        <span class="service-why__mark" aria-hidden="true">
-                          <Icon />
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
+              <div class="service-why__viewport">
+                <div class="service-why__grid">
+                  <!-- Left Column -->
+                  <div class="service-why__col service-why__col--left">
+                    <div class="service-why__group">
+                      {SHOWCASE_ICONS.filter((_, i) => i % 2 === 0).map((card) => {
+                        const Icon = card.component;
+                        return (
+                          <div class="service-why__card" style={`--why-accent: ${card.accent};`}>
+                            <h3>{card.title}</h3>
+                            <p>{card.description}</p>
+                            <span class="service-why__mark" aria-hidden="true">
+                              <Icon />
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div class="service-why__group" aria-hidden="true">
+                      {SHOWCASE_ICONS.filter((_, i) => i % 2 === 0).map((card) => {
+                        const Icon = card.component;
+                        return (
+                          <div class="service-why__card" style={`--why-accent: ${card.accent};`}>
+                            <h3>{card.title}</h3>
+                            <p>{card.description}</p>
+                            <span class="service-why__mark" aria-hidden="true">
+                              <Icon />
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <!-- Right Column (Offset order) -->
+                  <div class="service-why__col service-why__col--right">
+                    <div class="service-why__group">
+                      {[...SHOWCASE_ICONS.filter((_, i) => i % 2 === 1).slice(2), ...SHOWCASE_ICONS.filter((_, i) => i % 2 === 1).slice(0, 2)].map((card) => {
+                        const Icon = card.component;
+                        return (
+                          <div class="service-why__card" style={`--why-accent: ${card.accent};`}>
+                            <h3>{card.title}</h3>
+                            <p>{card.description}</p>
+                            <span class="service-why__mark" aria-hidden="true">
+                              <Icon />
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div class="service-why__group" aria-hidden="true">
+                      {[...SHOWCASE_ICONS.filter((_, i) => i % 2 === 1).slice(2), ...SHOWCASE_ICONS.filter((_, i) => i % 2 === 1).slice(0, 2)].map((card) => {
+                        const Icon = card.component;
+                        return (
+                          <div class="service-why__card" style={`--why-accent: ${card.accent};`}>
+                            <h3>{card.title}</h3>
+                            <p>{card.description}</p>
+                            <span class="service-why__mark" aria-hidden="true">
+                              <Icon />
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -279,14 +324,14 @@ const SHOWCASE_ICONS = [
 
   <script>
     const btn = document.getElementById('toggle-anim-btn');
-    const track = document.getElementById('animated-track');
+    const groups = document.querySelectorAll<HTMLElement>('.service-why__group');
     let paused = false;
 
     btn?.addEventListener('click', () => {
       paused = !paused;
-      if (track) {
-        track.style.animationPlayState = paused ? 'paused' : 'running';
-      }
+      groups.forEach((g) => {
+        g.style.animationPlayState = paused ? 'paused' : 'running';
+      });
       if (btn) {
         btn.textContent = paused ? 'Reanudar scroll' : 'Pausar scroll';
       }

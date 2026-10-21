@@ -153,8 +153,12 @@ export function ServiceWhy({
     ...card,
     accent: ACCENT_HEX[card.accent] ?? card.accent,
   }));
-  const half = [...source, source[0]];
-  const loop = [...half, ...half];
+
+  // Distribute cards into two independent columns with offset ordering
+  // so that adjacent cards in the same row are NEVER identical.
+  const colLeft = source.filter((_, i) => i % 2 === 0);
+  const rawRight = source.filter((_, i) => i % 2 === 1);
+  const colRight = rawRight.length > 1 ? [...rawRight.slice(1), rawRight[0]] : rawRight;
 
   useGSAP(
     () => {
@@ -229,22 +233,75 @@ export function ServiceWhy({
 
         <div className="service-why__stage" aria-hidden="false">
           <div className="service-why__viewport">
-            <ul className="service-why__track">
-              {loop.map((card, index) => (
-                <li
-                  key={`${card.title}-${index}`}
-                  className="service-why__card"
-                  style={{ '--why-accent': card.accent } as CSSProperties}
-                  aria-hidden={index >= half.length}
-                >
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
-                  <span className="service-why__mark" aria-hidden="true">
-                    <ServiceIcon name={resolveWhyIcon(card.icon, card.title)} />
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <div className="service-why__grid">
+              {/* Left Column */}
+              <div className="service-why__col service-why__col--left">
+                <div className="service-why__group">
+                  {colLeft.map((card, index) => (
+                    <div
+                      key={`left-a-${card.title}-${index}`}
+                      className="service-why__card"
+                      style={{ '--why-accent': card.accent } as CSSProperties}
+                    >
+                      <h3>{card.title}</h3>
+                      <p>{card.description}</p>
+                      <span className="service-why__mark" aria-hidden="true">
+                        <ServiceIcon name={resolveWhyIcon(card.icon, card.title)} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="service-why__group" aria-hidden="true">
+                  {colLeft.map((card, index) => (
+                    <div
+                      key={`left-b-${card.title}-${index}`}
+                      className="service-why__card"
+                      style={{ '--why-accent': card.accent } as CSSProperties}
+                    >
+                      <h3>{card.title}</h3>
+                      <p>{card.description}</p>
+                      <span className="service-why__mark" aria-hidden="true">
+                        <ServiceIcon name={resolveWhyIcon(card.icon, card.title)} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div className="service-why__col service-why__col--right">
+                <div className="service-why__group">
+                  {colRight.map((card, index) => (
+                    <div
+                      key={`right-a-${card.title}-${index}`}
+                      className="service-why__card"
+                      style={{ '--why-accent': card.accent } as CSSProperties}
+                    >
+                      <h3>{card.title}</h3>
+                      <p>{card.description}</p>
+                      <span className="service-why__mark" aria-hidden="true">
+                        <ServiceIcon name={resolveWhyIcon(card.icon, card.title)} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="service-why__group" aria-hidden="true">
+                  {colRight.map((card, index) => (
+                    <div
+                      key={`right-b-${card.title}-${index}`}
+                      className="service-why__card"
+                      style={{ '--why-accent': card.accent } as CSSProperties}
+                    >
+                      <h3>{card.title}</h3>
+                      <p>{card.description}</p>
+                      <span className="service-why__mark" aria-hidden="true">
+                        <ServiceIcon name={resolveWhyIcon(card.icon, card.title)} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
