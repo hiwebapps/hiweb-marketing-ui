@@ -10,8 +10,10 @@ export const SITE = {
   whatsapp: 'https://wa.me/529991234567',
   locales: ['Mérida', 'Cancún', 'Monterrey'],
   socials: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com' },
-    { label: 'Instagram', href: 'https://www.instagram.com' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/company/hiweb-marketing/home/' },
+    { label: 'Instagram', href: 'https://www.instagram.com/hiweb.mx/' },
+    { label: 'Facebook', href: 'https://www.facebook.com/HiwebMKT/' },
+    { label: 'TikTok', href: 'https://www.tiktok.com/@hiwebmx' },
   ],
 } as const;
 

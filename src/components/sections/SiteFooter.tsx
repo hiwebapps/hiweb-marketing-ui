@@ -33,6 +33,36 @@ function IconLinkedIn() {
   );
 }
 
+function IconFacebook() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M9.1 20v-7.8H6.5V9.2h2.6V7c0-2.6 1.6-4 3.9-4 1.1 0 2.1.1 2.3.1v2.7h-1.6c-1.3 0-1.5.6-1.5 1.5v1.9h3l-.4 3h-2.6V20H9.1Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function IconTikTok() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 0 1-2.59-2.5 2.59 2.59 0 0 1 2.59-2.5c.31 0 .61.05.88.15V9.87a5.77 5.77 0 0 0-.88-.07A5.81 5.81 0 0 0 4 15.6a5.81 5.81 0 0 0 5.86 5.8 5.81 5.81 0 0 0 5.86-5.8V9.16a7.48 7.48 0 0 0 4.28 1.34V7.32a4.49 4.49 0 0 1-3.4-1.5Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function renderSocialIcon(label: string) {
+  const l = label.toLowerCase();
+  if (l.includes('instagram')) return <IconInstagram />;
+  if (l.includes('facebook')) return <IconFacebook />;
+  if (l.includes('tiktok') || l.includes('tik tok')) return <IconTikTok />;
+  return <IconLinkedIn />;
+}
+
 function prefersReducedMotion() {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
@@ -216,7 +246,7 @@ export function SiteFooter({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {item.label.toLowerCase().includes('instagram') ? <IconInstagram /> : <IconLinkedIn />}
+                  {renderSocialIcon(item.label)}
                 </a>
               ))}
             </div>
