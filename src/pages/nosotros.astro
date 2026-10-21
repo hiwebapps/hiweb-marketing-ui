@@ -80,7 +80,10 @@ const historyColumns =
 			images={about.historyImages}
 			columns={historyColumns}
 		/>
-		<PillarGrid pillars={[...HOME_PILLARS]} title="Diferenciadores" />
+		<PillarGrid
+			pillars={HOME_PILLARS.map(({ href: _href, ...pillar }) => pillar)}
+			title="Diferenciadores"
+		/>
 		<PortalShowcase locale="es" primaryHref="/portal" secondaryHref="/contacto" />
 		<TeamGrid
 			client:load

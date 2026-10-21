@@ -51,7 +51,6 @@ const pillars: Pillar[] = (about.pillars ?? []).map((item) => ({
 	description: item.description,
 	icon: item.icon as Pillar['icon'],
 	accent: item.accent as Pillar['accent'],
-	href: item.href ? localePath(item.href, 'en') : undefined,
 }));
 const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 	item.label
