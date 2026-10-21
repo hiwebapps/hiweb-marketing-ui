@@ -205,13 +205,18 @@ const nombre = entry.data.nombre;
 		<CaseStories
 			client:visible
 			locale={locale}
-			eyebrow={section.eyebrow || 'Casos'}
-			title={section.title || `Casos de ${nombre}`}
+			showAuthor={false}
+			eyebrow={section.eyebrow || (locale === 'en' ? 'Case Studies' : 'Casos')}
+			title={section.title || (locale === 'en' ? `${nombre} Case Studies` : `Casos de ${nombre}`)}
 			description={
 				section.description ||
 				(hasCases
-					? 'Resultados de empresas consolidadas donde este servicio fue palanca.'
-					: 'Estamos documentando más casos de este servicio. El diagnóstico sigue abierto.')
+					? (locale === 'en'
+						? 'Results from established companies where this service was a key lever.'
+						: 'Resultados de empresas consolidadas donde este servicio fue palanca.')
+					: (locale === 'en'
+						? 'Documenting more cases for this service. Diagnostic available.'
+						: 'Estamos documentando más casos de este servicio. El diagnóstico sigue abierto.'))
 			}
 			stories={
 				section.items?.length

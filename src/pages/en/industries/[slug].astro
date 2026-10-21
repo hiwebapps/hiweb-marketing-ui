@@ -34,7 +34,12 @@ const entry = await resolveEntry<IndustryRecord>(Astro.props.entry, Astro.params
 );
 if (!entry) return notFound();
 const services = await getServices('en');
-const cases = (await getCases('en')).filter((item) => item.data.industria.id === entry.id);
+const allCases = await getCases('en');
+const cases = allCases.filter(
+	(item) => item.data.industria.id === entry.id || item.data.industria.id === entry.alternateSlug,
+);
+const fallbackCases = allCases.filter((item) => item.data.destacado || item.data.testimonio?.quote).slice(0, 3);
+const displayCases = cases.length > 0 ? cases : fallbackCases;
 const heroImage = entry.data.heroImage ?? `/images/industries/${entry.id}.jpg`;
 const industryHeroBadges: { label: string; variant: BadgeVariant }[] = [
 	{ label: entry.data.nombre, variant: 'lime' },
@@ -74,14 +79,15 @@ function cardsFor(section: IndustrySection) {
 const allSections = entry.data.sections ?? [];
 const pageSections = allSections.filter((section) => !section.hidden);
 
-const caseStories = cases.map((item) => ({
-	client: item.data.testimonio?.client || item.data.cliente,
+const caseStories = displayCases.map((item) => ({
+	client: item.data.cliente || item.data.testimonio?.client,
 	quote: item.data.testimonio?.quote ?? item.data.resumen,
-	name: item.data.testimonio?.name ?? item.data.cliente,
-	role: item.data.testimonio?.role ?? entry.data.nombre,
-	photo: item.data.testimonio?.photo,
-	cover: item.data.imagenesProyecto?.[0],
-	stats: item.data.metricas.slice(0, 2).map(formatCaseStat),
+	name: '',
+	role: '',
+	cover: item.data.imagenesProyecto?.[0] || item.data.imagen,
+	stats: item.data.testimonio?.stats?.length
+		? item.data.testimonio.stats
+		: item.data.metricas.slice(0, 2).map(formatCaseStat),
 	href: `/en/success-stories/${item.id}`,
 }));
 ---

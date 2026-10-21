@@ -197,11 +197,17 @@
   font-family: var(--font-sans, Inter, system-ui, sans-serif);
 }
 
-.case-story__person {
+.case-story__person,
+.case-story__header {
   display: flex;
   align-items: center;
   gap: 0.8rem;
   min-width: 0;
+}
+
+.case-story__header .case-story__name {
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
 }
 
 .case-story__avatar {

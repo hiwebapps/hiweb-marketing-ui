@@ -166,13 +166,23 @@ const serviceSectionsProjection = /* groq */ `
       title,
       description,
       items[]->{
-        client, quote, name, role,
-        stats[] ${storyStatProjection},
-        photo ${imageProjection},
-        "project": *[_type == "caseStudy" && references(^._id)][0]{
-          "slug": slug.current,
-          "cover": sections[_type == "caseHero"][0].imagenesProyecto[0] ${imageProjection}
-        }
+        _type,
+        "client": coalesce(client, cliente),
+        "quote": coalesce(quote, testimonio.quote, sections[_type == "caseTestimonial"][0].quote, resumen, reto),
+        "name": coalesce(name, testimonio.name, sections[_type == "caseTestimonial"][0].name, cliente),
+        "role": coalesce(role, testimonio.role, sections[_type == "caseTestimonial"][0].role, ""),
+        "photo": coalesce(photo ${imageProjection}, testimonio.photo ${imageProjection}, sections[_type == "caseTestimonial"][0].photo ${imageProjection}),
+        "stats": coalesce(stats[] ${storyStatProjection}, metricas[0..1] ${storyStatProjection}),
+        "project": select(
+          _type == "caseStudy" => {
+            "slug": slug.current,
+            "cover": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[0] ${imageProjection}, sections[_type == "caseHero"][0].imagen ${imageProjection}, sections[_type == "caseHero"][0].image ${imageProjection}, imagenesProyecto[0] ${imageProjection}, imagen ${imageProjection})
+          },
+          *[_type == "caseStudy" && references(^._id)][0]{
+            "slug": slug.current,
+            "cover": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[0] ${imageProjection}, sections[_type == "caseHero"][0].imagen ${imageProjection}, sections[_type == "caseHero"][0].image ${imageProjection}, imagenesProyecto[0] ${imageProjection}, imagen ${imageProjection})
+          }
+        )
       }
     },
     _type == "serviceFaq" => {
@@ -698,7 +708,26 @@ const industrySectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      emptyText
+      emptyText,
+      items[]->{
+        _type,
+        "client": coalesce(client, cliente),
+        "quote": coalesce(quote, testimonio.quote, sections[_type == "caseTestimonial"][0].quote, resumen, reto),
+        "name": coalesce(name, testimonio.name, sections[_type == "caseTestimonial"][0].name, cliente),
+        "role": coalesce(role, testimonio.role, sections[_type == "caseTestimonial"][0].role, ""),
+        "photo": coalesce(photo ${imageProjection}, testimonio.photo ${imageProjection}, sections[_type == "caseTestimonial"][0].photo ${imageProjection}),
+        "stats": coalesce(stats[] ${storyStatProjection}, metricas[0..1] ${storyStatProjection}),
+        "project": select(
+          _type == "caseStudy" => {
+            "slug": slug.current,
+            "cover": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[0] ${imageProjection}, sections[_type == "caseHero"][0].imagen ${imageProjection}, sections[_type == "caseHero"][0].image ${imageProjection}, imagenesProyecto[0] ${imageProjection}, imagen ${imageProjection})
+          },
+          *[_type == "caseStudy" && references(^._id)][0]{
+            "slug": slug.current,
+            "cover": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[0] ${imageProjection}, sections[_type == "caseHero"][0].imagen ${imageProjection}, sections[_type == "caseHero"][0].image ${imageProjection}, imagenesProyecto[0] ${imageProjection}, imagen ${imageProjection})
+          }
+        )
+      }
     },
     _type == "industryFaq" => {
       eyebrow,

@@ -132,6 +132,7 @@ export function mapIndustry(doc: Record<string, unknown>): IndustryRecord {
 
 function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data']['sections'] {
   if (!Array.isArray(doc.sections)) return undefined;
+  const docLocale = doc.locale === 'en' ? 'en' : 'es';
   const sections = doc.sections.flatMap((item) => {
     const section = item as Record<string, unknown>;
     const type = String(section._type ?? '');
@@ -192,12 +193,29 @@ function mapIndustrySections(doc: Record<string, unknown>): IndustryRecord['data
       }];
     }
     if (type === 'industryCases') {
+      const items = Array.isArray(section.items)
+        ? section.items.flatMap((item) => {
+            const quote = asTestimonial(item, docLocale);
+            if (!quote?.client) return [];
+            return [{
+              client: quote.client,
+              quote: quote.quote,
+              name: quote.name,
+              role: quote.role,
+              photo: quote.photo,
+              cover: quote.cover,
+              href: quote.href,
+              stats: quote.stats,
+            }];
+          })
+        : undefined;
       return [{
         _type: 'industryCases' as const,
         eyebrow: text(section.eyebrow),
         title: text(section.title),
         description: text(section.description),
         emptyText: text(section.emptyText),
+        items: items?.length ? items : undefined,
       }];
     }
     if (type === 'industryFaq') {
@@ -267,6 +285,7 @@ function mapServicePlans(doc: Record<string, unknown>): ServiceRecord['data']['p
 
 function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']['sections'] {
   if (!Array.isArray(doc.sections)) return undefined;
+  const docLocale = doc.locale === 'en' ? 'en' : 'es';
   const sections = doc.sections
     .map((item) => {
       const section = item as Record<string, unknown>;
@@ -420,7 +439,7 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
       if (type === 'serviceCases') {
         const items = Array.isArray(section.items)
           ? section.items.flatMap((item) => {
-              const quote = asTestimonial(item);
+              const quote = asTestimonial(item, docLocale);
               if (!quote?.client) return [];
               return [{ client: quote.client, quote: quote.quote, name: quote.name, role: quote.role, photo: quote.photo, cover: quote.cover, href: quote.href, stats: quote.stats }];
             })
@@ -430,7 +449,7 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
           eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
           title: section.title ? String(section.title) : undefined,
           description: section.description ? String(section.description) : undefined,
-          items,
+          items: items.length ? items : undefined,
         };
       }
       if (type === 'serviceCta') {
@@ -546,7 +565,7 @@ function asStoryStats(value: unknown) {
     .slice(0, 2);
 }
 
-function asTestimonial(value: unknown) {
+function asTestimonial(value: unknown, locale: 'es' | 'en' = 'es') {
   if (!value || typeof value !== 'object') return undefined;
   const row = value as {
     quote?: unknown;
@@ -555,23 +574,27 @@ function asTestimonial(value: unknown) {
     client?: unknown;
     photo?: CmsImage | string;
     stats?: unknown;
-    project?: { slug?: unknown; cover?: CmsImage };
+    project?: { slug?: unknown; cover?: CmsImage | string };
   };
   const quote = asText(row.quote);
   if (!quote) return undefined;
   const photo =
     typeof row.photo === 'string' && row.photo.startsWith('http') ? row.photo : imageUrl(row.photo as CmsImage, 900);
   const stats = asStoryStats(row.stats);
-  const cover = imageUrl(row.project?.cover, 1400);
+  const cover =
+    typeof row.project?.cover === 'string' && row.project.cover.startsWith('http')
+      ? row.project.cover
+      : imageUrl(row.project?.cover as CmsImage, 1400);
   const slug = asText(row.project?.slug);
+  const prefix = locale === 'en' ? '/en/success-stories' : '/portafolio';
   return {
     quote,
     name: asText(row.name) ?? '',
     role: asText(row.role) ?? '',
-    client: asText(row.client),
+    client: asText(row.client) ?? '',
     photo,
     cover,
-    href: slug ? `/portafolio/${slug}` : undefined,
+    href: slug ? `${prefix}/${slug}` : undefined,
     stats: stats.length ? stats : undefined,
   };
 }

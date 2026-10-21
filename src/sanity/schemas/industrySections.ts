@@ -167,6 +167,17 @@ export const industryCases = defineType({
       type: 'text',
       rows: 2,
     }),
+    defineField({
+      name: 'items',
+      title: 'Testimonios / Casos específicos',
+      type: 'array',
+      description:
+        'Opcional. Elige testimonios o casos específicos de la biblioteca. Si se deja vacío, se muestran automáticamente los casos de éxito de esta industria.',
+      of: [
+        defineArrayMember({ type: 'reference', to: [{ type: 'testimonial' }, { type: 'caseStudy' }] }),
+      ],
+      validation: (rule) => rule.unique(),
+    }),
   ],
   preview: sectionPreview('Sección Casos'),
 });

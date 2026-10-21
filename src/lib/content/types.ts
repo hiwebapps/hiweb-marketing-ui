@@ -125,6 +125,16 @@ export type IndustrySection = (
       title?: string;
       description?: string;
       emptyText?: string;
+      items?: {
+        client: string;
+        quote: string;
+        name: string;
+        role?: string;
+        photo?: string;
+        cover?: string;
+        href?: string;
+        stats?: StoryStat[];
+      }[];
     }
   | {
       _type: 'industryFaq';

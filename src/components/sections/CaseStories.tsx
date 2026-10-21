@@ -32,6 +32,8 @@ type CaseStoriesProps = {
   id?: string;
   headingWidth?: string;
   locale?: 'es' | 'en';
+  /** Whether to render author avatar, name, and role. False for case study cards. */
+  showAuthor?: boolean;
 };
 
 const PHOTO_FALLBACKS: Record<string, string> = {
@@ -104,7 +106,9 @@ export function CaseStories({
   id = 'casos',
   headingWidth,
   locale = 'es',
+  showAuthor = true,
 }: CaseStoriesProps) {
+  const activeStories = stories && stories.length > 0 ? stories : DEFAULT_STORIES;
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -117,7 +121,7 @@ export function CaseStories({
     dragging: false,
   });
 
-  const lastIndex = Math.max(stories.length - perView, 0);
+  const lastIndex = Math.max(activeStories.length - perView, 0);
   const canSlide = lastIndex > 0;
   const ctaLabel = locale === 'en' ? 'View project' : 'Ver proyecto';
   const portfolioHref = locale === 'en' ? '/en/success-stories' : '/portafolio';
@@ -149,20 +153,20 @@ export function CaseStories({
         overwrite: 'auto',
       });
     },
-    { scope: rootRef, dependencies: [activeIndex, perView, stories.length] },
+    { scope: rootRef, dependencies: [activeIndex, perView, activeStories.length] },
   );
 
   useGSAP(
     () => {
       const onResize = () => {
         syncPerView();
-        setActiveIndex((current) => Math.min(current, Math.max(stories.length - visibleCount(), 0)));
+        setActiveIndex((current) => Math.min(current, Math.max(activeStories.length - visibleCount(), 0)));
       };
       window.addEventListener('resize', onResize);
       syncPerView();
       return () => window.removeEventListener('resize', onResize);
     },
-    { scope: rootRef, dependencies: [stories.length] },
+    { scope: rootRef, dependencies: [activeStories.length] },
   );
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -294,7 +298,7 @@ export function CaseStories({
               className="case-stories__track"
               aria-label={locale === 'en' ? 'Testimonials' : 'Testimonios'}
             >
-              {stories.map((story, index) => {
+              {activeStories.map((story, index) => {
                 const portrait = imageFor(story, index);
                 return (
                   <li key={`${story.client}-${story.name}`} className="case-stories__slide">
@@ -307,14 +311,22 @@ export function CaseStories({
                         />
                       </div>
                       <div className="case-story__body">
-                        <div className="case-story__person">
-                          <img className="case-story__avatar" src={portrait} alt="" draggable={false} />
-                          <div className="case-story__identity">
-                            <p className="case-story__name">{story.name}</p>
-                            {story.client ? <p className="case-story__client">{story.client}</p> : null}
-                            {story.role ? <p className="case-story__role">{story.role}</p> : null}
+                        {showAuthor && story.name ? (
+                          <div className="case-story__person">
+                            <img className="case-story__avatar" src={portrait} alt="" draggable={false} />
+                            <div className="case-story__identity">
+                              <p className="case-story__name">{story.name}</p>
+                              {story.client && story.client !== story.name ? (
+                                <p className="case-story__client">{story.client}</p>
+                              ) : null}
+                              {story.role ? <p className="case-story__role">{story.role}</p> : null}
+                            </div>
                           </div>
-                        </div>
+                        ) : story.client ? (
+                          <div className="case-story__header">
+                            <p className="case-story__name">{story.client}</p>
+                          </div>
+                        ) : null}
                         <p className="case-story__quote">{story.quote}</p>
                         <Button
                           href={story.href ?? portfolioHref}

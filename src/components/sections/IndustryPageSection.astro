@@ -73,15 +73,17 @@ const lower = nombre.toLowerCase();
 		<CaseStories
 			client:visible
 			locale={storiesLocale}
+			showAuthor={false}
 			eyebrow={section.eyebrow || 'Casos'}
-			title={section.title || `Casos en ${lower}`}
+			title={section.title || (storiesLocale === 'en' ? `Success stories in ${lower}` : `Casos en ${lower}`)}
 			description={
-				hasCases
-					? section.description || 'Resultados de empresas consolidadas en este sector.'
+				section.description ||
+				(hasCases
+					? (storiesLocale === 'en' ? 'Results from established companies in this sector.' : 'Resultados de empresas consolidadas en este sector.')
 					: section.emptyText ||
-						'Estamos documentando más casos de este sector. El diagnóstico sigue abierto.'
+						(storiesLocale === 'en' ? 'Documenting new cases in this industry. Diagnostic available.' : 'Estamos documentando más casos de este sector. El diagnóstico sigue abierto.'))
 			}
-			stories={stories}
+			stories={section.items?.length ? section.items : stories}
 			headingWidth={section.headingWidth}
 		/>
 	)

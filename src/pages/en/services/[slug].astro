@@ -17,6 +17,7 @@ import FinalCta from '../../../components/sections/FinalCtaBand.astro';
 import ServicePageSection from '../../../components/sections/ServicePageSection.astro';
 import { serviceContentKey } from '../../../lib/en-slugs';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
+import { formatCaseStat } from '../../../lib/content/format';
 import type { BadgeVariant } from '../../../components/ui';
 import { iconForServiceOverviewCard } from '../../../components/icons/PillarIcons';
 import { serviceFocusItems } from '../../../data/service-focus';
@@ -40,9 +41,13 @@ const entry = await resolveEntry<ServiceRecord>(Astro.props.entry, Astro.params.
 if (!entry) return notFound();
 const industries = await getIndustries();
 const contentKey = serviceContentKey(entry.id);
-const cases = (await getCases('en')).filter((item) =>
-	item.data.servicios.some((ref) => ref.id === entry.id || ref.id === contentKey),
+const allCases = await getCases('en');
+const cases = allCases.filter((item) =>
+	item.data.servicios.some((ref) => ref.id === entry.id || ref.id === contentKey || ref.id === entry.alternateSlug),
 );
+const fallbackCases = allCases.filter((item) => item.data.destacado || item.data.testimonio?.quote).slice(0, 3);
+const displayCases = cases.length > 0 ? cases : fallbackCases;
+
 const phases = entry.data.proceso.map((step, index) => ({
 	index: String(index + 1).padStart(2, '0'),
 	title: step.title,
@@ -71,18 +76,18 @@ const pageFaqs = faqFromSections?._type === 'serviceFaq' && faqFromSections.item
     ? []
     : entry.data.faqs;
 
-const caseStories = cases.flatMap((item) => {
+const caseStories = displayCases.flatMap((item) => {
 	const quote = item.data.testimonio;
-	if (!quote?.quote) return [];
+	const text = quote?.quote || item.data.resumen || item.data.resultadoFrase;
+	if (!text) return [];
 	return [{
-		client: quote.client || item.data.cliente,
-		quote: quote.quote,
-		name: quote.name || item.data.cliente,
-		role: quote.role ?? '',
-		photo: quote.photo,
-		cover: item.data.imagenesProyecto?.[0],
+		client: item.data.cliente || quote?.client,
+		quote: text,
+		name: '',
+		role: '',
+		cover: item.data.imagenesProyecto?.[0] || item.data.imagen,
 		href: `/en/success-stories/${item.id}`,
-		stats: quote.stats,
+		stats: quote?.stats?.length ? quote.stats : item.data.metricas?.slice(0, 2).map(formatCaseStat),
 	}];
 });
 ---

@@ -390,24 +390,24 @@ export const serviceProcess = defineType({
 
 export const serviceCases = defineType({
   name: 'serviceCases',
-  title: 'Testimonios',
+  title: 'Casos de éxito',
   type: 'object',
   icon: CommentIcon,
   fields: [
-    defineField({ name: 'eyebrow', title: 'Badge', type: 'string' }),
+    defineField({ name: 'eyebrow', title: 'Badge', type: 'string', initialValue: 'Casos' }),
     headingTitleField(),
     headingWidthField(),
     defineField({ name: 'description', title: 'Párrafo', type: 'text', rows: 2 }),
     defineField({
       name: 'items',
-      title: 'Testimonios',
+      title: 'Casos / Testimonios',
       type: 'array',
-      description: 'Elige de la biblioteca y arrastra para el orden. La cita, el nombre, el cargo, la foto y las dos cifras salen de ahí.',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'testimonial' }] })],
+      description: 'Elige testimonios o casos de la biblioteca y arrastra para el orden. Si se deja vacío, se muestran automáticamente los casos relacionados con este servicio.',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'testimonial' }, { type: 'caseStudy' }] })],
       validation: (rule) => rule.unique(),
     }),
   ],
-  preview: titled('Sección Testimonios'),
+  preview: titled('Sección Casos de éxito'),
 });
 
 export const serviceFaq = defineType({
