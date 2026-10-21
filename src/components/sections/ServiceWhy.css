@@ -101,12 +101,12 @@
 }
 
 .service-why__col--left .service-why__group {
-  animation: service-why-scroll 24s linear infinite;
+  animation: service-why-scroll 32s linear infinite;
 }
 
 .service-why__col--right .service-why__group {
-  animation: service-why-scroll 24s linear infinite;
-  animation-delay: -12s; /* 50% phase offset creates a natural, staggered rhythm */
+  animation: service-why-scroll 32s linear infinite;
+  animation-delay: -16s; /* 50% phase offset creates a natural, staggered rhythm */
 }
 
 .service-why__stage:hover .service-why__group,
