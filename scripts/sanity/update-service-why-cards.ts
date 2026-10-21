@@ -394,8 +394,8 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
         _type: 'serviceWhyCard',
         icon: 'timer',
         accent: 'green',
-        title: 'Producción de video vertical.',
-        description: 'Producimos videos breves estructurados para capturar el interés del usuario en los primeros segundos y transmitir la propuesta de valor con agilidad.',
+        title: 'Contenido en video vertical.',
+        description: 'Diseñamos y editamos videos para Reels y TikTok pensados para captar atención y explicar tus servicios de forma clara y atractiva.',
       },
       {
         _key: 'why-6',
@@ -444,8 +444,8 @@ const SERVICE_CARDS: Record<string, ServiceData> = {
         _type: 'serviceWhyCard',
         icon: 'timer',
         accent: 'green',
-        title: 'Vertical video production.',
-        description: 'We produce dynamic short-form videos scripted and edited to capture attention immediately and communicate your core value quickly.',
+        title: 'Short-form vertical video.',
+        description: 'We script and edit videos for Reels and TikTok designed to grab attention and explain your services clearly.',
       },
       {
         _key: 'why-6',
