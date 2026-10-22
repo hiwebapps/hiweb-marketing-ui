@@ -28,6 +28,19 @@ export const socialBrand = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'cutoffDate',
+      title: 'Fecha de fin de gestión (Filtro de fecha para sincronizar)',
+      type: 'date',
+      description: 'Opcional. Si el cliente ya no trabaja con la agencia, indica la fecha límite. Al sincronizar, se ignorará el contenido posterior a esta fecha y se buscarán las publicaciones creadas durante el servicio.',
+    }),
+    defineField({
+      name: 'customPostUrls',
+      title: 'Enlaces directos de publicaciones o reels',
+      type: 'array',
+      of: [defineArrayMember({ type: 'url' })],
+      description: 'Opcional. Si prefieres seleccionar manualmente publicaciones específicas que produjo Hiweb, pega aquí los enlaces de Instagram (ej. https://www.instagram.com/p/... o /reel/...).',
+    }),
+    defineField({
       name: 'category',
       title: 'Categoría',
       type: 'string',

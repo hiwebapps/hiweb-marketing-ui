@@ -46,10 +46,18 @@ export const POST: APIRoute = async ({ request }) => {
     const body = (await request.json()) as {
       username?: string;
       documentId?: string;
+      untilDate?: string;
+      postUrls?: string[];
     };
 
     const username = body.username?.trim().replace(/^@/, '');
     const documentId = body.documentId?.trim();
+    const untilDate = body.untilDate?.trim();
+    const postUrls = Array.isArray(body.postUrls)
+      ? body.postUrls
+          .map((u) => (typeof u === 'string' ? u.trim() : ''))
+          .filter((u) => u && (u.includes('instagram.com/p/') || u.includes('instagram.com/reel/')))
+      : [];
 
     if (!username) {
       return new Response(JSON.stringify({ success: false, error: 'Usuario requerido.' }), {
@@ -167,10 +175,39 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // 3. Procesar las publicaciones más recientes (hasta 12)
-    let rawPosts = profile.latestPosts || [];
-    if (rawPosts.length === 0) {
+    // 3. Procesar las publicaciones según modo (URLs directas, filtro por fecha o más recientes)
+    let rawPosts: Array<any> = [];
+
+    if (postUrls.length > 0) {
+      console.log(`[Apify] Consultando ${postUrls.length} enlaces directos...`);
       try {
+        const directRes = await fetch(
+          `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${apifyToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              directUrls: postUrls,
+              resultsLimit: 1,
+            }),
+          }
+        );
+        if (directRes.ok) {
+          const directData = (await directRes.json()) as Array<any>;
+          if (Array.isArray(directData) && directData.length > 0) {
+            rawPosts = directData;
+          }
+        }
+      } catch (err) {
+        console.warn('Error en scraper de enlaces directos:', err);
+      }
+    } else if (untilDate) {
+      console.log(`[Apify] Filtrando publicaciones de @${username} anteriores a ${untilDate}...`);
+      try {
+        const cutoffTime = new Date(untilDate).getTime() + 86400000 - 1; // Fin del día
         const postsRes = await fetch(
           `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
           {
@@ -181,18 +218,57 @@ export const POST: APIRoute = async ({ request }) => {
             },
             body: JSON.stringify({
               username: [username],
-              resultsLimit: 12,
+              resultsLimit: 60,
+              skipPinnedPosts: true,
             }),
           }
         );
         if (postsRes.ok) {
-          const postsData = (await postsRes.json()) as typeof rawPosts;
-          if (Array.isArray(postsData) && postsData.length > 0) {
-            rawPosts = postsData;
+          const pData = (await postsRes.json()) as Array<any>;
+          if (Array.isArray(pData) && pData.length > 0) {
+            const filtered = pData.filter((p) => {
+              const rawT = p.timestamp || p.takenAtTimestamp || p.takenAt;
+              const t = rawT ? (typeof rawT === 'number' ? rawT * 1000 : new Date(rawT).getTime()) : null;
+              return t != null ? t <= cutoffTime : true;
+            });
+            filtered.sort((a, b) => {
+              const tA = a.timestamp ? new Date(a.timestamp).getTime() : (a.takenAtTimestamp ? a.takenAtTimestamp * 1000 : 0);
+              const tB = b.timestamp ? new Date(b.timestamp).getTime() : (b.takenAtTimestamp ? b.takenAtTimestamp * 1000 : 0);
+              return tB - tA;
+            });
+            rawPosts = filtered;
           }
         }
-      } catch (e) {
-        console.warn('Fallback instagram-post-scraper error:', e);
+      } catch (err) {
+        console.warn('Error en scraper filtrado por fecha:', err);
+      }
+    } else {
+      rawPosts = profile.latestPosts || [];
+      if (rawPosts.length === 0) {
+        try {
+          const postsRes = await fetch(
+            `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
+            {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${apifyToken}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                username: [username],
+                resultsLimit: 12,
+              }),
+            }
+          );
+          if (postsRes.ok) {
+            const postsData = (await postsRes.json()) as typeof rawPosts;
+            if (Array.isArray(postsData) && postsData.length > 0) {
+              rawPosts = postsData;
+            }
+          }
+        } catch (e) {
+          console.warn('Fallback instagram-post-scraper error:', e);
+        }
       }
     }
     const formattedPosts: Array<Record<string, unknown>> = [];
@@ -350,6 +426,14 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (formattedPosts.length > 0) {
       patchPayload.posts = formattedPosts;
+    }
+
+    if (untilDate) {
+      patchPayload.cutoffDate = untilDate;
+    }
+
+    if (postUrls.length > 0) {
+      patchPayload.customPostUrls = postUrls;
     }
 
     // Asegurar que el borrador exista en Sanity si es un documento recién creado

@@ -1,16 +1,27 @@
 import { useState } from 'react';
-import { Button, Card, Flex, Text } from '@sanity/ui';
+import { Badge, Button, Card, Flex, Stack, Text } from '@sanity/ui';
 import { useToast } from '@sanity/ui/toast';
 import { useFormValue, type StringInputProps } from 'sanity';
 
 export function InstagramSyncInput(props: StringInputProps) {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const rawDoc = (useFormValue as unknown as (path: string[]) => unknown)([]) as { _id?: string } | undefined;
+  const rawDoc = (useFormValue as unknown as (path: string[]) => unknown)([]) as {
+    _id?: string;
+    cutoffDate?: string;
+    customPostUrls?: string[];
+  } | undefined;
+
   const rawId = rawDoc?._id;
-  // Clean draft prefix if present, or generate UUID if brand new unsaved doc
   const documentId = rawId ? rawId.replace(/^drafts\./, '') : undefined;
   const username = typeof props.value === 'string' ? props.value.trim().replace(/^@/, '') : '';
+  const cutoffDate = rawDoc?.cutoffDate;
+  const customPostUrls = Array.isArray(rawDoc?.customPostUrls)
+    ? rawDoc.customPostUrls.filter((u) => typeof u === 'string' && u.trim().length > 0)
+    : [];
+
+  const isCustomUrls = customPostUrls.length > 0;
+  const isCutoff = Boolean(cutoffDate);
 
   async function handleSync() {
     if (!username) {
@@ -25,7 +36,6 @@ export function InstagramSyncInput(props: StringInputProps) {
     setLoading(true);
 
     try {
-      // Determine origin: local Astro dev server (4322), proxy, or remote staging
       let apiOrigin = 'http://localhost:4322';
 
       if (typeof window !== 'undefined') {
@@ -35,7 +45,6 @@ export function InstagramSyncInput(props: StringInputProps) {
         if (hostname.includes('sanity.studio')) {
           apiOrigin = 'https://hiweb.com.mx';
         } else if (port === '3333' || hostname === 'localhost' || hostname === '127.0.0.1') {
-          // Local Sanity Studio runs on 3333, Astro API runs on 4322 (fallback 4321)
           apiOrigin = 'http://localhost:4322';
           try {
             const probe = await fetch('http://localhost:4322/api/sync-instagram', { method: 'OPTIONS' });
@@ -48,7 +57,6 @@ export function InstagramSyncInput(props: StringInputProps) {
         }
       }
 
-      // Generate a fallback documentId if creating brand new document before first save
       const effectiveId = documentId || `brand-${username.toLowerCase().replace(/[^a-z0-9_-]/g, '-')}`;
 
       const response = await fetch(`${apiOrigin}/api/sync-instagram`, {
@@ -59,6 +67,8 @@ export function InstagramSyncInput(props: StringInputProps) {
         body: JSON.stringify({
           username,
           documentId: effectiveId,
+          untilDate: cutoffDate || undefined,
+          postUrls: isCustomUrls ? customPostUrls : undefined,
         }),
       });
 
@@ -74,7 +84,7 @@ export function InstagramSyncInput(props: StringInputProps) {
         data = JSON.parse(text);
       } catch {
         throw new Error(
-          `Respuesta inesperada (${response.status}): ${text.slice(0, 120) || 'El servidor Astro no respondió en ' + apiOrigin + '. Verifica que el servidor de desarrollo esté activo con astro dev.'}`
+          `Respuesta inesperada (${response.status}): ${text.slice(0, 120) || 'El servidor Astro no respondió en ' + apiOrigin + '.'}`
         );
       }
 
@@ -85,7 +95,11 @@ export function InstagramSyncInput(props: StringInputProps) {
       toast.push({
         status: 'success',
         title: '¡Sincronización completada!',
-        description: `Se importaron ${data.count ?? 0} publicaciones, avatar y biografía correctamente.`,
+        description: isCustomUrls
+          ? `Se importaron ${data.count ?? 0} publicaciones específicas desde las URLs proporcionadas.`
+          : isCutoff
+            ? `Se importaron ${data.count ?? 0} publicaciones anteriores al ${cutoffDate}.`
+            : `Se importaron ${data.count ?? 0} publicaciones recientes, avatar y biografía.`,
       });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -102,20 +116,67 @@ export function InstagramSyncInput(props: StringInputProps) {
   return (
     <Flex direction="column" gap={3}>
       {props.renderDefault(props)}
-      <Card padding={2} tone="transparent" radius={2} border>
-        <Flex align="center" justify="space-between" gap={3}>
-          <Text size={1} muted>
-            {loading ? 'Consultando Instagram y subiendo imágenes a Sanity...' : 'Descarga perfil, avatar y últimas 12 publicaciones automáticamente.'}
-          </Text>
-          <Button
-            tone="primary"
-            mode="ghost"
-            loading={loading}
-            disabled={loading || !username}
-            onClick={handleSync}
-            text={loading ? 'Sincronizando...' : '⚡ Sincronizar Instagram'}
-          />
-        </Flex>
+      <Card padding={3} tone="transparent" radius={2} border>
+        <Stack space={3}>
+          <Flex align="center" justify="space-between" gap={3} wrap="wrap">
+            <Stack space={2}>
+              <Flex align="center" gap={2}>
+                <Text size={1} weight="semibold">
+                  Sincronizador Inteligente
+                </Text>
+                {isCustomUrls ? (
+                  <Badge tone="positive" fontSize={0}>
+                    {customPostUrls.length} URLs directas
+                  </Badge>
+                ) : isCutoff ? (
+                  <Badge tone="caution" fontSize={0}>
+                    Hasta {cutoffDate}
+                  </Badge>
+                ) : (
+                  <Badge tone="default" fontSize={0}>
+                    Últimos posts
+                  </Badge>
+                )}
+              </Flex>
+              <Text size={1} muted>
+                {loading
+                  ? isCustomUrls
+                    ? `Descargando ${customPostUrls.length} publicaciones específicas y subiendo multimedia a Sanity...`
+                    : isCutoff
+                      ? `Filtrando publicaciones anteriores a ${cutoffDate} y subiendo multimedia...`
+                      : 'Consultando Instagram y subiendo imágenes a Sanity...'
+                  : isCustomUrls
+                    ? `Importará exactamente las ${customPostUrls.length} publicaciones pegadas en el campo de URLs abajo.`
+                    : isCutoff
+                      ? `Solo importará publicaciones hechas antes de ${cutoffDate} (descartando contenido posterior).`
+                      : 'Descarga perfil, avatar y las 12 publicaciones más recientes automáticamente.'}
+              </Text>
+            </Stack>
+
+            <Button
+              tone={isCustomUrls ? 'positive' : isCutoff ? 'caution' : 'primary'}
+              mode="ghost"
+              loading={loading}
+              disabled={loading || !username}
+              onClick={handleSync}
+              text={
+                loading
+                  ? 'Sincronizando...'
+                  : isCustomUrls
+                    ? `⚡ Sincronizar ${customPostUrls.length} URLs`
+                    : isCutoff
+                      ? `⚡ Sincronizar hasta ${cutoffDate}`
+                      : '⚡ Sincronizar Instagram'
+              }
+            />
+          </Flex>
+
+          {!isCustomUrls && !isCutoff && (
+            <Text size={0} muted style={{ borderTop: '1px solid var(--card-border-color)', paddingTop: 6 }}>
+              💡 <em>Para clientes inactivos: Llena el campo <strong>Fecha de fin de gestión</strong> o pega <strong>URLs específicas</strong> abajo antes de hacer clic en sincronizar.</em>
+            </Text>
+          )}
+        </Stack>
       </Card>
     </Flex>
   );

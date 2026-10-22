@@ -38,10 +38,32 @@ function formatStat(num: number | null | undefined): string {
   return String(num);
 }
 
-export async function syncSingleClient(usernameInput: string, caseStudyId?: string, category?: string) {
+export interface SyncClientOptions {
+  caseStudyId?: string;
+  category?: string;
+  untilDate?: string;
+  postUrls?: string[];
+}
+
+export async function syncSingleClient(
+  usernameInput: string,
+  caseStudyIdOrOptions?: string | SyncClientOptions,
+  categoryArg?: string
+) {
+  const options: SyncClientOptions =
+    typeof caseStudyIdOrOptions === 'object' && caseStudyIdOrOptions !== null
+      ? caseStudyIdOrOptions
+      : {
+          caseStudyId: caseStudyIdOrOptions,
+          category: categoryArg,
+        };
+
+  const { caseStudyId, category, untilDate, postUrls = [] } = options;
   const username = usernameInput.trim().replace(/^@/, '');
   console.log(`\n==================================================`);
   console.log(`▶ Sincronizando @${username} (caso: ${caseStudyId || 'ninguno'})...`);
+  if (postUrls.length > 0) console.log(`  Modo: ${postUrls.length} URLs directas`);
+  if (untilDate) console.log(`  Filtro: Publicaciones hasta ${untilDate}`);
   console.log(`==================================================`);
 
   console.log(`[1/4] Consultando perfil en Instagram vía Apify...`);
@@ -97,9 +119,10 @@ export async function syncSingleClient(usernameInput: string, caseStudyId?: stri
 
   // Subir publicaciones
   console.log(`[3/4] Procesando publicaciones...`);
-  let rawPosts = profile.latestPosts || [];
-  if (rawPosts.length === 0) {
-    console.log(`[i] Obteniendo publicaciones vía apify~instagram-post-scraper...`);
+  let rawPosts: Array<any> = [];
+
+  if (postUrls.length > 0) {
+    console.log(`[i] Obteniendo ${postUrls.length} publicaciones específicas vía Apify...`);
     try {
       const pRes = await fetch(
         `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
@@ -110,8 +133,8 @@ export async function syncSingleClient(usernameInput: string, caseStudyId?: stri
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username: [username],
-            resultsLimit: 12,
+            directUrls: postUrls,
+            resultsLimit: 1,
           }),
         }
       );
@@ -123,7 +146,76 @@ export async function syncSingleClient(usernameInput: string, caseStudyId?: stri
         }
       }
     } catch (e) {
-      console.warn('Advertencia consultando posts complementarios:', e);
+      console.warn('Advertencia consultando URLs directas:', e);
+    }
+  } else if (untilDate) {
+    console.log(`[i] Obteniendo publicaciones anteriores a ${untilDate} vía Apify...`);
+    try {
+      const cutoffTime = new Date(untilDate).getTime() + 86400000 - 1;
+      const pRes = await fetch(
+        `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${apifyToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: [username],
+            resultsLimit: 60,
+            skipPinnedPosts: true,
+          }),
+        }
+      );
+      if (pRes.ok) {
+        const pData = (await pRes.json()) as Array<any>;
+        if (Array.isArray(pData) && pData.length > 0) {
+          const eligible = pData.filter((p) => {
+            const rawT = p.timestamp || p.takenAtTimestamp || p.takenAt;
+            const t = rawT ? (typeof rawT === 'number' ? rawT * 1000 : new Date(rawT).getTime()) : null;
+            return t != null ? t <= cutoffTime : true;
+          });
+          eligible.sort((a, b) => {
+            const tA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+            const tB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+            return tB - tA;
+          });
+          rawPosts = eligible;
+          console.log(`✓ Se encontraron ${rawPosts.length} publicaciones anteriores a ${untilDate}.`);
+        }
+      }
+    } catch (e) {
+      console.warn('Advertencia consultando publicaciones por fecha:', e);
+    }
+  } else {
+    rawPosts = profile.latestPosts || [];
+    if (rawPosts.length === 0) {
+      console.log(`[i] Obteniendo publicaciones vía apify~instagram-post-scraper...`);
+      try {
+        const pRes = await fetch(
+          `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${apifyToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: [username],
+              resultsLimit: 12,
+            }),
+          }
+        );
+        if (pRes.ok) {
+          const pData = (await pRes.json()) as Array<any>;
+          if (Array.isArray(pData) && pData.length > 0) {
+            rawPosts = pData;
+            console.log(`✓ Se encontraron ${rawPosts.length} publicaciones.`);
+          }
+        }
+      } catch (e) {
+        console.warn('Advertencia consultando posts complementarios:', e);
+      }
     }
   }
 
@@ -266,6 +358,8 @@ export async function syncSingleClient(usernameInput: string, caseStudyId?: stri
       following: formatStat(profile.followsCount),
     },
     posts,
+    cutoffDate: untilDate || undefined,
+    customPostUrls: postUrls.length ? postUrls : undefined,
   };
 
   if (caseStudyId) {
