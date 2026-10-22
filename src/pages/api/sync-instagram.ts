@@ -39,7 +39,27 @@ function formatStat(num: number | null | undefined): string {
   return String(num);
 }
 
-export const POST: APIRoute = async ({ request }) => {
+async function getSecret(key: string, locals?: any): Promise<string | undefined> {
+  const fromLocals = locals?.runtime?.env?.[key];
+  if (typeof fromLocals === 'string' && fromLocals) return fromLocals;
+
+  try {
+    const { env } = await import('cloudflare:workers');
+    const val = (env as Record<string, unknown>)?.[key];
+    if (typeof val === 'string' && val) return val;
+  } catch {}
+
+  if (typeof process !== 'undefined' && process.env?.[key]) {
+    return process.env[key];
+  }
+
+  const fromMeta = (import.meta.env as Record<string, unknown>)?.[key];
+  if (typeof fromMeta === 'string' && fromMeta) return fromMeta;
+
+  return undefined;
+}
+
+export const POST: APIRoute = async ({ request, locals }) => {
   const cors = getCorsHeaders(request);
 
   try {
@@ -73,9 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const apifyToken =
-      process.env.APIFY_API_TOKEN ||
-      import.meta.env.APIFY_API_TOKEN;
+    const apifyToken = await getSecret('APIFY_API_TOKEN', locals);
 
     if (!apifyToken) {
       return new Response(
@@ -84,9 +102,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const sanityToken =
-      process.env.SANITY_API_WRITE_TOKEN ||
-      import.meta.env.SANITY_API_WRITE_TOKEN;
+    const sanityToken = await getSecret('SANITY_API_WRITE_TOKEN', locals);
 
     if (!sanityToken) {
       return new Response(
@@ -95,9 +111,19 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    const projectId =
+      (await getSecret('PUBLIC_SANITY_PROJECT_ID', locals)) ||
+      process.env.PUBLIC_SANITY_PROJECT_ID ||
+      'fxardjr1';
+
+    const dataset =
+      (await getSecret('PUBLIC_SANITY_DATASET', locals)) ||
+      process.env.PUBLIC_SANITY_DATASET ||
+      'web-2026';
+
     const sanityClient = createClient({
-      projectId: process.env.PUBLIC_SANITY_PROJECT_ID || 'fxardjr1',
-      dataset: process.env.PUBLIC_SANITY_DATASET || 'web-2026',
+      projectId,
+      dataset,
       token: sanityToken,
       apiVersion: '2024-01-01',
       useCdn: false,
