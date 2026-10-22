@@ -214,49 +214,69 @@ const nombre = entry.data.nombre;
 				description={section.description}
 				tone={section.tone || 'canvas'}
 				headingWidth={section.headingWidth}
-				brands={targetBrands.length > 0 ? targetBrands.map((b) => ({
-					id: b.handle || b.id || '',
-					name: b.name,
-					handle: b.handle,
-					category: b.category || '',
-					industryId: 'restaurantes',
-					industryName: 'Gastronomía & Retail',
-					avatar: b.avatar || '',
-					bio: b.bio || '',
-					linkText: b.linkText,
-					linkUrl: b.linkUrl,
-					caseSlug: b.caseSlug,
-					stats: {
-						posts: b.stats?.posts || '0',
-						followers: b.stats?.followers || '0',
-						following: b.stats?.following || '0',
-					},
-					highlights: (b.highlights || []).map((h) => ({ title: h.title, cover: h.cover || '' })),
-					posts: (b.posts || [])
-						.filter((p) => p.showInService !== false)
-						.map((p) => ({
-							id: p.id,
-							brandId: b.handle,
-							brandName: b.name,
-							brandHandle: b.handle,
-							brandAvatar: b.avatar || '',
-							brandCategory: b.category || '',
-							kind: p.kind,
-							cover: p.cover,
-							slides: p.slides || [],
-							caption: p.caption || '',
-							videoUrl: p.videoUrl,
-							caseSlug: b.caseSlug || p.caseSlug,
-							showInService: p.showInService,
-							stats: {
-								views: p.stats?.views,
-								likes: p.stats?.likes,
-								comments: p.stats?.comments,
-								shares: p.stats?.shares,
-							},
-							outcomeTag: p.outcomeTag,
-						})),
-				})) : undefined}
+				brands={targetBrands.length > 0 ? targetBrands.map((b) => {
+					const indId = b.industryId || (
+						b.category?.toLowerCase().includes('restaurante') || b.category?.toLowerCase().includes('pizzer') ? 'restaurantes' :
+						b.category?.toLowerCase().includes('retail') || b.category?.toLowerCase().includes('calzado') || b.category?.toLowerCase().includes('moda') || b.category?.toLowerCase().includes('regalo') ? 'retail' :
+						b.category?.toLowerCase().includes('turismo') || b.category?.toLowerCase().includes('auto') || b.category?.toLowerCase().includes('fotograf') ? 'turismo' :
+						b.category?.toLowerCase().includes('inmobil') || b.category?.toLowerCase().includes('bienes') || b.category?.toLowerCase().includes('terreno') ? 'inmobiliarias' :
+						b.category?.toLowerCase().includes('salud') || b.category?.toLowerCase().includes('dental') ? 'salud' :
+						'otros'
+					);
+					const indName = b.industryName || (
+						indId === 'restaurantes' ? 'Restaurantes & Gastronomía' :
+						indId === 'retail' ? 'Moda & Retail' :
+						indId === 'turismo' ? 'Turismo & Destinos' :
+						indId === 'inmobiliarias' ? 'Inmobiliarias & Terrenos' :
+						indId === 'salud' ? 'Sector Salud' :
+						'Otras industrias'
+					);
+					return {
+						id: b.handle || b.id || '',
+						name: b.name,
+						handle: b.handle,
+						category: b.category || '',
+						industryId: indId,
+						industryName: indName,
+						avatar: b.avatar || '',
+						bio: b.bio || '',
+						linkText: b.linkText,
+						linkUrl: b.linkUrl,
+						caseSlug: b.caseSlug,
+						stats: {
+							posts: b.stats?.posts || '0',
+							followers: b.stats?.followers || '0',
+							following: b.stats?.following || '0',
+						},
+						highlights: (b.highlights || []).map((h) => ({ title: h.title, cover: h.cover || '' })),
+						posts: (b.posts || [])
+							.filter((p) => p.showInService !== false)
+							.map((p) => ({
+								id: p.id,
+								brandId: b.handle,
+								brandName: b.name,
+								brandHandle: b.handle,
+								brandAvatar: b.avatar || '',
+								brandCategory: b.category || '',
+								industryId: indId,
+								industryName: indName,
+								kind: p.kind,
+								cover: p.cover,
+								slides: p.slides || [],
+								caption: p.caption || '',
+								videoUrl: p.videoUrl,
+								caseSlug: b.caseSlug || p.caseSlug,
+								showInService: p.showInService,
+								stats: {
+									views: p.stats?.views,
+									likes: p.stats?.likes,
+									comments: p.stats?.comments,
+									shares: p.stats?.shares,
+								},
+								outcomeTag: p.outcomeTag,
+							})),
+					};
+				}) : undefined}
 			/>
 		);
 	})()

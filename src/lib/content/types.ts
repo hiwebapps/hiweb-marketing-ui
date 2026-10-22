@@ -392,6 +392,8 @@ export type SocialBrandProfile = {
   name: string;
   handle: string;
   category?: string;
+  industryId?: string;
+  industryName?: string;
   bio?: string;
   avatar?: string;
   linkText?: string;

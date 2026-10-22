@@ -52,6 +52,22 @@ export function InstagramGridFeed({
     return ALL_POSTS;
   }, [customPosts, customBrands]);
 
+  const industriesList = useMemo(() => {
+    if (customBrands && customBrands.length > 0) {
+      const map = new Map<string, string>();
+      map.set('all', locale === 'en' ? 'All industries' : 'Todas las industrias');
+      for (const b of customBrands) {
+        if (b.industryId && b.industryName) {
+          map.set(b.industryId, b.industryName);
+        }
+      }
+      if (map.size > 1) {
+        return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
+      }
+    }
+    return SOCIAL_INDUSTRIES;
+  }, [customBrands, locale]);
+
   // Brands belonging to the selected industry
   const availableBrands = useMemo(() => {
     if (selectedIndustry === 'all') return brandsPool;
@@ -104,7 +120,7 @@ export function InstagramGridFeed({
       <div className="ig-controls">
         {/* Industry Filters using Kit Buttons */}
         <div className="ig-industry-filters" role="group" aria-label="Filtrar por industria">
-          {SOCIAL_INDUSTRIES.map((ind) => {
+          {industriesList.map((ind) => {
             const active = selectedIndustry === ind.id;
             return (
               <Button

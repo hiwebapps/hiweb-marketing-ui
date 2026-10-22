@@ -885,6 +885,8 @@ export function mapSocialBrand(doc: unknown): SocialBrandProfile | undefined {
     name: name || handle,
     handle,
     category: asText(d.category),
+    industryId: asText(d.industryId),
+    industryName: asText(d.industryName),
     bio: asText(d.bio),
     avatar: avatar?.src,
     linkText: asText(d.linkText),

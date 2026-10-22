@@ -67,6 +67,8 @@ const socialBrandProjection = /* groq */ `{
   avatar ${imageProjection},
   highlights[]{ title, cover ${imageProjection} },
   "caseSlug": coalesce(caseStudy->slug.current, *[_type == "caseStudy" && (socialBrand._ref == ^._id || slug.current == ^.handle)][0].slug.current),
+  "industryId": coalesce(industry->slug.current, caseStudy->industria->slug.current, *[_type == "caseStudy" && (socialBrand._ref == ^._id || slug.current == ^.handle)][0].industria->slug.current),
+  "industryName": coalesce(industry->nombre, caseStudy->industria->nombre, *[_type == "caseStudy" && (socialBrand._ref == ^._id || slug.current == ^.handle)][0].industria->nombre),
   posts[]{
     kind,
     showInService,
