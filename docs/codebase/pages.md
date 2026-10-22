@@ -268,7 +268,7 @@ Las rutas de `src/pages` (salvo `src/pages/api`) son el sitio. `astro.config.mjs
 
 ### `src/pages/sitemap.xml.ts`
 - Propósito: XML de URLs para QA. El comentario del archivo dice que `robots.txt` no lo anuncia mientras el sitio no es indexable.
-- Por qué está así: `prerender = false`. Arma la lista en el request, con el origen de `site` (el `site` de Astro), si no `PUBLIC_SITE_URL`, si no `url.origin`. Si `shouldNoIndex(url.hostname)`, añade `X-Robots-Tag: noindex, nofollow` (esa cadena es más corta que `ROBOTS_NOINDEX` del layout).
+- Por qué está así: `prerender = false`. Arma la lista en el request, con el origen de `site` (el `site` de Astro), si no `PUBLIC_SITE_URL`, si no `url.origin`. Si `shouldNoIndex(url.hostname)`, añade `X-Robots-Tag: noindex, nofollow` (esa cadena es más corta que `ROBOTS_NOINDEX` del layout). `Cache-Control: public, max-age=3600`.
 - Exporta: `prerender = false` y `GET`. La ruta es `/sitemap.xml`.
 - Depende de: `getIndustries`, `getServices`, `getCases`, `getPosts`, `getLandings` de `src/lib/content`, `isReservedSlug`, `shouldNoIndex`.
 - Lo usan: la URL `/sitemap.xml`.

@@ -19,7 +19,7 @@ Todo lo de `src/sanity` que no es schema. Los tipos están en [sanity-schemas.md
 ### `src/sanity/client.ts`
 
 - Propósito: cliente de lectura del sitio.
-- Por qué está así: el CDN está apagado para que el build lea el dataset al momento. En staging la perspectiva es `drafts` (hace falta token). En live es `published`. El token de staging se lee del binding del Worker, no solo de `import.meta.env`.
+- Por qué está así: en live usa el API CDN para no gastar la cuota de API Requests del plan gratuito; el rebuild corre 10 minutos después de publicar, así que el CDN ya tiene el cambio. En staging el CDN está apagado porque no sirve drafts. En staging la perspectiva es `drafts` (hace falta token). En live es `published`. El token de staging se lee del binding del Worker, no solo de `import.meta.env`.
 - Exporta: `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_API_VERSION`, `isSanityConfigured`, `createSanityClient`, `getSanityClient`.
 - Depende de: `src/lib/site-env.ts`, `src/lib/runtime-env.ts`.
 - Lo usan: `src/lib/content/index.ts`, `src/pages/api/draft-mode/enable.ts`, `image.ts`, `lib/load-query.ts`.

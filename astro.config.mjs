@@ -66,7 +66,7 @@ export default defineConfig({
     sanity({
       projectId,
       dataset,
-      useCdn: false,
+      useCdn: !isStaging,
       apiVersion: '2026-09-18',
       stega: {
         enabled: false,

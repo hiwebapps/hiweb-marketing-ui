@@ -26,7 +26,8 @@ export function createSanityClient(options?: { token?: string; useCdn?: boolean 
     projectId: SANITY_PROJECT_ID,
     dataset: SANITY_DATASET,
     apiVersion: SANITY_API_VERSION,
-    useCdn: options?.useCdn ?? false,
+    // The API CDN does not serve drafts, so staging stays on the live API.
+    useCdn: options?.useCdn ?? !staging,
     token: options?.token ?? import.meta.env.SANITY_API_READ_TOKEN,
     // Drafts overlay published content. The read token is required.
     perspective: staging ? 'drafts' : 'published',

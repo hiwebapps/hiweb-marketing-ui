@@ -64,7 +64,7 @@ export const GET: APIRoute = async ({ url, site }) => {
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/xml; charset=utf-8',
-    'Cache-Control': 'public, max-age=0, must-revalidate',
+    'Cache-Control': 'public, max-age=3600',
   };
   if (shouldNoIndex(url.hostname)) {
     headers['X-Robots-Tag'] = 'noindex, nofollow';
