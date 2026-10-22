@@ -39,10 +39,7 @@ function formatStat(num: number | null | undefined): string {
   return String(num);
 }
 
-async function getSecret(key: string, locals?: any): Promise<string | undefined> {
-  const fromLocals = locals?.runtime?.env?.[key];
-  if (typeof fromLocals === 'string' && fromLocals) return fromLocals;
-
+async function getSecret(key: string): Promise<string | undefined> {
   try {
     const { env } = await import('cloudflare:workers');
     const val = (env as Record<string, unknown>)?.[key];
@@ -59,7 +56,7 @@ async function getSecret(key: string, locals?: any): Promise<string | undefined>
   return undefined;
 }
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   const cors = getCorsHeaders(request);
 
   try {
@@ -93,7 +90,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    const apifyToken = await getSecret('APIFY_API_TOKEN', locals);
+    const apifyToken = await getSecret('APIFY_API_TOKEN');
 
     if (!apifyToken) {
       return new Response(
@@ -102,7 +99,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const sanityToken = await getSecret('SANITY_API_WRITE_TOKEN', locals);
+    const sanityToken = await getSecret('SANITY_API_WRITE_TOKEN');
 
     if (!sanityToken) {
       return new Response(
@@ -112,12 +109,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const projectId =
-      (await getSecret('PUBLIC_SANITY_PROJECT_ID', locals)) ||
+      (await getSecret('PUBLIC_SANITY_PROJECT_ID')) ||
       process.env.PUBLIC_SANITY_PROJECT_ID ||
       'fxardjr1';
 
     const dataset =
-      (await getSecret('PUBLIC_SANITY_DATASET', locals)) ||
+      (await getSecret('PUBLIC_SANITY_DATASET')) ||
       process.env.PUBLIC_SANITY_DATASET ||
       'web-2026';
 
