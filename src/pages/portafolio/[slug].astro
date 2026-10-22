@@ -340,7 +340,9 @@ const heroAlt =
 				);
 			}
 			if (section._type === 'instagramPhone') {
-				const brandFromSection: BrandProfile | undefined = section.username ? {
+				const brandFromSection: BrandProfile | undefined = (matchingSocialBrand?.posts && matchingSocialBrand.posts.length > 0)
+					? matchingSocialBrand
+					: section.username ? {
 					id: section.username,
 					name: section.displayName || entry.data.cliente,
 					handle: section.username,

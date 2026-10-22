@@ -6,6 +6,8 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [sanity-rebuild]
+  push:
+    branches: [master]
 
 jobs:
   deploy:
