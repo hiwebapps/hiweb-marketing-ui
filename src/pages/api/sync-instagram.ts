@@ -272,7 +272,7 @@ export const POST: APIRoute = async ({ request }) => {
       try {
         const cutoffTime = new Date(effectiveUntilDate).getTime() + 86400000 - 1; // Fin del día
         const postsRes = await fetch(
-          `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
+          `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=120`,
           {
             method: 'POST',
             headers: {
@@ -281,7 +281,7 @@ export const POST: APIRoute = async ({ request }) => {
             },
             body: JSON.stringify({
               username: [username],
-              resultsLimit: 60,
+              resultsLimit: 150,
               skipPinnedPosts: true,
             }),
           }
@@ -292,7 +292,7 @@ export const POST: APIRoute = async ({ request }) => {
             const filtered = pData.filter((p) => {
               const rawT = p.timestamp || p.takenAtTimestamp || p.takenAt;
               const t = rawT ? (typeof rawT === 'number' ? rawT * 1000 : new Date(rawT).getTime()) : null;
-              return t != null ? t <= cutoffTime : true;
+              return t != null ? t <= cutoffTime : false;
             });
             filtered.sort((a, b) => {
               const tA = a.timestamp ? new Date(a.timestamp).getTime() : (a.takenAtTimestamp ? a.takenAtTimestamp * 1000 : 0);
@@ -304,6 +304,16 @@ export const POST: APIRoute = async ({ request }) => {
         }
       } catch (err) {
         console.warn('Error en scraper filtrado por fecha:', err);
+      }
+
+      if (rawPosts.length === 0) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: `No se encontraron publicaciones anteriores a ${effectiveUntilDate} en los últimos 150 posts de @${username}. Te sugerimos pegar los enlaces directos en el campo 'Enlaces directos de publicaciones o reels'.`,
+          }),
+          { status: 404, headers: cors }
+        );
       }
     } else {
       rawPosts = profile.latestPosts || [];
@@ -455,9 +465,6 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // 4. Parchear o crear documento en Sanity
-    const cleanId = documentId.replace(/^drafts\./, '');
-    const draftId = `drafts.${cleanId}`;
-
     const patchPayload: Record<string, unknown> = {
       bio: profile.biography || '',
       stats: {
