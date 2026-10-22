@@ -33,7 +33,7 @@ export function InstagramSyncInput(props: StringInputProps) {
         const port = window.location.port;
 
         if (hostname.includes('sanity.studio')) {
-          apiOrigin = 'https://staging.hiweb.com.mx';
+          apiOrigin = 'https://hiweb.com.mx';
         } else if (port === '3333' || hostname === 'localhost' || hostname === '127.0.0.1') {
           // Local Sanity Studio runs on 3333, Astro API runs on 4322 (fallback 4321)
           apiOrigin = 'http://localhost:4322';
