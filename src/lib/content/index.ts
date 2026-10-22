@@ -35,6 +35,7 @@ import {
   sanityPosts,
   sanityService,
   sanityServices,
+  sanitySocialBrands,
 } from './from-sanity';
 import { hydrateLanding, landingNeedsCatalogs } from './hydrate-landing';
 import { DEFAULT_CALENDAR, type CalendarPageCopy } from './calendar-page';
@@ -186,6 +187,10 @@ export async function getService(slug: string, locale: 'es' | 'en' = 'es'): Prom
 export async function getCases(locale: 'es' | 'en' = 'es'): Promise<CaseRecord[]> {
   if (locale === 'en') return sanityCases('en');
   return withFallback(() => sanityCases('es'), collectionsCases, (items) => items.length === 0);
+}
+
+export async function getSocialBrands(): Promise<SocialBrandProfile[]> {
+  return withFallback(sanitySocialBrands, async () => [], (items) => items.length === 0);
 }
 
 export async function getCase(slug: string, locale: 'es' | 'en' = 'es'): Promise<CaseRecord | undefined> {

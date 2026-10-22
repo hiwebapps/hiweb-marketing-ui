@@ -2,6 +2,7 @@ import { asHeadingWidth } from '../heading';
 import { loadQuery } from '../../sanity/lib/load-query';
 import {
   aboutPageQuery,
+  allSocialBrandsQuery,
   calendarPageQuery,
   contactPageQuery,
   sitePageQuery,
@@ -40,6 +41,7 @@ import {
   mapPortal,
   mapPost,
   mapService,
+  mapSocialBrand,
 } from './map-sanity';
 import type { FooterLink, SiteFooterContent } from '../footer';
 import { fallbackSite, type SiteIdentity } from '../site-identity';
@@ -55,6 +57,7 @@ import type {
   PortalPage,
   PostRecord,
   ServiceRecord,
+  SocialBrandProfile,
 } from './types';
 
 async function fetchList<T>(query: string, map: (doc: Record<string, unknown>) => T): Promise<T[]> {
@@ -157,6 +160,14 @@ export async function sanityCases(locale: 'es' | 'en' = 'es'): Promise<CaseRecor
 
 export async function sanityCase(slug: string, locale: 'es' | 'en' = 'es'): Promise<CaseRecord | null> {
   return fetchOne(caseBySlugQuery, { slug, locale }, mapCase);
+}
+
+export async function sanitySocialBrands(): Promise<SocialBrandProfile[]> {
+  const { data } = await loadQuery<Record<string, unknown>[]>({ query: allSocialBrandsQuery });
+  if (!Array.isArray(data) || data.length === 0) return [];
+  return data
+    .map(mapSocialBrand)
+    .filter((b): b is SocialBrandProfile => Boolean(b && b.posts && b.posts.length > 0));
 }
 
 export async function sanityPosts(

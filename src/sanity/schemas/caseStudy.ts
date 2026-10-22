@@ -78,6 +78,14 @@ export const caseStudy = defineType({
       ],
     }),
     defineField({
+      name: 'socialBrand',
+      title: 'Feed de Instagram (Celular)',
+      type: 'reference',
+      to: [{ type: 'socialBrand' }],
+      group: 'datos',
+      description: 'Vincula la marca de Instagram para alimentar el mockup del celular interactivo de este caso.',
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',

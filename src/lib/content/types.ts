@@ -247,6 +247,7 @@ export type ServiceSection = (
       title?: string;
       description?: string;
       tone?: 'canvas' | 'surface';
+      brands?: SocialBrandProfile[];
     }
   | { _type: 'serviceCta'; badge?: string; title?: string; description?: string }
   | BeforeAfterBlock
@@ -386,6 +387,41 @@ export type CasePageSection = (
     }
 ) & { hidden?: boolean; headingWidth?: HeadingWidth };
 
+export type SocialBrandProfile = {
+  id?: string;
+  name: string;
+  handle: string;
+  category?: string;
+  bio?: string;
+  avatar?: string;
+  linkText?: string;
+  linkUrl?: string;
+  caseSlug?: string;
+  stats?: {
+    posts?: string;
+    followers?: string;
+    following?: string;
+  };
+  highlights?: { title: string; cover?: string }[];
+  posts?: {
+    id: string;
+    kind: 'photo' | 'carousel' | 'reel';
+    caption?: string;
+    cover: string;
+    slides?: { src: string; alt?: string }[];
+    videoUrl?: string;
+    showInService?: boolean;
+    caseSlug?: string;
+    stats?: {
+      views?: string;
+      likes?: string;
+      comments?: string;
+      shares?: string;
+    };
+    outcomeTag?: string;
+  }[];
+};
+
 export type CaseRecord = {
   id: string;
   alternateSlug?: string;
@@ -407,6 +443,7 @@ export type CaseRecord = {
     ubicacion?: string;
     sitioWeb?: string;
     redSocial?: CaseSocialLink;
+    socialBrand?: SocialBrandProfile;
     imagen?: string;
     imagenAlt?: string;
     imagenesProyecto?: string[];

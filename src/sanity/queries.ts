@@ -26,11 +26,14 @@ const instagramPhoneProjection = /* groq */ `
       avatar ${imageProjection},
       posts[]{
         kind,
+        showInService,
         caption,
+        stats,
+        outcomeTag,
         image ${imageProjection},
         slides[] ${imageProjection},
         poster ${imageProjection},
-        "videoUrl": video.asset->url
+        "videoUrl": coalesce(videoUrl, video.asset->url)
       }
     }`;
 
@@ -51,6 +54,31 @@ const beforeAfterProjection = /* groq */ `
         "afterVideo": afterVideo.asset->url
       }
     }`;
+
+const socialBrandProjection = /* groq */ `{
+  _id,
+  name,
+  handle,
+  category,
+  bio,
+  linkText,
+  linkUrl,
+  stats,
+  avatar ${imageProjection},
+  highlights[]{ title, cover ${imageProjection} },
+  "caseSlug": coalesce(caseStudy->slug.current, *[_type == "caseStudy" && (socialBrand._ref == ^._id || slug.current == ^.handle)][0].slug.current),
+  posts[]{
+    kind,
+    showInService,
+    caption,
+    stats,
+    outcomeTag,
+    image ${imageProjection},
+    slides[] ${imageProjection},
+    poster ${imageProjection},
+    "videoUrl": coalesce(videoUrl, video.asset->url)
+  }
+}`;
 
 const personCardProjection = /* groq */ `{
   name,
@@ -196,7 +224,8 @@ const serviceSectionsProjection = /* groq */ `
       eyebrow,
       title,
       description,
-      tone
+      tone,
+      brands[]->${socialBrandProjection}
     },
     _type == "serviceCta" => { badge, title, description },
     ${beforeAfterProjection}
@@ -978,6 +1007,7 @@ const caseBodyProjection = /* groq */ `
   "ubicacion": coalesce(sections[_type == "caseHero"][0].ubicacion, ubicacion),
   "sitioWeb": coalesce(sections[_type == "caseContext"][0].sitioWeb, sitioWeb),
   "redSocial": coalesce(sections[_type == "caseContext"][0].redSocial, redSocial),
+  "socialBrand": socialBrand->${socialBrandProjection},
   "imagenesProyecto": coalesce(sections[_type == "caseHero"][0].imagenesProyecto[] ${imageProjection}, imagenesProyecto[] ${imageProjection}),
   ${caseSectionsProjection}
 `;
@@ -1225,6 +1255,10 @@ export const portalPageQuery = defineQuery(`*[_id == $id && _type == "portalPage
   },
   ${seoProjection}
 }`);
+
+export const allSocialBrandsQuery = defineQuery(`*[
+  _type == "socialBrand"
+] | order(name asc)${socialBrandProjection}`);
 
 export const sitePageQuery = defineQuery(`*[_id == $id && _type == "sitePage"][0]{
   title,

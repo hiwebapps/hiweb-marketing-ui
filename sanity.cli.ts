@@ -22,6 +22,15 @@ export default defineCliConfig({
   },
   vite: (config) => ({
     ...config,
+    server: {
+      ...config.server,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:4322',
+          changeOrigin: true,
+        },
+      },
+    },
     define: {
       ...config.define,
       __HIWEB_STUDIO_BUILT_AT__: JSON.stringify(new Date().toISOString()),

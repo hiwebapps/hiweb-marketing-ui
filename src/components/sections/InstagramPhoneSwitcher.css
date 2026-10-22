@@ -546,6 +546,18 @@
   object-fit: cover;
 }
 
+.ig-app-grid__mark {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8));
+  pointer-events: none;
+}
+
 /* View B: Post View Inside Phone */
 .ig-app-post-view {
   display: flex;
@@ -676,4 +688,210 @@
   border-radius: 999px;
   object-fit: cover;
   border: 1px solid #fff;
+}
+
+/* ==========================================================================
+   Full-Height Vertical Reel Player (9:16)
+   ========================================================================== */
+.ig-app-reel-view {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  overflow: hidden;
+}
+
+.ig-reel-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ig-reel-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #000;
+}
+
+.ig-reel-paused-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  z-index: 6;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.ig-reel-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  z-index: 10;
+}
+
+.ig-reel-topbar__btn {
+  background: rgba(0, 0, 0, 0.45);
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background 0.15s ease;
+}
+
+.ig-reel-topbar__btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.ig-reel-topbar__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ig-reel-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 12px 14px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 60%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.ig-reel-overlay__left {
+  flex: 1;
+  min-width: 0;
+  pointer-events: auto;
+}
+
+.ig-reel-overlay__brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.ig-reel-overlay__avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  object-fit: cover;
+}
+
+.ig-reel-overlay__handle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ig-reel-overlay__dot {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.7rem;
+}
+
+.ig-reel-overlay__follow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #0095f6;
+}
+
+.ig-reel-overlay__caption {
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 6px;
+  max-height: 52px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.ig-reel-overlay__audio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.ig-reel-overlay__right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+
+.ig-reel-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.ig-reel-exit-btn {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  margin-top: 4px;
+  transition: background 0.15s ease;
+}
+
+.ig-reel-exit-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

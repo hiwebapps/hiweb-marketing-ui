@@ -18,7 +18,9 @@ export type InstagramGridFeedProps = {
   headingWidth?: string;
   tone?: 'canvas' | 'surface' | 'wash';
   align?: 'left' | 'center';
+  locale?: 'es' | 'en';
   posts?: SocialPost[];
+  brands?: BrandProfile[];
 };
 
 export function InstagramGridFeed({
@@ -29,22 +31,32 @@ export function InstagramGridFeed({
   headingWidth,
   tone = 'canvas',
   align = 'left',
+  locale = 'es',
   posts: customPosts,
+  brands: customBrands,
 }: InstagramGridFeedProps) {
   const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [activePost, setActivePost] = useState<SocialPost | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
+  const brandsPool = useMemo(() => {
+    return customBrands && customBrands.length > 0 ? customBrands : SOCIAL_BRANDS;
+  }, [customBrands]);
+
   const postsPool = useMemo(() => {
-    return customPosts && customPosts.length > 0 ? customPosts : ALL_POSTS;
-  }, [customPosts]);
+    if (customPosts && customPosts.length > 0) return customPosts;
+    if (customBrands && customBrands.length > 0) {
+      return customBrands.flatMap((b) => b.posts);
+    }
+    return ALL_POSTS;
+  }, [customPosts, customBrands]);
 
   // Brands belonging to the selected industry
   const availableBrands = useMemo(() => {
-    if (selectedIndustry === 'all') return SOCIAL_BRANDS;
-    return SOCIAL_BRANDS.filter((b) => b.industryId === selectedIndustry);
-  }, [selectedIndustry]);
+    if (selectedIndustry === 'all') return brandsPool;
+    return brandsPool.filter((b) => b.industryId === selectedIndustry);
+  }, [selectedIndustry, brandsPool]);
 
   // Posts filtered by industry and brand
   const filteredPosts = useMemo(() => {
@@ -162,12 +174,22 @@ export function InstagramGridFeed({
                 loading="lazy"
               />
 
-              {/* Industry Tag Badge (replaces format tag) */}
-              <div className="ig-post-card__badge-wrap">
-                <span className="ig-post-card__industry-badge">
-                  {post.industryName || post.brandCategory}
-                </span>
-              </div>
+              {/* Instagram Format Indicator (Top Right) */}
+              {post.kind === 'reel' && (
+                <div className="ig-post-card__format-mark" aria-label="Reel">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M10 8.5v7l6-3.5-6-3.5Z" />
+                  </svg>
+                </div>
+              )}
+              {post.kind === 'carousel' && (
+                <div className="ig-post-card__format-mark" aria-label="Carrusel">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="7" y="7" width="12" height="12" rx="2" />
+                    <rect x="4" y="4" width="12" height="12" rx="2" fill="currentColor" stroke="none" />
+                  </svg>
+                </div>
+              )}
 
               {/* Hover Overlay with Real Engagement */}
               <div className="ig-post-card__overlay">
@@ -195,6 +217,14 @@ export function InstagramGridFeed({
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                       </svg>
                       {post.stats.likes}
+                    </span>
+                  )}
+                  {post.stats.comments && (
+                    <span className="ig-stat-item">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                      </svg>
+                      {post.stats.comments}
                     </span>
                   )}
                 </div>
@@ -244,11 +274,23 @@ export function InstagramGridFeed({
             <div className="ig-modal-layout">
               {/* Media Viewport */}
               <div className="ig-modal-media">
-                <img
-                  src={activePost.slides[currentSlideIndex]?.src || activePost.cover}
-                  alt={activePost.slides[currentSlideIndex]?.alt || activePost.caption}
-                  className="ig-modal-media__img"
-                />
+                {activePost.kind === 'reel' && activePost.videoUrl ? (
+                  <video
+                    src={activePost.videoUrl}
+                    poster={activePost.cover}
+                    controls
+                    autoPlay
+                    muted
+                    playsInline
+                    className="ig-modal-media__video"
+                  />
+                ) : (
+                  <img
+                    src={activePost.slides[currentSlideIndex]?.src || activePost.cover}
+                    alt={activePost.slides[currentSlideIndex]?.alt || activePost.caption}
+                    className="ig-modal-media__img"
+                  />
+                )}
 
                 {activePost.slides.length > 1 && (
                   <>
@@ -349,13 +391,15 @@ export function InstagramGridFeed({
                   <div className="ig-modal-sidebar__actions">
                     {activePost.caseSlug && (
                       <Button
-                        href={`/portafolio/${activePost.caseSlug}`}
+                        href={locale === 'en' ? `/en/success-stories/${activePost.caseSlug}` : `/portafolio/${activePost.caseSlug}`}
                         variant="primary"
                         size="sm"
                         glow
                         className="no-underline w-full justify-center"
                       >
-                        Ver caso de éxito de {activePost.brandName} →
+                        {locale === 'en'
+                          ? `View ${activePost.brandName} case study →`
+                          : `Ver caso de éxito de ${activePost.brandName} →`}
                       </Button>
                     )}
                   </div>

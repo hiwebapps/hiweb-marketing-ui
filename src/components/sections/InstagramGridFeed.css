@@ -140,28 +140,18 @@
   transform: scale(1.03);
 }
 
-/* Industry Badge on Media */
-.ig-post-card__badge-wrap {
+/* Format Indicator on Media (Reel / Carousel in Top Right) */
+.ig-post-card__format-mark {
   position: absolute;
   top: 0.85rem;
-  left: 0.85rem;
+  right: 0.85rem;
   z-index: 2;
-}
-
-.ig-post-card__industry-badge {
-  display: inline-flex;
+  color: #ffffff;
+  display: flex;
   align-items: center;
-  font-family: var(--font-sans, Inter, system-ui, sans-serif);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #111111;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  justify-content: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
+  pointer-events: none;
 }
 
 /* Hover Overlay */
@@ -351,10 +341,12 @@
   }
 }
 
-.ig-modal-media__img {
+.ig-modal-media__img,
+.ig-modal-media__video {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  background: #000;
 }
 
 .ig-modal-nav {

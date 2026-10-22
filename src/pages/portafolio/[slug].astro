@@ -47,15 +47,58 @@ const projectMid = Math.max(1, Math.ceil(projectWords.length / 2));
 const titleLeft = projectWords.slice(0, projectMid).join(' ');
 const titleRight = projectWords.slice(projectMid).join(' ');
 
-const matchingSocialBrand = SOCIAL_BRANDS.find(
-	(b) =>
-		b.id.toLowerCase() === entry.id.toLowerCase() ||
-		b.handle.toLowerCase() === entry.id.toLowerCase() ||
-		entry.id.toLowerCase().includes(b.id.toLowerCase()) ||
-		b.id.toLowerCase().includes(entry.id.toLowerCase()) ||
-		b.name.toLowerCase().includes(entry.data.cliente.toLowerCase()) ||
-		entry.data.cliente.toLowerCase().includes(b.name.toLowerCase()),
-);
+const matchingSocialBrand: BrandProfile | undefined = entry.data.socialBrand
+	? {
+			id: entry.data.socialBrand.handle || entry.id,
+			name: entry.data.socialBrand.name || entry.data.cliente,
+			handle: entry.data.socialBrand.handle,
+			category: entry.data.socialBrand.category || '',
+			industryId: entry.data.industria.id || '',
+			industryName: industry?.data.nombre || '',
+			avatar: entry.data.socialBrand.avatar || '',
+			bio: entry.data.socialBrand.bio || '',
+			linkText: entry.data.socialBrand.linkText,
+			linkUrl: entry.data.socialBrand.linkUrl,
+			stats: {
+				posts: entry.data.socialBrand.stats?.posts || '12',
+				followers: entry.data.socialBrand.stats?.followers || '1.2k',
+				following: entry.data.socialBrand.stats?.following || '100',
+			},
+			highlights: (entry.data.socialBrand.highlights || []).map((h) => ({
+				title: h.title,
+				cover: h.cover || '',
+			})),
+			posts: (entry.data.socialBrand.posts || []).map((p) => ({
+				id: p.id,
+				brandId: entry.data.socialBrand?.handle || '',
+				brandName: entry.data.socialBrand?.name || entry.data.cliente,
+				brandHandle: entry.data.socialBrand?.handle || '',
+				brandAvatar: entry.data.socialBrand?.avatar || '',
+				brandCategory: entry.data.socialBrand?.category || '',
+				kind: p.kind,
+				cover: p.cover,
+				slides: (p.slides || []).map((s) => ({ src: s.src, alt: s.alt || '' })),
+				caption: p.caption || '',
+				videoUrl: p.videoUrl,
+				stats: {
+					views: p.stats?.views,
+					likes: p.stats?.likes,
+					comments: p.stats?.comments,
+					shares: p.stats?.shares,
+				},
+				outcomeTag: p.outcomeTag,
+				caseSlug: entry.id,
+			})),
+		}
+	: SOCIAL_BRANDS.find(
+			(b) =>
+				b.id.toLowerCase() === entry.id.toLowerCase() ||
+				b.handle.toLowerCase() === entry.id.toLowerCase() ||
+				entry.id.toLowerCase().includes(b.id.toLowerCase()) ||
+				b.id.toLowerCase().includes(entry.id.toLowerCase()) ||
+				b.name.toLowerCase().includes(entry.data.cliente.toLowerCase()) ||
+				entry.data.cliente.toLowerCase().includes(b.name.toLowerCase()),
+		);
 
 const sections: CasePageSection[] = entry.data.sections?.length
 	? entry.data.sections.filter((section) => !section.hidden)
@@ -324,7 +367,9 @@ const heroAlt =
 								cover: p.poster || p.slides?.[0]?.src || '',
 								slides: p.slides || [],
 								caption: p.caption || '',
+								videoUrl: p.videoUrl,
 								stats: {},
+								caseSlug: entry.id,
 							}))
 						: matchingSocialBrand?.posts || [],
 				} : matchingSocialBrand;

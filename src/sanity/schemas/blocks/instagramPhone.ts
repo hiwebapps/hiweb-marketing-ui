@@ -70,19 +70,63 @@ export const instagramPhonePost = defineType({
       hidden: ({ parent }) => parent?.kind !== 'reel',
     }),
     defineField({
+      name: 'showInService',
+      title: 'Mostrar en la página de Servicios',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Activa o desactiva si quieres que esta publicación aparezca en el grid de la página de servicios.',
+    }),
+    defineField({
       name: 'caption',
       title: 'Pie de foto',
       type: 'text',
       rows: 3,
     }),
+    defineField({
+      name: 'videoUrl',
+      title: 'URL del video (Reel)',
+      type: 'url',
+      description: 'Enlace del archivo de video para reproducir en el modal y en el celular.',
+      hidden: ({ parent }) => parent?.kind !== 'reel',
+    }),
+    defineField({
+      name: 'stats',
+      title: 'Métricas de engagement',
+      type: 'object',
+      description: 'Cifras que aparecen al pasar el cursor en la cuadrícula de servicios.',
+      fields: [
+        defineField({ name: 'views', title: 'Vistas / Reproducciones (ej. 48.2k)', type: 'string' }),
+        defineField({ name: 'likes', title: 'Likes (ej. 1.2k)', type: 'string' }),
+        defineField({ name: 'comments', title: 'Comentarios (ej. 84)', type: 'string' }),
+        defineField({ name: 'shares', title: 'Compartidos (ej. 312)', type: 'string' }),
+      ],
+      options: { columns: 2 },
+    }),
+    defineField({
+      name: 'outcomeTag',
+      title: 'Badge de resultado (Opcional)',
+      type: 'string',
+      description: 'Etiqueta destacada en la card (ej. +14% Visitas a sucursal, Tendencia, Sold Out)',
+    }),
   ],
   preview: {
-    select: { kind: 'kind', caption: 'caption', image: 'image', poster: 'poster', slide: 'slides.0' },
-    prepare: ({ kind, caption, image, poster, slide }) => ({
-      title: caption || (kind === 'carousel' ? 'Carrusel' : kind === 'reel' ? 'Reel' : 'Foto'),
-      subtitle: kind === 'carousel' ? 'Carrusel' : kind === 'reel' ? 'Reel' : 'Foto',
-      media: kind === 'reel' ? poster : kind === 'carousel' ? slide : image,
-    }),
+    select: {
+      kind: 'kind',
+      caption: 'caption',
+      image: 'image',
+      poster: 'poster',
+      slide: 'slides.0',
+      showInService: 'showInService',
+    },
+    prepare: ({ kind, caption, image, poster, slide, showInService }) => {
+      const typeLabel = kind === 'carousel' ? 'Carrusel' : kind === 'reel' ? 'Reel' : 'Foto';
+      const serviceBadge = showInService === false ? ' · 🚫 Oculto en servicios' : ' · 🌐 Visible en servicios';
+      return {
+        title: caption ? (caption.length > 50 ? `${caption.slice(0, 50)}...` : caption) : typeLabel,
+        subtitle: `${typeLabel}${serviceBadge}`,
+        media: kind === 'reel' ? poster : kind === 'carousel' ? slide : image,
+      };
+    },
   },
 });
 

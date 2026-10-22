@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Layout from '../../../layouts/Layout.astro';
-import { getCases, getIndustries, serviceStaticPaths } from '../../../lib/content';
+import { getCases, getIndustries, getSocialBrands, serviceStaticPaths } from '../../../lib/content';
 import { IndustryHero } from '../../../components/sections/IndustryHero';
 import { PillarGrid } from '../../../components/sections/PillarGrid';
 import { ServiceFocus } from '../../../components/sections/ServiceFocus';
@@ -48,6 +48,7 @@ const cases = allCases.filter((item) =>
 );
 const fallbackCases = allCases.filter((item) => item.data.destacado || item.data.testimonio?.quote).slice(0, 3);
 const displayCases = cases.length > 0 ? cases : fallbackCases;
+const allSocialBrands = await getSocialBrands();
 
 const phases = entry.data.proceso.map((step, index) => ({
 	index: String(index + 1).padStart(2, '0'),
@@ -148,6 +149,8 @@ const caseStories = displayCases.flatMap((item) => {
 					phases={phases}
 					stories={caseStories}
 					hasCases={cases.length > 0}
+					locale="en"
+					socialBrands={allSocialBrands}
 				/>
 			))
 		) : (
@@ -199,6 +202,47 @@ const caseStories = displayCases.flatMap((item) => {
 						title="Content that sparks desire and books appointments"
 						description="Real content produced and managed for our clients: art direction, high-impact video, and copy designed to sell."
 						tone="canvas"
+						brands={allSocialBrands.length > 0 ? allSocialBrands.map((b) => ({
+							id: b.handle || b.id || '',
+							name: b.name,
+							handle: b.handle,
+							category: b.category || '',
+							industryId: 'restaurantes',
+							industryName: 'Gastronomía & Retail',
+							avatar: b.avatar || '',
+							bio: b.bio || '',
+							linkText: b.linkText,
+							linkUrl: b.linkUrl,
+							stats: {
+								posts: b.stats?.posts || '0',
+								followers: b.stats?.followers || '0',
+								following: b.stats?.following || '0',
+							},
+							highlights: (b.highlights || []).map((h) => ({ title: h.title, cover: h.cover || '' })),
+							posts: (b.posts || [])
+								.filter((p) => p.showInService !== false)
+								.map((p) => ({
+									id: p.id,
+									brandId: b.handle,
+									brandName: b.name,
+									brandHandle: b.handle,
+									brandAvatar: b.avatar || '',
+									brandCategory: b.category || '',
+									kind: p.kind,
+									cover: p.cover,
+									slides: p.slides || [],
+									caption: p.caption || '',
+									videoUrl: p.videoUrl,
+									showInService: p.showInService,
+									stats: {
+										views: p.stats?.views,
+										likes: p.stats?.likes,
+										comments: p.stats?.comments,
+										shares: p.stats?.shares,
+									},
+									outcomeTag: p.outcomeTag,
+								})),
+						})) : undefined}
 					/>
 				) : null}
 				<CaseStories

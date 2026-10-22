@@ -38,6 +38,8 @@ export type SocialPost = {
   outcomeTag?: string;
   caseSlug?: string;
   instagramUrl?: string;
+  videoUrl?: string;
+  showInService?: boolean;
 };
 
 export type BrandProfile = {

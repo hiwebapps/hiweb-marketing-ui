@@ -41,6 +41,7 @@ import { legalObjectTypes, legalPage } from './legalPage';
 import { siteSettings } from './siteSettings';
 import { portalPage, portalSectionTypes } from './portalPage';
 import { sitePage } from './sitePage';
+import { socialBrand } from './socialBrand';
 
 export const schemaTypes = [
   faqItem,
@@ -95,4 +96,5 @@ export const schemaTypes = [
   faq,
   testimonial,
   landingPage,
+  socialBrand,
 ];

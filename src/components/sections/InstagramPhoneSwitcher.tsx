@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import {
   SOCIAL_BRANDS,
   SOCIAL_INDUSTRIES,
@@ -59,6 +59,32 @@ export function InstagramPhoneSwitcher({
   const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
   const [selectedBrandIndex, setSelectedBrandIndex] = useState(0);
   const [selectedPost, setSelectedPost] = useState<SocialPost | null>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    setIsPlaying(true);
+    setIsMuted(true);
+  }, [selectedPost]);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play().catch(() => undefined);
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    videoRef.current.muted = !videoRef.current.muted;
+    setIsMuted(videoRef.current.muted);
+  };
 
   const visibleBrands = useMemo(() => {
     if (selectedIndustry === 'all') return SOCIAL_BRANDS;
@@ -344,13 +370,144 @@ export function InstagramPhoneSwitcher({
                               onClick={() => setSelectedPost(post)}
                             >
                               <img src={post.cover} alt="" />
+                              {post.kind === 'reel' && (
+                                <span className="ig-app-grid__mark" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                                    <path d="M10 8.5v7l6-3.5-6-3.5Z" />
+                                  </svg>
+                                </span>
+                              )}
+                              {post.kind === 'carousel' && (
+                                <span className="ig-app-grid__mark" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <rect x="7" y="7" width="12" height="12" rx="2" />
+                                    <rect x="4" y="4" width="12" height="12" rx="2" fill="currentColor" stroke="none" />
+                                  </svg>
+                                </span>
+                              )}
                             </button>
                           ))}
                         </div>
                       </div>
                     </div>
+                  ) : selectedPost.kind === 'reel' ? (
+                    /* View B: Vertical Reel Player (9:16 Full Experience) */
+                    <div className="ig-app-reel-view">
+                      <div className="ig-reel-viewport" onClick={togglePlay}>
+                        {selectedPost.videoUrl ? (
+                          <video
+                            ref={videoRef}
+                            src={selectedPost.videoUrl}
+                            poster={selectedPost.cover}
+                            autoPlay
+                            muted={isMuted}
+                            playsInline
+                            loop
+                            className="ig-reel-video"
+                          />
+                        ) : (
+                          <img src={selectedPost.cover} alt="" className="ig-reel-video" />
+                        )}
+
+                        {/* Centered Play indicator when paused */}
+                        {!isPlaying && (
+                          <div className="ig-reel-paused-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        )}
+
+                        {/* Top Reel Navigation Bar */}
+                        <div className="ig-reel-topbar">
+                          <button
+                            type="button"
+                            className="ig-reel-topbar__btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedPost(null);
+                            }}
+                            aria-label="Volver al perfil"
+                          >
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <path d="M15 18l-6-6 6-6" />
+                            </svg>
+                          </button>
+                          <span className="ig-reel-topbar__title">Reels</span>
+                          <button
+                            type="button"
+                            className="ig-reel-topbar__btn"
+                            onClick={toggleMute}
+                            aria-label={isMuted ? 'Activar sonido' : 'Silenciar'}
+                          >
+                            {isMuted ? (
+                              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" />
+                              </svg>
+                            ) : (
+                              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                              </svg>
+                            )}
+                          </button>
+                        </div>
+
+                        {/* Bottom & Side Reels Overlay */}
+                        <div className="ig-reel-overlay">
+                          <div className="ig-reel-overlay__left">
+                            <div className="ig-reel-overlay__brand">
+                              <img src={selectedPost.brandAvatar} alt="" className="ig-reel-overlay__avatar" />
+                              <span className="ig-reel-overlay__handle">{selectedPost.brandHandle}</span>
+                              <span className="ig-reel-overlay__dot">•</span>
+                              <span className="ig-reel-overlay__follow">Seguir</span>
+                            </div>
+                            {selectedPost.caption && (
+                              <p className="ig-reel-overlay__caption">{selectedPost.caption}</p>
+                            )}
+                            <div className="ig-reel-overlay__audio">
+                              <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+                              </svg>
+                              <span>Audio original • {selectedPost.brandName}</span>
+                            </div>
+                          </div>
+
+                          <div className="ig-reel-overlay__right">
+                            <div className="ig-reel-action">
+                              <svg viewBox="0 0 24 24" width="22" height="22" fill="#ff3040">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                              </svg>
+                              <span>{selectedPost.stats.likes || '1.2k'}</span>
+                            </div>
+                            <div className="ig-reel-action">
+                              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                              </svg>
+                              <span>{selectedPost.stats.comments || '48'}</span>
+                            </div>
+                            <div className="ig-reel-action">
+                              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="m22 2-7 20-4-9-9-4Z" />
+                              </svg>
+                              <span>{selectedPost.stats.shares || '120'}</span>
+                            </div>
+                            <button
+                              type="button"
+                              className="ig-reel-exit-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedPost(null);
+                              }}
+                              aria-label="Cerrar reel"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
-                    /* View B: Single Post Inside Phone */
+                    /* View C: Single Photo / Carousel Post Inside Phone */
                     <div className="ig-app-post-view">
                       <div className="ig-app-topbar">
                         <button
@@ -377,7 +534,7 @@ export function InstagramPhoneSwitcher({
 
                       {/* Post Media */}
                       <div className="ig-post-media">
-                        <img src={selectedPost.cover} alt="" />
+                        <img src={selectedPost.slides?.[0]?.src || selectedPost.cover} alt="" />
                       </div>
 
                       {/* Post Action Icons */}

@@ -487,6 +487,15 @@ export const structure: StructureResolver = (S, context) => {
         .id('casos')
         .icon(CaseIcon)
         .child(() => caseList(S, context)),
+      S.listItem()
+        .title('Feeds de Redes')
+        .id('socialBrands')
+        .icon(ImagesIcon)
+        .child(
+          S.documentTypeList('socialBrand')
+            .title('Feeds de Redes / Instagram')
+            .defaultOrdering([{ field: 'name', direction: 'asc' }]),
+        ),
       S.divider(),
       S.listItem()
         .title('Páginas')

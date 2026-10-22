@@ -493,6 +493,14 @@ export const serviceSocialFeed = defineType({
       },
       initialValue: 'canvas',
     }),
+    defineField({
+      name: 'brands',
+      title: 'Marcas / Feeds a mostrar',
+      type: 'array',
+      description:
+        'Opcional. Selecciona las marcas que aparecerán en este grid. Si se deja vacío, muestra automáticamente todas las marcas con publicaciones activas.',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'socialBrand' }] })],
+    }),
   ],
   preview: titled('Sección Feed de Redes Sociales (Grid)'),
 });

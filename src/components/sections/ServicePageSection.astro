@@ -21,7 +21,7 @@ import type { ServiceIconName } from '../icons/ServiceIcons';
 import type { CaseStory } from './CaseStories';
 import type { ProcessAccent, ProcessIconName } from './ProcessPhases';
 import type { BadgeVariant } from '../ui';
-import type { ServiceRecord, ServiceSection } from '../../lib/content/types';
+import type { ServiceRecord, ServiceSection, SocialBrandProfile } from '../../lib/content/types';
 
 interface Props {
 	section: ServiceSection;
@@ -32,9 +32,10 @@ interface Props {
 	stories: CaseStory[];
 	hasCases: boolean;
 	locale?: 'es' | 'en';
+	socialBrands?: SocialBrandProfile[];
 }
 
-const { section, entry, pitch, industries, phases, stories, hasCases, locale = 'es' } = Astro.props;
+const { section, entry, pitch, industries, phases, stories, hasCases, locale = 'es', socialBrands = [] } = Astro.props;
 const contentKey = serviceContentKey(entry.id);
 const nombre = entry.data.nombre;
 ---
@@ -202,16 +203,63 @@ const nombre = entry.data.nombre;
 	)
 }
 {
-	section._type === 'serviceSocialFeed' && (
-		<InstagramGridFeed
-			client:visible
-			eyebrow={section.eyebrow}
-			title={section.title}
-			description={section.description}
-			tone={section.tone || 'canvas'}
-			headingWidth={section.headingWidth}
-		/>
-	)
+	section._type === 'serviceSocialFeed' && (() => {
+		const targetBrands = (section.brands && section.brands.length > 0) ? section.brands : socialBrands;
+		return (
+			<InstagramGridFeed
+				client:visible
+				locale={locale}
+				eyebrow={section.eyebrow}
+				title={section.title}
+				description={section.description}
+				tone={section.tone || 'canvas'}
+				headingWidth={section.headingWidth}
+				brands={targetBrands.length > 0 ? targetBrands.map((b) => ({
+					id: b.handle || b.id || '',
+					name: b.name,
+					handle: b.handle,
+					category: b.category || '',
+					industryId: 'restaurantes',
+					industryName: 'Gastronomía & Retail',
+					avatar: b.avatar || '',
+					bio: b.bio || '',
+					linkText: b.linkText,
+					linkUrl: b.linkUrl,
+					caseSlug: b.caseSlug,
+					stats: {
+						posts: b.stats?.posts || '0',
+						followers: b.stats?.followers || '0',
+						following: b.stats?.following || '0',
+					},
+					highlights: (b.highlights || []).map((h) => ({ title: h.title, cover: h.cover || '' })),
+					posts: (b.posts || [])
+						.filter((p) => p.showInService !== false)
+						.map((p) => ({
+							id: p.id,
+							brandId: b.handle,
+							brandName: b.name,
+							brandHandle: b.handle,
+							brandAvatar: b.avatar || '',
+							brandCategory: b.category || '',
+							kind: p.kind,
+							cover: p.cover,
+							slides: p.slides || [],
+							caption: p.caption || '',
+							videoUrl: p.videoUrl,
+							caseSlug: b.caseSlug || p.caseSlug,
+							showInService: p.showInService,
+							stats: {
+								views: p.stats?.views,
+								likes: p.stats?.likes,
+								comments: p.stats?.comments,
+								shares: p.stats?.shares,
+							},
+							outcomeTag: p.outcomeTag,
+						})),
+				})) : undefined}
+			/>
+		);
+	})()
 }
 {
 	section._type === 'serviceCases' && (

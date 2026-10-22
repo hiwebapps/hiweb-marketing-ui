@@ -22,6 +22,7 @@ import type {
   SeoFields,
   ServiceRecord,
   ServiceSection,
+  SocialBrandProfile,
   TitledBlock,
 } from './types';
 
@@ -438,12 +439,18 @@ function mapServiceSections(doc: Record<string, unknown>): ServiceRecord['data']
         };
       }
       if (type === 'serviceSocialFeed') {
+        const rawBrands = Array.isArray(section.brands)
+          ? (section.brands as Array<Record<string, unknown>>)
+              .map(mapSocialBrand)
+              .filter((b): b is SocialBrandProfile => Boolean(b))
+          : undefined;
         return {
           _type: 'serviceSocialFeed' as const,
           eyebrow: section.eyebrow ? String(section.eyebrow) : undefined,
           title: section.title ? String(section.title) : undefined,
           description: section.description ? String(section.description) : undefined,
           tone: asTone(section.tone),
+          brands: rawBrands,
         };
       }
       if (type === 'serviceCases') {
@@ -825,6 +832,75 @@ const CASE_FALLBACK_METADATA: Record<
   },
 };
 
+export function mapSocialBrand(doc: unknown): SocialBrandProfile | undefined {
+  if (!doc || typeof doc !== 'object') return undefined;
+  const d = doc as Record<string, unknown>;
+  const name = String(d.name ?? '');
+  const handle = String(d.handle ?? '');
+  if (!handle) return undefined;
+  const caseSlug = asText(d.caseSlug);
+
+  const rawPosts = Array.isArray(d.posts) ? (d.posts as Array<Record<string, unknown>>) : [];
+  const posts = rawPosts.map((p, idx) => {
+    const kind = p.kind === 'carousel' || p.kind === 'reel' ? p.kind : 'photo';
+    const slides = Array.isArray(p.slides)
+      ? (p.slides as Array<Record<string, unknown>>).flatMap((s) => {
+          const img = uploadedImage(s);
+          return img ? [{ src: img.src, alt: img.alt }] : [];
+        })
+      : [];
+    const mainImg = uploadedImage(p.image);
+    const poster = uploadedImage(p.poster);
+    const cover = poster?.src || mainImg?.src || slides[0]?.src || '';
+
+    const postStats = p.stats as Record<string, unknown> | undefined;
+    const showInService = p.showInService !== false;
+
+    return {
+      id: `${handle}-${idx}`,
+      kind: kind as 'photo' | 'carousel' | 'reel',
+      caption: typeof p.caption === 'string' ? p.caption : undefined,
+      cover,
+      slides: kind === 'carousel' && slides.length ? slides : mainImg ? [{ src: mainImg.src, alt: mainImg.alt }] : [],
+      videoUrl: typeof p.videoUrl === 'string' ? p.videoUrl : undefined,
+      showInService,
+      caseSlug,
+      stats: postStats
+        ? {
+            views: asText(postStats.views),
+            likes: asText(postStats.likes),
+            comments: asText(postStats.comments),
+            shares: asText(postStats.shares),
+          }
+        : undefined,
+      outcomeTag: asText(p.outcomeTag),
+    };
+  });
+
+  const rawStats = d.stats as Record<string, unknown> | undefined;
+  const avatar = uploadedImage(d.avatar);
+
+  return {
+    id: handle,
+    name: name || handle,
+    handle,
+    category: asText(d.category),
+    bio: asText(d.bio),
+    avatar: avatar?.src,
+    linkText: asText(d.linkText),
+    linkUrl: asText(d.linkUrl),
+    caseSlug,
+    stats: rawStats
+      ? {
+          posts: asText(rawStats.posts),
+          followers: asText(rawStats.followers),
+          following: asText(rawStats.following),
+        }
+      : undefined,
+    posts,
+  };
+}
+
 export function mapCase(doc: Record<string, unknown>): CaseRecord {
   const servicios = Array.isArray(doc.servicios)
     ? (doc.servicios as Array<{ id?: string; nombre?: string; heroImage?: CmsImage }>)
@@ -898,6 +974,7 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
               handle: asText((doc.redSocial as { handle?: unknown }).handle),
             }
           : metaFallback?.redSocial),
+      socialBrand: mapSocialBrand(doc.socialBrand),
       imagen: hero?._type === 'caseHero' ? hero.imagen : undefined,
       imagenAlt: hero?._type === 'caseHero' ? hero.imagenAlt : undefined,
       imagenesProyecto:
