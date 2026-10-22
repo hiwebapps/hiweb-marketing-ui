@@ -121,11 +121,22 @@ export async function syncSingleClient(
   console.log(`[3/4] Procesando publicaciones...`);
   let rawPosts: Array<any> = [];
 
-  if (postUrls.length > 0) {
-    console.log(`[i] Obteniendo ${postUrls.length} publicaciones específicas vía Apify...`);
+  const cleanUrls = postUrls
+    .map((u) => {
+      try {
+        const parsed = new URL(u.trim());
+        return `${parsed.origin}${parsed.pathname.replace(/\/+$/, '')}/`;
+      } catch {
+        return u.trim();
+      }
+    })
+    .filter((u) => u && (u.includes('instagram.com/p/') || u.includes('instagram.com/reel/')));
+
+  if (cleanUrls.length > 0) {
+    console.log(`[i] Obteniendo ${cleanUrls.length} publicaciones específicas vía Apify...`);
     try {
       const pRes = await fetch(
-        `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
+        `https://api.apify.com/v2/acts/apify~instagram-scraper/run-sync-get-dataset-items?timeout=90`,
         {
           method: 'POST',
           headers: {
@@ -133,8 +144,8 @@ export async function syncSingleClient(
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            directUrls: postUrls,
-            resultsLimit: 1,
+            directUrls: cleanUrls,
+            resultsType: 'posts',
           }),
         }
       );
@@ -144,6 +155,8 @@ export async function syncSingleClient(
           rawPosts = pData;
           console.log(`✓ Se encontraron ${rawPosts.length} publicaciones.`);
         }
+      } else {
+        console.error('Error Apify directUrls:', await pRes.text());
       }
     } catch (e) {
       console.warn('Advertencia consultando URLs directas:', e);

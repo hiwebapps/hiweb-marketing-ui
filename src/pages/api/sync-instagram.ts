@@ -56,6 +56,15 @@ async function getSecret(key: string): Promise<string | undefined> {
   return undefined;
 }
 
+function cleanInstagramUrl(raw: string): string {
+  try {
+    const u = new URL(raw.trim());
+    return `${u.origin}${u.pathname.replace(/\/+$/, '')}/`;
+  } catch {
+    return raw.trim();
+  }
+}
+
 export const POST: APIRoute = async ({ request }) => {
   const cors = getCorsHeaders(request);
 
@@ -70,11 +79,10 @@ export const POST: APIRoute = async ({ request }) => {
     const username = body.username?.trim().replace(/^@/, '');
     const documentId = body.documentId?.trim();
     const untilDate = body.untilDate?.trim();
-    const postUrls = Array.isArray(body.postUrls)
-      ? body.postUrls
-          .map((u) => (typeof u === 'string' ? u.trim() : ''))
-          .filter((u) => u && (u.includes('instagram.com/p/') || u.includes('instagram.com/reel/')))
-      : [];
+    const rawPostUrls = Array.isArray(body.postUrls) ? body.postUrls : [];
+    const postUrls = rawPostUrls
+      .map((u) => (typeof u === 'string' ? cleanInstagramUrl(u) : ''))
+      .filter((u) => u && (u.includes('instagram.com/p/') || u.includes('instagram.com/reel/')));
 
     if (!username) {
       return new Response(JSON.stringify({ success: false, error: 'Usuario requerido.' }), {
@@ -125,6 +133,36 @@ export const POST: APIRoute = async ({ request }) => {
       apiVersion: '2024-01-01',
       useCdn: false,
     });
+
+    const cleanId = documentId.replace(/^drafts\./, '');
+    const draftId = `drafts.${cleanId}`;
+
+    // Si las URLs o la fecha no vinieron en el cuerpo, verificar si ya existen en el documento de Sanity
+    let effectivePostUrls = postUrls;
+    let effectiveUntilDate = untilDate;
+
+    if (effectivePostUrls.length === 0 || !effectiveUntilDate) {
+      try {
+        const existingDoc =
+          (await sanityClient.getDocument(draftId)) ||
+          (await sanityClient.getDocument(cleanId));
+        if (existingDoc) {
+          if (effectivePostUrls.length === 0 && Array.isArray(existingDoc.customPostUrls)) {
+            effectivePostUrls = existingDoc.customPostUrls
+              .map((u: any) => (typeof u === 'string' ? cleanInstagramUrl(u) : ''))
+              .filter(
+                (u: string) =>
+                  u && (u.includes('instagram.com/p/') || u.includes('instagram.com/reel/'))
+              );
+          }
+          if (!effectiveUntilDate && typeof existingDoc.cutoffDate === 'string') {
+            effectiveUntilDate = existingDoc.cutoffDate;
+          }
+        }
+      } catch (docErr) {
+        console.warn('Nota: no se pudo leer documento previo de Sanity:', docErr);
+      }
+    }
 
     // 1. Ejecutar Apify actor (instagram-profile-scraper)
     const apifyRes = await fetch(
@@ -201,11 +239,11 @@ export const POST: APIRoute = async ({ request }) => {
     // 3. Procesar las publicaciones según modo (URLs directas, filtro por fecha o más recientes)
     let rawPosts: Array<any> = [];
 
-    if (postUrls.length > 0) {
-      console.log(`[Apify] Consultando ${postUrls.length} enlaces directos...`);
+    if (effectivePostUrls.length > 0) {
+      console.log(`[Apify] Consultando ${effectivePostUrls.length} enlaces directos vía apify~instagram-scraper...`);
       try {
         const directRes = await fetch(
-          `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
+          `https://api.apify.com/v2/acts/apify~instagram-scraper/run-sync-get-dataset-items?timeout=90`,
           {
             method: 'POST',
             headers: {
@@ -213,8 +251,8 @@ export const POST: APIRoute = async ({ request }) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              directUrls: postUrls,
-              resultsLimit: 1,
+              directUrls: effectivePostUrls,
+              resultsType: 'posts',
             }),
           }
         );
@@ -223,14 +261,16 @@ export const POST: APIRoute = async ({ request }) => {
           if (Array.isArray(directData) && directData.length > 0) {
             rawPosts = directData;
           }
+        } else {
+          console.error('[Apify directUrls error]:', await directRes.text());
         }
       } catch (err) {
         console.warn('Error en scraper de enlaces directos:', err);
       }
-    } else if (untilDate) {
-      console.log(`[Apify] Filtrando publicaciones de @${username} anteriores a ${untilDate}...`);
+    } else if (effectiveUntilDate) {
+      console.log(`[Apify] Filtrando publicaciones de @${username} anteriores a ${effectiveUntilDate}...`);
       try {
-        const cutoffTime = new Date(untilDate).getTime() + 86400000 - 1; // Fin del día
+        const cutoffTime = new Date(effectiveUntilDate).getTime() + 86400000 - 1; // Fin del día
         const postsRes = await fetch(
           `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
           {
@@ -451,12 +491,12 @@ export const POST: APIRoute = async ({ request }) => {
       patchPayload.posts = formattedPosts;
     }
 
-    if (untilDate) {
-      patchPayload.cutoffDate = untilDate;
+    if (effectiveUntilDate) {
+      patchPayload.cutoffDate = effectiveUntilDate;
     }
 
-    if (postUrls.length > 0) {
-      patchPayload.customPostUrls = postUrls;
+    if (effectivePostUrls.length > 0) {
+      patchPayload.customPostUrls = effectivePostUrls;
     }
 
     // Asegurar que el borrador exista en Sanity si es un documento recién creado
@@ -471,11 +511,17 @@ export const POST: APIRoute = async ({ request }) => {
       console.warn('Nota: no se pudo ejecutar createIfNotExists en draftId:', createErr);
     }
 
-    // Aplicar los datos sincronizados al borrador (o al publicado si ya existe)
+    // Aplicar los datos sincronizados tanto al borrador (Studio) como al publicado
     try {
       await sanityClient.patch(draftId).set(patchPayload).commit();
-    } catch {
+    } catch (e) {
+      console.warn('No se pudo parchear draftId:', e);
+    }
+
+    try {
       await sanityClient.patch(cleanId).set(patchPayload).commit();
+    } catch (e) {
+      console.warn('No se pudo parchear cleanId:', e);
     }
 
     return new Response(
