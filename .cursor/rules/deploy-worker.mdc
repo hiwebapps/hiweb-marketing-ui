@@ -1,15 +1,41 @@
 ---
-description: Publish every site change to the live Worker and to staging
+description: Publish every site change to the live Worker and to staging by pushing to master
 alwaysApply: true
 ---
 
 # Deploy to Cloudflare Workers
 
-Until the user says to stop, every completed site or UI change is published to both Workers. Deploying only the live site is not done.
+Until the user says to stop, every completed site or UI change is published to both Workers. A push to `master` publishes both:
 
-They are separate Workers. A live deploy does not update staging.
+- Live Worker `hiweb-marketing-ui` (https://hiweb.com.mx): Cloudflare Workers Builds, connected to `hiwebapps/hiweb-marketing-ui`.
+- Staging Worker `hiweb-marketing-ui-staging` (https://staging.hiweb.com.mx): the GitHub Actions workflow "Deploy staging".
 
-1. Live Worker `hiweb-marketing-ui` (https://hiweb.com.mx). Unset staging env vars first, or this build is published to the wrong Worker:
+## Normal flow
+
+1. Run `git pull --autostash` first. Teammates push to `master` often.
+2. Commit only the files you changed for this task. Never stage `dist/`, `fonts/`, or other untracked files you did not create. Use the repo's Conventional Commits style (`feat(...)`, `fix(...)`, `perf(...)`).
+3. `git push`.
+4. Wait for both builds to finish. They take about 5 minutes. Check them:
+
+```
+$sha = git rev-parse --short HEAD
+(gh api "repos/hiwebapps/hiweb-marketing-ui/commits/$sha/check-runs" | ConvertFrom-Json).check_runs | ForEach-Object { "$($_.name) = $(if ($_.conclusion) { $_.conclusion } else { $_.status })" }
+```
+
+`Workers Builds: hiweb-marketing-ui` is live. `deploy` is staging.
+
+5. Confirm https://hiweb.com.mx and https://staging.hiweb.com.mx. Staging returns 401 until the staging password is sent.
+
+## When an automatic build fails
+
+The agent cannot read Workers Builds logs: the Cloudflare connection lacks `Workers CI Read`. Ask the user to copy the log from the dashboard (Workers & Pages → `hiweb-marketing-ui` → Builds).
+
+- "error occurred while fetching repository" is an intermittent Cloudflare-to-GitHub failure. Ask the user to click "Retry build", or run the manual live deploy below.
+- For a staging failure, read it with `gh run view <id> --log-failed`.
+
+Manual deploy, only for a Worker whose automatic build failed:
+
+1. Live. Unset staging env vars first, or this build is published to the wrong Worker:
 
 ```
 Remove-Item Env:PUBLIC_SITE_ENV, Env:CLOUDFLARE_ENV, Env:PUBLIC_SITE_URL -ErrorAction SilentlyContinue
@@ -18,7 +44,7 @@ npx astro build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 npx wrangler deploy --keep-vars
 ```
 
-2. Staging Worker `hiweb-marketing-ui-staging` (https://staging.hiweb.com.mx). Run this only after the live deploy finishes. `CLOUDFLARE_ENV=staging` has to be set during the Astro build. The adapter writes `dist/server/wrangler.json` for that environment. Without it, `wrangler deploy --env staging` publishes the bundle to the live Worker.
+2. Staging. `CLOUDFLARE_ENV=staging` has to be set during the Astro build. The adapter writes `dist/server/wrangler.json` for that environment. Without it, `wrangler deploy --env staging` publishes the bundle to the live Worker.
 
 ```
 Remove-Item Env:PUBLIC_SITE_ENV, Env:CLOUDFLARE_ENV, Env:PUBLIC_SITE_URL -ErrorAction SilentlyContinue
@@ -28,10 +54,11 @@ npx wrangler deploy --env staging --keep-vars
 Remove-Item Env:PUBLIC_SITE_ENV, Env:CLOUDFLARE_ENV, Env:PUBLIC_SITE_URL -ErrorAction SilentlyContinue
 ```
 
+## Always
+
+- A manual deploy builds the local working copy, not `master`. Push first so the next automatic build does not overwrite it with older code.
 - Always pass `--keep-vars` so existing Worker secrets stay in place.
 - Do not run the live build, the staging build, and `npx sanity deploy` at the same time. All three write `dist/`.
 - Do not deploy Studio unless the change is a Sanity schema or Studio UI the editors need.
-- Do not commit or push unless the user asks.
 - Keep `PUBLIC_SITE_INDEXABLE` false.
-- After both deploys, confirm https://hiweb.com.mx and https://staging.hiweb.com.mx. Staging returns 401 until the staging password is sent.
 - If the browser still shows the previous version, tell the user to reload with Ctrl+F5.
