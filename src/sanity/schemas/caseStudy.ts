@@ -82,6 +82,7 @@ export const caseStudy = defineType({
       title: 'Feed de Instagram (Celular)',
       type: 'reference',
       to: [{ type: 'socialBrand' }],
+      weak: true,
       group: 'datos',
       description: 'Vincula la marca de Instagram para alimentar el mockup del celular interactivo de este caso.',
     }),

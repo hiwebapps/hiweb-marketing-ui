@@ -58,6 +58,7 @@ export const socialBrand = defineType({
       title: 'Caso de Éxito Asociado',
       type: 'reference',
       to: [{ type: 'caseStudy' }],
+      weak: true,
       description: 'Enlaza este perfil con su caso de éxito para que aparezca el botón "Ver caso de éxito" en el feed de servicios.',
     }),
     imageWithAlt({
