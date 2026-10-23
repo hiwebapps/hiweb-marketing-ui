@@ -7,8 +7,8 @@ type RateLimiter = {
 
 /**
  * Bindings in wrangler.jsonc (`ratelimits`).
- * FORM_RATE_LIMITER: writes a person makes once (book, cancel, quiz submit).
- * API_RATE_LIMITER: reads and quiz steps, many per visit.
+ * FORM_RATE_LIMITER (2/min): writes a person makes once (book, cancel, quiz submit).
+ * API_RATE_LIMITER (20/min): reads and quiz steps, many per visit.
  */
 export type RateLimitBinding = 'FORM_RATE_LIMITER' | 'API_RATE_LIMITER';
 

@@ -43,6 +43,22 @@ export async function getBookedTimesForDate(dateIso: string): Promise<string[]> 
   return rows.map((booking) => booking.selectedTime);
 }
 
+/** Confirmed bookings for this email on or after the given date. */
+export async function countActiveBookingsForEmail(email: string, fromDateIso: string): Promise<number> {
+  const d1 = getD1();
+  if (!d1) return 0;
+
+  const row = await d1First<{ total: number }>(
+    d1,
+    `SELECT COUNT(*) AS total
+     FROM calendar_bookings
+     WHERE email = ? AND status = 'confirmed' AND selected_date >= ?`,
+    email,
+    fromDateIso,
+  );
+  return row?.total ?? 0;
+}
+
 export async function getConfirmedBookingsForDate(dateIso: string): Promise<BookingRecord[]> {
   const d1 = getD1();
   if (!d1) return [];

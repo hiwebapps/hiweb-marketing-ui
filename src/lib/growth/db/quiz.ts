@@ -87,6 +87,20 @@ export async function deleteQuizSession(sessionId: string): Promise<void> {
   await d1Run(d1, `DELETE FROM quiz_sessions WHERE session_id = ?`, sessionId);
 }
 
+/** Quiz leads saved for this email since the given ISO timestamp. */
+export async function countQuizLeadsForEmailSince(email: string, sinceIso: string): Promise<number> {
+  const d1 = getD1();
+  if (!d1) return 0;
+
+  const row = await d1First<{ total: number }>(
+    d1,
+    `SELECT COUNT(*) AS total FROM quiz_leads WHERE email = ? AND created_at >= ?`,
+    email,
+    sinceIso,
+  );
+  return row?.total ?? 0;
+}
+
 export async function insertQuizLead(
   lead: QuizLeadInput,
   result: QuizScoreResult,

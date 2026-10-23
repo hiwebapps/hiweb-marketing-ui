@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { calculateQuizScore } from '../../../lib/growth/quiz/scoring';
 import type { QuizAnswers, QuizLeadInput } from '../../../lib/growth/quiz/types';
 import { sanitizeSessionId, validateQuizAnswers, validateQuizLead } from '../../../lib/growth/quiz/validators';
-import { deleteQuizSession, insertQuizLead } from '../../../lib/growth/db/quiz';
+import { countQuizLeadsForEmailSince, deleteQuizSession, insertQuizLead } from '../../../lib/growth/db/quiz';
 import { dispatchQuizWebhook } from '../../../lib/growth/n8n/client';
 import { buildQuizN8nPayload } from '../../../lib/growth/n8n/payloads';
 import { jsonError } from '../../../lib/growth/api/response';
@@ -10,6 +10,10 @@ import { enforceRateLimit } from '../../../lib/growth/api/rate-limit';
 import { AppError } from '../../../lib/growth/shared/errors';
 
 export const prerender = false;
+
+/** Per email, rolling 24 hours. Stops a script from flooding the lead list. */
+const MAX_QUIZ_LEADS_PER_EMAIL = 2;
+const QUIZ_LEADS_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 type SubmitBody = {
   sessionId?: string;
@@ -28,6 +32,14 @@ export const POST: APIRoute = async ({ request }) => {
     const sessionId = body.sessionId ? sanitizeSessionId(body.sessionId) : '';
     const lead = validateQuizLead(body.lead);
     validateQuizAnswers(body.answers);
+
+    const since = new Date(Date.now() - QUIZ_LEADS_WINDOW_MS).toISOString();
+    if ((await countQuizLeadsForEmailSince(lead.email, since)) >= MAX_QUIZ_LEADS_PER_EMAIL) {
+      throw new AppError('Ya recibimos tus diagnósticos de hoy. Te contactaremos pronto.', {
+        statusCode: 429,
+        code: 'QUIZ_LIMIT_REACHED',
+      });
+    }
     const result = calculateQuizScore(body.answers);
     const leadId = await insertQuizLead(lead, result, body.answers);
 
