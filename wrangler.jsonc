@@ -12,8 +12,8 @@
     "html_handling": "drop-trailing-slash"
   },
   "vars": {
-    "PUBLIC_SITE_INDEXABLE": "false",
-    "PUBLIC_SITE_URL": "https://hiweb.com.mx",
+    "PUBLIC_SITE_INDEXABLE": "true",
+    "PUBLIC_SITE_URL": "https://www.hiwebmarketing.com",
     "PUBLIC_SANITY_PROJECT_ID": "fxardjr1",
     "PUBLIC_SANITY_DATASET": "web-2026"
   },

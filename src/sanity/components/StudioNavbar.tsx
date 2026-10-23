@@ -2,7 +2,7 @@ import { Button, Card, Flex, Text } from '@sanity/ui';
 import { useEffect, useState } from 'react';
 import { type NavbarProps } from 'sanity';
 
-const STATUS_URL = 'https://hiweb.com.mx/api/rebuild-status';
+const STATUS_URL = 'https://www.hiwebmarketing.com/api/rebuild-status';
 const STUDIO_HOST = 'hiweb-web.sanity.studio';
 const MANIFEST_URL = '/static/create-manifest.json';
 /** A deploy's manifest is written at the end of the same build. */
@@ -89,13 +89,13 @@ function liveSiteMessage(status: RebuildStatus, deployAtMs: number | null, now: 
   if (status.queued) {
     const minutes = minutesLeft(status.deployAt, now);
     if (minutes <= 0) {
-      return 'La espera terminó. hiweb.com.mx empieza a actualizarse y tarda unos 5 minutos en mostrar los cambios.';
+      return 'La espera terminó. hiwebmarketing.com empieza a actualizarse y tarda unos 5 minutos en mostrar los cambios.';
     }
     const label = minutes === 1 ? '1 minuto' : `${minutes} minutos`;
-    return `En espera. hiweb.com.mx se actualiza en ${label}. Si publicas otro documento, la espera de 10 minutos vuelve a empezar. Después, el sitio tarda unos 5 minutos en mostrar los cambios.`;
+    return `En espera. hiwebmarketing.com se actualiza en ${label}. Si publicas otro documento, la espera de 10 minutos vuelve a empezar. Después, el sitio tarda unos 5 minutos en mostrar los cambios.`;
   }
   if (deployAtMs && now < deployAtMs + UPDATE_WINDOW_MS) {
-    return 'hiweb.com.mx se está actualizando. En unos minutos se ven los cambios. Recarga esa página con Ctrl+F5.';
+    return 'hiwebmarketing.com se está actualizando. En unos minutos se ven los cambios. Recarga esa página con Ctrl+F5.';
   }
   return null;
 }

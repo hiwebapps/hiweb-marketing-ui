@@ -54,7 +54,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'note',
-        text: 'El borrador se ve en Staging al guardarse. hiweb.com.mx usa la versión publicada. Después de Publish, el sitio espera 10 minutos por si publicas algo más y junta esos cambios. La barra de arriba solo aparece cuando hay esa espera, o cuando el sitio ya se está actualizando. Luego tarda unos 5 minutos en mostrar los cambios. Si aparece el aviso de una versión nueva de Studio, recarga antes de seguir editando.',
+        text: 'El borrador se ve en Staging al guardarse. hiwebmarketing.com usa la versión publicada. Después de Publish, el sitio espera 10 minutos por si publicas algo más y junta esos cambios. La barra de arriba solo aparece cuando hay esa espera, o cuando el sitio ya se está actualizando. Luego tarda unos 5 minutos en mostrar los cambios. Si aparece el aviso de una versión nueva de Studio, recarga antes de seguir editando.',
       },
       {
         kind: 'p',
@@ -85,7 +85,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'p',
-        text: 'Una fila por cada documento con cambios sin publicar: páginas, casos, industrias, servicios, artículos, navbar, footer, ajustes y el resto. Dice si es nuevo o si ya estaba publicado, quién lo editó al último y si tiene errores. Marca las casillas y pulsa Publicar seleccionados. Un documento con errores no se puede marcar: debajo dice qué campo revisar, y Abrir te lleva al formulario. Como con Publish, hiweb.com.mx muestra los cambios después del siguiente deploy.',
+        text: 'Una fila por cada documento con cambios sin publicar: páginas, casos, industrias, servicios, artículos, navbar, footer, ajustes y el resto. Dice si es nuevo o si ya estaba publicado, quién lo editó al último y si tiene errores. Marca las casillas y pulsa Publicar seleccionados. Un documento con errores no se puede marcar: debajo dice qué campo revisar, y Abrir te lleva al formulario. Como con Publish, hiwebmarketing.com muestra los cambios después del siguiente deploy.',
       },
       {
         kind: 'h',
