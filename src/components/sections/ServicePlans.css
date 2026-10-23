@@ -36,38 +36,31 @@
   justify-content: flex-end;
 }
 
-.service-plans__head h3 {
+.service-plans__kicker {
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.service-plans__price {
-  margin: 0;
-  color: var(--color-ink);
-  font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4vw, 3rem);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.service-plans__price span {
-  margin-left: 0.15rem;
-  color: var(--color-ink-soft);
-  font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: 0;
-}
-
-.service-plans__includes {
-  margin: 0.35rem 0 0;
   color: var(--color-muted);
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.service-plans__title {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.service-plans__title span {
+  margin-left: 0.15rem;
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .service-plans__card ul {
@@ -99,10 +92,10 @@
   color: var(--color-accent-green, #74c465);
 }
 
-.service-plans__cta {
-  margin-top: 0.4rem;
-  width: 100%;
+.service-plans__actions {
+  display: flex;
   justify-content: center;
+  margin-top: 2rem;
 }
 
 .service-plans__note {

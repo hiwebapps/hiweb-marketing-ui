@@ -156,18 +156,17 @@ const nombre = entry.data.nombre;
 {
 	section._type === 'servicePlans' && section.title && section.plans?.length ? (
 		<ServicePlans
-			eyebrow={section.eyebrow || (locale === 'en' ? 'Plans' : 'Planes')}
+			eyebrow={section.eyebrow || (locale === 'en' ? 'The service' : 'El servicio')}
 			title={section.title}
 			description={section.description || ''}
 			note={section.note || ''}
 			noteHref={section.noteHref}
 			noteLabel={section.noteLabel}
-			ctaLabel={section.ctaLabel || 'Cotiza ahora con nosotros'}
+			ctaLabel={section.ctaLabel || (locale === 'en' ? 'Get a quote' : 'Cotiza tu proyecto')}
 			ctaHref={section.ctaHref || contactHref}
 			plans={section.plans}
 			tone="canvas"
 			headingWidth={section.headingWidth}
-			includesLabel={locale === 'en' ? 'Includes' : 'Incluye'}
 		/>
 	) : null
 }

@@ -8,7 +8,6 @@ import './ServicePlans.css';
 type ServicePlansProps = ServicePlansContent & {
   tone?: 'canvas' | 'surface';
   headingWidth?: string;
-  includesLabel?: string;
 };
 
 export function ServicePlans({
@@ -23,7 +22,6 @@ export function ServicePlans({
   plans,
   tone = 'canvas',
   headingWidth,
-  includesLabel = 'Incluye',
 }: ServicePlansProps) {
   // Link only when the label is in the note; otherwise it would be appended loose.
   const noteBody = noteLabel && noteHref && note.includes(noteLabel) ? note.split(noteLabel) : null;
@@ -48,15 +46,14 @@ export function ServicePlans({
           >
             {plan.name || badge ? (
               <div className={plan.name ? 'service-plans__head' : 'service-plans__head is-badge-only'}>
-                {plan.name ? <h3>{plan.name}</h3> : null}
+                {plan.name ? <p className="service-plans__kicker">{plan.name}</p> : null}
                 {badge ? <Badge variant="lime">{badge}</Badge> : null}
               </div>
             ) : null}
-            <p className="service-plans__price">
+            <h3 className="service-plans__title">
               {plan.price}
               {plan.period ? <span>{plan.period}</span> : null}
-            </p>
-            <p className="service-plans__includes">{includesLabel}</p>
+            </h3>
             <ul>
               {plan.includes.map((item) => (
                 <li key={item}>
@@ -65,18 +62,17 @@ export function ServicePlans({
                 </li>
               ))}
             </ul>
-            <Button
-              href={ctaHref}
-              variant={plan.featured ? 'primary' : 'secondary'}
-              size="md"
-              className="service-plans__cta no-underline"
-            >
-              {ctaLabel}
-            </Button>
           </li>
           );
         })}
       </ul>
+      {ctaLabel && ctaHref ? (
+        <div className="service-plans__actions">
+          <Button href={ctaHref} variant="primary" size="md" className="no-underline">
+            {ctaLabel}
+          </Button>
+        </div>
+      ) : null}
       {noteBody && noteHref && noteLabel ? (
         <p className="service-plans__note">
           {noteBody[0]}

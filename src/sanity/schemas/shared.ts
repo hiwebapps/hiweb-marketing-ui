@@ -247,7 +247,7 @@ export const servicePlan = defineType({
       name: 'name',
       title: 'Texto superior',
       type: 'string',
-      description: 'El texto pequeño arriba del título, por ejemplo Cotiza. Déjalo vacío para ocultarlo.',
+      description: 'Texto pequeño opcional arriba del título. Déjalo vacío para ocultarlo.',
     }),
     defineField({
       name: 'badge',
@@ -259,7 +259,7 @@ export const servicePlan = defineType({
       name: 'price',
       title: 'Título',
       type: 'string',
-      description: 'El texto grande de la card. Ejemplo: $8,000, Incluye: o Alcance:.',
+      description: 'El título de la card. Ejemplo: Qué recibes, Dónde aplica o Qué define la cotización.',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -272,12 +272,12 @@ export const servicePlan = defineType({
       name: 'featured',
       title: 'Destacada',
       type: 'boolean',
-      description: 'Resalta la card con borde y botón principal. El badge se controla en el campo Badge.',
+      description: 'Resalta la card con borde. El badge se controla en el campo Badge.',
       initialValue: false,
     }),
     defineField({
       name: 'includes',
-      title: 'Incluye',
+      title: 'Puntos',
       type: 'array',
       of: [defineArrayMember({ type: 'string' })],
       validation: (rule) => rule.min(1),
