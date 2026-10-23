@@ -4,12 +4,14 @@ import { validateBookingId } from '../../../lib/growth/calendar/validators';
 import { dispatchCalendarWebhook } from '../../../lib/growth/n8n/client';
 import { buildCalendarN8nPayload } from '../../../lib/growth/n8n/payloads';
 import { jsonError } from '../../../lib/growth/api/response';
+import { enforceRateLimit } from '../../../lib/growth/api/rate-limit';
 import { AppError } from '../../../lib/growth/shared/errors';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    await enforceRateLimit(request, 'FORM_RATE_LIMITER', 'calendar-cancel');
     const body = (await request.json()) as { bookingId?: string };
     const bookingId = validateBookingId(body.bookingId);
     const booking = await cancelBooking(bookingId);

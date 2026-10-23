@@ -4,6 +4,7 @@ import type { QuizAnswers } from '../../../lib/growth/quiz/types';
 import { sanitizeSessionId } from '../../../lib/growth/quiz/validators';
 import { createQuizSession, getQuizSession, updateQuizSession } from '../../../lib/growth/db/quiz';
 import { jsonError } from '../../../lib/growth/api/response';
+import { enforceRateLimit } from '../../../lib/growth/api/rate-limit';
 import { createId } from '../../../lib/growth/shared/utils';
 
 export const prerender = false;
@@ -27,6 +28,7 @@ function mergeAnswersFromBody(existing: QuizAnswers, body: SessionBody): QuizAns
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    await enforceRateLimit(request, 'API_RATE_LIMITER', 'quiz-session');
     const body = (await request.json()) as SessionBody;
     const action = body.action ?? (body.sessionId ? 'update' : 'create');
 

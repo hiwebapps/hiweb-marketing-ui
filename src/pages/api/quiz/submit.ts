@@ -6,6 +6,7 @@ import { deleteQuizSession, insertQuizLead } from '../../../lib/growth/db/quiz';
 import { dispatchQuizWebhook } from '../../../lib/growth/n8n/client';
 import { buildQuizN8nPayload } from '../../../lib/growth/n8n/payloads';
 import { jsonError } from '../../../lib/growth/api/response';
+import { enforceRateLimit } from '../../../lib/growth/api/rate-limit';
 import { AppError } from '../../../lib/growth/shared/errors';
 
 export const prerender = false;
@@ -18,6 +19,7 @@ type SubmitBody = {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    await enforceRateLimit(request, 'FORM_RATE_LIMITER', 'quiz-submit');
     const body = (await request.json()) as SubmitBody;
     if (!body.lead || !body.answers) {
       throw new AppError('Faltan datos del diagnóstico.', { statusCode: 400, code: 'INVALID_BODY' });

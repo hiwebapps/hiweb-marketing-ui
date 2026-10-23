@@ -4,11 +4,13 @@ import type { BookingInput } from '../../../lib/growth/calendar/types';
 import { dispatchCalendarWebhook } from '../../../lib/growth/n8n/client';
 import { buildCalendarN8nPayload } from '../../../lib/growth/n8n/payloads';
 import { jsonError } from '../../../lib/growth/api/response';
+import { enforceRateLimit } from '../../../lib/growth/api/rate-limit';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    await enforceRateLimit(request, 'FORM_RATE_LIMITER', 'calendar-book');
     const body = (await request.json()) as BookingInput;
     const booking = await createBooking(body);
 
