@@ -52,13 +52,8 @@ export function InstagramGridFeed({
   brands: customBrands,
 }: InstagramGridFeedProps) {
   const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
-  const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [activePost, setActivePost] = useState<SocialPost | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-
-  const brandsPool = useMemo(() => {
-    return customBrands && customBrands.length > 0 ? customBrands : SOCIAL_BRANDS;
-  }, [customBrands]);
 
   const postsPool = useMemo(() => {
     if (customPosts && customPosts.length > 0) {
@@ -96,23 +91,13 @@ export function InstagramGridFeed({
     return SOCIAL_INDUSTRIES;
   }, [customBrands, locale]);
 
-  // Brands belonging to the selected industry
-  const availableBrands = useMemo(() => {
-    if (selectedIndustry === 'all') return brandsPool;
-    return brandsPool.filter((b) => b.industryId === selectedIndustry);
-  }, [selectedIndustry, brandsPool]);
-
-  // Posts filtered by industry and brand
+  // Posts filtered by industry
   const filteredPosts = useMemo(() => {
     const list = postsPool.filter((post) => {
-      const matchIndustry =
-        selectedIndustry === 'all' || post.industryId === selectedIndustry;
-      const matchBrand =
-        selectedBrand === 'all' || post.brandId === selectedBrand;
-      return matchIndustry && matchBrand;
+      return selectedIndustry === 'all' || post.industryId === selectedIndustry;
     });
     return list.sort((a, b) => getPostEngagement(b.stats) - getPostEngagement(a.stats));
-  }, [postsPool, selectedIndustry, selectedBrand]);
+  }, [postsPool, selectedIndustry]);
 
   useEffect(() => {
     setCurrentSlideIndex(0);
@@ -159,43 +144,13 @@ export function InstagramGridFeed({
                 variant={active ? 'primary' : 'secondary'}
                 glow={active}
                 aria-pressed={active}
-                onClick={() => {
-                  setSelectedIndustry(ind.id);
-                  setSelectedBrand('all');
-                }}
+                onClick={() => setSelectedIndustry(ind.id)}
               >
                 {ind.name}
               </Button>
             );
           })}
         </div>
-
-        {/* Sub-filter by Brand */}
-        {availableBrands.length > 1 && (
-          <div className="ig-brand-filters">
-            <span className="ig-brand-filters__label">Marca:</span>
-            <div className="ig-brand-filters__pills">
-              <button
-                type="button"
-                className={`ig-brand-pill ${selectedBrand === 'all' ? 'is-active' : ''}`}
-                onClick={() => setSelectedBrand('all')}
-              >
-                Todas
-              </button>
-              {availableBrands.map((brand) => (
-                <button
-                  key={brand.id}
-                  type="button"
-                  className={`ig-brand-pill ${selectedBrand === brand.id ? 'is-active' : ''}`}
-                  onClick={() => setSelectedBrand(brand.id)}
-                >
-                  <img src={brand.avatar} alt="" className="ig-brand-pill__avatar" />
-                  {brand.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Instagram Post Grid */}
