@@ -9,17 +9,17 @@ El grafo deja `gsap-ssr-stub.ts` sin consumidores. Lo resuelve `astro.config.mjs
 ### `src/lib/seo.ts`
 
 - Propósito: decide si el sitio se esconde de los buscadores y absolutiza una ruta para canonical y Open Graph.
-- Por qué está así: el cutover exige el flag y, además, un host de la lista blanca. `hiweb.com.mx` no está en esa lista. La directiva de cierre es la misma cadena que Layout aplica a una página con `noindex`.
+- Por qué está así: el cutover exige el flag y, además, un host de la lista blanca. Staging (`staging.hiweb.com.mx`) no está en esa lista. La directiva de cierre es la misma cadena que Layout aplica a una página con `noindex`.
 - Exporta: `ROBOTS_NOINDEX`, `DEFAULT_OG_IMAGE` (`/images/services/branding-hero.jpg`), `shouldNoIndex`, `absoluteUrl`.
 - Depende de: `import.meta.env.PUBLIC_SITE_INDEXABLE` y `PUBLIC_SITE_URL`.
 - Lo usan: `src/layouts/Layout.astro`, `src/middleware.ts`, `src/pages/robots.txt.ts`, `src/pages/sitemap.xml.ts`.
-- Datos: hosts indexables: `hiwebmarketing.com` y `www.hiwebmarketing.com`. El flag tiene que ser `true` o `1`. Si falta cualquiera de las dos condiciones, `shouldNoIndex` devuelve true. `absoluteUrl` deja pasar un `http(s)` ya absoluto y, si no, resuelve contra el `site` que le pasen, `PUBLIC_SITE_URL` o `https://hiweb.com.mx`.
+- Datos: hosts indexables: `hiwebmarketing.com` y `www.hiwebmarketing.com`. El flag tiene que ser `true` o `1`. Si falta cualquiera de las dos condiciones, `shouldNoIndex` devuelve true. `absoluteUrl` deja pasar un `http(s)` ya absoluto y, si no, resuelve contra el `site` que le pasen, `PUBLIC_SITE_URL` o `https://www.hiwebmarketing.com`.
 - Hallazgos: S-01, S-02, S-08, S-10.
 
 ### `src/lib/schema.ts`
 
 - Propósito: objetos JSON-LD de Organization, BreadcrumbList, FAQPage y Article.
-- Por qué está así: Layout y las páginas arman el script a partir de estas funciones. Las URLs salen de `SITE.url` (`src/data/site.ts`), el mismo origen que el build usa como `https://hiweb.com.mx`, no del host de `PUBLIC_ORIGIN`.
+- Por qué está así: Layout y las páginas arman el script a partir de estas funciones. Las URLs salen de `SITE.url` (`src/data/site.ts`), el mismo origen que el build usa como `https://www.hiwebmarketing.com`.
 - Exporta: `organizationSchema`, `breadcrumbSchema`, `faqSchema`, `articleSchema`.
 - Depende de: `src/data/site.ts`, `src/lib/content/faq-answer.ts`, `src/lib/content/types.ts` (`FaqAnswer`), `src/lib/site-identity.ts` (tipo).
 - Lo usan: `Layout.astro` (Organization en cada página). `faqSchema` en home ES y EN, industrias, servicios y landings. `breadcrumbSchema` en blog, portafolio, contacto, calendario, portal, nosotros, legales, diagnóstico y las pares `en/` que lo importan. `articleSchema` en `blog/[slug].astro` y `en/blogs/[slug].astro`.

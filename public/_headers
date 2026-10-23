@@ -1,28 +1,11 @@
-# Static assets and prerendered pages skip the middleware, so non-live hosts
-# get noindex here. www.hiwebmarketing.com is the only indexable host.
-https://hiweb.com.mx/*
-  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
-
+# Static assets and prerendered pages skip the middleware, so staging gets
+# noindex here. www.hiwebmarketing.com is the only indexable host.
 https://:sub.hiweb.com.mx/*
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
 
 # Security headers on the live hosts. Staging is left out: Studio frames it.
 # The middleware sets the same headers on pages rendered on request.
 https://www.hiwebmarketing.com/*
-  Strict-Transport-Security: max-age=31536000
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-
-https://hiweb.com.mx/*
-  Strict-Transport-Security: max-age=31536000
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-
-https://www.hiweb.com.mx/*
   Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN

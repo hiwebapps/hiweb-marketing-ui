@@ -2,7 +2,9 @@
 
 El front se queda **noindex** hasta que cada ítem abajo esté hecho y alguien active el flag a propósito.
 
-Estado al 23 de octubre de 2026: la zona `hiwebmarketing.com` ya está activa en Cloudflare, pero `www` sigue sirviendo Webflow (DNS only). El Worker `hiweb-marketing-ui` sirve `hiweb.com.mx` con noindex. El commit `2806181` regresó el dominio a `hiweb.com.mx`. Su revert está listo en la rama `cutover/www-hiwebmarketing`, sin mergear.
+Estado al 23 de octubre de 2026: **cutover hecho.** `www.hiwebmarketing.com` es un Custom Domain del Worker `hiweb-marketing-ui`, indexable. La rama `cutover/www-hiwebmarketing` se mergeó a `master` (`939d5a3`). `hiweb.com.mx` solo sirvió para pruebas: se quitó del Worker sin redirect. `staging.hiweb.com.mx` sigue como staging.
+
+**Workers Builds.** El Worker también está conectado a Workers Builds (lo usa el deploy hook del rebuild de Studio). Sus variables de build son aparte de `wrangler.jsonc`: tienen que decir `PUBLIC_SITE_URL=https://www.hiwebmarketing.com` y `PUBLIC_SITE_INDEXABLE=true`, o un rebuild vuelve a publicar HTML con noindex y canonical a otro host.
 
 Los comandos remotos de wrangler necesitan `CLOUDFLARE_ACCOUNT_ID=3e168bad1930ad9393198eea20085c28` (cuenta `Web@hiwebmarketing.com`): el login también ve la cuenta Admin.
 

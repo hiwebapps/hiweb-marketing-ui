@@ -23,7 +23,7 @@ Live prerenderiza las páginas de marketing. Staging apaga ese prerender para qu
 - Exporta: config. `main` es `./src/worker.ts`. Assets en `./dist`, binding `ASSETS`.
 - Depende de: nada del grafo.
 - Lo usan: `wrangler deploy` y los workflows.
-- Datos: `compatibility_date` `2026-09-18`, flag `nodejs_compat`. Live: `PUBLIC_SITE_INDEXABLE=false`, `PUBLIC_SITE_URL=https://hiweb.com.mx`, project `fxardjr1`, dataset `web-2026`, cron `* * * * *`, D1 `hiweb-marketing-quiz-calendar` (`282c179c-d35d-4dfa-b631-afaad98d802c`), `migrations_dir` `migrations/d1`. Staging: `PUBLIC_SITE_ENV=staging`, URL `https://staging.hiweb.com.mx`, la misma pareja Sanity, D1 distinta (`hiweb-marketing-quiz-calendar-staging`, `0391782c-b084-452c-a283-74af9c54451f`), crons `[]`. Observability encendida en live.
+- Datos: `compatibility_date` `2026-09-18`, flag `nodejs_compat`. Live: `PUBLIC_SITE_INDEXABLE=false`, `PUBLIC_SITE_URL=https://www.hiwebmarketing.com`, project `fxardjr1`, dataset `web-2026`, cron `* * * * *`, D1 `hiweb-marketing-quiz-calendar` (`282c179c-d35d-4dfa-b631-afaad98d802c`), `migrations_dir` `migrations/d1`. Staging: `PUBLIC_SITE_ENV=staging`, URL `https://staging.hiweb.com.mx`, la misma pareja Sanity, D1 distinta (`hiweb-marketing-quiz-calendar-staging`, `0391782c-b084-452c-a283-74af9c54451f`), crons `[]`. Observability encendida en live.
 - Hallazgos: A-13. El cron de live corre cada minuto. El flush no dispara el deploy hasta unos 10 minutos después del último publish. Staging no tiene cron y no debe tenerlo mientras siga en SSR. A-07. El default del repo de GitHub no está en este archivo: está en `src/lib/rebuild/dispatch.ts`. Si el Worker no tiene `CLOUDFLARE_DEPLOY_HOOK_URL` ni `GITHUB_DISPATCH_REPO`, el cron pega a `jahirgosu/hiweb-marketing-ui`. `PUBLIC_SITE_INDEXABLE` queda en `false` en los dos entornos.
 
 ### `sanity.config.ts`
@@ -119,7 +119,7 @@ Live prerenderiza las páginas de marketing. Staging apaga ese prerender para qu
 ### `.github/workflows/deploy-worker.yml`
 
 - Propósito: rebuild del Worker de live.
-- Por qué está así: lo dispara un `repository_dispatch` de tipo `sanity-rebuild` o un `workflow_dispatch`. No despliega Vercel. El build lleva `PUBLIC_SITE_URL=https://hiweb.com.mx` y no lleva `PUBLIC_SITE_ENV`, para que el prerender y el adapter apunten al Worker de producción.
+- Por qué está así: lo dispara un `repository_dispatch` de tipo `sanity-rebuild` o un `workflow_dispatch`. No despliega Vercel. El build lleva `PUBLIC_SITE_URL=https://www.hiwebmarketing.com` y no lleva `PUBLIC_SITE_ENV`, para que el prerender y el adapter apunten al Worker de producción.
 - Exporta: workflow «Deploy Worker».
 - Depende de: secrets `SANITY_API_READ_TOKEN`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 - Lo usan: el dispatch de `src/lib/rebuild/dispatch.ts` cuando no hay deploy hook, y quien lo lance a mano.

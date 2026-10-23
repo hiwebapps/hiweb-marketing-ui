@@ -51,7 +51,7 @@ No se copia.
 - `scripts/sanity/scrape-webflow-*`, `write-webflow-*`, `generate-webflow-*`, `import-production-posts.ts` y el resto de semillas con nombres, precios y slugs de Hiweb
 - `fonts/` de la raíz y los OTF de Clash como únicos archivos. La plantilla deja el `@font-face` apuntando a WOFF2 que el cliente sustituye (P-01, P-02)
 - Efectos de marca que no son el sistema: `DriftWall`, `GradientWaves`, `HeroStudioA` como hero obligatorio. El hero de la plantilla es un `PageHero` con un `h1`
-- Nombres `hiweb-marketing-ui`, dataset `web-2026`, proyecto `fxardjr1`, hosts `hiweb.com.mx` y `hiweb-web.sanity.studio`
+- Nombres `hiweb-marketing-ui`, dataset `web-2026`, proyecto `fxardjr1`, hosts `www.hiwebmarketing.com` y `hiweb-web.sanity.studio`
 
 ## Repo plantilla
 
@@ -91,7 +91,7 @@ Un solo archivo `client.config.ts` (y el `.env`) con:
 | --- | --- | --- |
 | `projectId`, `dataset` | `fxardjr1`, `web-2026` | Sanity |
 | `studioHost` | `hiweb-web` | `sanity.cli.ts`, nunca un host de otro cliente |
-| `siteUrl` | `https://hiweb.com.mx` | canonical, sitemap, JSON-LD. Uno solo |
+| `siteUrl` | `https://www.hiwebmarketing.com` | canonical, sitemap, JSON-LD. Uno solo |
 | `indexableHosts` | el mismo host | S-01 |
 | `workerName`, `stagingWorkerName` | `hiweb-marketing-ui` | wrangler |
 | `d1Name`, `d1Id` | quiz-calendar | solo si hay módulo con D1 |

@@ -7,7 +7,7 @@ alwaysApply: true
 
 Until the user says to stop, every completed site or UI change is published to both Workers. A push to `master` publishes both:
 
-- Live Worker `hiweb-marketing-ui` (https://hiweb.com.mx): Cloudflare Workers Builds, connected to `hiwebapps/hiweb-marketing-ui`.
+- Live Worker `hiweb-marketing-ui` (https://www.hiwebmarketing.com): the GitHub Actions workflow "Deploy Worker" on every push to `master`, plus Cloudflare Workers Builds through the Studio rebuild hook.
 - Staging Worker `hiweb-marketing-ui-staging` (https://staging.hiweb.com.mx): the GitHub Actions workflow "Deploy staging".
 
 ## Normal flow
@@ -24,7 +24,7 @@ $sha = git rev-parse --short HEAD
 
 `Workers Builds: hiweb-marketing-ui` is live. `deploy` is staging.
 
-5. Confirm https://hiweb.com.mx and https://staging.hiweb.com.mx. Staging returns 401 until the staging password is sent.
+5. Confirm https://www.hiwebmarketing.com and https://staging.hiweb.com.mx. Staging returns 401 until the staging password is sent.
 
 ## When an automatic build fails
 
@@ -39,7 +39,7 @@ Manual deploy, only for a Worker whose automatic build failed:
 
 ```
 Remove-Item Env:PUBLIC_SITE_ENV, Env:CLOUDFLARE_ENV, Env:PUBLIC_SITE_URL -ErrorAction SilentlyContinue
-$env:PUBLIC_SITE_URL='https://hiweb.com.mx'
+$env:PUBLIC_SITE_URL='https://www.hiwebmarketing.com'
 npx astro build; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 npx wrangler deploy --keep-vars
 ```

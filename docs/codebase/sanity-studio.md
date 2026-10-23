@@ -209,7 +209,7 @@ Todo lo de `src/sanity` que no es schema. Los tipos están en [sanity-schemas.md
 ### `src/sanity/components/DocumentFooter.tsx`
 
 - Propósito: pie de la barra de tareas, a la izquierda de Publish.
-- Por qué está así: el borrador ya se ve en staging (el cliente va en `drafts`). En hiweb.com.mx aparece después de Publish y del rebuild. El texto lo dice para que el editor no espere el HTML al segundo.
+- Por qué está así: el borrador ya se ve en staging (el cliente va en `drafts`). En www.hiwebmarketing.com aparece después de Publish y del rebuild. El texto lo dice para que el editor no espere el HTML al segundo.
 - Exporta: `DocumentFooter`.
 - Depende de: `ViewStagingButton.tsx`.
 - Lo usan: `sanity.config.ts` (`__internal_tasks.footerAction`).
@@ -219,7 +219,7 @@ Todo lo de `src/sanity` que no es schema. Los tipos están en [sanity-schemas.md
 ### `src/sanity/components/StudioNavbar.tsx`
 
 - Propósito: navbar del Studio con el estado del rebuild.
-- Por qué está así: el editor publica y el HTML de live no cambia al momento. La barra consulta `https://hiweb.com.mx/api/rebuild-status` y compara el manifest del Studio (`/static/create-manifest.json`, `__HIWEB_STUDIO_BUILT_AT__`) para avisar si el schema desplegado y el sitio van en builds distintos.
+- Por qué está así: el editor publica y el HTML de live no cambia al momento. La barra consulta `https://www.hiwebmarketing.com/api/rebuild-status` y compara el manifest del Studio (`/static/create-manifest.json`, `__HIWEB_STUDIO_BUILT_AT__`) para avisar si el schema desplegado y el sitio van en builds distintos.
 - Exporta: `StudioNavbar`.
 - Depende de: nada del repo.
 - Lo usan: `sanity.config.ts` (`studio.components.navbar`).
