@@ -10,7 +10,7 @@ import { PortalShowcase } from '../../components/sections/PortalShowcase';
 import { TeamGrid } from '../../components/sections/TeamGrid';
 import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import AboutPageSection from '../../components/sections/AboutPageSection.astro';
-import { breadcrumbSchema } from '../../lib/schema';
+import { aboutPageSchema, breadcrumbSchema } from '../../lib/schema';
 import { getAboutCopy, getPeople, getSiteSettings } from '../../lib/content';
 import { notFound } from '../../lib/content/resolve-entry';
 import { localePath } from '../../lib/locale';
@@ -76,10 +76,13 @@ const teamFilters = (about.teamFilters ?? []).flatMap((item) =>
 	noindex={about.seo?.noindex}
 	canonical={about.seo?.canonicalPath}
 	alternates={{ es: aboutPath('es'), en: path }}
-	jsonLd={breadcrumbSchema([
-		{ name: 'Home', href: '/en' },
-		{ name: about.heroBadge ?? 'About', href: path },
-	])}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Home', href: '/en' },
+			{ name: about.heroBadge ?? 'About', href: path },
+		]),
+		aboutPageSchema(site),
+	]}
 >
 	<main>
 		{allSections.length ? (

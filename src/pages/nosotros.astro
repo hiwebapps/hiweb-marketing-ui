@@ -11,7 +11,7 @@ import { TeamGrid } from '../components/sections/TeamGrid';
 import FinalCta from '../components/sections/FinalCtaBand.astro';
 import AboutPageSection from '../components/sections/AboutPageSection.astro';
 import { HOME_PILLARS } from '../data/site';
-import { breadcrumbSchema } from '../lib/schema';
+import { aboutPageSchema, breadcrumbSchema } from '../lib/schema';
 import { getAboutCopy, getPeople, getSiteSettings } from '../lib/content';
 import { aboutPath } from '../lib/page-meta';
 import type { TeamMember } from '../components/sections/TeamGrid';
@@ -42,10 +42,13 @@ const historyColumns =
 	noindex={about.seo?.noindex}
 	canonical={about.seo?.canonicalPath}
 	alternates={{ es: aboutPath('es'), en: aboutPath('en', englishAbout.slug) }}
-	jsonLd={breadcrumbSchema([
-		{ name: 'Inicio', href: '/' },
-		{ name: 'Nosotros', href: '/nosotros' },
-	])}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Inicio', href: '/' },
+			{ name: 'Nosotros', href: '/nosotros' },
+		]),
+		aboutPageSchema(site),
+	]}
 >
 	<main>
 		{allSections.length ? (

@@ -10,7 +10,7 @@ import { SiteNav } from '../components/sections/SiteNav';
 import { SiteFooter } from '../components/sections/SiteFooter';
 import { ScrollIndicator } from '../components/effects/ScrollIndicator';
 import { getFavicon, getFooter, getNavigation, getSiteSettings } from '../lib/content';
-import { organizationSchema } from '../lib/schema';
+import { organizationSchema, websiteSchema } from '../lib/schema';
 import { DEFAULT_OG_IMAGE, ROBOTS_NOINDEX, absoluteUrl, shouldNoIndex } from '../lib/seo';
 
 interface Props {
@@ -61,10 +61,18 @@ const alternateLinks = [
 	alternates?.es ? { hreflang: 'x-default', href: toAbsolute(alternates.es) } : null,
 ].filter((item): item is { hreflang: string; href: string } => item !== null);
 const ogImageUrl = absoluteUrl(ogImage, Astro.site ?? Astro.url);
-const jsonLdItems = [
-	...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
+const rawJsonLd = [
+	websiteSchema(),
 	organizationSchema(site),
+	...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
 ];
+const jsonLdItems = rawJsonLd.map((item) => {
+	if (item && typeof item === 'object') {
+		const { '@context': _, ...clean } = item as Record<string, unknown>;
+		return clean;
+	}
+	return item;
+});
 ---
 
 <!doctype html>
@@ -118,9 +126,13 @@ const jsonLdItems = [
 		)}
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-		{jsonLdItems.map((item) => (
-			<script type="application/ld+json" set:html={JSON.stringify(item)} />
-		))}
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify({
+				'@context': 'https://schema.org',
+				'@graph': jsonLdItems,
+			})}
+		/>
 		<script is:inline>
 			document.documentElement.classList.add('motion-ready');
 			window.setTimeout(function () {

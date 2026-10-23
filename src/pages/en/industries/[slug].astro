@@ -10,7 +10,7 @@ import { CaseStories } from '../../../components/sections/CaseStories';
 import { FaqSection } from '../../../components/sections/FaqSection';
 import FinalCta from '../../../components/sections/FinalCtaBand.astro';
 import IndustryPageSection from '../../../components/sections/IndustryPageSection.astro';
-import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
+import { breadcrumbSchema, faqSchema, industrySchema } from '../../../lib/schema';
 import { industryServiceDescription } from '../../../data/industryServices';
 import { serviceContentKey } from '../../../lib/en-slugs';
 import type { BadgeVariant } from '../../../components/ui';
@@ -107,8 +107,15 @@ const caseStories = displayCases.map((item) => ({
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Home', href: '/en' },
+			{ name: 'Industries', href: '/en/industries' },
 			{ name: entry.data.nombre, href: `/en/industries/${entry.id}` },
 		]),
+		industrySchema({
+			name: entry.data.nombre,
+			description: entry.data.seo?.metaDescription ?? entry.data.resumen ?? '',
+			href: `/en/industries/${entry.id}`,
+			industryName: entry.data.nombre,
+		}),
 		...(allSections.length === 0 || pageSections.some((section) => section._type === 'industryFaq')
 			? [faqSchema(entry.data.faqs)]
 			: []),

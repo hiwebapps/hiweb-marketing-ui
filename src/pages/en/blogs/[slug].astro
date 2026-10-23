@@ -65,6 +65,8 @@ const schemas = [
 			? { role: author.role, company: author.company, linkedin: author.linkedin, photo: author.photo }
 			: undefined,
 		date: entry.data.fecha,
+		dateModified: (entry.data as any).fechaActualizacion ?? (entry.data as any).updatedAt ?? entry.data.fecha,
+		image: cover,
 		publisher: site.legalName,
 	}),
 ];

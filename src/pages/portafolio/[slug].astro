@@ -14,7 +14,7 @@ import { CaseCards } from '../../components/sections/CasesIndex';
 import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import { InstagramPhoneSwitcher } from '../../components/sections/InstagramPhoneSwitcher';
 import { SOCIAL_BRANDS, type BrandProfile } from '../../components/sections/social-feed-data';
-import { breadcrumbSchema } from '../../lib/schema';
+import { breadcrumbSchema, caseStudySchema } from '../../lib/schema';
 import { postCoverUrl } from '../../lib/blog';
 import { formatCaseStat } from '../../lib/content/format';
 import { notFound, resolveEntry } from '../../lib/content/resolve-entry';
@@ -182,11 +182,20 @@ const heroAlt =
 			? { es: `/portafolio/${entry.id}`, en: `/en/success-stories/${entry.alternateSlug}` }
 			: undefined
 	}
-	jsonLd={breadcrumbSchema([
-		{ name: 'Inicio', href: '/' },
-		{ name: 'Portafolio', href: '/portafolio' },
-		{ name: entry.data.cliente, href: `/portafolio/${entry.id}` },
-	])}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Inicio', href: '/' },
+			{ name: 'Portafolio', href: '/portafolio' },
+			{ name: entry.data.cliente, href: `/portafolio/${entry.id}` },
+		]),
+		caseStudySchema({
+			title: entry.data.titulo || `Caso de éxito: ${entry.data.cliente}`,
+			clientName: entry.data.cliente,
+			description: entry.data.resumen || entry.data.seo?.metaDescription || '',
+			href: `/portafolio/${entry.id}`,
+			cover: heroImage,
+		}),
+	]}
 >
 	<main>
 		{sections.map((section) => {

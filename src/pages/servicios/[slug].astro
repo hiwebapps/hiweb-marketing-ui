@@ -16,7 +16,7 @@ import { CaseStories } from '../../components/sections/CaseStories';
 import { FaqSection } from '../../components/sections/FaqSection';
 import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import ServicePageSection from '../../components/sections/ServicePageSection.astro';
-import { breadcrumbSchema, faqSchema } from '../../lib/schema';
+import { breadcrumbSchema, faqSchema, serviceSchema } from '../../lib/schema';
 import { formatCaseStat } from '../../lib/content/format';
 import { serviceContentKey } from '../../lib/en-slugs';
 import type { BadgeVariant } from '../../components/ui';
@@ -129,8 +129,14 @@ const caseStories = displayCases.flatMap((item) => {
 	jsonLd={[
 		breadcrumbSchema([
 			{ name: 'Inicio', href: '/' },
+			{ name: 'Servicios', href: '/servicios' },
 			{ name: entry.data.nombre, href: `/servicios/${entry.id}` },
 		]),
+		serviceSchema({
+			name: entry.data.nombre,
+			description: entry.data.seo?.metaDescription ?? entry.data.tagline ?? '',
+			href: `/servicios/${entry.id}`,
+		}),
 		...(pageFaqs.length ? [faqSchema(pageFaqs)] : []),
 	]}
 >
