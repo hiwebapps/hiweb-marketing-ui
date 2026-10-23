@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Badge, Button, Card, Flex, Stack, Text } from '@sanity/ui';
 import { useToast } from '@sanity/ui/toast';
-import { set, useFormValue, type StringInputProps } from 'sanity';
+import { set, useClient, useFormValue, type StringInputProps } from 'sanity';
 
 function cleanInstagramHandle(raw: string): string {
   if (!raw) return '';
@@ -15,6 +15,7 @@ function cleanInstagramHandle(raw: string): string {
 export function InstagramSyncInput(props: StringInputProps) {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const client = useClient({ apiVersion: '2026-09-18' });
   const rawDoc = (useFormValue as unknown as (path: string[]) => unknown)([]) as {
     _id?: string;
     cutoffDate?: string;
@@ -57,7 +58,7 @@ export function InstagramSyncInput(props: StringInputProps) {
         const port = window.location.port;
 
         if (hostname.includes('sanity.studio')) {
-          apiOrigin = 'https://hiweb.com.mx';
+          apiOrigin = 'https://www.hiwebmarketing.com';
         } else if (port === '3333' || hostname === 'localhost' || hostname === '127.0.0.1') {
           apiOrigin = 'http://localhost:4322';
           try {
@@ -77,6 +78,7 @@ export function InstagramSyncInput(props: StringInputProps) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${client.config().token ?? ''}`,
         },
         body: JSON.stringify({
           username,

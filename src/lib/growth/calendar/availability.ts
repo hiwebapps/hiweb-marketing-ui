@@ -7,7 +7,6 @@ import {
 } from "./calendar-rules";
 import { getBookingNowParts } from "./booking-time";
 import { getGoogleCalendarBusySlotTimes } from "./google-busy";
-import { reconcileBookingsWithGoogleCalendar } from "./reconcile-google";
 import { getBookedTimesForDate } from "../db/calendar";
 import type { TimeSlot } from "./types";
 
@@ -37,8 +36,8 @@ export async function getAvailabilityForDate(
     return [];
   }
 
-  await reconcileBookingsWithGoogleCalendar(dateIso);
-
+  // No Google reconciliation here: this GET is public, and a missed event
+  // lookup used to cancel confirmed bookings (audit G-01).
   const [bookedD1, bookedGCal] = await Promise.all([
     getBookedTimesForDate(dateIso),
     getGoogleCalendarBusySlotTimes(dateIso),

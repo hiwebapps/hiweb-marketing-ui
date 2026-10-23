@@ -25,7 +25,7 @@ export async function dispatchRebuild(bindings: RebuildBindings) {
 
   const githubToken = bindings.GITHUB_DISPATCH_TOKEN;
   if (!githubToken) return false;
-  const githubRepo = bindings.GITHUB_DISPATCH_REPO || 'jahirgosu/hiweb-marketing-ui';
+  const githubRepo = bindings.GITHUB_DISPATCH_REPO || 'hiwebapps/hiweb-marketing-ui';
   const dispatch = await fetch(`https://api.github.com/repos/${githubRepo}/dispatches`, {
     method: 'POST',
     headers: {

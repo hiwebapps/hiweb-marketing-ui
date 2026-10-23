@@ -1,6 +1,6 @@
 /**
- * Internal sitemap for QA. robots.txt does NOT advertise this while
- * PUBLIC_SITE_INDEXABLE is off (see docs/cms/CUTOVER-SEO.md).
+ * robots.txt advertises this only when shouldNoIndex() is false
+ * (PUBLIC_SITE_INDEXABLE on and the request comes from hiwebmarketing.com).
  */
 import type { APIRoute } from 'astro';
 import { getAboutCopy, getCases, getIndustries, getLandings, getPosts, getServices } from '../lib/content';
@@ -20,9 +20,22 @@ function urlXml(href: string): string {
 
 export const GET: APIRoute = async ({ url, site }) => {
   const origin = site?.origin ?? import.meta.env.PUBLIC_SITE_URL ?? url.origin;
-  const [industries, services, cases, englishCases, posts, englishPosts, landings, englishAbout] = await Promise.all([
+  const [
+    industries,
+    englishIndustries,
+    services,
+    englishServices,
+    cases,
+    englishCases,
+    posts,
+    englishPosts,
+    landings,
+    englishAbout,
+  ] = await Promise.all([
     getIndustries(),
+    getIndustries('en'),
     getServices(),
+    getServices('en'),
     getCases(),
     getCases('en'),
     getPosts(),
@@ -33,6 +46,7 @@ export const GET: APIRoute = async ({ url, site }) => {
 
   const urls = [
     '/',
+    '/en',
     '/portafolio',
     '/en/success-stories',
     '/blog',
@@ -46,7 +60,9 @@ export const GET: APIRoute = async ({ url, site }) => {
     '/portal',
     '/en/portal',
     ...services.map((item) => `/servicios/${item.id}`),
+    ...englishServices.map((item) => `/en/services/${item.id}`),
     ...industries.map((item) => `/industrias/${item.id}`),
+    ...englishIndustries.map((item) => `/en/industries/${item.id}`),
     ...cases.map((item) => `/portafolio/${item.id}`),
     ...englishCases.map((item) => `/en/success-stories/${item.id}`),
     ...posts.map((item) => `/blog/${item.id}`),

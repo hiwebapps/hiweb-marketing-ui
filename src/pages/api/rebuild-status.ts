@@ -8,10 +8,10 @@ import { env } from 'cloudflare:workers';
 import { getD1 } from '../../lib/growth/db/d1';
 import { canDispatchRebuild, dispatchRebuild, type RebuildBindings } from '../../lib/rebuild/dispatch';
 import { clearPendingRebuild, readRebuildStatus, restorePendingRebuild } from '../../lib/rebuild/queue';
+import { bearerToken, tokenCanAccessProject } from '../../lib/sanity-auth';
 
 export const prerender = false;
 
-const PROJECT_ID = 'fxardjr1';
 const ALLOWED_ORIGINS = new Set([
   'https://hiweb-web.sanity.studio',
   'http://localhost:3333',
@@ -67,9 +67,7 @@ export async function POST({ request }: { request: Request }) {
     return json(request, { ok: false, error: 'This worker does not deploy the live site.' }, 409);
   }
 
-  const auth = request.headers.get('authorization') ?? '';
-  const token = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
-  if (!token || !(await tokenCanAccessProject(token))) {
+  if (!(await tokenCanAccessProject(bearerToken(request)))) {
     return json(request, { ok: false, error: 'Unauthorized' }, 401);
   }
 
@@ -87,11 +85,4 @@ export async function POST({ request }: { request: Request }) {
     return json(request, { ok: false, error: 'Deploy hook failed' }, 502);
   }
   return json(request, { ok: true, fired: true });
-}
-
-async function tokenCanAccessProject(token: string) {
-  const response = await fetch(`https://api.sanity.io/v2021-06-07/projects/${PROJECT_ID}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.ok;
 }

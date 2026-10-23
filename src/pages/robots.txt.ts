@@ -3,13 +3,13 @@ import { shouldNoIndex } from '../lib/seo';
 
 export const prerender = false;
 
-export const GET: APIRoute = ({ url }) => {
+export const GET: APIRoute = ({ url, site }) => {
   const body = shouldNoIndex(url.hostname)
     ? ['User-agent: *', 'Disallow: /', ''].join('\n')
     : [
         'User-agent: *',
         'Allow: /',
-        'Sitemap: https://www.hiwebmarketing.com/sitemap.xml',
+        `Sitemap: ${new URL('/sitemap.xml', site ?? url.origin).href}`,
         '',
       ].join('\n');
 

@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@sanity/client';
+import { bearerToken, tokenCanAccessProject } from '../../lib/sanity-auth';
 
 export const prerender = false;
 
@@ -77,6 +78,14 @@ function cleanInstagramHandle(raw: string): string {
 export const POST: APIRoute = async ({ request }) => {
   const cors = getCorsHeaders(request);
 
+  // Writes to Sanity with the server token and spends Apify credits: Studio users only.
+  if (!(await tokenCanAccessProject(bearerToken(request)))) {
+    return new Response(JSON.stringify({ success: false, error: 'No autorizado.' }), {
+      status: 401,
+      headers: cors,
+    });
+  }
+
   try {
     const body = (await request.json()) as {
       username?: string;
@@ -145,6 +154,17 @@ export const POST: APIRoute = async ({ request }) => {
 
     const cleanId = documentId.replace(/^drafts\./, '');
     const draftId = `drafts.${cleanId}`;
+
+    const existingType = await sanityClient.fetch<string | null>('*[_id in [$id, $draftId]][0]._type', {
+      id: cleanId,
+      draftId,
+    });
+    if (existingType && existingType !== 'socialBrand') {
+      return new Response(
+        JSON.stringify({ success: false, error: 'El documento no es una marca de Instagram.' }),
+        { status: 400, headers: cors }
+      );
+    }
 
     // Si las URLs o la fecha no vinieron en el cuerpo, verificar si ya existen en el documento de Sanity
     let effectivePostUrls = postUrls;
