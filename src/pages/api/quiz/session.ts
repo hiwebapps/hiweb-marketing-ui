@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { QUIZ_TOTAL_STEPS } from '../../../lib/growth/quiz/questions';
 import type { QuizAnswers } from '../../../lib/growth/quiz/types';
-import { sanitizeSessionId } from '../../../lib/growth/quiz/validators';
+import { sanitizeQuizAnswers, sanitizeSessionId } from '../../../lib/growth/quiz/validators';
 import { createQuizSession, getQuizSession, updateQuizSession } from '../../../lib/growth/db/quiz';
 import { jsonError } from '../../../lib/growth/api/response';
 import { enforceRateLimit } from '../../../lib/growth/api/rate-limit';
@@ -20,9 +20,9 @@ type SessionBody = {
 
 function mergeAnswersFromBody(existing: QuizAnswers, body: SessionBody): QuizAnswers {
   if (body.questionId && body.optionId) {
-    return { ...existing, [body.questionId]: body.optionId };
+    return sanitizeQuizAnswers({ ...existing, [body.questionId]: body.optionId });
   }
-  if (body.answers) return { ...body.answers };
+  if (body.answers) return sanitizeQuizAnswers(body.answers);
   return existing;
 }
 
@@ -57,7 +57,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (existing) {
       const merged = mergeAnswersFromBody(existing.answers, body);
-      const currentStep = typeof body.currentStep === 'number' ? body.currentStep : Object.keys(merged).length;
+      const requestedStep = typeof body.currentStep === 'number' ? body.currentStep : Object.keys(merged).length;
+      const currentStep = Math.min(Math.max(Math.trunc(requestedStep) || 0, 0), QUIZ_TOTAL_STEPS);
       const session = await updateQuizSession(sessionId, merged, currentStep);
       if (session) {
         return Response.json({

@@ -7,17 +7,18 @@ import { env } from 'cloudflare:workers';
 import { getD1 } from '../../lib/growth/db/d1';
 import { canDispatchRebuild, type RebuildBindings } from '../../lib/rebuild/dispatch';
 import { markRebuildRequested } from '../../lib/rebuild/queue';
+import { safeEqual } from '../../lib/runtime-env';
 
 export const prerender = false;
 
 function workerEnv(): RebuildBindings & { SANITY_REVALIDATE_SECRET?: string } {
   const runtime = env as RebuildBindings & { SANITY_REVALIDATE_SECRET?: string };
   return {
-    SANITY_REVALIDATE_SECRET: runtime.SANITY_REVALIDATE_SECRET || import.meta.env.SANITY_REVALIDATE_SECRET,
+    SANITY_REVALIDATE_SECRET: runtime.SANITY_REVALIDATE_SECRET,
     PUBLIC_SITE_ENV: runtime.PUBLIC_SITE_ENV || import.meta.env.PUBLIC_SITE_ENV,
-    CLOUDFLARE_DEPLOY_HOOK_URL: runtime.CLOUDFLARE_DEPLOY_HOOK_URL || import.meta.env.CLOUDFLARE_DEPLOY_HOOK_URL,
-    GITHUB_DISPATCH_TOKEN: runtime.GITHUB_DISPATCH_TOKEN || import.meta.env.GITHUB_DISPATCH_TOKEN,
-    GITHUB_DISPATCH_REPO: runtime.GITHUB_DISPATCH_REPO || import.meta.env.GITHUB_DISPATCH_REPO,
+    CLOUDFLARE_DEPLOY_HOOK_URL: runtime.CLOUDFLARE_DEPLOY_HOOK_URL,
+    GITHUB_DISPATCH_TOKEN: runtime.GITHUB_DISPATCH_TOKEN,
+    GITHUB_DISPATCH_REPO: runtime.GITHUB_DISPATCH_REPO,
   };
 }
 
@@ -31,7 +32,7 @@ export async function POST({ request }: { request: Request }) {
 
   const auth = request.headers.get('authorization') ?? '';
   const provided = auth.startsWith('Bearer ') ? auth.slice(7) : auth;
-  if (provided !== expected) {
+  if (!safeEqual(provided, expected)) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

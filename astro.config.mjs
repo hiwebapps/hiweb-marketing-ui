@@ -14,6 +14,11 @@ const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET, PUBLIC_SITE_URL } = loa
   '',
 );
 
+// The prerender reads the Sanity token from process.env (src/lib/runtime-env.ts).
+// CI sets it directly; local builds take it from .env.
+const fileEnv = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
+process.env.SANITY_API_READ_TOKEN ??= fileEnv.SANITY_API_READ_TOKEN;
+
 const projectId = PUBLIC_SANITY_PROJECT_ID || 'fxardjr1';
 const dataset = PUBLIC_SANITY_DATASET || 'web-2026';
 const isStaging = process.env.PUBLIC_SITE_ENV === 'staging';

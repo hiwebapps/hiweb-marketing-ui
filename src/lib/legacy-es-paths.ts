@@ -16,6 +16,12 @@ const PAGES: Record<string, string> = {
   '/servicios/branding': '/servicios/agencia-de-branding',
   '/servicios/ia-marketing': '/servicios/marketing-con-inteligencia-artificial',
   '/servicios/community-manager': '/servicios/servicio-de-community-manager',
+  // Short slugs still linked from older posts.
+  '/servicios/seo': '/servicios/agencia-seo',
+  '/servicios/redes-sociales': '/servicios/gestion-de-redes-sociales',
+  '/servicios/desarrollo-web': '/servicios/agencia-de-desarrollo-web',
+  '/servicios/diseno-web': '/servicios/agencia-de-desarrollo-web',
+  '/industrias/automotive-marketing-agency': '/industrias/agencia-de-marketing-automotriz',
 };
 
 /** Current Spanish URL for an old one, or undefined when the path is already current. */

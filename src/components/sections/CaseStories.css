@@ -186,6 +186,21 @@
   object-position: center;
 }
 
+.case-story__cover--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #101010 0%, #1f1a33 100%);
+}
+
+.case-story__initials {
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .case-story__body {
   display: flex;
   flex: 1 1 auto;
@@ -217,6 +232,16 @@
   border-radius: 999px;
   object-fit: cover;
   background: #101010;
+}
+
+.case-story__avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
 }
 
 .case-story__identity {

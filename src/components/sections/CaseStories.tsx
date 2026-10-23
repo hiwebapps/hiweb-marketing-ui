@@ -36,12 +36,6 @@ type CaseStoriesProps = {
   showAuthor?: boolean;
 };
 
-const PHOTO_FALLBACKS: Record<string, string> = {
-  Pulse: 'https://i.pravatar.cc/900?img=47',
-  'Norte Industrial': 'https://i.pravatar.cc/900?img=12',
-  'Marina Bay': 'https://i.pravatar.cc/900?img=32',
-  'Clínica Aurora': 'https://i.pravatar.cc/900?img=49',
-};
 
 const DEFAULT_STORIES: CaseStory[] = [
   {
@@ -87,12 +81,14 @@ function prefersReducedMotion() {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-function imageFor(story: CaseStory, index: number) {
-  return story.photo ?? PHOTO_FALLBACKS[story.client] ?? `https://i.pravatar.cc/900?img=${5 + index * 7}`;
-}
-
-function coverFor(story: CaseStory, index: number) {
-  return story.cover || imageFor(story, index);
+/** Client initials stand in for a missing photo; never a stock face for a real client. */
+function initialsOf(text: string) {
+  return text
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0]?.toUpperCase() ?? '')
+    .join('');
 }
 
 /**
@@ -299,21 +295,29 @@ export function CaseStories({
               aria-label={locale === 'en' ? 'Testimonials' : 'Testimonios'}
             >
               {activeStories.map((story, index) => {
-                const portrait = imageFor(story, index);
+                const cover = story.cover || story.photo;
                 return (
                   <li key={`${story.client}-${story.name}`} className="case-stories__slide">
                     <article className="case-story">
-                      <div className="case-story__cover">
-                        <img
-                          src={coverFor(story, index)}
-                          alt={story.cover ? story.client : ''}
-                          draggable={false}
-                        />
+                      <div className={cover ? 'case-story__cover' : 'case-story__cover case-story__cover--empty'}>
+                        {cover ? (
+                          <img src={cover} alt={story.cover ? story.client : ''} draggable={false} />
+                        ) : (
+                          <span className="case-story__initials" aria-hidden="true">
+                            {initialsOf(story.client || story.name)}
+                          </span>
+                        )}
                       </div>
                       <div className="case-story__body">
                         {showAuthor && story.name ? (
                           <div className="case-story__person">
-                            <img className="case-story__avatar" src={portrait} alt="" draggable={false} />
+                            {story.photo ? (
+                              <img className="case-story__avatar" src={story.photo} alt="" draggable={false} />
+                            ) : (
+                              <span className="case-story__avatar case-story__avatar--initials" aria-hidden="true">
+                                {initialsOf(story.name)}
+                              </span>
+                            )}
                             <div className="case-story__identity">
                               <p className="case-story__name">{story.name}</p>
                               {story.client && story.client !== story.name ? (

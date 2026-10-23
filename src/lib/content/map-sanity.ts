@@ -963,8 +963,9 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
       ubicacion:
         (hero?._type === 'caseHero' ? hero.ubicacion : undefined) ??
         asText(doc.ubicacion) ??
-        (doc.locale === 'en' ? metaFallback?.ubicacionEn : undefined) ??
-        metaFallback?.ubicacion,
+        (doc.locale === 'en'
+          ? (metaFallback?.ubicacionEn ?? metaFallback?.ubicacion?.replace('México', 'Mexico'))
+          : metaFallback?.ubicacion),
       sitioWeb:
         (context?._type === 'caseContext' ? context.sitioWeb : undefined) ??
         asText(doc.sitioWeb) ??

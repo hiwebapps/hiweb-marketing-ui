@@ -25,7 +25,8 @@ export function ServicePlans({
   headingWidth,
   includesLabel = 'Incluye',
 }: ServicePlansProps) {
-  const noteBody = noteLabel && noteHref ? note.split(noteLabel) : null;
+  // Link only when the label is in the note; otherwise it would be appended loose.
+  const noteBody = noteLabel && noteHref && note.includes(noteLabel) ? note.split(noteLabel) : null;
 
   return (
     <SectionBand id="precios" tone={tone}>

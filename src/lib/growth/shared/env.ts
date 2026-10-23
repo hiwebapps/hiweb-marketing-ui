@@ -15,9 +15,6 @@ function read(name: string): string {
   const fromWorker = runtime[name];
   if (typeof fromWorker === 'string' && fromWorker.trim()) return fromWorker;
 
-  const fromMeta = (import.meta.env as Record<string, string | undefined>)[name];
-  if (typeof fromMeta === 'string' && fromMeta.trim()) return fromMeta;
-
   const fromProcess = typeof process === 'undefined' ? undefined : process.env[name];
   return typeof fromProcess === 'string' ? fromProcess : '';
 }

@@ -12,18 +12,23 @@ import type { BookingRecord } from "../calendar/types";
 import type { QuizLeadInput, QuizScoreResult } from "../quiz/types";
 import type { ContactLead } from "../contact/validators";
 
+/** Visitor text in Slack mrkdwn: escaped so "<!channel>" or "<url|label>" stay plain text. */
+function slack(value: string | undefined | null): string {
+  return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 export function buildContactN8nPayload(input: { leadId: string; lead: ContactLead }) {
   const { lead } = input;
   const name = [lead.firstName, lead.lastName].filter(Boolean).join(" ");
   const slackText = [
     "✉️ *Nuevo mensaje de contacto*",
-    `• Nombre: ${name}`,
-    `• Email: ${lead.email}`,
-    lead.phone ? `• Celular: ${lead.phone}` : null,
-    lead.website ? `• Sitio web: ${lead.website}` : null,
-    lead.services.length ? `• Servicios: ${lead.services.join(", ")}` : null,
-    lead.budget ? `• Presupuesto: ${lead.budget}` : null,
-    lead.project ? `• Proyecto: ${lead.project}` : null,
+    `• Nombre: ${slack(name)}`,
+    `• Email: ${slack(lead.email)}`,
+    lead.phone ? `• Celular: ${slack(lead.phone)}` : null,
+    lead.website ? `• Sitio web: ${slack(lead.website)}` : null,
+    lead.services.length ? `• Servicios: ${slack(lead.services.join(", "))}` : null,
+    lead.budget ? `• Presupuesto: ${slack(lead.budget)}` : null,
+    lead.project ? `• Proyecto: ${slack(lead.project)}` : null,
     `• Idioma: ${lead.locale}`,
   ]
     .filter(Boolean)
@@ -71,8 +76,8 @@ function buildCalendarSlackText(
       "❌ *Cita cancelada*",
       `• Servicio: ${serviceLabel}`,
       `• Horario: ${scheduleLabel}`,
-      `• Nombre: ${booking.name}`,
-      `• Email: ${booking.email}`,
+      `• Nombre: ${slack(booking.name)}`,
+      `• Email: ${slack(booking.email)}`,
       `• ID: ${booking.id}`,
     ].join("\n");
   }
@@ -81,18 +86,18 @@ function buildCalendarSlackText(
     "📅 *Nueva cita agendada*",
     `• Servicio: ${serviceLabel}`,
     `• Horario: ${scheduleLabel}`,
-    `• Nombre: ${booking.name}`,
-    `• Email: ${booking.email}`,
+    `• Nombre: ${slack(booking.name)}`,
+    `• Email: ${slack(booking.email)}`,
   ];
 
   if (booking.company) {
-    lines.push(`• Empresa: ${booking.company}`);
+    lines.push(`• Empresa: ${slack(booking.company)}`);
   }
   if (booking.phone) {
-    lines.push(`• Teléfono: ${booking.phone}`);
+    lines.push(`• Teléfono: ${slack(booking.phone)}`);
   }
   if (booking.website) {
-    lines.push(`• Sitio web: ${booking.website}`);
+    lines.push(`• Sitio web: ${slack(booking.website)}`);
   }
 
   lines.push(`• ID: ${booking.id}`);

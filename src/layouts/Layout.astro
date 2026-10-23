@@ -11,6 +11,7 @@ import { SiteFooter } from '../components/sections/SiteFooter';
 import { ScrollIndicator } from '../components/effects/ScrollIndicator';
 import { getFavicon, getFooter, getNavigation, getSiteSettings } from '../lib/content';
 import { organizationSchema, websiteSchema } from '../lib/schema';
+import { jsonLdString } from '../lib/json-ld';
 import { DEFAULT_OG_IMAGE, ROBOTS_NOINDEX, absoluteUrl, shouldNoIndex } from '../lib/seo';
 
 interface Props {
@@ -155,7 +156,7 @@ const jsonLdItems = rawJsonLd.map((item) => {
 		<title>{title}</title>
 		<script
 			type="application/ld+json"
-			set:html={JSON.stringify({
+			set:html={jsonLdString({
 				'@context': 'https://schema.org',
 				'@graph': jsonLdItems,
 			})}

@@ -31,9 +31,27 @@ export function validateQuizAnswers(answers: QuizAnswers): void {
   }
 }
 
+/** Keeps only known questions with a valid option; drops anything else a client sends. */
+export function sanitizeQuizAnswers(answers: unknown): QuizAnswers {
+  if (!answers || typeof answers !== "object") return {};
+  const clean: QuizAnswers = {};
+  for (const question of QUIZ_QUESTIONS) {
+    const optionId = (answers as Record<string, unknown>)[question.id];
+    if (typeof optionId === "string" && question.options.some((o) => o.id === optionId)) {
+      clean[question.id] = optionId;
+    }
+  }
+  return clean;
+}
+
+function clip(value: string | undefined, max: number): string | undefined {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed.slice(0, max) : undefined;
+}
+
 export function validateQuizLead(lead: QuizLeadInput): QuizLeadInput {
-  const name = lead.name?.trim();
-  const email = lead.email?.trim().toLowerCase();
+  const name = clip(lead.name, 120);
+  const email = clip(lead.email, 200)?.toLowerCase();
 
   if (!name || name.length < 2) {
     throw new AppError("El nombre es obligatorio.", {
@@ -49,7 +67,7 @@ export function validateQuizLead(lead: QuizLeadInput): QuizLeadInput {
     });
   }
 
-  const phone = lead.phone?.trim();
+  const phone = clip(lead.phone, 40);
   if (phone && phone.length > 0 && phone.length < 7) {
     throw new AppError("El teléfono no parece válido.", {
       statusCode: 400,
@@ -60,10 +78,10 @@ export function validateQuizLead(lead: QuizLeadInput): QuizLeadInput {
   return {
     name,
     email,
-    company: lead.company?.trim() || undefined,
+    company: clip(lead.company, 120),
     phone: phone || undefined,
-    website: lead.website?.trim() || undefined,
-    industry: lead.industry?.trim() || undefined,
+    website: clip(lead.website, 300),
+    industry: clip(lead.industry, 80),
   };
 }
 

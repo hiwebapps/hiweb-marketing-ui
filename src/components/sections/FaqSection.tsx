@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { jsonLdString } from '../../lib/json-ld';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { HOME_FAQ_CATEGORIES } from '../../data/site';
@@ -223,7 +224,7 @@ export function FaqSection({
   return (
     <SectionBand id="faq" tone={tone}>
       {withSchema ? (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(schema) }} />
       ) : null}
 
       <SectionHeader

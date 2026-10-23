@@ -51,9 +51,6 @@ async function getSecret(key: string): Promise<string | undefined> {
     return process.env[key];
   }
 
-  const fromMeta = (import.meta.env as Record<string, unknown>)?.[key];
-  if (typeof fromMeta === 'string' && fromMeta) return fromMeta;
-
   return undefined;
 }
 

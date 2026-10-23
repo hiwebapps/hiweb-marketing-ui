@@ -1,6 +1,6 @@
 import { createClient, type SanityClient } from '@sanity/client';
 import { isStagingSite } from '../lib/site-env';
-import { readBinding } from '../lib/runtime-env';
+import { buildSecret, readBinding } from '../lib/runtime-env';
 
 export const SANITY_PROJECT_ID =
   import.meta.env.PUBLIC_SANITY_PROJECT_ID ||
@@ -28,7 +28,7 @@ export function createSanityClient(options?: { token?: string; useCdn?: boolean 
     apiVersion: SANITY_API_VERSION,
     // The API CDN does not serve drafts, so staging stays on the live API.
     useCdn: options?.useCdn ?? !staging,
-    token: options?.token ?? import.meta.env.SANITY_API_READ_TOKEN,
+    token: options?.token ?? buildSecret('SANITY_API_READ_TOKEN'),
     // Drafts overlay published content. The read token is required.
     perspective: staging ? 'drafts' : 'published',
   });

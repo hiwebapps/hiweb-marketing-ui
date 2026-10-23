@@ -56,7 +56,7 @@ export function ProcessPhases({
   phases,
   eyebrow = 'Proceso',
   title = 'De la auditoría a la optimización',
-  description = 'Cuatro fases. Un sistema. El mismo criterio de evidencia en cada ciclo.',
+  description = 'Un sistema, con el mismo criterio de evidencia en cada fase.',
   tone = 'canvas',
   headingWidth,
   align = 'left',

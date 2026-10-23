@@ -4,7 +4,7 @@ import { PREVIEW_ACCESS_COOKIE, verifyPreviewAccess } from './lib/preview-auth';
 import { runWithPreview } from './lib/preview-context';
 import { legacyEnglishPath } from './lib/legacy-en-paths';
 import { legacySpanishPath } from './lib/legacy-es-paths';
-import { readBinding } from './lib/runtime-env';
+import { readBinding, safeEqual } from './lib/runtime-env';
 import { ROBOTS_NOINDEX, shouldNoIndex } from './lib/seo';
 import { isStagingSite } from './lib/site-env';
 
@@ -44,7 +44,9 @@ function credentialsMatch(header: string | null, user: string, password: string)
   }
   const separator = decoded.indexOf(':');
   if (separator < 0) return false;
-  return decoded.slice(0, separator) === user && decoded.slice(separator + 1) === password;
+  const userOk = safeEqual(decoded.slice(0, separator), user);
+  const passwordOk = safeEqual(decoded.slice(separator + 1), password);
+  return userOk && passwordOk;
 }
 
 /** Belt-and-suspenders: X-Robots-Tag while PUBLIC_SITE_INDEXABLE is off (and always on non-live hosts). */

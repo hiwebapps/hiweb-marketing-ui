@@ -22,9 +22,9 @@ function workerEnv(): RebuildBindings {
   const runtime = env as RebuildBindings;
   return {
     PUBLIC_SITE_ENV: runtime.PUBLIC_SITE_ENV || import.meta.env.PUBLIC_SITE_ENV,
-    CLOUDFLARE_DEPLOY_HOOK_URL: runtime.CLOUDFLARE_DEPLOY_HOOK_URL || import.meta.env.CLOUDFLARE_DEPLOY_HOOK_URL,
-    GITHUB_DISPATCH_TOKEN: runtime.GITHUB_DISPATCH_TOKEN || import.meta.env.GITHUB_DISPATCH_TOKEN,
-    GITHUB_DISPATCH_REPO: runtime.GITHUB_DISPATCH_REPO || import.meta.env.GITHUB_DISPATCH_REPO,
+    CLOUDFLARE_DEPLOY_HOOK_URL: runtime.CLOUDFLARE_DEPLOY_HOOK_URL,
+    GITHUB_DISPATCH_TOKEN: runtime.GITHUB_DISPATCH_TOKEN,
+    GITHUB_DISPATCH_REPO: runtime.GITHUB_DISPATCH_REPO,
   };
 }
 

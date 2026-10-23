@@ -42,7 +42,7 @@ export async function validateBookingInput(
 ): Promise<BookingInput> {
   const locale = input.locale === "en" ? "en" : "es";
   const t = (es: string, en: string) => (locale === "en" ? en : es);
-  const name = input.name?.trim();
+  const name = input.name?.trim().slice(0, 120);
   const email = input.email?.trim().toLowerCase();
   const selectedDate = input.selectedDate?.trim();
   const selectedTime = input.selectedTime?.trim();
@@ -132,7 +132,7 @@ export async function validateBookingInput(
   return {
     name,
     email,
-    company: input.company?.trim() || undefined,
+    company: input.company?.trim().slice(0, 120) || undefined,
     phone,
     website,
     service: resolved.map((item) => item.label).join(", "),
