@@ -489,6 +489,20 @@
   font-weight: 600;
 }
 
+.ig-modal-sidebar__views-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+  padding: 0.3rem 0.75rem;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
 .ig-modal-sidebar__metric-box {
   margin-top: 1.5rem;
   padding: 0.85rem 1rem;

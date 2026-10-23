@@ -395,7 +395,7 @@ export const POST: APIRoute = async ({ request }) => {
             : undefined,
           videoUrl: p.videoUrl || undefined,
           stats: {
-            views: formatStat(p.videoViewCount || p.playCount),
+            views: formatStat(p.videoPlayCount || p.videoViewCount || p.playCount),
             likes: formatStat(p.likesCount),
             comments: formatStat(p.commentsCount),
           },

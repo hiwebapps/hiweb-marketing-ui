@@ -400,6 +400,12 @@ export function InstagramGridFeed({
                       </strong>{' '}
                       {activePost.caption}
                     </p>
+
+                    {activePost.stats.views && parseStatNum(activePost.stats.views) > 0 && (
+                      <div className="ig-modal-sidebar__views-badge">
+                        <span>👁️ {activePost.stats.views} {locale === 'en' ? 'views' : 'reproducciones'}</span>
+                      </div>
+                    )}
                   </div>
 
                   {activePost.outcomeTag && (
@@ -416,15 +422,6 @@ export function InstagramGridFeed({
 
                 {/* Action Bar */}
                 <div className="ig-modal-sidebar__footer">
-                  <div className="ig-modal-sidebar__stats-strip">
-                    {activePost.stats.views && parseStatNum(activePost.stats.views) > 0 && (
-                      <span>👁️ {activePost.stats.views} Reproducciones</span>
-                    )}
-                    {activePost.stats.comments && parseStatNum(activePost.stats.comments) > 0 && (
-                      <span>💬 {activePost.stats.comments} Comentarios</span>
-                    )}
-                  </div>
-
                   <div className="ig-modal-sidebar__actions">
                     {activePost.caseSlug && (
                       <Button
@@ -435,8 +432,8 @@ export function InstagramGridFeed({
                         className="no-underline w-full justify-center"
                       >
                         {locale === 'en'
-                          ? `View ${activePost.brandName} case study →`
-                          : `Ver caso de éxito de ${activePost.brandName} →`}
+                          ? 'View case study →'
+                          : 'Ver caso de éxito →'}
                       </Button>
                     )}
                   </div>
