@@ -52,6 +52,9 @@ export default defineConfig({
   title: 'Hiweb Web 2026',
   projectId,
   dataset,
+  // Token login so `client.config().token` is set: the Instagram sync and the
+  // rebuild bar send it to the Worker, which checks the user's project role.
+  auth: { loginMethod: 'token' },
   plugins: [
     structureTool({
       structure,
