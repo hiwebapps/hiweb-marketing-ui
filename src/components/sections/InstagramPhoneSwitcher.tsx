@@ -224,10 +224,6 @@ export function InstagramPhoneSwitcher({
                   <span className="ig-brand-metric__val">{brand.stats.posts}</span>
                   <span className="ig-brand-metric__lbl">Publicaciones</span>
                 </div>
-                <div className="ig-brand-metric">
-                  <span className="ig-brand-metric__val">Continuo</span>
-                  <span className="ig-brand-metric__lbl">Entregables</span>
-                </div>
               </div>
             )}
 
