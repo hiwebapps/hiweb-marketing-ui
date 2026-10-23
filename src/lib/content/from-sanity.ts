@@ -229,8 +229,11 @@ export async function sanityCalendarPage(locale: 'es' | 'en' = 'es'): Promise<Ca
   return mapCalendarPage(data, locale);
 }
 
-export async function sanityContactPage(): Promise<ContactPageCopy | null> {
-  const { data } = await loadQuery<Record<string, unknown> | null>({ query: contactPageQuery });
+export async function sanityContactPage(locale: 'es' | 'en' = 'es'): Promise<ContactPageCopy | null> {
+  const { data } = await loadQuery<Record<string, unknown> | null>({
+    query: contactPageQuery,
+    params: { id: locale === 'en' ? 'contactPage-en' : 'contactPage' },
+  });
   return mapContactPage(data);
 }
 

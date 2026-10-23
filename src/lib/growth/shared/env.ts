@@ -3,6 +3,7 @@ import { env } from 'cloudflare:workers';
 export type ServerEnv = {
   n8nWebhookQuizUrl: string;
   n8nWebhookCalendarUrl: string;
+  n8nWebhookContactUrl: string;
   n8nWebhookSecret: string;
   googleServiceAccountEmail: string;
   googleServiceAccountPrivateKey: string;
@@ -26,6 +27,8 @@ export function getServerEnv(): ServerEnv {
   return {
     n8nWebhookQuizUrl: read('N8N_WEBHOOK_QUIZ_URL'),
     n8nWebhookCalendarUrl: read('N8N_WEBHOOK_CALENDAR_URL'),
+    // Contact shares the quiz webhook until it has its own. The payload's `event` tells them apart.
+    n8nWebhookContactUrl: read('N8N_WEBHOOK_CONTACT_URL') || read('N8N_WEBHOOK_QUIZ_URL'),
     n8nWebhookSecret: read('N8N_WEBHOOK_SECRET'),
     googleServiceAccountEmail: read('GOOGLE_SERVICE_ACCOUNT_EMAIL'),
     googleServiceAccountPrivateKey: read('GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY'),

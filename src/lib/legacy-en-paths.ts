@@ -18,11 +18,13 @@ const PAGES: Record<string, string> = {
   '/en/portfolio': '/en/success-stories',
   '/en/marketing-portafolio': '/en/success-stories',
   '/en/calendario': '/en/calendar',
-  '/en/contacto': '/en/calendar',
+  '/en/contacto': '/en/contact',
   '/en/terminos': '/en/terms',
   '/en/aviso-de-privacidad': '/en/privacy-policy',
   '/en/nosotros': `/en/${DEFAULT_ABOUT_EN_SLUG}`,
   '/en/blog': '/en/blogs',
+  // Spanish-only post that the Webflow sitemap listed under /en.
+  '/en/blogs/las-mejores-herramientas-de-marketing-digital': '/blog/las-mejores-herramientas-de-marketing-digital',
 };
 
 /** hiwebmarketing.com/en service slugs → content key. */

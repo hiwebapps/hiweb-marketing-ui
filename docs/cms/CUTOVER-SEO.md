@@ -2,33 +2,70 @@
 
 El front se queda **noindex** hasta que cada ítem abajo esté hecho y alguien active el flag a propósito.
 
+Estado al 23 de octubre de 2026: `www.hiwebmarketing.com` sigue en Webflow. El Worker `hiweb-marketing-ui` sirve `hiweb.com.mx` con noindex. El commit `2806181` regresó el dominio a `hiweb.com.mx`. En el cutover se revierte ese commit.
+
 ## Durante la migración (ahora)
 
 - `PUBLIC_SITE_INDEXABLE` unset o `false` en todos los entornos.
 - `robots.txt` → `Disallow: /`
-- Meta robots + `X-Robots-Tag` vía `src/lib/seo.ts`, middleware y `public/_headers`
-- El sitio indexable sigue siendo el live actual (Webflow / dominio de producción), no este Worker.
+- Meta robots + `X-Robots-Tag` vía `src/lib/seo.ts`, middleware y `public/_headers`.
+- El sitio indexable sigue siendo Webflow en `www.hiwebmarketing.com`, no este Worker.
 - Sitemap interno: `/sitemap.xml` (no enlazado desde robots).
-- En cutover, borrar o vaciar `public/_headers` (el header estático no lee el flag).
 
-## Pre-cutover QA
+## DNS hoy
 
-- [ ] URLs de industrias, servicios, casos, blog, nosotros, contacto → 200
-- [ ] Title + meta description por página (grupo SEO o fallback)
-- [ ] Forms de contacto
-- [ ] Studio `hiweb-web` con schemas de `web-2026`
-- [ ] Worker en Cloudflare con env de producción
-- [ ] Aprobación explícita de go-live
+| Registro | Valor | Nota |
+| --- | --- | --- |
+| NS `hiwebmarketing.com` | `ns1/ns2.dns-parking.com` | Hostinger. **No está en Cloudflare.** |
+| A `hiwebmarketing.com` | `198.202.211.1` | Webflow. Redirige 301 a `www`. |
+| CNAME `www` | `cdn.webflow.com` | Webflow. |
+| MX | `mx.zoho.com`, `mx2.zoho.com`, `mx3.zoho.com` (10) | Correo Zoho. No tocar. |
+| TXT apex | SPF `v=spf1 include:zoho.com ~all`, 2× `google-site-verification`, zoho, apple, openai, yandex | Copiar todos. |
+| TXT `zmail._domainkey` | DKIM de Zoho | Copiar. |
+| `hiweb.com.mx`, `www`, `staging` | Cloudflare (`yevgen`/`deborah`) → Worker | Ya en la cuenta. |
 
-## Orden de cutover (no reordenar)
+Un Custom Domain de Worker exige que la zona esté en la misma cuenta de Cloudflare. Por eso el primer paso es mover `hiwebmarketing.com` a Cloudflare. Se puede hacer días antes, sin cambiar lo que se ve.
 
-1. Poner el dominio vivo en el Worker.
-2. Setear **solo** en ese host: `PUBLIC_SITE_INDEXABLE=true`
-3. Confirmar `robots.txt` → `Allow: /` + Sitemap
-4. Confirmar HTML sin noindex y con canonical
-5. Enviar sitemap en Search Console
+## Fase A — Mover la zona a Cloudflare (sin cambio visible)
+
+- [ ] En Hostinger, exportar la zona DNS completa. La lista de arriba solo trae lo que se ve por `dig`. Puede haber más subdominios.
+- [ ] Cloudflare (cuenta `web@hiwebmarketing.com`) → **Add a site** → `hiwebmarketing.com`, plan Free.
+- [ ] Revisar el escaneo contra el export. Deben estar MX, SPF, DKIM, todas las verificaciones y cualquier subdominio extra.
+- [ ] `www` CNAME `cdn.webflow.com` y apex A `198.202.211.1` en **DNS only** (nube gris). Webflow no funciona detrás del proxy.
+- [ ] En Hostinger, cambiar los nameservers por los dos que da Cloudflare.
+- [ ] Esperar a que la zona quede **Active**. Probar: el sitio Webflow abre, llega correo a `@hiwebmarketing.com` y Search Console sigue verificado.
+
+## Fase B — Bloqueos de código (antes del día del cutover)
+
+- [x] Redirects 301 de las URLs viejas de Webflow (`/blogs/*` → `/blog/*`, 9 servicios, `/estados/*`, `/gracias`, `/cotiza-ahora/ads`): `src/lib/legacy-es-paths.ts`. Antes daban 404 en 84 de las 200 URLs del sitemap de Webflow.
+- [x] Canonical sin barra final y assets con `html_handling: drop-trailing-slash`. Antes cada URL hacía 307 a la versión con `/` y el canonical no coincidía con el sitemap ni con hreflang.
+- [x] **Analítica.** GTM `GTM-W3D8LHVV` y Clarity `ldracdhqpf`, igual que en el custom code de Webflow. Solo cargan cuando la página es indexable (host vivo y flag en `true`), así que antes del cutover no aparecen.
+- [ ] Revisar en el contenedor de GTM las etiquetas y triggers que dependan del HTML de Webflow (envío de formularios, clases, URLs `/blogs/`). Remapear las conversiones al formulario de contacto, al diagnóstico y al calendario.
+- [ ] Revisar Webflow → Integrations y el custom code por página.
+- [x] **Contacto.** `/contacto` y `/en/contact` envían a `POST /api/contact` (D1 `contact_leads` + n8n). Se borraron en Sanity los redirects `/contacto` → `/calendario` y `/en/contacto` → `/en/calendar`.
+- [ ] Antes del deploy de contacto: `npx wrangler d1 migrations apply hiweb-marketing-quiz-calendar --remote` (crea `contact_leads`; staging: `--env staging`). Sin la tabla, el formulario responde 503.
+- [ ] Contacto usa por ahora el webhook del diagnóstico (`N8N_WEBHOOK_QUIZ_URL`), con `event: "contact.submitted"`. El flujo de n8n debe separar ese evento de `quiz.submitted`. Para darle su propio flujo: `npx wrangler secret put N8N_WEBHOOK_CONTACT_URL`.
+
+**De dónde sale el flag.** En el build, `PUBLIC_SITE_INDEXABLE` y `PUBLIC_SITE_URL` salen de `vars` en `wrangler.jsonc` y de `.env`, no de la variable de entorno del workflow. Por eso el revert de `2806181` tiene que cambiar `wrangler.jsonc`. Un `.env` local con `PUBLIC_SITE_INDEXABLE=false` deja el build en noindex.
+- [ ] Volver a correr la paridad de URLs contra `hiweb.com.mx`: cada URL del sitemap de Webflow debe dar 200 o 301 a un 200.
+
+## Fase C — Día del cutover (no reordenar)
+
+1. Aprobación explícita de go-live.
+2. `git revert 2806181` → push a `master`. El workflow despliega el Worker con `PUBLIC_SITE_URL=https://www.hiwebmarketing.com` e `PUBLIC_SITE_INDEXABLE=true`. Mientras `www` siga en Webflow, `hiweb.com.mx` sigue con noindex por `public/_headers` y por `shouldNoIndex`. Esperar a que termine el deploy.
+3. Workers & Pages → `hiweb-marketing-ui` → Settings → Domains & Routes → **Add Custom Domain** `www.hiwebmarketing.com`. Cloudflare reemplaza el CNAME de Webflow y emite el certificado.
+4. Apex → www: dejar un registro proxied en el apex (por ejemplo AAAA `100::`, nube naranja) y una Redirect Rule `hiwebmarketing.com/*` → `https://www.hiwebmarketing.com/${1}`, 301, conservando el query string.
+5. Zona `hiweb.com.mx`: Redirect Rule para `hiweb.com.mx` y `www.hiweb.com.mx` (no `staging`) → `https://www.hiwebmarketing.com` + misma ruta, 301.
+6. Verificar en `www.hiwebmarketing.com`:
+   - `robots.txt` → `Allow: /` y `Sitemap: https://www.hiwebmarketing.com/sitemap.xml`
+   - HTML con `index, follow`, sin `X-Robots-Tag`, canonical en `https://www.hiwebmarketing.com/...` sin barra final
+   - URLs viejas de Webflow → 301 a 200
+   - Formulario de diagnóstico, reserva en calendario y Studio (sync de Instagram y barra de rebuild)
+7. Search Console (propiedad de dominio, ya verificada por TXT): enviar `https://www.hiwebmarketing.com/sitemap.xml` y pedir indexación de home, servicios e industrias.
+8. Webflow: dejar el plan activo una o dos semanas para poder hacer rollback. Después quitar el dominio del proyecto.
 
 ## Rollback
 
-1. `PUBLIC_SITE_INDEXABLE=false` de inmediato
-2. DNS de vuelta al origen anterior si hace falta
+1. Quitar el Custom Domain `www.hiwebmarketing.com` del Worker.
+2. Volver a crear `www` CNAME `cdn.webflow.com` en **DNS only**. Webflow vuelve a servir en minutos.
+3. Si el Worker va a seguir en `www` con un problema de indexación: `PUBLIC_SITE_INDEXABLE=false` y redeploy.

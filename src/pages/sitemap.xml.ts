@@ -54,6 +54,7 @@ export const GET: APIRoute = async ({ url, site }) => {
     aboutPath('en', englishAbout.slug),
     '/en/blogs',
     '/contacto',
+    '/en/contact',
     '/diagnostico-marketing-digital',
     '/calendario',
     '/en/calendar',

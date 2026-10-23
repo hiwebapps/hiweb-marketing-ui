@@ -294,10 +294,10 @@ export async function getCalendarPage(locale: 'es' | 'en' = 'es'): Promise<Calen
   }
 }
 
-export async function getContactPage(): Promise<ContactPageCopy> {
+export async function getContactPage(locale: 'es' | 'en' = 'es'): Promise<ContactPageCopy> {
   if (!isSanityConfigured()) return DEFAULT_CONTACT;
   try {
-    return (await sanityContactPage()) ?? DEFAULT_CONTACT;
+    return (await sanityContactPage(locale)) ?? DEFAULT_CONTACT;
   } catch {
     return DEFAULT_CONTACT;
   }

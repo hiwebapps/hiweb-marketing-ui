@@ -242,6 +242,7 @@ const navPagePath = /* groq */ `{
     _type == "aboutPage" => "/nosotros",
     _type == "portalPage" && (locale == "en" || _id match "*-en") => "/en/portal",
     _type == "portalPage" => "/portal",
+    _type == "contactPage" && (locale == "en" || _id match "*-en") => "/en/contact",
     _type == "contactPage" => "/contacto",
     _type == "calendarPage" && (locale == "en" || _id match "*-en") => "/en/calendar",
     _type == "calendarPage" => "/calendario",
@@ -1270,7 +1271,7 @@ export const sitePageQuery = defineQuery(`*[_id == $id && _type == "sitePage"][0
   metaDescription
 }`);
 
-export const contactPageQuery = defineQuery(`*[_type == "contactPage" && _id == "contactPage"][0]{
+export const contactPageQuery = defineQuery(`*[_type == "contactPage" && _id == $id][0]{
   title,
   bannerTitle,
   bannerSubtitle,

@@ -6,7 +6,10 @@
   "main": "./src/worker.ts",
   "assets": {
     "binding": "ASSETS",
-    "directory": "./dist"
+    "directory": "./dist",
+    // Serve /blog/x from /blog/x/index.html without a redirect: the sitemap,
+    // canonicals and the old Webflow URLs have no trailing slash.
+    "html_handling": "drop-trailing-slash"
   },
   "vars": {
     "PUBLIC_SITE_INDEXABLE": "false",

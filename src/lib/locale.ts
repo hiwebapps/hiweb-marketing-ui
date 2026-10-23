@@ -21,16 +21,17 @@ function translateCatalogPath(bare: string, locale: Locale) {
   return locale === 'en' ? `/success-stories/${slug}` : `/portafolio/${slug}`;
 }
 
-/** Spanish page → English page. Contact has no English page; the calendar replaces it. */
+/** Spanish page → English page. */
 const EN_PAGE: Record<string, string> = {
   '/calendario': '/calendar',
-  '/contacto': '/calendar',
+  '/contacto': '/contact',
   '/terminos': '/terms',
   '/aviso-de-privacidad': '/privacy-policy',
   '/nosotros': `/${DEFAULT_ABOUT_EN_SLUG}`,
 };
 const ES_PAGE: Record<string, string> = {
   '/calendar': '/calendario',
+  '/contact': '/contacto',
   '/terms': '/terminos',
   '/privacy-policy': '/aviso-de-privacidad',
   [`/${DEFAULT_ABOUT_EN_SLUG}`]: '/nosotros',

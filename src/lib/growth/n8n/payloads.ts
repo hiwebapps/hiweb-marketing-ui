@@ -10,6 +10,33 @@ import {
 } from "../calendar/calendar-rules";
 import type { BookingRecord } from "../calendar/types";
 import type { QuizLeadInput, QuizScoreResult } from "../quiz/types";
+import type { ContactLead } from "../contact/validators";
+
+export function buildContactN8nPayload(input: { leadId: string; lead: ContactLead }) {
+  const { lead } = input;
+  const name = [lead.firstName, lead.lastName].filter(Boolean).join(" ");
+  const slackText = [
+    "✉️ *Nuevo mensaje de contacto*",
+    `• Nombre: ${name}`,
+    `• Email: ${lead.email}`,
+    lead.phone ? `• Celular: ${lead.phone}` : null,
+    lead.website ? `• Sitio web: ${lead.website}` : null,
+    lead.services.length ? `• Servicios: ${lead.services.join(", ")}` : null,
+    lead.budget ? `• Presupuesto: ${lead.budget}` : null,
+    lead.project ? `• Proyecto: ${lead.project}` : null,
+    `• Idioma: ${lead.locale}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return {
+    event: "contact.submitted",
+    leadId: input.leadId,
+    lead,
+    slackText,
+    submittedAt: new Date().toISOString(),
+  };
+}
 
 export function buildQuizN8nPayload(input: {
   leadId: string;

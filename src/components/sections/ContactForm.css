@@ -188,6 +188,16 @@
   margin-top: 0.35rem;
 }
 
+.contact-form__status {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-ink, #111);
+}
+
+.contact-form__status[data-tone="error"] {
+  color: var(--color-accent-red, #e23b3b);
+}
+
 @media (min-width: 720px) {
   .contact-banner {
     flex-direction: row;

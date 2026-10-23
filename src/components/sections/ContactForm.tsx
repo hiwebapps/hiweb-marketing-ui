@@ -12,12 +12,28 @@ const INPUTS: Record<string, { type: string; autoComplete?: string }> = {
   website: { type: 'url', autoComplete: 'url' },
 };
 
+/** Submit states. Studio has no fields for these yet. */
+const STATUS_COPY = {
+  es: {
+    sending: 'Enviando…',
+    sent: 'Recibimos tu mensaje. Te contactamos en menos de un día hábil.',
+    failed: 'No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos a',
+  },
+  en: {
+    sending: 'Sending…',
+    sent: 'We got your message. We will reach out within one business day.',
+    failed: 'We could not send your message. Try again or email us at',
+  },
+} as const;
+
 type ContactFormProps = {
   copy: ContactPageCopy;
   site: SiteIdentity;
+  locale?: 'es' | 'en';
 };
 
-export function ContactForm({ copy, site }: ContactFormProps) {
+export function ContactForm({ copy, site, locale = 'es' }: ContactFormProps) {
+  const status = STATUS_COPY[locale];
   const project = copy.fields.find((field) => field.kind === 'project');
   const left = groupFields(copy.fields.filter((field) => field.kind !== 'project'));
   const customBudget = copy.budgets.some((option) => option.custom);
@@ -29,13 +45,16 @@ export function ContactForm({ copy, site }: ContactFormProps) {
 
         <form
           className="contact-form"
-          action={`mailto:${site.email}`}
+          action="/api/contact"
           method="post"
-          encType="text/plain"
+          data-locale={locale}
           data-email={site.email}
           data-services-error={copy.servicesError}
           data-budget-error={copy.budgetError}
           data-custom-error={copy.customBudgetError}
+          data-sending={status.sending}
+          data-sent={status.sent}
+          data-failed={`${status.failed} ${site.email}.`}
         >
           <div className={project ? 'contact-form__grid contact-form__grid--split' : 'contact-form__grid'}>
             <div className="contact-form__fields">
@@ -64,6 +83,7 @@ export function ContactForm({ copy, site }: ContactFormProps) {
               <Button type="submit" variant="primary">
                 {copy.submitLabel}
               </Button>
+              <p className="contact-form__status" role="status" aria-live="polite" hidden />
             </div>
           </div>
         </form>

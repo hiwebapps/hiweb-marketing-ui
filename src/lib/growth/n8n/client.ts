@@ -78,6 +78,15 @@ export function dispatchQuizWebhook(payload: unknown): void {
   );
 }
 
+export async function dispatchContactWebhook(payload: unknown): Promise<void> {
+  const env = getServerEnv();
+  await sendN8nWebhook(
+    env.n8nWebhookContactUrl,
+    payload,
+    env.n8nWebhookSecret,
+  );
+}
+
 export async function dispatchCalendarWebhook(payload: unknown): Promise<void> {
   const env = getServerEnv();
   await sendN8nWebhook(

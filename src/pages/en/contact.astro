@@ -1,0 +1,32 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { ContactForm } from '../../components/sections/ContactForm';
+import { getContactPage, getSiteSettings } from '../../lib/content';
+import { breadcrumbSchema } from '../../lib/schema';
+
+// Canonical is fixed, like /en/calendar: the Studio field still points at the old calendar redirect.
+const contact = await getContactPage('en');
+const site = await getSiteSettings();
+---
+
+<Layout
+	title={contact.metaTitle}
+	description={contact.metaDescription}
+	noindex={contact.noindex}
+	canonical="/en/contact"
+	lang="en"
+	alternates={{ es: '/contacto', en: '/en/contact' }}
+	jsonLd={[
+		breadcrumbSchema([
+			{ name: 'Home', href: '/en' },
+			{ name: 'Contact', href: '/en/contact' },
+		]),
+	]}
+>
+	<main>
+		<ContactForm copy={contact} site={site} locale="en" />
+	</main>
+	<script src="../../scripts/contact-form.ts"></script>
+</Layout>
