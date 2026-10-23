@@ -61,7 +61,9 @@ export function InstagramGridFeed({
   }, [customBrands]);
 
   const postsPool = useMemo(() => {
-    if (customPosts && customPosts.length > 0) return customPosts;
+    if (customPosts && customPosts.length > 0) {
+      return [...customPosts].sort((a, b) => getPostEngagement(b.stats) - getPostEngagement(a.stats));
+    }
     if (customBrands && customBrands.length > 0) {
       const onePostPerBrand: SocialPost[] = [];
       for (const brand of customBrands) {
@@ -72,9 +74,10 @@ export function InstagramGridFeed({
           onePostPerBrand.push(sorted[0]);
         }
       }
+      onePostPerBrand.sort((a, b) => getPostEngagement(b.stats) - getPostEngagement(a.stats));
       return onePostPerBrand;
     }
-    return ALL_POSTS;
+    return [...ALL_POSTS].sort((a, b) => getPostEngagement(b.stats) - getPostEngagement(a.stats));
   }, [customPosts, customBrands]);
 
   const industriesList = useMemo(() => {
@@ -101,13 +104,14 @@ export function InstagramGridFeed({
 
   // Posts filtered by industry and brand
   const filteredPosts = useMemo(() => {
-    return postsPool.filter((post) => {
+    const list = postsPool.filter((post) => {
       const matchIndustry =
         selectedIndustry === 'all' || post.industryId === selectedIndustry;
       const matchBrand =
         selectedBrand === 'all' || post.brandId === selectedBrand;
       return matchIndustry && matchBrand;
     });
+    return list.sort((a, b) => getPostEngagement(b.stats) - getPostEngagement(a.stats));
   }, [postsPool, selectedIndustry, selectedBrand]);
 
   useEffect(() => {
@@ -244,7 +248,7 @@ export function InstagramGridFeed({
                 </div>
 
                 <div className="ig-post-card__overlay-stats">
-                  {post.stats.views && (
+                  {post.stats.views && parseStatNum(post.stats.views) > 0 && (
                     <span className="ig-stat-item">
                       <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
@@ -252,7 +256,7 @@ export function InstagramGridFeed({
                       {post.stats.views}
                     </span>
                   )}
-                  {post.stats.comments && (
+                  {post.stats.comments && parseStatNum(post.stats.comments) > 0 && (
                     <span className="ig-stat-item">
                       <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
@@ -413,10 +417,10 @@ export function InstagramGridFeed({
                 {/* Action Bar */}
                 <div className="ig-modal-sidebar__footer">
                   <div className="ig-modal-sidebar__stats-strip">
-                    {activePost.stats.views && (
+                    {activePost.stats.views && parseStatNum(activePost.stats.views) > 0 && (
                       <span>👁️ {activePost.stats.views} Reproducciones</span>
                     )}
-                    {activePost.stats.comments && (
+                    {activePost.stats.comments && parseStatNum(activePost.stats.comments) > 0 && (
                       <span>💬 {activePost.stats.comments} Comentarios</span>
                     )}
                   </div>
