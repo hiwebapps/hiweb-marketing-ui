@@ -336,6 +336,7 @@ const heroAlt =
 						/>
 						{matchingSocialBrand && !sections.some((s) => s._type === 'instagramPhone') ? (
 							<InstagramPhoneSwitcher
+								locale="en"
 								client:visible
 								brand={matchingSocialBrand}
 								eyebrow="Instagram Feed"
@@ -385,6 +386,7 @@ const heroAlt =
 
 				return (
 					<InstagramPhoneSwitcher
+						locale="en"
 						client:visible
 						brandId={section.brandId || matchingSocialBrand?.id}
 						brand={brandFromSection}

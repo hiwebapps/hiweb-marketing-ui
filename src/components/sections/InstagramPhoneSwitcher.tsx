@@ -21,7 +21,24 @@ export type InstagramPhoneSwitcherProps = {
   brand?: BrandProfile;
   hideSwitcher?: boolean;
   align?: 'left' | 'center';
+  locale?: 'es' | 'en';
 };
+
+/** Interface labels of the phone mockup. Client posts and bios stay in their own language. */
+const UI = {
+  es: {
+    followers: 'Seguidores', posts: 'Publicaciones', provenImpact: 'Impacto probado', keyResult: 'Resultado clave',
+    followersShort: 'seguidores', postsShort: 'posts', following: 'seguidos', follow: 'Seguir', message: 'Mensaje',
+    contact: 'Contacto', unmute: 'Activar sonido', mute: 'Silenciar', post: 'Publicación', filter: 'Filtrar por industria',
+    grid: 'Cuadrícula', back: 'Volver al perfil', closeReel: 'Cerrar reel',
+  },
+  en: {
+    followers: 'Followers', posts: 'Posts', provenImpact: 'Proven impact', keyResult: 'Key result',
+    followersShort: 'followers', postsShort: 'posts', following: 'following', follow: 'Follow', message: 'Message',
+    contact: 'Contact', unmute: 'Unmute', mute: 'Mute', post: 'Post', filter: 'Filter by industry',
+    grid: 'Grid', back: 'Back to profile', closeReel: 'Close reel',
+  },
+} as const;
 
 export function InstagramPhoneSwitcher({
   id = 'feed-phone-switcher',
@@ -34,7 +51,9 @@ export function InstagramPhoneSwitcher({
   brand: customBrand,
   hideSwitcher = false,
   align,
+  locale = 'es',
 }: InstagramPhoneSwitcherProps) {
+  const ui = UI[locale];
   const isSingleBrand = Boolean(hideSwitcher || brandId || customBrand);
 
   const matchedBrand = useMemo(() => {
@@ -127,7 +146,7 @@ export function InstagramPhoneSwitcher({
       {/* Filter by Industry (Omitted in single-brand mode) */}
       {!isSingleBrand ? (
         <div className="ig-switcher-controls">
-          <div className="ig-switcher-industry-filters" role="group" aria-label="Filtrar por industria">
+          <div className="ig-switcher-industry-filters" role="group" aria-label={ui.filter}>
             {SOCIAL_INDUSTRIES.map((ind) => {
               const active = selectedIndustry === ind.id;
               return (
@@ -201,28 +220,28 @@ export function InstagramPhoneSwitcher({
               <div className="ig-brand-card__metrics">
                 <div className="ig-brand-metric">
                   <span className="ig-brand-metric__val">{brand.stats.followers}</span>
-                  <span className="ig-brand-metric__lbl">Seguidores</span>
+                  <span className="ig-brand-metric__lbl">{ui.followers}</span>
                 </div>
                 <div className="ig-brand-metric">
                   <span className="ig-brand-metric__val">{brand.stats.posts}</span>
-                  <span className="ig-brand-metric__lbl">Publicaciones</span>
+                  <span className="ig-brand-metric__lbl">{ui.posts}</span>
                 </div>
                 <div className="ig-brand-metric">
                   <span className="ig-brand-metric__val">
-                    {brand.posts[0]?.outcomeTag || 'Impacto probado'}
+                    {brand.posts[0]?.outcomeTag || ui.provenImpact}
                   </span>
-                  <span className="ig-brand-metric__lbl">Resultado clave</span>
+                  <span className="ig-brand-metric__lbl">{ui.keyResult}</span>
                 </div>
               </div>
             ) : (
               <div className="ig-brand-card__metrics">
                 <div className="ig-brand-metric">
                   <span className="ig-brand-metric__val">{brand.stats.followers}</span>
-                  <span className="ig-brand-metric__lbl">Seguidores</span>
+                  <span className="ig-brand-metric__lbl">{ui.followers}</span>
                 </div>
                 <div className="ig-brand-metric">
                   <span className="ig-brand-metric__val">{brand.stats.posts}</span>
-                  <span className="ig-brand-metric__lbl">Publicaciones</span>
+                  <span className="ig-brand-metric__lbl">{ui.posts}</span>
                 </div>
               </div>
             )}
@@ -298,15 +317,15 @@ export function InstagramPhoneSwitcher({
                           <div className="ig-app-stats">
                             <div className="ig-app-stat">
                               <strong>{brand.stats.posts}</strong>
-                              <span>posts</span>
+                              <span>{ui.postsShort}</span>
                             </div>
                             <div className="ig-app-stat">
                               <strong>{brand.stats.followers}</strong>
-                              <span>seguidores</span>
+                              <span>{ui.followersShort}</span>
                             </div>
                             <div className="ig-app-stat">
                               <strong>{brand.stats.following}</strong>
-                              <span>seguidos</span>
+                              <span>{ui.following}</span>
                             </div>
                           </div>
                         </div>
@@ -322,9 +341,9 @@ export function InstagramPhoneSwitcher({
 
                         {/* Action Buttons */}
                         <div className="ig-app-actions">
-                          <button type="button" className="ig-app-btn ig-app-btn--primary">Seguir</button>
-                          <button type="button" className="ig-app-btn">Mensaje</button>
-                          <button type="button" className="ig-app-btn">Contacto</button>
+                          <button type="button" className="ig-app-btn ig-app-btn--primary">{ui.follow}</button>
+                          <button type="button" className="ig-app-btn">{ui.message}</button>
+                          <button type="button" className="ig-app-btn">{ui.contact}</button>
                         </div>
 
                         {/* Story Highlights */}
@@ -343,7 +362,7 @@ export function InstagramPhoneSwitcher({
 
                         {/* Tab bar */}
                         <div className="ig-app-tabs">
-                          <button type="button" className="ig-app-tab is-active" aria-label="Cuadrícula">
+                          <button type="button" className="ig-app-tab is-active" aria-label={ui.grid}>
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                               <path d="M3 3h7v7H3zm11 0h7v7h-7zm0 11h7v7h-7zM3 14h7v7H3z" />
                             </svg>
@@ -423,7 +442,7 @@ export function InstagramPhoneSwitcher({
                               e.stopPropagation();
                               setSelectedPost(null);
                             }}
-                            aria-label="Volver al perfil"
+                            aria-label={ui.back}
                           >
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5">
                               <path d="M15 18l-6-6 6-6" />
@@ -434,7 +453,7 @@ export function InstagramPhoneSwitcher({
                             type="button"
                             className="ig-reel-topbar__btn"
                             onClick={toggleMute}
-                            aria-label={isMuted ? 'Activar sonido' : 'Silenciar'}
+                            aria-label={isMuted ? ui.unmute : ui.mute}
                           >
                             {isMuted ? (
                               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
@@ -455,7 +474,7 @@ export function InstagramPhoneSwitcher({
                               <img src={selectedPost.brandAvatar} alt="" className="ig-reel-overlay__avatar" />
                               <span className="ig-reel-overlay__handle">{selectedPost.brandHandle}</span>
                               <span className="ig-reel-overlay__dot">•</span>
-                              <span className="ig-reel-overlay__follow">Seguir</span>
+                              <span className="ig-reel-overlay__follow">{ui.follow}</span>
                             </div>
                             {selectedPost.caption && (
                               <p className="ig-reel-overlay__caption">{selectedPost.caption}</p>
@@ -488,7 +507,7 @@ export function InstagramPhoneSwitcher({
                                 e.stopPropagation();
                                 setSelectedPost(null);
                               }}
-                              aria-label="Cerrar reel"
+                              aria-label={ui.closeReel}
                             >
                               ✕
                             </button>
@@ -509,7 +528,7 @@ export function InstagramPhoneSwitcher({
                             <path d="M15 18l-6-6 6-6" />
                           </svg>
                         </button>
-                        <span className="ig-app-topbar__user">Publicación</span>
+                        <span className="ig-app-topbar__user">{ui.post}</span>
                         <span className="ig-app-topbar__more">•••</span>
                       </div>
 

@@ -61,6 +61,7 @@ const POST_SLUGS: Record<string, string> = {
   'diseno-ux-and-ui': 'ux-ui-design',
   'estructura-de-una-pagina-web': 'website-structure',
   'la-mejor-empresa-de-seo-en-mexico': 'best-seo-agency-in-mexico',
+  'leads-marketing-ventas-b2b': 'lead-generation-b2b-sales-leads',
   'marketing-turistico-hoteles-destinos': 'travel-marketing-hotels-destinations',
   'para-que-sirve-una-pagina-web': 'what-is-a-website-for',
   'pasos-para-hacer-una-campana-publicitaria-en-redes-sociales': 'steps-to-create-a-social-media-ad-campaign',

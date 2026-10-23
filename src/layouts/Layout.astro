@@ -26,7 +26,7 @@ interface Props {
 }
 
 const {
-	title = 'Hiweb Marketing — Partner estratégico',
+	title: rawTitle = 'Hiweb Marketing — Partner estratégico',
 	canonical,
 	noindex: forceNoIndex = false,
 	ogImage = DEFAULT_OG_IMAGE,
@@ -36,7 +36,10 @@ const {
 } = Astro.props;
 
 const site = await getSiteSettings();
-const description = Astro.props.description ?? site.tagline;
+// Studio values can carry trailing spaces or line breaks; search results show them as-is.
+const oneLine = (value: string) => value.replace(/\s+/g, ' ').trim();
+const title = oneLine(rawTitle);
+const description = oneLine(Astro.props.description ?? site.tagline);
 const nav = await getNavigation(lang);
 const footer = await getFooter(lang);
 const favicon = await getFavicon();
