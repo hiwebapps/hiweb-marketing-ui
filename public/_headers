@@ -1,7 +1,2 @@
-# Static assets and prerendered pages skip the middleware, so non-live hosts
-# get noindex here. www.hiwebmarketing.com is the only indexable host.
-https://hiweb.com.mx/*
-  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
-
-https://:sub.hiweb.com.mx/*
+/*
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex

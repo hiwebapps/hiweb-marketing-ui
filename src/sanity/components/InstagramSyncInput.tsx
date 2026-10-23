@@ -58,7 +58,7 @@ export function InstagramSyncInput(props: StringInputProps) {
         const port = window.location.port;
 
         if (hostname.includes('sanity.studio')) {
-          apiOrigin = 'https://www.hiwebmarketing.com';
+          apiOrigin = 'https://hiweb.com.mx';
         } else if (port === '3333' || hostname === 'localhost' || hostname === '127.0.0.1') {
           apiOrigin = 'http://localhost:4322';
           try {

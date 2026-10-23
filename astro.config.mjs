@@ -59,7 +59,7 @@ const SANITY_STUDIO_URL = 'https://hiweb-web.sanity.studio';
 export default defineConfig({
   site: isStaging
     ? 'https://staging.hiweb.com.mx'
-    : PUBLIC_SITE_URL || 'https://www.hiwebmarketing.com',
+    : PUBLIC_SITE_URL || 'https://hiweb.com.mx',
   output: 'server',
   session: false,
   integrations: [

@@ -393,7 +393,7 @@ function PendingTool(_props: { tool: Tool }) {
       toast.push({
         status: 'success',
         title: `${ok} ${ok === 1 ? 'documento publicado' : 'documentos publicados'}`,
-        description: 'hiwebmarketing.com se actualiza con el siguiente deploy del sitio.',
+        description: 'hiweb.com.mx se actualiza con el siguiente deploy del sitio.',
       });
     }
     if (failed.length) {
@@ -470,7 +470,7 @@ function PendingTool(_props: { tool: Tool }) {
             createElement(
               Text,
               { size: 1, muted: true },
-              'Los cambios se verán en hiwebmarketing.com después del siguiente deploy del sitio. En staging ya se ven.',
+              'Los cambios se verán en hiweb.com.mx después del siguiente deploy del sitio. En staging ya se ven.',
             ),
             ...targets.map((row) => {
               const label = rowLabel(row);

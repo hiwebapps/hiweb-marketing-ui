@@ -3,7 +3,7 @@ export const SITE = {
   legalName: 'Hiweb',
   tagline:
     'Partner estratégico con la eficiencia de un equipo interno y el alcance de una agencia enterprise.',
-  url: 'https://www.hiwebmarketing.com',
+  url: 'https://hiweb.com.mx',
   email: 'hola@hiweb.marketing',
   phone: '+52 999 123 4567',
   phoneHref: 'tel:+529991234567',
