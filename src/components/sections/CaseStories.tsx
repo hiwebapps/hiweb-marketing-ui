@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { SHOW_TESTIMONIALS } from '../../lib/features';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Button } from '../ui';
@@ -94,7 +95,7 @@ function initialsOf(text: string) {
 /**
  * Testimonios — título a la izquierda, slider de cards a la derecha.
  */
-export function CaseStories({
+function CaseStoriesSlider({
   stories = DEFAULT_STORIES,
   eyebrow = 'Casos',
   title = 'Resultados propios, solo con empresas consolidadas',
@@ -352,4 +353,9 @@ export function CaseStories({
       </div>
     </SectionBand>
   );
+}
+
+export function CaseStories(props: CaseStoriesProps) {
+  if (!SHOW_TESTIMONIALS) return null;
+  return <CaseStoriesSlider {...props} />;
 }

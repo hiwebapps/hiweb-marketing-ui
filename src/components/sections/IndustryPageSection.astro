@@ -5,6 +5,7 @@ import { PillarGrid } from './PillarGrid';
 import { CaseStories, type CaseStory } from './CaseStories';
 import { BeforeAfter } from './BeforeAfter';
 import { FaqSection } from './FaqSection';
+import { SHOW_TESTIMONIALS } from '../../lib/features';
 import FinalCta from './FinalCtaBand.astro';
 import type { IndustrySection } from '../../lib/content/types';
 import type { BadgeVariant } from '../ui';
@@ -33,7 +34,13 @@ const lower = nombre.toLowerCase();
 			imageAlt={section.imageAlt || `Imagen de ${nombre}`}
 			badges={[{ label: section.badge || nombre, variant: 'lime' }]}
 			ctaLabel={section.ctaLabel || 'Ver casos de éxito'}
-			ctaHref={section.ctaHref || '#casos'}
+			ctaHref={
+				SHOW_TESTIMONIALS || (section.ctaHref && section.ctaHref !== '#casos')
+					? section.ctaHref || '#casos'
+					: storiesLocale === 'en'
+						? '/en/success-stories'
+						: '/portafolio'
+			}
 			headingWidth={section.headingWidth}
 		/>
 	)

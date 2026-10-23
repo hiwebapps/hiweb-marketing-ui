@@ -1,4 +1,5 @@
 ---
+import { SHOW_TESTIMONIALS } from '../../lib/features';
 export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
@@ -142,7 +143,7 @@ const caseStories = displayCases.map((item) => ({
 			imageAlt={entry.data.heroImageAlt ?? `Imagen de ${entry.data.nombre}`}
 			badges={industryHeroBadges}
 			ctaLabel="Ver casos de éxito"
-			ctaHref="#casos"
+			ctaHref={SHOW_TESTIMONIALS ? '#casos' : '/portafolio'}
 		/>
 		<PillarGrid
 			eyebrow={entry.data.whyEyebrow ?? 'Por qué Hiweb'}

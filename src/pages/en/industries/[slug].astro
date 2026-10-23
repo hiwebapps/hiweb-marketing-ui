@@ -1,4 +1,5 @@
 ---
+import { SHOW_TESTIMONIALS } from '../../../lib/features';
 export const prerender = true;
 
 import Layout from '../../../layouts/Layout.astro';
@@ -144,7 +145,7 @@ const caseStories = displayCases.map((item) => ({
 			imageAlt={entry.data.heroImageAlt}
 			badges={industryHeroBadges}
 			ctaLabel={entry.data.heroCtaLabel}
-			ctaHref="#casos"
+			ctaHref={SHOW_TESTIMONIALS ? '#casos' : '/en/success-stories'}
 		/>
 		<PillarGrid
 			eyebrow={entry.data.whyEyebrow}
