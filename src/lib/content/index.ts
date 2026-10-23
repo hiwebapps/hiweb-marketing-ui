@@ -1,5 +1,6 @@
 import { isSanityConfigured } from '../../sanity/client';
 import { fallbackSite } from '../site-identity';
+import { withEnglishContactLinks } from '../locale';
 import {
   collectionsAbout,
   collectionsCases,
@@ -77,8 +78,13 @@ function warnSanityFallback(error: unknown) {
   console.warn(`[cms] Sanity unavailable (${message}). Using src/content fallback.`);
 }
 
+/** English data keeps English contact links even when the Studio document copied the Spanish ones. */
+function localized<T>(locale: 'es' | 'en', value: T): T {
+  return locale === 'en' ? withEnglishContactLinks(value) : value;
+}
+
 export async function getIndustries(locale: 'es' | 'en' = 'es'): Promise<IndustryRecord[]> {
-  if (locale === 'en') return sanityIndustries('en');
+  if (locale === 'en') return withEnglishContactLinks(await sanityIndustries('en'));
   return withFallback(
     () => sanityIndustries(locale),
     collectionsIndustries,
@@ -127,7 +133,7 @@ export async function getCtaBackdrop() {
 
 export async function getFooter(locale: 'es' | 'en' = 'es') {
   return withFallback(
-    () => sanityFooter(locale),
+    async () => localized(locale, await sanityFooter(locale)),
     () => null,
     (value) => !value,
   );
@@ -135,7 +141,7 @@ export async function getFooter(locale: 'es' | 'en' = 'es') {
 
 export async function getNavigation(locale: 'es' | 'en' = 'es') {
   return withFallback(
-    () => sanityNavigation(locale),
+    async () => localized(locale, await sanityNavigation(locale)),
     () => null,
     (value) => !value,
   );
@@ -150,7 +156,7 @@ export async function getIndustriesIndex(id = 'industriesIndex-en') {
 }
 
 export async function getIndustry(slug: string, locale: 'es' | 'en' = 'es'): Promise<IndustryRecord | undefined> {
-  if (locale === 'en') return (await sanityIndustry(slug, 'en')) ?? undefined;
+  if (locale === 'en') return withEnglishContactLinks(await sanityIndustry(slug, 'en')) ?? undefined;
   const fromSanity = await withFallback(
     () => sanityIndustry(slug, locale),
     async () => {
@@ -163,7 +169,7 @@ export async function getIndustry(slug: string, locale: 'es' | 'en' = 'es'): Pro
 }
 
 export async function getServices(locale: 'es' | 'en' = 'es'): Promise<ServiceRecord[]> {
-  if (locale === 'en') return sanityServices('en');
+  if (locale === 'en') return withEnglishContactLinks(await sanityServices('en'));
   return withFallback(
     () => sanityServices(locale),
     collectionsServices,
@@ -172,7 +178,7 @@ export async function getServices(locale: 'es' | 'en' = 'es'): Promise<ServiceRe
 }
 
 export async function getService(slug: string, locale: 'es' | 'en' = 'es'): Promise<ServiceRecord | undefined> {
-  if (locale === 'en') return (await sanityService(slug, 'en')) ?? undefined;
+  if (locale === 'en') return withEnglishContactLinks(await sanityService(slug, 'en')) ?? undefined;
   const fromSanity = await withFallback(
     () => sanityService(slug, locale),
     async () => {
@@ -185,7 +191,7 @@ export async function getService(slug: string, locale: 'es' | 'en' = 'es'): Prom
 }
 
 export async function getCases(locale: 'es' | 'en' = 'es'): Promise<CaseRecord[]> {
-  if (locale === 'en') return sanityCases('en');
+  if (locale === 'en') return withEnglishContactLinks(await sanityCases('en'));
   return withFallback(() => sanityCases('es'), collectionsCases, (items) => items.length === 0);
 }
 
@@ -194,7 +200,7 @@ export async function getSocialBrands(): Promise<SocialBrandProfile[]> {
 }
 
 export async function getCase(slug: string, locale: 'es' | 'en' = 'es'): Promise<CaseRecord | undefined> {
-  if (locale === 'en') return (await sanityCase(slug, 'en')) ?? undefined;
+  if (locale === 'en') return withEnglishContactLinks(await sanityCase(slug, 'en')) ?? undefined;
   const fromSanity = await withFallback(
     () => sanityCase(slug),
     async () => {
@@ -210,12 +216,12 @@ export async function getPosts(
   locale: 'es' | 'en' = 'es',
   options?: { stega?: boolean },
 ): Promise<PostRecord[]> {
-  if (locale === 'en') return sanityPosts('en', options);
+  if (locale === 'en') return withEnglishContactLinks(await sanityPosts('en', options));
   return withFallback(() => sanityPosts('es', options), collectionsPosts, (items) => items.length === 0);
 }
 
 export async function getPost(slug: string, locale: 'es' | 'en' = 'es'): Promise<PostRecord | undefined> {
-  if (locale === 'en') return (await sanityPost(slug, 'en')) ?? undefined;
+  if (locale === 'en') return withEnglishContactLinks(await sanityPost(slug, 'en')) ?? undefined;
   const fromSanity = await withFallback(
     () => sanityPost(slug),
     async () => {
@@ -236,7 +242,7 @@ export async function getPeople(locale: 'es' | 'en' = 'es'): Promise<PersonRecor
 }
 
 export async function getHomeCopy(locale: 'es' | 'en' = 'es'): Promise<HomeCopy> {
-  const copy = await withFallback(() => sanityHome(locale), collectionsHome, (item) => !item);
+  const copy = localized(locale, await withFallback(() => sanityHome(locale), collectionsHome, (item) => !item));
   const fallback = collectionsHome();
   const next = copy ?? fallback;
   return {
@@ -288,7 +294,7 @@ export async function getCalendarPage(locale: 'es' | 'en' = 'es'): Promise<Calen
   const fallback = DEFAULT_CALENDAR[locale];
   if (!isSanityConfigured()) return fallback;
   try {
-    return (await sanityCalendarPage(locale)) ?? fallback;
+    return localized(locale, await sanityCalendarPage(locale)) ?? fallback;
   } catch {
     return fallback;
   }
@@ -297,7 +303,7 @@ export async function getCalendarPage(locale: 'es' | 'en' = 'es'): Promise<Calen
 export async function getContactPage(locale: 'es' | 'en' = 'es'): Promise<ContactPageCopy> {
   if (!isSanityConfigured()) return DEFAULT_CONTACT;
   try {
-    return (await sanityContactPage(locale)) ?? DEFAULT_CONTACT;
+    return localized(locale, await sanityContactPage(locale)) ?? DEFAULT_CONTACT;
   } catch {
     return DEFAULT_CONTACT;
   }
@@ -306,14 +312,14 @@ export async function getContactPage(locale: 'es' | 'en' = 'es'): Promise<Contac
 export async function getPortal(locale: 'es' | 'en' = 'es') {
   if (!isSanityConfigured()) return null;
   try {
-    return await sanityPortal(locale);
+    return localized(locale, await sanityPortal(locale));
   } catch {
     return null;
   }
 }
 
 export async function getAboutCopy(locale: 'es' | 'en' = 'es'): Promise<AboutCopy> {
-  if (locale === 'en') return (await sanityAbout('en')) ?? {};
+  if (locale === 'en') return withEnglishContactLinks(await sanityAbout('en')) ?? {};
   const copy = await withFallback(() => sanityAbout('es'), collectionsAbout, (item) => !item);
   return copy ?? collectionsAbout();
 }

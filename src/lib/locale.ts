@@ -69,6 +69,30 @@ export function localePath(pathname: string, locale: Locale): string {
   return bare === '/' ? '/en' : `/en${bare}`;
 }
 
+const SPANISH_CONTACT_HREF = /^\/(contacto|contact|calendario)(#agendar)?$/;
+
+/** Spanish contact or calendar link → its English page. Anything else comes back unchanged. */
+export function englishContactHref(href: string): string {
+  const match = href.match(SPANISH_CONTACT_HREF);
+  if (!match) return href;
+  return `${localePath(`/${match[1]}`, 'en')}${match[2] ? '#book' : ''}`;
+}
+
+/**
+ * English Sanity documents often copy the Spanish CTA links. Rewrites every
+ * contact or calendar link in the loaded data so /en pages stay in English.
+ */
+export function withEnglishContactLinks<T>(value: T): T {
+  if (typeof value === 'string') return englishContactHref(value) as T;
+  if (Array.isArray(value)) return value.map((item) => withEnglishContactLinks(item)) as T;
+  if (value && typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype) {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, withEnglishContactLinks(item)]),
+    ) as T;
+  }
+  return value;
+}
+
 const RETIRED_CATALOG_PATHS = new Set([
   '/industrias',
   '/servicios',

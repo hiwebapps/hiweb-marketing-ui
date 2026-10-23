@@ -139,7 +139,7 @@ const portal =
 			}
 			secondaryLabel={section._type === 'aboutPortal' ? section.secondaryLabel : undefined}
 			secondaryHref={
-				section._type === 'aboutPortal' && section.secondaryHref ? section.secondaryHref : '/contacto'
+				href(section._type === 'aboutPortal' && section.secondaryHref ? section.secondaryHref : '/contacto')
 			}
 		/>
 	)

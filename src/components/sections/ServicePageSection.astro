@@ -36,6 +36,7 @@ interface Props {
 }
 
 const { section, entry, pitch, industries, phases, stories, hasCases, locale = 'es', socialBrands = [] } = Astro.props;
+const contactHref = locale === 'en' ? '/en/contact' : '/contacto';
 const contentKey = serviceContentKey(entry.id);
 const nombre = entry.data.nombre;
 ---
@@ -49,7 +50,7 @@ const nombre = entry.data.nombre;
 			imageAlt={section.imageAlt || entry.data.heroImageAlt || `Imagen de ${nombre}`}
 			badges={[{ label: section.badge || entry.data.heroBadge || nombre, variant: 'lime' }]}
 			ctaLabel={section.ctaLabel || 'Cotiza tu proyecto'}
-			ctaHref={section.ctaHref || '/contacto'}
+			ctaHref={section.ctaHref || contactHref}
 			headingWidth={section.headingWidth}
 		/>
 	)
@@ -107,7 +108,7 @@ const nombre = entry.data.nombre;
 				image={section.image}
 				imageAlt={section.imageAlt || nombre}
 				ctaLabel={section.ctaLabel || 'Agenda un diagnóstico'}
-				ctaHref={section.ctaHref || '/contacto'}
+				ctaHref={section.ctaHref || contactHref}
 				tone="canvas"
 				headingWidth={section.headingWidth}
 			/>
@@ -123,7 +124,7 @@ const nombre = entry.data.nombre;
 			title={section.title}
 			description={section.description}
 			ctaLabel={section.ctaLabel}
-			ctaHref={section.ctaHref}
+			ctaHref={section.ctaHref || contactHref}
 			cards={section.cards?.map((card) => ({
 				title: card.title,
 				description: card.description,
@@ -145,7 +146,7 @@ const nombre = entry.data.nombre;
 			noteHref={section.noteHref}
 			noteLabel={section.noteLabel}
 			ctaLabel={section.ctaLabel || 'Cotiza ahora con nosotros'}
-			ctaHref={section.ctaHref || '/contacto'}
+			ctaHref={section.ctaHref || contactHref}
 			plans={section.plans}
 			tone="canvas"
 			headingWidth={section.headingWidth}
