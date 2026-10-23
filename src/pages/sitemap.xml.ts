@@ -14,6 +14,11 @@ function loc(origin: string, path: string) {
   return `${origin.replace(/\/$/, '')}${path}`;
 }
 
+/** Pages marked "noindex" in Studio stay out of the sitemap. */
+function listed<T extends { data?: { seo?: { noindex?: boolean } } }>(items: T[]) {
+  return items.filter((item) => !item.data?.seo?.noindex);
+}
+
 function urlXml(href: string): string {
   return `  <url>\n    <loc>${href}</loc>\n  </url>`;
 }
@@ -60,15 +65,15 @@ export const GET: APIRoute = async ({ url, site }) => {
     '/en/calendar',
     '/portal',
     '/en/portal',
-    ...services.map((item) => `/servicios/${item.id}`),
-    ...englishServices.map((item) => `/en/services/${item.id}`),
-    ...industries.map((item) => `/industrias/${item.id}`),
-    ...englishIndustries.map((item) => `/en/industries/${item.id}`),
-    ...cases.map((item) => `/portafolio/${item.id}`),
-    ...englishCases.map((item) => `/en/success-stories/${item.id}`),
-    ...posts.map((item) => `/blog/${item.id}`),
-    ...englishPosts.map((item) => `/en/blogs/${item.id}`),
-    ...landings.filter((item) => !isReservedSlug(item.id)).map((item) => `/${item.id}`),
+    ...listed(services).map((item) => `/servicios/${item.id}`),
+    ...listed(englishServices).map((item) => `/en/services/${item.id}`),
+    ...listed(industries).map((item) => `/industrias/${item.id}`),
+    ...listed(englishIndustries).map((item) => `/en/industries/${item.id}`),
+    ...listed(cases).map((item) => `/portafolio/${item.id}`),
+    ...listed(englishCases).map((item) => `/en/success-stories/${item.id}`),
+    ...listed(posts).map((item) => `/blog/${item.id}`),
+    ...listed(englishPosts).map((item) => `/en/blogs/${item.id}`),
+    ...landings.filter((item) => !isReservedSlug(item.id) && !item.seo?.noindex).map((item) => `/${item.id}`),
   ].map((path) => urlXml(loc(origin, path)));
 
   const body = [

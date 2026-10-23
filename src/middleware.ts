@@ -16,6 +16,14 @@ const STUDIO_FRAME_ANCESTORS = [
   'http://localhost:4321',
 ].join(' ');
 
+const SECURITY_HEADERS: [string, string][] = [
+  ['Strict-Transport-Security', 'max-age=31536000'],
+  ['X-Content-Type-Options', 'nosniff'],
+  ['X-Frame-Options', 'SAMEORIGIN'],
+  ['Referrer-Policy', 'strict-origin-when-cross-origin'],
+  ['Permissions-Policy', 'camera=(), microphone=(), geolocation=()'],
+];
+
 function unauthorized() {
   return new Response('Staging requiere usuario y contraseña.', {
     status: 401,
@@ -47,6 +55,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect(`${visiblePath}${context.url.search}`);
   }
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  if (!isStagingSite() && isInternalPage(path)) {
+    const rendered = await context.rewrite('/404');
+    return withSiteHeaders(rendered, context.url.hostname, 404);
+  }
   const legacy = path.startsWith('/en/') ? legacyEnglishPath(path) : legacySpanishPath(path);
   if (legacy) {
     return context.redirect(`${legacy}${context.url.search}`, 301);
@@ -106,6 +118,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
   return withSiteHeaders(response, context.url.hostname);
 });
 
+/** Component kits and demos for the team. Staging only (behind its password). */
+function isInternalPage(path: string) {
+  return path === '/design-system' || path === '/sections' || path === '/demo' || path.startsWith('/demo/');
+}
+
 function isMissingDocument(request: Request, response: Response, path: string) {
   if (response.status !== 404) return false;
   if (path === '/404' || path === '/en/404') return false;
@@ -127,7 +144,10 @@ function withSiteHeaders(response: Response, hostname: string, status?: number) 
     headers.delete('X-Frame-Options');
   }
   if (noindex) headers.set('X-Robots-Tag', ROBOTS_NOINDEX);
-  if (!staging && !noindex && nextStatus === response.status) return response;
+  if (!staging) {
+    // Same set as public/_headers, which only reaches static assets and prerendered pages.
+    for (const [name, value] of SECURITY_HEADERS) headers.set(name, value);
+  }
 
   return new Response(response.body, {
     status: nextStatus,

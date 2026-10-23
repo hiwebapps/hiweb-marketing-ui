@@ -1,5 +1,6 @@
 ---
-export const prerender = true;
+// Rendered on request so the middleware can hide it outside staging.
+export const prerender = false;
 
 import Layout from '../../layouts/Layout.astro';
 import {
