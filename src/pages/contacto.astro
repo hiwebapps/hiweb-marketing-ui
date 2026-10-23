@@ -2,11 +2,12 @@
 export const prerender = true;
 
 import Layout from '../layouts/Layout.astro';
-import { ContactForm } from '../components/sections/ContactForm';
-import { getContactPage, getSiteSettings } from '../lib/content';
+import ContactTabs from '../components/sections/ContactTabs.astro';
+import { getCalendarPage, getContactPage, getSiteSettings } from '../lib/content';
 import { breadcrumbSchema } from '../lib/schema';
 
 const contact = await getContactPage();
+const calendar = await getCalendarPage('es');
 const site = await getSiteSettings();
 ---
 
@@ -24,7 +25,7 @@ const site = await getSiteSettings();
 	]}
 >
 	<main>
-		<ContactForm copy={contact} site={site} />
+		<ContactTabs contact={contact} calendar={calendar} site={site} />
 	</main>
 	<script src="../scripts/contact-form.ts"></script>
 </Layout>

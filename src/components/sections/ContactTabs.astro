@@ -1,0 +1,79 @@
+---
+import { ContactBanner } from './ContactBanner';
+import { ContactForm } from './ContactForm';
+import { CalendarTool } from '../growth/CalendarTool';
+import type { ContactPageCopy } from '../../lib/content/contact';
+import type { CalendarPageCopy } from '../../lib/content/calendar-page';
+import type { SiteIdentity } from '../../lib/site-identity';
+
+interface Props {
+	contact: ContactPageCopy;
+	calendar: CalendarPageCopy;
+	site: SiteIdentity;
+	locale?: 'es' | 'en';
+}
+
+const { contact, calendar, site, locale = 'es' } = Astro.props;
+
+/** Tab labels and the hash that opens the calendar tab (/contacto#agendar, /en/contact#book). */
+const TABS = {
+	es: { message: 'Escribir mensaje', book: 'Agendar llamada', hash: 'agendar', label: 'Cómo quieres contactarnos' },
+	en: { message: 'Send a message', book: 'Book a call', hash: 'book', label: 'How you want to reach us' },
+} as const;
+const tabs = TABS[locale];
+---
+
+<section class="contact-page">
+	<div class="contact-page__inner">
+		<ContactBanner title={contact.bannerTitle} subtitle={contact.bannerSubtitle} site={site} />
+
+		<div class="contact-tabs" role="tablist" aria-label={tabs.label} data-book-hash={tabs.hash}>
+			<button type="button" class="contact-tabs__tab" role="tab" id="contact-tab-message" aria-controls="contact-panel-message" aria-selected="true">
+				{tabs.message}
+			</button>
+			<button type="button" class="contact-tabs__tab" role="tab" id="contact-tab-book" aria-controls="contact-panel-book" aria-selected="false" tabindex="-1">
+				{tabs.book}
+			</button>
+		</div>
+
+		<div id="contact-panel-message" role="tabpanel" aria-labelledby="contact-tab-message">
+			<ContactForm copy={contact} site={site} locale={locale} embedded />
+		</div>
+		<div id="contact-panel-book" role="tabpanel" aria-labelledby="contact-tab-book" hidden>
+			<CalendarTool client:load copy={calendar} site={site} embedded />
+		</div>
+	</div>
+</section>
+
+<script>
+	const list = document.querySelector('.contact-tabs');
+	if (list instanceof HTMLElement) {
+		const tabs = Array.from(list.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+		const bookHash = `#${list.dataset.bookHash}`;
+
+		const select = (tab: HTMLButtonElement, focus = false) => {
+			for (const item of tabs) {
+				const on = item === tab;
+				item.setAttribute('aria-selected', String(on));
+				item.tabIndex = on ? 0 : -1;
+				const panel = document.getElementById(item.getAttribute('aria-controls') ?? '');
+				if (panel) panel.hidden = !on;
+			}
+			if (focus) tab.focus();
+			const hash = tab.id === 'contact-tab-book' ? bookHash : '';
+			history.replaceState(null, '', `${location.pathname}${location.search}${hash}`);
+		};
+
+		tabs.forEach((tab, index) => {
+			tab.addEventListener('click', () => select(tab));
+			tab.addEventListener('keydown', (event) => {
+				if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+				event.preventDefault();
+				const step = event.key === 'ArrowRight' ? 1 : -1;
+				select(tabs[(index + step + tabs.length) % tabs.length], true);
+			});
+		});
+
+		if (location.hash === bookHash) select(tabs[1]);
+	}
+</script>

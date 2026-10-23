@@ -22,9 +22,11 @@ const today = new Date();
 type CalendarToolProps = {
   copy: CalendarPageCopy;
   site: SiteIdentity;
+  /** Inside the contact tabs: no page wrapper and no banner. */
+  embedded?: boolean;
 };
 
-export function CalendarTool({ copy, site }: CalendarToolProps) {
+export function CalendarTool({ copy, site, embedded = false }: CalendarToolProps) {
   const services = copy.services;
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [year, setYear] = useState(today.getFullYear());
@@ -147,12 +149,7 @@ export function CalendarTool({ copy, site }: CalendarToolProps) {
     }
   }
 
-  return (
-    <section className="contact-page calendar-page">
-      <div className="contact-page__inner">
-        <ContactBanner title={copy.bannerTitle} subtitle={copy.bannerSubtitle} site={site} />
-
-        {booking ? (
+  const content = booking ? (
           <div className="calendar-done">
             <p className="font-display text-xs font-medium tracking-[0.14em] text-muted uppercase">
               {cancelled ? copy.cancelledLabel : copy.confirmedLabel}
@@ -290,7 +287,15 @@ export function CalendarTool({ copy, site }: CalendarToolProps) {
               </div>
             </div>
           </form>
-        )}
+        );
+
+  if (embedded) return <div className="calendar-page">{content}</div>;
+
+  return (
+    <section className="contact-page calendar-page">
+      <div className="contact-page__inner">
+        <ContactBanner title={copy.bannerTitle} subtitle={copy.bannerSubtitle} site={site} />
+        {content}
       </div>
     </section>
   );

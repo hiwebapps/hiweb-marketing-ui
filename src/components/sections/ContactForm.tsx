@@ -30,19 +30,17 @@ type ContactFormProps = {
   copy: ContactPageCopy;
   site: SiteIdentity;
   locale?: 'es' | 'en';
+  /** Inside the contact tabs: no page wrapper and no banner. */
+  embedded?: boolean;
 };
 
-export function ContactForm({ copy, site, locale = 'es' }: ContactFormProps) {
+export function ContactForm({ copy, site, locale = 'es', embedded = false }: ContactFormProps) {
   const status = STATUS_COPY[locale];
   const project = copy.fields.find((field) => field.kind === 'project');
   const left = groupFields(copy.fields.filter((field) => field.kind !== 'project'));
   const customBudget = copy.budgets.some((option) => option.custom);
 
-  return (
-    <section className="contact-page">
-      <div className="contact-page__inner">
-        <ContactBanner title={copy.bannerTitle} subtitle={copy.bannerSubtitle} site={site} />
-
+  const form = (
         <form
           className="contact-form"
           action="/api/contact"
@@ -87,6 +85,15 @@ export function ContactForm({ copy, site, locale = 'es' }: ContactFormProps) {
             </div>
           </div>
         </form>
+  );
+
+  if (embedded) return form;
+
+  return (
+    <section className="contact-page">
+      <div className="contact-page__inner">
+        <ContactBanner title={copy.bannerTitle} subtitle={copy.bannerSubtitle} site={site} />
+        {form}
       </div>
     </section>
   );
