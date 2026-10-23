@@ -24,7 +24,24 @@ type PillarGridProps = {
   tone?: 'canvas' | 'surface' | 'wash';
   ctaLabel?: string;
   headingWidth?: string;
+  locale?: 'es' | 'en';
 };
+
+const DEFAULTS = {
+  es: {
+    eyebrow: 'Diferenciadores',
+    title: 'Cuatro razones para no contratar una agencia genérica',
+    description: 'Partner interno, idioma de industria, servicios atados a resultado y evidencia verificable.',
+    ctaLabel: 'Ver más',
+  },
+  en: {
+    eyebrow: 'Why Hiweb',
+    title: 'Four reasons not to hire a generic agency',
+    description:
+      "An in-house partner that speaks your industry's language, with services tied to results and evidence you can verify.",
+    ctaLabel: 'See more',
+  },
+} as const;
 
 const ACCENT_HEX: Record<PillarAccent, string> = {
   purple: '#927afe',
@@ -37,12 +54,13 @@ const DEFAULT_ACCENTS: PillarAccent[] = ['purple', 'cyan', 'orange', 'green'];
 
 export function PillarGrid({
   id = 'diferenciadores',
-  eyebrow = 'Diferenciadores',
-  title = 'Cuatro razones para no contratar una agencia genérica',
-  description = 'Partner interno, idioma de industria, servicios atados a resultado y evidencia verificable.',
+  locale = 'es',
+  eyebrow = DEFAULTS[locale].eyebrow,
+  title = DEFAULTS[locale].title,
+  description = DEFAULTS[locale].description,
   pillars,
   tone = 'canvas',
-  ctaLabel = 'Ver más',
+  ctaLabel = DEFAULTS[locale].ctaLabel,
   headingWidth,
 }: PillarGridProps) {
   const cols =

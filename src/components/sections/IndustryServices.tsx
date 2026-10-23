@@ -29,6 +29,7 @@ type IndustryServicesProps = {
   catalogLabel?: string;
   catalogHref?: string;
   headingWidth?: string;
+  locale?: 'es' | 'en';
 };
 
 const ACCENT_HEX: Record<ServiceAccent, string> = {
@@ -73,14 +74,17 @@ const SERVICE_ICONS: Record<string, ServiceIconName> = {
 export function IndustryServices({
   industryName,
   services,
-  eyebrow = 'Servicios',
-  title = `Servicios leídos como ${industryName}`,
-  description = 'Cada palanca adaptada a tu sector. El diagnóstico define el orden.',
+  locale = 'es',
+  eyebrow = locale === 'en' ? 'Services' : 'Servicios',
+  title = locale === 'en' ? `Services built for ${industryName}` : `Servicios leídos como ${industryName}`,
+  description = locale === 'en'
+    ? 'Each lever adapted to your sector. The audit sets the order.'
+    : 'Cada palanca adaptada a tu sector. El diagnóstico define el orden.',
   tone = 'canvas',
-  hrefPrefix = '/servicios',
-  ctaLabel = 'Ver más',
-  tagLabel = 'Servicio',
-  catalogLabel = 'Ver todos los servicios',
+  hrefPrefix = locale === 'en' ? '/en/services' : '/servicios',
+  ctaLabel = locale === 'en' ? 'See more' : 'Ver más',
+  tagLabel = locale === 'en' ? 'Service' : 'Servicio',
+  catalogLabel = locale === 'en' ? 'See all services' : 'Ver todos los servicios',
   catalogHref = '/servicios',
   headingWidth,
 }: IndustryServicesProps) {

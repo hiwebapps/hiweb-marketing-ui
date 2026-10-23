@@ -181,7 +181,7 @@ export function PortalPageView({
               accent: '#927afe',
               title:
                 locale === 'en'
-                  ? 'Your campaigns launch always on time'
+                  ? 'Your campaigns always launch on time'
                   : 'Tus campañas salen siempre a tiempo',
               description:
                 locale === 'en'

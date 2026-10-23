@@ -761,7 +761,7 @@ function mapCaseSections(raw: Array<Record<string, unknown>>): CasePageSection[]
 
 const CASE_FALLBACK_METADATA: Record<
   string,
-  { ubicacion: string; sitioWeb?: string; redSocial?: CaseSocialLink }
+  { ubicacion: string; ubicacionEn?: string; sitioWeb?: string; redSocial?: CaseSocialLink }
 > = {
   'avant-rent-a-car': {
     ubicacion: 'Cancún, México',
@@ -775,6 +775,7 @@ const CASE_FALLBACK_METADATA: Record<
   },
   'eagle-superabrasives': {
     ubicacion: 'Hickory, Estados Unidos',
+    ubicacionEn: 'Hickory, NC, USA',
     sitioWeb: 'https://eaglesuperabrasives.com/',
     redSocial: { plataforma: 'linkedin', url: 'https://www.linkedin.com/company/eagle-superabrasives-inc/', handle: 'Eagle Superabrasives' },
   },
@@ -962,6 +963,7 @@ export function mapCase(doc: Record<string, unknown>): CaseRecord {
       ubicacion:
         (hero?._type === 'caseHero' ? hero.ubicacion : undefined) ??
         asText(doc.ubicacion) ??
+        (doc.locale === 'en' ? metaFallback?.ubicacionEn : undefined) ??
         metaFallback?.ubicacion,
       sitioWeb:
         (context?._type === 'caseContext' ? context.sitioWeb : undefined) ??

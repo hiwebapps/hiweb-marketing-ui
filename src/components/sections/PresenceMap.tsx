@@ -12,6 +12,7 @@ type PresenceMapProps = {
   ctaLabel?: string;
   ctaHref?: string;
   headingWidth?: string;
+  locale?: 'es' | 'en';
 };
 
 type MarkerDef = {
@@ -25,43 +26,66 @@ type MarkerDef = {
 const CYAN: [number, number, number] = [0.004, 0.906, 1];
 const ARC: [number, number, number] = [0.004, 0.75, 0.92];
 
-const MARKERS: MarkerDef[] = [
-  {
-    id: 'mexico',
-    label: 'México',
-    detail: 'Mérida · Cancún · Monterrey',
-    location: [23.63, -102.55],
-    size: 0.09,
+const MARKER_TEXT = {
+  es: {
+    mexico: ['México', 'Sede en Mérida · clientes en todo el país'],
+    usa: ['Estados Unidos', 'Clientes activos'],
+    canada: ['Canadá', 'Trabajo remoto'],
   },
-  {
-    id: 'usa',
-    label: 'Estados Unidos',
-    detail: 'Clientes cross-border',
-    location: [39.83, -98.58],
-    size: 0.08,
+  en: {
+    mexico: ['Mexico', 'Based in Mérida · clients nationwide'],
+    usa: ['United States', 'Cross-border clients'],
+    canada: ['Canada', 'Remote operations'],
   },
-  {
-    id: 'canada',
-    label: 'Canadá',
-    detail: 'Operación remota',
-    location: [56.13, -106.35],
-    size: 0.07,
-  },
+} as const;
+
+const MARKER_POSITIONS: Omit<MarkerDef, 'label' | 'detail'>[] = [
+  { id: 'mexico', location: [23.63, -102.55], size: 0.09 },
+  { id: 'usa', location: [39.83, -98.58], size: 0.08 },
+  { id: 'canada', location: [56.13, -106.35], size: 0.07 },
 ];
+
+const DEFAULTS = {
+  es: {
+    eyebrow: 'Mapa global',
+    title: 'Presencia con clientes en Norteamérica',
+    description:
+      'Tenemos sede en Mérida y trabajamos con clientes en todo México, Estados Unidos y Canadá. La auditoría puede ser remota.',
+    ctaLabel: 'Agenda tu auditoría',
+    ctaHref: '/contacto',
+    sectionLabel: 'Presencia global',
+    globeLabel: 'Globo interactivo con México, Estados Unidos y Canadá',
+  },
+  en: {
+    eyebrow: 'Global map',
+    title: 'Clients across North America',
+    description:
+      'Based in Mérida, we work with clients across Mexico, the United States and Canada. The audit can be remote.',
+    ctaLabel: 'Book your audit',
+    ctaHref: '/en/contact',
+    sectionLabel: 'Global presence',
+    globeLabel: 'Interactive globe showing Mexico, the United States and Canada',
+  },
+} as const;
 
 /**
  * Dark presence section — auto-rotating dotted globe with MX / US / CA markers.
  */
 export function PresenceMap({
-  eyebrow = 'Mapa global',
-  title = 'Presencia con clientes en Norteamérica',
-  description = 'Operamos desde Mérida, Cancún y Monterrey con alcance cross-border en México, Estados Unidos y Canadá. La auditoría puede ser remota.',
-  ctaLabel = 'Agenda tu auditoría',
-  ctaHref = '/contacto',
-  sectionLabel = 'Presencia global',
-  globeLabel = 'Globo interactivo con México, Estados Unidos y Canadá',
+  locale = 'es',
+  eyebrow = DEFAULTS[locale].eyebrow,
+  title = DEFAULTS[locale].title,
+  description = DEFAULTS[locale].description,
+  ctaLabel = DEFAULTS[locale].ctaLabel,
+  ctaHref = DEFAULTS[locale].ctaHref,
+  sectionLabel = DEFAULTS[locale].sectionLabel,
+  globeLabel = DEFAULTS[locale].globeLabel,
   headingWidth,
 }: PresenceMapProps) {
+  const MARKERS: MarkerDef[] = MARKER_POSITIONS.map((marker) => {
+    const [label, detail] = MARKER_TEXT[locale][marker.id as keyof (typeof MARKER_TEXT)['es']];
+    return { ...marker, label, detail };
+  });
   const width = headingProps(headingWidth);
   const titleLines = title.replace(/\n+$/, '').split(/\r?\n/);
   const canvasRef = useRef<HTMLCanvasElement>(null);

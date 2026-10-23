@@ -37,6 +37,23 @@ interface Props {
 
 const { section, entry, pitch, industries, phases, stories, hasCases, locale = 'es', socialBrands = [] } = Astro.props;
 const contactHref = locale === 'en' ? '/en/contact' : '/contacto';
+
+/** Feed filter labels on English pages; Studio stores them in Spanish. */
+function englishIndustryName(id: string) {
+	const key = id.toLowerCase();
+	if (key.includes('restaur')) return 'Restaurants';
+	if (key.includes('retail') || key.includes('moda')) return 'Fashion & Retail';
+	if (key.includes('turis') || key.includes('hotel')) return 'Tourism & Hospitality';
+	if (key.includes('inmobil')) return 'Real Estate';
+	if (key.includes('salud') || key.includes('medic')) return 'Healthcare';
+	if (key.includes('manufact') || key.includes('industrial')) return 'Manufacturing';
+	if (key.includes('automo')) return 'Automotive';
+	if (key.includes('saas')) return 'SaaS';
+	if (key.includes('profesional')) return 'Professional Services';
+	if (key.includes('ecommerce')) return 'E-commerce';
+	if (key === 'otros') return 'Other industries';
+	return '';
+}
 const contentKey = serviceContentKey(entry.id);
 const nombre = entry.data.nombre;
 ---
@@ -107,7 +124,7 @@ const nombre = entry.data.nombre;
 				description={section.description || ''}
 				image={section.image}
 				imageAlt={section.imageAlt || nombre}
-				ctaLabel={section.ctaLabel || 'Agenda un diagnóstico'}
+				ctaLabel={section.ctaLabel || (locale === 'en' ? 'Book a diagnostic' : 'Agenda un diagnóstico')}
 				ctaHref={section.ctaHref || contactHref}
 				tone="canvas"
 				headingWidth={section.headingWidth}
@@ -123,7 +140,7 @@ const nombre = entry.data.nombre;
 			tone="canvas"
 			title={section.title}
 			description={section.description}
-			ctaLabel={section.ctaLabel}
+			ctaLabel={section.ctaLabel || (locale === 'en' ? 'Book a diagnostic' : undefined)}
 			ctaHref={section.ctaHref || contactHref}
 			cards={section.cards?.map((card) => ({
 				title: card.title,
@@ -224,7 +241,7 @@ const nombre = entry.data.nombre;
 						b.category?.toLowerCase().includes('salud') || b.category?.toLowerCase().includes('dental') ? 'salud' :
 						'otros'
 					);
-					const indName = b.industryName || (
+					const indName = (locale === 'en' && englishIndustryName(indId)) || b.industryName || (
 						indId === 'restaurantes' ? 'Restaurantes & Gastronomía' :
 						indId === 'retail' ? 'Moda & Retail' :
 						indId === 'turismo' ? 'Turismo & Destinos' :

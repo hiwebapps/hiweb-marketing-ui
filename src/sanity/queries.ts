@@ -1025,6 +1025,7 @@ export const casesQuery = defineQuery(`*[
 ]{
   ${caseAlternateSlug},
   "id": slug.current,
+  "locale": coalesce(locale, "es"),
   cliente,
   "industria": { "id": industria->slug.current },
   "servicios": coalesce(sections[_type == "caseContext"][0].servicios[]->{ "id": slug.current, nombre, "heroImage": coalesce(heroImage, sections[_type == "serviceHero"][0].image) ${imageProjection} }, servicios[]->{ "id": slug.current, nombre, "heroImage": coalesce(heroImage, sections[_type == "serviceHero"][0].image) ${imageProjection} }),
@@ -1041,6 +1042,7 @@ export const caseBySlugQuery = defineQuery(`*[
 ][0]{
   ${caseAlternateSlug},
   "id": slug.current,
+  "locale": coalesce(locale, "es"),
   cliente,
   "industria": { "id": industria->slug.current },
   "servicios": coalesce(sections[_type == "caseContext"][0].servicios[]->{ "id": slug.current, nombre, "heroImage": coalesce(heroImage, sections[_type == "serviceHero"][0].image) ${imageProjection} }, servicios[]->{ "id": slug.current, nombre, "heroImage": coalesce(heroImage, sections[_type == "serviceHero"][0].image) ${imageProjection} }),

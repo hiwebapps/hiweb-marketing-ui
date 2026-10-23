@@ -64,15 +64,14 @@ export const GET: APIRoute = async ({ site }) => {
     return `- [${clean(item.data.cliente, 60)}](${origin}/portafolio/${item.id})${en}${detail ? `: ${detail}` : ''}`;
   });
 
-  const locations = identity.locales.join(', ');
   const body = [
     '# Hiweb Marketing',
     '',
-    `> Strategic digital marketing agency in Mexico (${locations}). Hiweb helps established companies bring structure and direction to their digital marketing so it can scale predictably: SEO and AEO, Google, Meta and ChatGPT ads, social media, web and e-commerce development, branding, CRM automation and AI marketing, run by in-house specialist teams under one strategy.`,
+    `> Strategic digital marketing agency based in Mérida, Mexico. Hiweb helps established companies bring structure and direction to their digital marketing so it can scale predictably: SEO and AEO, Google, Meta and ChatGPT ads, social media, web and e-commerce development, branding, CRM automation and AI marketing, run by in-house specialist teams under one strategy.`,
     '',
     'Key facts:',
     '',
-    `- Offices and teams: ${locations}, Mexico. Site and service in Spanish and English.`,
+    '- Location: based in Mérida, Mexico, with clients in Cancún, Monterrey, other states of Mexico, the United States and Canada. Site and service in Spanish and English.',
     '- Model: monthly retainers with custom pricing by scope, objectives and complexity. No one-off tasks.',
     '- Team: in-house SEO, paid media, development, design, QA and community management under centralized strategic direction.',
     '- Best fit: companies with existing operations and revenue that invest in marketing consistently, such as real estate developers, industrial and B2B manufacturers, and service companies with sales teams.',

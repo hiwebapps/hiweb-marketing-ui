@@ -83,7 +83,7 @@ const COPY = {
     social: 'Redes sociales',
     pieces: 'piezas en revisión',
     pages: 'páginas por validar',
-    articles: 'artículos redactados',
+    articles: (n: number) => (n === 1 ? 'artículo redactado' : 'artículos redactados'),
     close: 'Próximo cierre de revisión',
     closeMeta: (n: number) => `Viernes 24 oct · ${n} entregables de redes`,
     days: '2d',
@@ -129,7 +129,7 @@ const COPY = {
     social: 'Social',
     pieces: 'pieces in review',
     pages: 'pages to validate',
-    articles: 'articles written',
+    articles: (n: number) => (n === 1 ? 'article written' : 'articles written'),
     close: 'Next review close',
     closeMeta: (n: number) => `Friday 24 Oct · ${n} social deliverables`,
     days: '2d',
@@ -597,7 +597,7 @@ export function PortalDemo({
                       <button type="button" onClick={() => go('seo')}>
                         <span className="lab"><i className="dot" style={{ background: 'var(--cyan)' }} />SEO · Blog</span>
                         <span className="num">{counts.seo}</span>
-                        <span className="txt">{copy.articles}</span>
+                        <span className="txt">{copy.articles(counts.seo)}</span>
                       </button>
                       <div className="dl">
                         <div>
