@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import { Badge, Button, Card, Flex, Stack, Text } from '@sanity/ui';
 import { useToast } from '@sanity/ui/toast';
-import { useFormValue, type StringInputProps } from 'sanity';
+import { set, useFormValue, type StringInputProps } from 'sanity';
+
+function cleanInstagramHandle(raw: string): string {
+  if (!raw) return '';
+  let u = raw.trim();
+  u = u.replace(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\//i, '');
+  u = u.split('?')[0].split('#')[0];
+  u = u.replace(/^\/+|\/+$/g, '').replace(/^@+/, '').trim();
+  return u;
+}
 
 export function InstagramSyncInput(props: StringInputProps) {
   const [loading, setLoading] = useState(false);
@@ -14,7 +23,8 @@ export function InstagramSyncInput(props: StringInputProps) {
 
   const rawId = rawDoc?._id;
   const documentId = rawId ? rawId.replace(/^drafts\./, '') : undefined;
-  const username = typeof props.value === 'string' ? props.value.trim().replace(/^@/, '') : '';
+  const rawValue = typeof props.value === 'string' ? props.value : '';
+  const username = cleanInstagramHandle(rawValue);
   const cutoffDate = rawDoc?.cutoffDate;
   const customPostUrls = Array.isArray(rawDoc?.customPostUrls)
     ? rawDoc.customPostUrls.filter((u) => typeof u === 'string' && u.trim().length > 0)
@@ -31,6 +41,10 @@ export function InstagramSyncInput(props: StringInputProps) {
         description: 'Escribe el usuario de Instagram (ej. el.secretomx) antes de sincronizar.',
       });
       return;
+    }
+
+    if (props.onChange && rawValue !== username) {
+      props.onChange(set(username));
     }
 
     setLoading(true);

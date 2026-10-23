@@ -65,6 +65,15 @@ function cleanInstagramUrl(raw: string): string {
   }
 }
 
+function cleanInstagramHandle(raw: string): string {
+  if (!raw) return '';
+  let u = raw.trim();
+  u = u.replace(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\//i, '');
+  u = u.split('?')[0].split('#')[0];
+  u = u.replace(/^\/+|\/+$/g, '').replace(/^@+/, '').trim();
+  return u;
+}
+
 export const POST: APIRoute = async ({ request }) => {
   const cors = getCorsHeaders(request);
 
@@ -76,7 +85,7 @@ export const POST: APIRoute = async ({ request }) => {
       postUrls?: string[];
     };
 
-    const username = body.username?.trim().replace(/^@/, '');
+    const username = cleanInstagramHandle(body.username || '');
     const documentId = body.documentId?.trim();
     const untilDate = body.untilDate?.trim();
     const rawPostUrls = Array.isArray(body.postUrls) ? body.postUrls : [];
@@ -320,7 +329,7 @@ export const POST: APIRoute = async ({ request }) => {
       if (rawPosts.length === 0) {
         try {
           const postsRes = await fetch(
-            `https://api.apify.com/v2/acts/apify~instagram-post-scraper/run-sync-get-dataset-items?timeout=90`,
+            `https://api.apify.com/v2/acts/apify~instagram-scraper/run-sync-get-dataset-items?timeout=90`,
             {
               method: 'POST',
               headers: {
@@ -328,7 +337,8 @@ export const POST: APIRoute = async ({ request }) => {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                username: [username],
+                directUrls: [`https://www.instagram.com/${username}/`],
+                resultsType: 'posts',
                 resultsLimit: 12,
               }),
             }
@@ -340,7 +350,7 @@ export const POST: APIRoute = async ({ request }) => {
             }
           }
         } catch (e) {
-          console.warn('Fallback instagram-post-scraper error:', e);
+          console.warn('Fallback instagram-scraper error:', e);
         }
       }
     }
