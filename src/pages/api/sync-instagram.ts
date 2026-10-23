@@ -516,29 +516,40 @@ export const POST: APIRoute = async ({ request }) => {
       patchPayload.customPostUrls = effectivePostUrls;
     }
 
-    // Asegurar que el borrador exista en Sanity si es un documento recién creado
+    // 4. Parchear documento publicado y borrador en Sanity
     try {
       await sanityClient.createIfNotExists({
-        _id: draftId,
+        _id: cleanId,
         _type: 'socialBrand',
         name: profile.fullName || username,
         handle: username,
       });
     } catch (createErr) {
-      console.warn('Nota: no se pudo ejecutar createIfNotExists en draftId:', createErr);
-    }
-
-    // Aplicar los datos sincronizados tanto al borrador (Studio) como al publicado
-    try {
-      await sanityClient.patch(draftId).set(patchPayload).commit();
-    } catch (e) {
-      console.warn('No se pudo parchear draftId:', e);
+      console.warn('Nota: no se pudo ejecutar createIfNotExists en cleanId:', createErr);
     }
 
     try {
       await sanityClient.patch(cleanId).set(patchPayload).commit();
     } catch (e) {
       console.warn('No se pudo parchear cleanId:', e);
+    }
+
+    // Asegurar que el borrador (draftId) se cree o reemplace con todos los datos
+    // para que Sanity Studio en el navegador del usuario actualice la vista inmediatamente en vivo
+    try {
+      const updatedDoc = await sanityClient.getDocument(cleanId);
+      if (updatedDoc) {
+        const draftDoc = {
+          ...updatedDoc,
+          _id: draftId,
+        };
+        delete (draftDoc as any)._rev;
+        delete (draftDoc as any)._updatedAt;
+        delete (draftDoc as any)._createdAt;
+        await sanityClient.createOrReplace(draftDoc);
+      }
+    } catch (draftErr) {
+      console.warn('Nota creando/actualizando draftId:', draftErr);
     }
 
     return new Response(
