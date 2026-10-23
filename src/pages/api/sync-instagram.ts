@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@sanity/client';
-import { bearerToken, tokenCanAccessProject } from '../../lib/sanity-auth';
+import { bearerToken, tokenIsProjectEditor } from '../../lib/sanity-auth';
 
 export const prerender = false;
 
@@ -78,8 +78,8 @@ function cleanInstagramHandle(raw: string): string {
 export const POST: APIRoute = async ({ request }) => {
   const cors = getCorsHeaders(request);
 
-  // Writes to Sanity with the server token and spends Apify credits: Studio users only.
-  if (!(await tokenCanAccessProject(bearerToken(request)))) {
+  // Writes to Sanity with the server token and spends Apify credits: Studio editors and administrators only.
+  if (!(await tokenIsProjectEditor(bearerToken(request)))) {
     return new Response(JSON.stringify({ success: false, error: 'No autorizado.' }), {
       status: 401,
       headers: cors,

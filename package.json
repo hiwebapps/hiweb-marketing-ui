@@ -63,6 +63,7 @@
   },
   "overrides": {
     "react": "$react",
-    "react-dom": "$react-dom"
+    "react-dom": "$react-dom",
+    "dompurify": "3.4.17"
   }
 }
