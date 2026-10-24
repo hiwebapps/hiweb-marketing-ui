@@ -268,13 +268,6 @@ Trazos. Si `name` es URL o ruta, los tres pintan `<img alt="">`.
 - Lo usan: `BlogBody.astro`.
 - Datos: `rows`, `caption`, `hasHeaderRow` o `headerRows`. Acepta celda string o bloque Portable Text y la aplana a texto. Sin filas, `null`.
 
-### `src/components/content/BlogAuthorCard.astro`
-- Propósito: Ficha del autor al pie del post: foto o iniciales, rol, empresa y LinkedIn.
-- Exporta: componente Astro.
-- Depende de: —
-- Lo usan: `pages/blog/[slug].astro`, `pages/en/blogs/[slug].astro`.
-- Datos: `name`, `role`, `company`, `linkedin`, `photo`, `label` (el `aria-label`). La foto va con `alt=""`. Las clases viven en `BlogPost.css`, no en una hoja propia.
-
 ### `src/components/content/SectionRenderer.astro`
 - Propósito: Un bloque de landing (`/[slug]`) según `_type`. Es el otro árbol, distinto de servicio, industria y nosotros.
 - Exporta: componente Astro (props `section`, `industryName`).

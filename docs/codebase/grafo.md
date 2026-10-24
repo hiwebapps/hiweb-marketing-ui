@@ -256,10 +256,6 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 
 ## src/components/content
 
-### src/components/content/BlogAuthorCard.astro
-- Depende de: —
-- Lo usan: src/pages/blog/[slug].astro, src/pages/en/blogs/[slug].astro
-
 ### src/components/content/BlogBody.astro
 - Depende de: src/lib/content/types.ts, src/components/content/PortableTextImage.astro, src/components/content/PortableTextTable.astro
 - Lo usan: src/pages/blog/[slug].astro, src/pages/en/blogs/[slug].astro
@@ -1207,7 +1203,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 ## src/pages/blog
 
 ### src/pages/blog/[slug].astro
-- Depende de: src/layouts/Layout.astro, src/components/content/BlogAuthorCard.astro, src/components/content/BlogBody.astro, src/lib/content, src/components/sections/BlogPostToc.tsx, src/components/sections/FinalCtaBand.astro, src/components/ui, src/lib/schema.ts, src/lib/blog.ts, src/lib/content/resolve-entry.ts, src/lib/content/types.ts, src/components/sections/BlogPost.css
+- Depende de: src/layouts/Layout.astro, src/components/content/BlogBody.astro, src/lib/content, src/components/sections/BlogPostToc.tsx, src/components/sections/FinalCtaBand.astro, src/components/ui, src/lib/schema.ts, src/lib/blog.ts, src/lib/content/resolve-entry.ts, src/lib/content/types.ts, src/components/sections/BlogPost.css
 - Lo usan: —
 
 ### src/pages/blog/index.astro
@@ -1245,7 +1241,7 @@ Generado por barrido de `import` / `from`. No explica el porqué: eso está en l
 - Lo usan: —
 
 ### src/pages/en/blogs/[slug].astro
-- Depende de: src/layouts/Layout.astro, src/components/content/BlogAuthorCard.astro, src/components/content/BlogBody.astro, src/lib/content, src/components/sections/BlogPostToc.tsx, src/components/sections/FinalCtaBand.astro, src/components/ui, src/lib/schema.ts, src/lib/blog.ts, src/lib/content/resolve-entry.ts, src/lib/content/types.ts, src/components/sections/BlogPost.css
+- Depende de: src/layouts/Layout.astro, src/components/content/BlogBody.astro, src/lib/content, src/components/sections/BlogPostToc.tsx, src/components/sections/FinalCtaBand.astro, src/components/ui, src/lib/schema.ts, src/lib/blog.ts, src/lib/content/resolve-entry.ts, src/lib/content/types.ts, src/components/sections/BlogPost.css
 - Lo usan: —
 
 ### src/pages/en/blogs/index.astro

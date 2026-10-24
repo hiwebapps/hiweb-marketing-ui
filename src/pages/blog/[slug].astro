@@ -2,7 +2,6 @@
 export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
-import BlogAuthorCard from '../../components/content/BlogAuthorCard.astro';
 import BlogBody from '../../components/content/BlogBody.astro';
 import { getCatalogIndex, getPost, getPosts, getSiteSettings, postStaticPaths } from '../../lib/content';
 import { BlogPostToc } from '../../components/sections/BlogPostToc';
@@ -100,7 +99,13 @@ const schemas = [
 					</nav>
 					<h1 data-split class="blog-post__title">{entry.data.title}</h1>
 					<div class="blog-post__meta">
-						<span class="blog-post__avatar" aria-hidden="true">{initials || 'HW'}</span>
+						{
+							author?.photo ? (
+								<img class="blog-post__avatar blog-post__avatar--photo" src={author.photo} alt="" width="64" height="64" />
+							) : (
+								<span class="blog-post__avatar" aria-hidden="true">{initials || 'HW'}</span>
+							)
+						}
 						{
 							author?.linkedin ? (
 								<a class="blog-post__byline" href={author.linkedin} target="_blank" rel="noreferrer">
@@ -132,18 +137,6 @@ const schemas = [
 				</article>
 
 				<aside class="blog-post__related" aria-label="Artículos relacionados">
-					{
-						author ? (
-							<BlogAuthorCard
-								name={author.name}
-								role={author.role}
-								company={author.company}
-								linkedin={author.linkedin}
-								photo={author.photo}
-								label="Autor"
-							/>
-						) : null
-					}
 					<div class="blog-post__related-card">
 						<p class="blog-post__related-title">Relacionados</p>
 						{
