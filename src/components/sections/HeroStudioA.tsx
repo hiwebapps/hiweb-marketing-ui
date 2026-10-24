@@ -143,49 +143,7 @@ export function HeroStudioA({
       const actions = root?.querySelector('.hero-studio-a__actions');
       const carousel = root?.querySelector('.hero-studio-a__carousel');
 
-      if (!prefersReducedMotion()) {
-        // Set hidden state before unlocking CSS so there is no visible → hidden flash.
-        gsap.set(copyBits, { y: MOTION.revealY, autoAlpha: 0 });
-        if (actions) gsap.set(actions, { y: 16, autoAlpha: 0 });
-        if (carousel) {
-          gsap.set(carousel, {
-            y: 26,
-            autoAlpha: 0,
-            scale: 0.982,
-            transformOrigin: '50% 55%',
-          });
-        }
-        root?.classList.add('is-ready');
-
-        gsap.to(copyBits, {
-          y: 0,
-          autoAlpha: 1,
-          stagger: MOTION.stagger,
-          duration: MOTION.duration,
-          ease: MOTION.ease,
-        });
-        if (actions) {
-          gsap.to(actions, {
-            y: 0,
-            autoAlpha: 1,
-            duration: MOTION.durationFast,
-            delay: 0.28,
-            ease: MOTION.ease,
-          });
-        }
-        if (carousel) {
-          gsap.to(carousel, {
-            y: 0,
-            autoAlpha: 1,
-            scale: 1,
-            duration: MOTION.durationSlow,
-            delay: 0.4,
-            ease: MOTION.ease,
-          });
-        }
-      } else {
-        root?.classList.add('is-ready');
-      }
+      root?.classList.add('is-ready');
 
       const step = contextSafe((dir: number) => {
         indexRef.current = wrap(indexRef.current + dir, cards.length);
@@ -202,9 +160,12 @@ export function HeroStudioA({
         setUserPaused(true);
       }
 
-      const timer = window.setInterval(() => {
-        if (pausedRef.current) return;
-        step(1);
+      let timer: number | undefined;
+      const initialTimer = window.setTimeout(() => {
+        timer = window.setInterval(() => {
+          if (pausedRef.current) return;
+          step(1);
+        }, AUTO_MS);
       }, AUTO_MS);
 
       const pause = () => {
@@ -332,7 +293,8 @@ export function HeroStudioA({
       window.addEventListener('resize', onResize);
 
       return () => {
-        window.clearInterval(timer);
+        window.clearTimeout(initialTimer);
+        if (timer) window.clearInterval(timer);
         window.clearTimeout(resumeTimer);
         if (canHover) {
           stage.removeEventListener('pointerenter', pause);
@@ -399,10 +361,19 @@ export function HeroStudioA({
         >
           <p ref={liveRef} className="sr-only" aria-live="polite" />
           <div className="hero-studio-a__track">
-            {slides.map((slide) => (
-              <div key={slide.href} className="hero-studio-a__card">
+            {slides.map((slide, index) => (
+              <div key={slide.href} className={`hero-studio-a__card${index === 0 ? ' is-current' : ''}`}>
                 <a href={slide.href} className="hero-studio-a__card-media" aria-label={slide.title}>
-                  <img src={slide.image} alt="" draggable={false} />
+                  <img
+                    src={slide.image}
+                    alt={slide.title || ''}
+                    width={400}
+                    height={250}
+                    fetchPriority={index === 0 ? 'high' : 'low'}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    draggable={false}
+                  />
                 </a>
                 <span className="hero-studio-a__card-label">{slide.title}</span>
                 <div className="hero-studio-a__card-cta-wrap">

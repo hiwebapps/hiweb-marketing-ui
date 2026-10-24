@@ -51,7 +51,7 @@ const initial = username.trim().charAt(0).toUpperCase() || '·';
           <div class="ig-profile__head">
             <div class="ig-profile__row">
               {avatar ? (
-                <img class="ig-profile__avatar" src={avatar} alt={avatarAlt || username} width="74" height="74" />
+                <img class="ig-profile__avatar" src={avatar} alt={avatarAlt || username} width="74" height="74" loading="lazy" decoding="async" />
               ) : (
                 <span class="ig-profile__fallback" aria-hidden="true">{initial}</span>
               )}
@@ -78,7 +78,7 @@ const initial = username.trim().charAt(0).toUpperCase() || '·';
                 return (
                   <li>
                     <button type="button" class="ig-grid__hit" data-ig-open={index} aria-label={`${label} ${index + 1}`}>
-                      {thumb ? <img src={thumb} alt="" /> : <span class="ig-grid__empty" aria-hidden="true">{index + 1}</span>}
+                      {thumb ? <img src={thumb} alt="" width="300" height="300" loading="lazy" decoding="async" /> : <span class="ig-grid__empty" aria-hidden="true">{index + 1}</span>}
                       {post.kind === 'carousel' ? (
                         <span class="ig-grid__mark" aria-hidden="true">
                           <svg viewBox="0 0 24 24"><rect x="7" y="7" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="4" y="4" width="12" height="12" rx="2" fill="currentColor"/></svg>

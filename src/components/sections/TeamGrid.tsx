@@ -113,7 +113,7 @@ function TeamCard({ member, index, reveal }: { member: TeamMember; index: number
     <li data-reveal={reveal ? true : undefined} className={`team-card team-card--${accent}`}>
       <div className="team-card__photo" style={{ '--photo': `url('${member.photo}')` } as CSSProperties}>
         <span className="team-card__dither" aria-hidden="true" />
-        <img className="team-card__subject" src={member.photo} alt={member.name} width={720} height={1280} />
+        <img className="team-card__subject" src={member.photo} alt={member.name} width={720} height={1280} loading="lazy" decoding="async" />
         <span className="team-card__wash" aria-hidden="true" />
       </div>
       <div className="team-card__body">

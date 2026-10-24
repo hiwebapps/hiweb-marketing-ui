@@ -257,6 +257,7 @@ export function BlogIndex({
                   width={800}
                   height={520}
                   loading="lazy"
+                  decoding="async"
                 />
                 {post.servicioNombre ? (
                   <Badge variant="lime" className="blog-card__read">

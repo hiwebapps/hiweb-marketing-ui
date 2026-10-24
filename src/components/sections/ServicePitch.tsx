@@ -25,7 +25,7 @@ export function ServicePitch({
     <SectionBand id="propuesta" tone={tone}>
       <div className="service-pitch">
         <figure className="service-pitch__media">
-          <img src={image} alt={imageAlt} width={960} height={1200} loading="lazy" />
+          <img src={image} alt={imageAlt} width={960} height={1200} loading="lazy" decoding="async" />
         </figure>
         <div
           className={['service-pitch__copy', width.className].filter(Boolean).join(' ')}

@@ -21,6 +21,13 @@ type IndustryHeroProps = {
   headingWidth?: string;
 };
 
+function getResponsiveSrcSet(src: string): string | undefined {
+  if (!src || !src.includes('cdn.sanity.io')) return undefined;
+  const base = src.replace(/[?&]w=\d+/, '').replace(/[?&]auto=format/, '');
+  const sep = base.includes('?') ? '&' : '?';
+  return `${base}${sep}w=640&auto=format 640w, ${base}${sep}w=1024&auto=format 1024w, ${base}${sep}w=1600&auto=format 1600w`;
+}
+
 /**
  * Hero de industria — misma gramática que Home (tipo, badges, CTA, blobs DS)
  * con foto de fondo en lugar del carrusel.
@@ -37,6 +44,7 @@ export function IndustryHero({
   headingWidth,
 }: IndustryHeroProps) {
   const width = headingProps(headingWidth);
+  const srcSet = getResponsiveSrcSet(image);
   return (
     <section
       id="inicio"
@@ -47,9 +55,11 @@ export function IndustryHero({
       <div className="industry-hero__media" aria-hidden={imageAlt ? undefined : true}>
         <img
           src={image}
+          srcSet={srcSet}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1600px"
           alt={imageAlt}
-          width={2400}
-          height={1600}
+          width={1600}
+          height={1067}
           decoding="async"
           fetchPriority="high"
           style={{ objectPosition: imagePosition }}

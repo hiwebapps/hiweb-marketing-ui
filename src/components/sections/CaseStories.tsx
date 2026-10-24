@@ -302,7 +302,7 @@ function CaseStoriesSlider({
                     <article className="case-story">
                       <div className={cover ? 'case-story__cover' : 'case-story__cover case-story__cover--empty'}>
                         {cover ? (
-                          <img src={cover} alt={story.cover ? story.client : ''} draggable={false} />
+                          <img src={cover} alt={story.cover ? story.client : ''} width={640} height={400} loading="lazy" decoding="async" draggable={false} />
                         ) : (
                           <span className="case-story__initials" aria-hidden="true">
                             {initialsOf(story.client || story.name)}
@@ -313,7 +313,7 @@ function CaseStoriesSlider({
                         {showAuthor && story.name ? (
                           <div className="case-story__person">
                             {story.photo ? (
-                              <img className="case-story__avatar" src={story.photo} alt="" draggable={false} />
+                              <img className="case-story__avatar" src={story.photo} alt="" width={48} height={48} loading="lazy" decoding="async" draggable={false} />
                             ) : (
                               <span className="case-story__avatar case-story__avatar--initials" aria-hidden="true">
                                 {initialsOf(story.name)}

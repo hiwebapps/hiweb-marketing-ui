@@ -51,11 +51,16 @@ const services = home.serviceCards?.length
 			image: item.data.cardImage,
 			icon: item.data.cardIcon,
 		}));
+function heroCardImage(src: string): string {
+	if (!src || !src.includes('cdn.sanity.io')) return src;
+	return src.replace(/w=\d+/, 'w=800');
+}
+
 const heroSlides = (home.heroCases?.length
 	? home.heroCases
 			.filter((item) => item.image)
 			.map((item) => ({
-				image: item.image as string,
+				image: heroCardImage(item.image as string),
 				title: item.cliente,
 				href: `/en/success-stories/${item.id}`,
 			}))
@@ -66,7 +71,7 @@ const heroSlides = (home.heroCases?.length
 				return a.data.cliente.localeCompare(b.data.cliente, 'es');
 			})
 			.map((item) => ({
-				image: (item.data.imagen ?? item.data.seo?.ogImage) as string,
+				image: heroCardImage((item.data.imagen ?? item.data.seo?.ogImage) as string),
 				title: item.data.cliente,
 				href: `/en/success-stories/${item.id}`,
 			})));

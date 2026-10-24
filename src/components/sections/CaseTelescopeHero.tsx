@@ -157,7 +157,7 @@ export function CaseTelescopeHero({
 
       <div className="case-telescope__media" aria-hidden="true">
         <div className="case-telescope__back">
-          <img src={image} alt="" width={1600} height={1000} decoding="async" />
+          <img src={image} alt="" width={1600} height={1000} decoding="async" fetchPriority="high" />
         </div>
         {Array.from({ length: FRONT_LAYERS }, (_, index) => (
           <div

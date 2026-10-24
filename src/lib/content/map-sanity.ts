@@ -1128,7 +1128,7 @@ function asHeroCases(value: unknown): HomeCopy['heroCases'] {
       id: String(item.id),
       cliente: String(item.cliente ?? ''),
       industriaId: item.industriaId ? String(item.industriaId) : undefined,
-      image: urlForWidth(item.ogImage as CmsImage | undefined, 1200),
+      image: urlForWidth(item.ogImage as CmsImage | undefined, 800),
     }));
 }
 
