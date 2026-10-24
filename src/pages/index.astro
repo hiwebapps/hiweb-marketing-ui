@@ -51,7 +51,8 @@ const services = home.serviceCards?.length
 		}));
 function heroCardImage(src: string): string {
 	if (!src || !src.includes('cdn.sanity.io')) return src;
-	return src.replace(/w=\d+/, 'w=800');
+	const [base] = src.split('?');
+	return `${base}?w=480&auto=format`;
 }
 
 const heroSlides = (home.heroCases?.length

@@ -147,7 +147,9 @@ function scanMotion() {
   bindReveals();
   bindCounters();
   bindExtras();
-  ScrollTrigger.refresh();
+  requestAnimationFrame(() => {
+    ScrollTrigger.refresh();
+  });
 }
 
 let observerBound = false;
@@ -212,5 +214,7 @@ if (document.readyState === 'loading') {
 
 window.addEventListener('load', () => {
   boot();
-  ScrollTrigger.refresh();
+  requestAnimationFrame(() => {
+    ScrollTrigger.refresh();
+  });
 });

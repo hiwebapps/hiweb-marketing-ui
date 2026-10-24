@@ -196,9 +196,9 @@ const jsonLdItems = rawJsonLd.map((item) => {
 			</noscript>
 		)}
 		<SiteNav client:load locale={lang} nav={nav} />
-		<ScrollIndicator client:load locale={lang} />
+		<ScrollIndicator client:media="(min-width: 768px)" locale={lang} />
 		<slot />
-		<SiteFooter client:idle locale={lang} footer={footer} site={site} />
+		<SiteFooter client:visible locale={lang} footer={footer} site={site} />
 		{PreviewChrome && <PreviewChrome />}
 		<script src="../scripts/motion.ts"></script>
 	</body>

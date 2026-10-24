@@ -151,7 +151,10 @@ function readLine(scroller: HTMLElement | Window) {
 const MOBILE_SCROLL_QUERY = '(max-width: 767px)';
 
 function useDesktopScrollRail(enabled: boolean) {
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState(() => {
+    if (!enabled || typeof window === 'undefined') return true;
+    return !window.matchMedia(MOBILE_SCROLL_QUERY).matches;
+  });
 
   useEffect(() => {
     if (!enabled) {
@@ -206,8 +209,10 @@ export function ScrollIndicator({ className = '', contained = false, locale = 'e
     };
 
     const refresh = () => {
-      setMarks(collectMarks(target, locale));
-      update();
+      window.requestAnimationFrame(() => {
+        setMarks(collectMarks(target, locale));
+        update();
+      });
     };
 
     target.addEventListener('scroll', onScroll, { passive: true });

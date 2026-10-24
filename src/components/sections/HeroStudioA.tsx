@@ -361,37 +361,51 @@ export function HeroStudioA({
         >
           <p ref={liveRef} className="sr-only" aria-live="polite" />
           <div className="hero-studio-a__track">
-            {slides.map((slide, index) => (
-              <div key={slide.href} className={`hero-studio-a__card${index === 0 ? ' is-current' : ''}`}>
-                <a href={slide.href} className="hero-studio-a__card-media" aria-label={slide.title}>
-                  <img
-                    src={slide.image}
-                    alt={slide.title || ''}
-                    width={400}
-                    height={250}
-                    fetchPriority={index === 0 ? 'high' : 'low'}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    draggable={false}
-                  />
-                </a>
-                <span className="hero-studio-a__card-label">{slide.title}</span>
-                <div className="hero-studio-a__card-cta-wrap">
-                  <a href={slide.href} className="hero-studio-a__card-cta">
-                    {cardCta}
-                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <path
-                        d="M3 8h10M9 4l4 4-4 4"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+            {slides.map((slide, index) => {
+              const isSanity = Boolean(slide.image && slide.image.includes('cdn.sanity.io'));
+              const baseUrl = isSanity ? slide.image.split('?')[0] : slide.image;
+              const src = isSanity ? `${baseUrl}?w=480&auto=format` : slide.image;
+              const srcSet = isSanity
+                ? `${baseUrl}?w=320&auto=format 320w, ${baseUrl}?w=480&auto=format 480w, ${baseUrl}?w=720&auto=format 720w`
+                : undefined;
+              const sizes = isSanity
+                ? '(max-width: 640px) 311px, (max-width: 1024px) 360px, 400px'
+                : undefined;
+
+              return (
+                <div key={slide.href} className={`hero-studio-a__card${index === 0 ? ' is-current' : ''}`}>
+                  <a href={slide.href} className="hero-studio-a__card-media" aria-label={slide.title}>
+                    <img
+                      src={src}
+                      srcSet={srcSet}
+                      sizes={sizes}
+                      alt={slide.title || ''}
+                      width={400}
+                      height={250}
+                      fetchPriority={index === 0 ? 'high' : 'low'}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      draggable={false}
+                    />
                   </a>
+                  <span className="hero-studio-a__card-label">{slide.title}</span>
+                  <div className="hero-studio-a__card-cta-wrap">
+                    <a href={slide.href} className="hero-studio-a__card-cta">
+                      {cardCta}
+                      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path
+                          d="M3 8h10M9 4l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
         <div className="hero-studio-a__transport">
