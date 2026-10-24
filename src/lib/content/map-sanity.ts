@@ -543,7 +543,12 @@ export function mapService(doc: Record<string, unknown>): ServiceRecord {
       nombre: String(doc.nombre ?? ''),
       orden: Number(doc.orden ?? 0),
       tagline: String(doc.tagline ?? ''),
-      cardImage: typeof doc.cardImage === 'string' ? doc.cardImage : undefined,
+      cardImage:
+        typeof doc.cardImage === 'string'
+          ? (doc.cardImage.includes('cdn.sanity.io') && !doc.cardImage.includes('w=')
+              ? `${doc.cardImage}?w=720&auto=format`
+              : doc.cardImage)
+          : undefined,
       cardIcon: typeof doc.cardIcon === 'string' ? doc.cardIcon : undefined,
       heroTitle: String(doc.heroTitle || (hero?._type === 'serviceHero' ? hero.title : '') || ''),
       heroDescription:

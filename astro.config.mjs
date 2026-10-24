@@ -67,6 +67,9 @@ export default defineConfig({
     : PUBLIC_SITE_URL || 'https://www.hiwebmarketing.com',
   output: 'server',
   session: false,
+  build: {
+    inlineStylesheets: 'always',
+  },
   integrations: [
     sanity({
       projectId,

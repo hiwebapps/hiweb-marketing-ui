@@ -74,6 +74,13 @@ function spanClass(index: number, total: number) {
   return wide ? 'sm:col-span-2 lg:col-span-2' : 'sm:col-span-1';
 }
 
+function optimizeServiceImage(src: string, width = 720): string {
+  if (!src || !src.includes('cdn.sanity.io')) return src;
+  const base = src.replace(/[?&]w=\d+/, '').replace(/[?&]auto=format/, '');
+  const sep = base.includes('?') ? '&' : '?';
+  return `${base}${sep}w=${width}&auto=format`;
+}
+
 export function ServiceGrid({
   services,
   eyebrow = 'Servicios',
@@ -94,7 +101,11 @@ export function ServiceGrid({
         {services.map((item, index) => {
           const visual = SERVICE_VISUALS[serviceContentKey(item.slug)];
           const icon = item.icon || visual?.icon || SERVICE_ICON_NAMES[index % SERVICE_ICON_NAMES.length];
-          const image = item.image || visual?.image || '/images/services/desarrollo-web.jpg';
+          const rawImage = item.image || visual?.image || '/images/services/desarrollo-web.jpg';
+          const image = optimizeServiceImage(rawImage, 720);
+          const srcSet = rawImage.includes('cdn.sanity.io')
+            ? `${optimizeServiceImage(rawImage, 480)} 480w, ${optimizeServiceImage(rawImage, 720)} 720w`
+            : undefined;
           const accent = ACCENTS[index % ACCENTS.length];
 
           return (
@@ -106,9 +117,13 @@ export function ServiceGrid({
                 <a href={`${hrefPrefix}/${item.slug}`} className="service-card__link no-underline">
                   <img
                     src={image}
+                    srcSet={srcSet}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     alt=""
+                    width={469}
+                    height={264}
                     className="service-card__image"
-                    loading={index < 2 ? 'eager' : 'lazy'}
+                    loading="lazy"
                     decoding="async"
                   />
                   <span className="service-card__scrim" aria-hidden="true" />
