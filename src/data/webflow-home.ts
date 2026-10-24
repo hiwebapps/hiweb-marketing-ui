@@ -57,7 +57,7 @@ export const WEBFLOW_HOME: HomeCopy = {
   pillars: WEBFLOW_HOME_PILLAR_COPY,
   serviceIntro: {
     eyebrow: 'Servicios',
-    title: 'Servicios de marketing digital',
+    title: 'Servicios de marketing digital\nen México',
     description:
       'Marketing 360. Integramos SEO, publicidad, redes sociales y automatización en una sola estrategia. Así evitas que tus esfuerzos se diluyan y construyes un sistema que trabaja para ti 24/7.',
   },
@@ -98,7 +98,7 @@ export const WEBFLOW_HOME: HomeCopy = {
   ],
   processIntro: {
     eyebrow: 'Cómo trabajamos',
-    title: 'Un proceso claro, de principio a fin',
+    title: 'Un proceso claro,\nde un principio a fin',
     description: 'Cuatro fases para pasar de diagnóstico a crecimiento medible.',
   },
   process: [
