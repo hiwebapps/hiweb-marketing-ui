@@ -262,7 +262,7 @@ Trazos. Si `name` es URL o ruta, los tres pintan `<img alt="">`.
 - Hallazgos: P-06.
 
 ### `src/components/content/PortableTextTable.astro`
-- Propósito: Tabla del portable text. La primera fila puede ser `<th>`. En móvil cada celda lleva `data-label`.
+- Propósito: Tabla del portable text. La primera fila puede ser `<th>`. En móvil, una tabla corta (2 columnas, o 3 con celdas de hasta 45 caracteres) se queda como tabla (`is-fit`) y el resto se lee como lista por fila (`is-list`), con el encabezado de cada columna en `data-label`. Una columna corta con valores repetidos se pinta como etiqueta.
 - Exporta: componente Astro.
 - Depende de: —
 - Lo usan: `BlogBody.astro`.

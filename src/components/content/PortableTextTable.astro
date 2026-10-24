@@ -49,9 +49,23 @@ const hasHeader =
 const header = hasHeader ? rows[0] : null;
 const body = hasHeader ? rows.slice(1) : rows;
 const headerLabels = header ?? [];
+
+// On phones a short table stays a table; anything wider becomes a list by row.
+const columns = Math.max(...rows.map((cells) => cells.length));
+const longest = Math.max(0, ...body.flat().map((cell) => cell.length));
+const fits = (columns <= 2 && longest <= 90) || (columns === 3 && longest <= 45);
+
+// A short column with repeated values (a phase, a level) reads as a tag.
+const tagColumns = new Set(
+  Array.from({ length: columns }, (_, i) => i).filter((i) => {
+    if (i === 0 || body.length < 3) return false;
+    const values = body.map((cells) => cells[i] ?? '').filter(Boolean);
+    return values.every((value) => value.length <= 20) && new Set(values).size <= values.length / 2;
+  }),
+);
 ---
 
-<figure class="blog-table-wrap">
+<figure class:list={["blog-table-wrap", fits ? "is-fit" : "is-list"]}>
   {node.caption ? <figcaption class="blog-table__caption">{node.caption}</figcaption> : null}
   <table class="blog-table">
     {
@@ -70,8 +84,8 @@ const headerLabels = header ?? [];
         body.map((cells) => (
           <tr>
             {cells.map((cell, i) => (
-              <td data-label={headerLabels[i] || (i === 0 ? 'Criterio' : `Columna ${i + 1}`)}>
-                {cell}
+              <td data-label={headerLabels[i] || undefined}>
+                {tagColumns.has(i) && cell ? <span class="blog-table__tag">{cell}</span> : cell}
               </td>
             ))}
           </tr>
