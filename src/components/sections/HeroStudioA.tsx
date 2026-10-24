@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
-import { Button } from '../ui';
+import { Button } from '../ui/Button';
 import { HeadingText, headingProps } from './primitives/heading';
 import './HeroStudioA.css';
 
@@ -364,12 +364,12 @@ export function HeroStudioA({
             {slides.map((slide, index) => {
               const isSanity = Boolean(slide.image && slide.image.includes('cdn.sanity.io'));
               const baseUrl = isSanity ? slide.image.split('?')[0] : slide.image;
-              const src = isSanity ? `${baseUrl}?w=480&auto=format` : slide.image;
+              const src = isSanity ? `${baseUrl}?w=440&q=75&auto=format` : slide.image;
               const srcSet = isSanity
-                ? `${baseUrl}?w=320&auto=format 320w, ${baseUrl}?w=480&auto=format 480w, ${baseUrl}?w=720&auto=format 720w`
+                ? `${baseUrl}?w=320&q=75&auto=format 320w, ${baseUrl}?w=440&q=75&auto=format 440w, ${baseUrl}?w=580&q=75&auto=format 580w`
                 : undefined;
               const sizes = isSanity
-                ? '(max-width: 640px) 311px, (max-width: 1024px) 360px, 400px'
+                ? '(max-width: 640px) 280px, (max-width: 1024px) 340px, 400px'
                 : undefined;
 
               return (

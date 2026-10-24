@@ -54,7 +54,7 @@ const services = home.serviceCards?.length
 function heroCardImage(src: string): string {
 	if (!src || !src.includes('cdn.sanity.io')) return src;
 	const [base] = src.split('?');
-	return `${base}?w=480&auto=format`;
+	return `${base}?w=440&q=75&auto=format`;
 }
 
 const heroSlides = (home.heroCases?.length

@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import { MOTION } from '../../lib/motion';
 import { fallbackNav, type SiteNavContent } from '../../lib/nav';
 import { CHROME, isRetiredCatalogPath, localePath, type Locale } from '../../lib/locale';
-import { Button } from '../ui';
+import { Button } from '../ui/Button';
 import { NavIcon } from './NavIcon';
 import './SiteNav.css';
 

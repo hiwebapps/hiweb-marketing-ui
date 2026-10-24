@@ -186,6 +186,7 @@ function observeLateIslands() {
 }
 
 export function initMotion() {
+  if (window.__HIWEB_MOTION__) return;
   window.__HIWEB_MOTION__ = true;
 
   if (prefersReducedMotion()) {

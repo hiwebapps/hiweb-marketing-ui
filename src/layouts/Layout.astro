@@ -175,14 +175,6 @@ const jsonLdItems = rawJsonLd.map((item) => {
 				'@graph': jsonLdItems,
 			})}
 		/>
-		<script is:inline>
-			document.documentElement.classList.add('motion-ready');
-			window.setTimeout(function () {
-				if (!window.__HIWEB_MOTION__) {
-					document.documentElement.classList.remove('motion-ready');
-				}
-			}, 2500);
-		</script>
 	</head>
 	<body id="top">
 		{trackVisits && (
@@ -200,6 +192,24 @@ const jsonLdItems = rawJsonLd.map((item) => {
 		<slot />
 		<SiteFooter client:visible locale={lang} footer={footer} site={site} />
 		{PreviewChrome && <PreviewChrome />}
-		<script src="../scripts/motion.ts"></script>
+		<script>
+			function loadMotion() {
+				['scroll', 'touchstart', 'pointerdown', 'keydown'].forEach((ev) => {
+					window.removeEventListener(ev, loadMotion, { passive: true } as EventListenerOptions);
+				});
+				import('../scripts/motion').then((m) => {
+					m.initMotion();
+				});
+			}
+
+			['scroll', 'touchstart', 'pointerdown', 'keydown'].forEach((ev) => {
+				window.addEventListener(ev, loadMotion, { passive: true, once: true });
+			});
+			if ('requestIdleCallback' in window) {
+				window.requestIdleCallback(loadMotion, { timeout: 4000 });
+			} else {
+				window.setTimeout(loadMotion, 4000);
+			}
+		</script>
 	</body>
 </html>
