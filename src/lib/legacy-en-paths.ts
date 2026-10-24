@@ -23,6 +23,7 @@ const PAGES: Record<string, string> = {
   '/en/aviso-de-privacidad': '/en/privacy-policy',
   '/en/nosotros': `/en/${DEFAULT_ABOUT_EN_SLUG}`,
   '/en/blog': '/en/blogs',
+  '/en/cotiza-ahora/ads': '/en/calendar',
   // Spanish-only post that the Webflow sitemap listed under /en.
   '/en/blogs/las-mejores-herramientas-de-marketing-digital': '/blog/las-mejores-herramientas-de-marketing-digital',
 };
@@ -37,6 +38,7 @@ const SERVICE_ALIASES: Record<string, string> = {
   'crm-automation': 'crm-automatizacion',
   'crm-automatizacion-empresas': 'crm-automatizacion',
   'ai-tools-for-marketing': 'ia-marketing',
+  'meta-ads-publicidad-redes-sociales': 'meta-ads',
 };
 
 /** Short industry keys used in old menus → published Spanish slug. */
