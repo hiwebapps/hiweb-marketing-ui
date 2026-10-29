@@ -32,7 +32,16 @@ export function extractPortableHeadings(blocks: unknown[] | undefined): PostHead
 
   for (const block of blocks) {
     if (!block || typeof block !== 'object') continue;
-    const item = block as { _type?: string; style?: string; children?: Array<{ text?: string }> };
+    const item = block as { _type?: string; style?: string; title?: string; children?: Array<{ text?: string }> };
+    if (item._type === 'faqBlock') {
+      const text = item.title?.trim() || 'Preguntas frecuentes';
+      let id = slugifyHeading(text) || 'preguntas-frecuentes';
+      const count = used.get(id) ?? 0;
+      used.set(id, count + 1);
+      if (count > 0) id = `${id}-${count + 1}`;
+      headings.push({ depth: 2, text, id });
+      continue;
+    }
     if (item._type !== 'block' || (item.style !== 'h2' && item.style !== 'h3')) continue;
     const text = (item.children ?? []).map((child) => child.text ?? '').join('').trim();
     if (!text) continue;

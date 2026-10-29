@@ -1,5 +1,6 @@
 ---
 import type { FaqItem } from '../../lib/content/types';
+import { slugifyHeading } from '../../lib/blog';
 import { BlogFaq } from '../sections/BlogFaq';
 
 interface Props {
@@ -31,7 +32,8 @@ if (!items.length) {
 }
 
 const title = typeof node.title === 'string' ? node.title : undefined;
+const id = title ? (slugifyHeading(title) || 'preguntas-frecuentes') : 'preguntas-frecuentes';
 const description = typeof node.description === 'string' ? node.description : undefined;
 ---
 
-<BlogFaq client:visible items={items} title={title} description={description} />
+<BlogFaq client:visible items={items} title={title} id={id} description={description} />
