@@ -1,0 +1,130 @@
+.blog-faq {
+  margin: 3rem 0 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.blog-faq__header {
+  margin-bottom: 1.25rem;
+}
+
+.blog-faq__title {
+  margin: 0;
+  scroll-margin-top: 6.5rem;
+  color: var(--color-ink);
+  font-family: var(--font-display, "Clash Display", system-ui, sans-serif);
+  font-size: clamp(1.4rem, 2.2vw, 1.65rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.blog-faq__description {
+  margin: 0.5rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.blog-faq__list {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.blog-faq__item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.blog-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  margin: 0;
+  padding: 1.15rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.blog-faq__question:hover {
+  color: var(--color-ink);
+}
+
+.blog-faq__question:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+.blog-faq__chevron {
+  flex-shrink: 0;
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--color-muted);
+  transform: rotate(90deg);
+  transform-origin: 50% 50%;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), color 160ms ease;
+}
+
+.blog-faq__item.is-open .blog-faq__chevron {
+  transform: rotate(-90deg);
+  color: var(--color-ink);
+}
+
+.blog-faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blog-faq__panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+.blog-faq__panel-inner {
+  overflow: hidden;
+}
+
+.blog-faq__answer {
+  margin: 0;
+  padding: 0 1.5rem 1.25rem 0;
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.blog-faq__answer p {
+  margin: 0;
+}
+
+.blog-faq__answer p + p {
+  margin-top: 0.75rem;
+}
+
+.blog-faq__answer a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  font-weight: 500;
+}
+
+.blog-faq__answer strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-faq__chevron,
+  .blog-faq__panel {
+    transition: none !important;
+  }
+}

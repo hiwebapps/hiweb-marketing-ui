@@ -27,7 +27,9 @@
     "sanity:write-cases": "tsx scripts/sanity/write-webflow-cases.ts",
     "sanity:write-cases:write": "tsx scripts/sanity/write-webflow-cases.ts --write",
     "sanity:migrate-home-sections": "tsx scripts/sanity/migrate-home-sections.ts",
-    "sanity:migrate-home-sections:write": "tsx scripts/sanity/migrate-home-sections.ts --write"
+    "sanity:migrate-home-sections:write": "tsx scripts/sanity/migrate-home-sections.ts --write",
+    "sanity:migrate-blog-faqs": "tsx scripts/sanity/migrate-blog-faqs.ts",
+    "sanity:migrate-blog-faqs:write": "tsx scripts/sanity/migrate-blog-faqs.ts --write"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.2",

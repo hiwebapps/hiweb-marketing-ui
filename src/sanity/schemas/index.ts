@@ -3,6 +3,7 @@ import { aboutSectionTypes } from './aboutSections';
 import { calendarPage } from './calendarPage';
 import { contactPage } from './contactPage';
 import { beforeAfter } from './blocks/beforeAfter';
+import { faqBlock } from './blocks/faqBlock';
 import { landingSectionTypes } from './blocks/pageSections';
 import { instagramPhonePost } from './blocks/instagramPhone';
 import { blogTable } from './blogTable';
@@ -55,6 +56,7 @@ export const schemaTypes = [
   servicePlan,
   table,
   blogTable,
+  faqBlock,
   withVisibility(beforeAfter),
   ...landingSectionTypes,
   instagramPhonePost,
