@@ -4,6 +4,7 @@ import { getEntry, render } from 'astro:content';
 import type { PostRecord } from '../../lib/content/types';
 import PortableTextImage from './PortableTextImage.astro';
 import PortableTextTable from './PortableTextTable.astro';
+import PortableTextFaq from './PortableTextFaq.astro';
 
 interface Props {
   post: PostRecord;
@@ -16,6 +17,11 @@ const components = {
     image: PortableTextImage,
     table: PortableTextTable,
     blogTable: PortableTextTable,
+    faq: PortableTextFaq,
+    faqs: PortableTextFaq,
+    faqBlock: PortableTextFaq,
+    faqItem: PortableTextFaq,
+    blogFaq: PortableTextFaq,
   },
 };
 

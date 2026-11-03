@@ -1,5 +1,7 @@
 /** Shared blog helpers — cover URLs + heading extraction for TOC. */
 
+import type { FaqItem } from './content/types';
+
 export const BLOG_READING_MINUTES = 5;
 
 export function postCoverUrl(id: string, width = 1200, height = 720) {
@@ -30,7 +32,16 @@ export function extractPortableHeadings(blocks: unknown[] | undefined): PostHead
 
   for (const block of blocks) {
     if (!block || typeof block !== 'object') continue;
-    const item = block as { _type?: string; style?: string; children?: Array<{ text?: string }> };
+    const item = block as { _type?: string; style?: string; title?: string; children?: Array<{ text?: string }> };
+    if (item._type === 'faqBlock') {
+      const text = item.title?.trim() || 'Preguntas frecuentes';
+      let id = slugifyHeading(text) || 'preguntas-frecuentes';
+      const count = used.get(id) ?? 0;
+      used.set(id, count + 1);
+      if (count > 0) id = `${id}-${count + 1}`;
+      headings.push({ depth: 2, text, id });
+      continue;
+    }
     if (item._type !== 'block' || (item.style !== 'h2' && item.style !== 'h3')) continue;
     const text = (item.children ?? []).map((child) => child.text ?? '').join('').trim();
     if (!text) continue;
@@ -70,4 +81,20 @@ export function extractPostHeadings(body: string): PostHeading[] {
   }
 
   return headings;
+}
+
+/** Extract FAQ items from PortableText body if a faqBlock was inserted. */
+export function extractPortableFaqs(blocks: unknown[] | undefined): FaqItem[] {
+  if (!Array.isArray(blocks)) return [];
+  const items: FaqItem[] = [];
+  for (const block of blocks) {
+    if (!block || typeof block !== 'object') continue;
+    const item = block as { _type?: string; items?: FaqItem[]; question?: string; answer?: any };
+    if (item._type === 'faqBlock' && Array.isArray(item.items)) {
+      items.push(...item.items);
+    } else if ((item._type === 'faq' || item._type === 'faqItem') && item.question && item.answer) {
+      items.push({ question: item.question, answer: item.answer });
+    }
+  }
+  return items;
 }

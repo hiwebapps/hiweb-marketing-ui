@@ -1,0 +1,39 @@
+---
+import type { FaqItem } from '../../lib/content/types';
+import { slugifyHeading } from '../../lib/blog';
+import { BlogFaq } from '../sections/BlogFaq';
+
+interface Props {
+  node: {
+    _type?: string;
+    title?: string | null;
+    description?: string | null;
+    question?: string | null;
+    answer?: any;
+    items?: FaqItem[] | null;
+    faqs?: FaqItem[] | null;
+  };
+}
+
+const { node } = Astro.props;
+
+let items: FaqItem[] = [];
+
+if (Array.isArray(node.items) && node.items.length > 0) {
+  items = node.items;
+} else if (Array.isArray(node.faqs) && node.faqs.length > 0) {
+  items = node.faqs;
+} else if (node.question && node.answer) {
+  items = [{ question: node.question, answer: node.answer }];
+}
+
+if (!items.length) {
+  return null;
+}
+
+const title = typeof node.title === 'string' ? node.title : undefined;
+const id = title ? (slugifyHeading(title) || 'preguntas-frecuentes') : 'preguntas-frecuentes';
+const description = typeof node.description === 'string' ? node.description : undefined;
+---
+
+<BlogFaq client:visible items={items} title={title} id={id} description={description} />

@@ -188,6 +188,7 @@ export const post = defineType({
         defineArrayMember({ type: 'block' }),
         defineArrayMember({ type: 'table' }),
         defineArrayMember({ type: 'blogTable' }),
+        defineArrayMember({ type: 'faqBlock' }),
         defineArrayMember({
           type: 'image',
           options: { hotspot: true },

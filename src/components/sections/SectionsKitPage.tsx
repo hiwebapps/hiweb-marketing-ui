@@ -9,6 +9,7 @@ import {
   CaseStories,
   Eyebrow,
   FaqSection,
+  BlogFaq,
   FinalCta,
   FitSignal,
   HeroSection,
@@ -61,6 +62,7 @@ const KIT = [
   { id: 'proof', name: 'SocialProof', source: 'Raycast / Cal', role: 'Quotes con outcome' },
   { id: 'fit', name: 'FitSignal', source: 'Kalungi', role: 'Engagement / fit' },
   { id: 'faq', name: 'FaqSection', source: 'Cal', role: 'Objeciones ICP' },
+  { id: 'blog-faq', name: 'BlogFaq', source: 'Blog Kit', role: 'Acordeón de FAQs para artículos con schema y TOC' },
   { id: 'cta', name: 'FinalCta', source: 'Cal + Linear', role: 'Cierre ink, una decisión' },
 ] as const;
 
@@ -326,6 +328,23 @@ export function SectionsKitPage() {
 
         <div id="demo-faq">
           <FaqSection />
+        </div>
+
+        <div id="demo-blog-faq" className="max-w-[760px] mx-auto px-6 py-12">
+          <BlogFaq
+            title="Preguntas frecuentes (Kit Blog)"
+            description="Componente optimizado para la columna de lectura del blog, integrado con TOC y datos estructurados Schema.org."
+            items={[
+              {
+                question: '¿Cómo se conecta este componente con el CMS Sanity?',
+                answer: 'Usa el campo `faqs` del schema de artículos o el bloque `faqBlock` dentro del cuerpo PortableText.',
+              },
+              {
+                question: '¿Afecta el rendimiento o Core Web Vitals?',
+                answer: 'No. Utiliza animaciones CSS GPU aceleradas, respetando `prefers-reduced-motion` y sin forzar reflows de layout.',
+              },
+            ]}
+          />
         </div>
 
         <div id="demo-cta">

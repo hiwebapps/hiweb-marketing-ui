@@ -56,6 +56,8 @@ export { ServicePlans } from './ServicePlans';
 export { BlogHero } from './BlogHero';
 export { BlogIndex } from './BlogIndex';
 export { BlogPostToc } from './BlogPostToc';
+export { BlogFaq } from './BlogFaq';
+export type { BlogFaqProps } from './BlogFaq';
 export { CasesIndex } from './CasesIndex';
 export { FinalCta } from './FinalCta';
 export { HomePage } from './HomePage';

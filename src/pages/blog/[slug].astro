@@ -7,10 +7,11 @@ import { getCatalogIndex, getPost, getPosts, getSiteSettings, postStaticPaths } 
 import { BlogPostToc } from '../../components/sections/BlogPostToc';
 import FinalCta from '../../components/sections/FinalCtaBand.astro';
 import { Button } from '../../components/ui';
-import { articleSchema, breadcrumbSchema } from '../../lib/schema';
-import { extractPortableHeadings, extractPostHeadings, postCoverUrl } from '../../lib/blog';
+import { articleSchema, breadcrumbSchema, faqSchema } from '../../lib/schema';
+import { extractPortableFaqs, extractPortableHeadings, extractPostHeadings, postCoverUrl } from '../../lib/blog';
 import { notFound } from '../../lib/content/resolve-entry';
 import type { PostRecord } from '../../lib/content/types';
+import { BlogFaq } from '../../components/sections/BlogFaq';
 import '../../components/sections/BlogPost.css';
 
 export async function getStaticPaths() {
@@ -31,9 +32,24 @@ const related = allPosts
 	.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf())
 	.slice(0, 4);
 
+const dedicatedFaqs = entry.data.faqs ?? [];
+const portableFaqs = extractPortableFaqs(entry.portableText);
+const allFaqs = [...dedicatedFaqs, ...portableFaqs];
+const hasDedicatedFaqs = dedicatedFaqs.length > 0;
+const hasAnyFaqs = allFaqs.length > 0;
+
 const headings = entry.portableText
 	? extractPortableHeadings(entry.portableText)
 	: extractPostHeadings(entry.markdownBody ?? '');
+
+if (hasDedicatedFaqs) {
+	headings.push({
+		depth: 2,
+		text: 'Preguntas frecuentes',
+		id: 'preguntas-frecuentes',
+	});
+}
+
 const cover = entry.coverUrl ?? postCoverUrl(entry.id);
 const dateLabel = entry.data.fecha.toLocaleDateString('es-MX', {
 	year: 'numeric',
@@ -68,6 +84,7 @@ const schemas = [
 		image: cover,
 		publisher: site.legalName,
 	}),
+	...(hasAnyFaqs ? [faqSchema(allFaqs)] : []),
 ];
 ---
 
@@ -135,6 +152,14 @@ const schemas = [
 				<article class="blog-post__main">
 					<div class="blog-post__body" data-blog-body>
 						<BlogBody post={entry} />
+						{hasDedicatedFaqs ? (
+							<BlogFaq
+								client:visible
+								items={dedicatedFaqs}
+								title="Preguntas frecuentes"
+								id="preguntas-frecuentes"
+							/>
+						) : null}
 					</div>
 				</article>
 
