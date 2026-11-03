@@ -21,6 +21,11 @@ const PAGES: Record<string, string> = {
   '/servicios/redes-sociales': '/servicios/gestion-de-redes-sociales',
   '/servicios/desarrollo-web': '/servicios/agencia-de-desarrollo-web',
   '/servicios/diseno-web': '/servicios/agencia-de-desarrollo-web',
+  // Singular /servicio/ and nested paths that Google still ranks.
+  '/servicio/diseno-web': '/servicios/agencia-de-desarrollo-web',
+  '/servicio/desarrollo-web': '/servicios/agencia-de-desarrollo-web',
+  '/servicio/redes-sociales': '/servicios/gestion-de-redes-sociales',
+  '/servicios/seo/seo-local': '/servicios/agencia-seo',
   '/industrias/automotive-marketing-agency': '/industrias/agencia-de-marketing-automotriz',
   // Old post URLs with traffic in Search Console (typos and earlier slugs).
   '/blogs/cuanto-cobra-agencia-marketing': '/blog/cuanto-cobra-una-agencia-de-marketing-digital-en-mexico',
