@@ -9,6 +9,8 @@ import '../components/sections/FaqSection.css';
 import '../components/sections/BlogFaq.css';
 import { SiteNav } from '../components/sections/SiteNav';
 import { SiteFooter } from '../components/sections/SiteFooter';
+import LandingNav from '../components/sections/LandingNav.astro';
+import LandingFooter from '../components/sections/LandingFooter.astro';
 import { ScrollIndicator } from '../components/effects/ScrollIndicator';
 import { getFavicon, getFooter, getNavigation, getSiteSettings } from '../lib/content';
 import { organizationSchema, websiteSchema } from '../lib/schema';
@@ -25,6 +27,12 @@ interface Props {
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[] | object | object[];
 	lang?: 'es' | 'en';
 	alternates?: { es?: string; en?: string };
+	/** Landing mode: hides the full mega-menu and renders a distraction-free navbar. */
+	minimalNav?: boolean;
+	/** Landing mode: renders a clean, compliance-only footer. */
+	minimalFooter?: boolean;
+	landingNavCtaLabel?: string;
+	landingNavCtaHref?: string;
 }
 
 const {
@@ -35,6 +43,10 @@ const {
 	jsonLd,
 	lang = 'es',
 	alternates,
+	minimalNav = false,
+	minimalFooter = false,
+	landingNavCtaLabel,
+	landingNavCtaHref,
 } = Astro.props;
 
 const site = await getSiteSettings();
@@ -195,10 +207,18 @@ const jsonLdItems = rawJsonLd.map((item) => {
 				></iframe>
 			</noscript>
 		)}
-		<SiteNav client:load locale={lang} nav={nav} />
-		<ScrollIndicator client:media="(min-width: 768px)" locale={lang} />
+		{minimalNav ? (
+			<LandingNav ctaLabel={landingNavCtaLabel} ctaHref={landingNavCtaHref} />
+		) : (
+			<SiteNav client:load locale={lang} nav={nav} />
+		)}
+		{!minimalNav && <ScrollIndicator client:media="(min-width: 768px)" locale={lang} />}
 		<slot />
-		<SiteFooter client:visible locale={lang} footer={footer} site={site} />
+		{minimalFooter ? (
+			<LandingFooter />
+		) : (
+			<SiteFooter client:visible locale={lang} footer={footer} site={site} />
+		)}
 		{PreviewChrome && <PreviewChrome />}
 		<script>
 			function loadMotion() {

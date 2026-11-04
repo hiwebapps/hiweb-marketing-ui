@@ -1,0 +1,118 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Layout.astro';
+import { Button } from '../components/ui';
+
+const title = '¡Solicitud Recibida! — Hiweb Marketing';
+const description = 'Hemos recibido tus datos con éxito. En menos de 24 horas hábiles te enviaremos tu diagnóstico preliminar.';
+---
+
+<Layout
+  title={title}
+  description={description}
+  noindex={true}
+  minimalNav={true}
+  minimalFooter={true}
+>
+  <main class="min-h-[75vh] flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl w-full mx-auto text-center">
+      <!-- Success Icon -->
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 mb-6 shadow-sm">
+        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      </div>
+
+      <!-- Heading -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border text-xs font-medium text-ink-soft mb-4">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span>Solicitud Confirmada</span>
+      </div>
+
+      <h1 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-ink mb-4">
+        ¡Todo listo! Recibimos tus datos para el Diagnóstico
+      </h1>
+
+      <p class="text-base sm:text-lg text-muted max-w-xl mx-auto mb-10 leading-relaxed">
+        Nuestro equipo de estrategia B2B ya comenzó a analizar tu sitio y su visibilidad en Google y motores de IA (ChatGPT, Perplexity).
+      </p>
+
+      <!-- Next Steps Box -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 text-left mb-10 shadow-sm">
+        <h2 class="font-display font-semibold text-lg text-ink mb-5">
+          ¿Qué va a pasar ahora?
+        </h2>
+
+        <ol class="space-y-4 text-sm sm:text-base text-ink-soft">
+          <li class="flex items-start gap-3.5">
+            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-ink text-canvas text-xs font-semibold flex items-center justify-center mt-0.5">
+              1
+            </span>
+            <div>
+              <strong class="font-semibold text-ink">Revisión de presencia digital:</strong>
+              <p class="text-muted text-xs sm:text-sm mt-0.5">Auditamos si tu negocio aparece en búsquedas B2B clave y si tu competencia te está quitando prospectos en motores de IA.</p>
+            </div>
+          </li>
+
+          <li class="flex items-start gap-3.5">
+            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-ink text-canvas text-xs font-semibold flex items-center justify-center mt-0.5">
+              2
+            </span>
+            <div>
+              <strong class="font-semibold text-ink">Contacto en menos de 24h hábiles:</strong>
+              <p class="text-muted text-xs sm:text-sm mt-0.5">Un especialista de Hiweb te escribirá por WhatsApp o correo con las primeras métricas y conclusiones.</p>
+            </div>
+          </li>
+
+          <li class="flex items-start gap-3.5">
+            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-ink text-canvas text-xs font-semibold flex items-center justify-center mt-0.5">
+              3
+            </span>
+            <div>
+              <strong class="font-semibold text-ink">Sesión 1 a 1 de entrega:</strong>
+              <p class="text-muted text-xs sm:text-sm mt-0.5">Te mostramos exactamente dónde se fugan tus leads y cómo activar un sistema predecible de captación.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Quick Action / Calendar option -->
+      <div class="rounded-2xl border border-border bg-canvas p-6 text-center mb-8">
+        <p class="text-xs sm:text-sm text-muted mb-4">
+          ¿Prefieres apartar tu lugar en la agenda de una vez sin esperar el correo?
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Button href="/calendario" variant="primary" size="md">
+            Agendar videollamada directa
+          </Button>
+          <Button href="/" variant="secondary" size="md">
+            Volver al inicio
+          </Button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Conversion Analytics Script -->
+  <script is:inline>
+    (function () {
+      try {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'generate_lead',
+          conversion_source: 'ads_landing',
+          page_path: window.location.pathname,
+        });
+
+        // Event for OpenAI Ads / Custom platforms
+        window.dataLayer.push({
+          event: 'openai_conversion',
+          conversion_name: 'lead_completed',
+        });
+      } catch (err) {
+        console.warn('Analytics event push error:', err);
+      }
+    })();
+  </script>
+</Layout>

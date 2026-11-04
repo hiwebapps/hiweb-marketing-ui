@@ -1,0 +1,312 @@
+---
+interface Props {
+  landingName?: string;
+  submitLabel?: string;
+  serviceTag?: string;
+  className?: string;
+}
+
+const {
+  landingName = 'Diagnóstico Digital B2B',
+  submitLabel = 'Solicitar diagnóstico gratuito',
+  serviceTag = 'Diagnóstico Digital B2B',
+  className = '',
+} = Astro.props;
+---
+
+<div class={`landing-form-card rounded-2xl border border-border bg-canvas p-6 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] ${className}`} id="formulario">
+  <div class="mb-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border text-xs font-semibold text-ink-soft mb-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+      <span>Sin costo · Respuesta en 24h</span>
+    </div>
+    <h3 class="font-display font-semibold text-xl sm:text-2xl text-ink tracking-tight">
+      Pide tu Diagnóstico Digital
+    </h3>
+    <p class="text-xs sm:text-sm text-muted mt-1">
+      Detecta dónde se fugan tus prospectos y cómo captar más clientes B2B.
+    </p>
+  </div>
+
+  <form class="landing-lead-form space-y-4" data-landing-name={landingName} data-service-tag={serviceTag} novalidate>
+    <!-- Hidden tracking fields -->
+    <input type="hidden" name="utm_source" value="" />
+    <input type="hidden" name="utm_medium" value="" />
+    <input type="hidden" name="utm_campaign" value="" />
+    <input type="hidden" name="utm_content" value="" />
+    <input type="hidden" name="landing_url" value="" />
+
+    <!-- 1. Nombre completo -->
+    <div>
+      <label for="lp-name" class="block text-xs font-semibold uppercase tracking-wider text-ink-soft mb-1.5">
+        Nombre completo *
+      </label>
+      <input
+        type="text"
+        id="lp-name"
+        name="firstName"
+        required
+        minlength="2"
+        placeholder="Ej. Carlos Mendoza"
+        class="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-ink focus:bg-canvas focus:outline-none transition-colors"
+      />
+      <p class="form-error text-xs text-rose-600 mt-1 hidden" data-error-for="firstName"></p>
+    </div>
+
+    <!-- 2. Correo de trabajo -->
+    <div>
+      <label for="lp-email" class="block text-xs font-semibold uppercase tracking-wider text-ink-soft mb-1.5">
+        Correo electrónico de trabajo *
+      </label>
+      <input
+        type="email"
+        id="lp-email"
+        name="email"
+        required
+        placeholder="carlos@tuempresa.com"
+        class="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-ink focus:bg-canvas focus:outline-none transition-colors"
+      />
+      <p class="form-error text-xs text-rose-600 mt-1 hidden" data-error-for="email"></p>
+    </div>
+
+    <!-- 3. Teléfono / WhatsApp -->
+    <div>
+      <label for="lp-phone" class="block text-xs font-semibold uppercase tracking-wider text-ink-soft mb-1.5">
+        Teléfono / WhatsApp *
+      </label>
+      <input
+        type="tel"
+        id="lp-phone"
+        name="phone"
+        required
+        placeholder="Ej. +52 55 1234 5678"
+        class="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-ink focus:bg-canvas focus:outline-none transition-colors"
+      />
+      <p class="form-error text-xs text-rose-600 mt-1 hidden" data-error-for="phone"></p>
+    </div>
+
+    <!-- 4. Presupuesto aproximado -->
+    <div>
+      <label for="lp-budget" class="block text-xs font-semibold uppercase tracking-wider text-ink-soft mb-1.5">
+        Presupuesto mensual estimado para marketing *
+      </label>
+      <div class="relative">
+        <select
+          id="lp-budget"
+          name="budget"
+          required
+          class="w-full appearance-none rounded-xl border border-border bg-surface px-4 py-3 text-sm text-ink focus:border-ink focus:bg-canvas focus:outline-none transition-colors cursor-pointer"
+        >
+          <option value="" disabled selected>Selecciona un rango...</option>
+          <option value="Menos de $25,000 MXN / mes">Menos de $25,000 MXN / mes</option>
+          <option value="$25,000 - $50,000 MXN / mes">$25,000 - $50,000 MXN / mes</option>
+          <option value="$50,000 - $100,000 MXN / mes">$50,000 - $100,000 MXN / mes</option>
+          <option value="Más de $100,000 MXN / mes">Más de $100,000 MXN / mes</option>
+          <option value="Por definir en el diagnóstico">Por definir en el diagnóstico</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-muted">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+      <p class="form-error text-xs text-rose-600 mt-1 hidden" data-error-for="budget"></p>
+    </div>
+
+    <!-- 5. Sitio web o empresa (opcional para enriquecer el diagnóstico) -->
+    <div>
+      <label for="lp-website" class="block text-xs font-semibold uppercase tracking-wider text-ink-soft mb-1.5">
+        Sitio web de tu empresa <span class="text-muted font-normal lowercase">(opcional)</span>
+      </label>
+      <input
+        type="text"
+        id="lp-website"
+        name="website"
+        placeholder="ejemplo.com"
+        class="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-ink focus:bg-canvas focus:outline-none transition-colors"
+      />
+    </div>
+
+    <!-- Submit Button & Live Feedback -->
+    <div class="pt-2">
+      <button
+        type="submit"
+        class="w-full rounded-full bg-ink text-canvas font-semibold text-sm sm:text-base py-3.5 px-6 shadow-md hover:bg-ink-soft focus:ring-2 focus:ring-ink focus:outline-none transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        <span class="btn-text">{submitLabel}</span>
+        <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+
+      <p class="form-status text-xs text-center mt-3 text-muted" role="status" aria-live="polite">
+        🔒 Datos 100% protegidos. No hacemos spam.
+      </p>
+    </div>
+  </form>
+</div>
+
+<script>
+  function setupLandingLeadForms() {
+    const forms = document.querySelectorAll<HTMLFormElement>('.landing-lead-form');
+
+    forms.forEach((form) => {
+      // 1. Extraer y persistir UTMs de la URL
+      const params = new URLSearchParams(window.location.search);
+      const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'gclid', 'fbclid'];
+
+      utmKeys.forEach((key) => {
+        const value = params.get(key);
+        if (value) {
+          try {
+            sessionStorage.setItem(`hw_${key}`, value);
+          } catch {}
+        }
+      });
+
+      // Rellenar campos ocultos desde URL o sessionStorage
+      const getUtm = (key: string) => params.get(key) || sessionStorage.getItem(`hw_${key}`) || '';
+      
+      const sourceInput = form.querySelector<HTMLInputElement>('input[name="utm_source"]');
+      const mediumInput = form.querySelector<HTMLInputElement>('input[name="utm_medium"]');
+      const campaignInput = form.querySelector<HTMLInputElement>('input[name="utm_campaign"]');
+      const contentInput = form.querySelector<HTMLInputElement>('input[name="utm_content"]');
+      const urlInput = form.querySelector<HTMLInputElement>('input[name="landing_url"]');
+
+      if (sourceInput) sourceInput.value = getUtm('utm_source');
+      if (mediumInput) mediumInput.value = getUtm('utm_medium');
+      if (campaignInput) campaignInput.value = getUtm('utm_campaign');
+      if (contentInput) contentInput.value = getUtm('utm_content');
+      if (urlInput) urlInput.value = window.location.href;
+
+      // 2. Manejo de errores
+      const showError = (fieldKey: string, message: string) => {
+        const errorNode = form.querySelector<HTMLElement>(`[data-error-for="${fieldKey}"]`);
+        if (errorNode) {
+          if (message) {
+            errorNode.textContent = message;
+            errorNode.classList.remove('hidden');
+          } else {
+            errorNode.textContent = '';
+            errorNode.classList.add('hidden');
+          }
+        }
+      };
+
+      const clearAllErrors = () => {
+        form.querySelectorAll<HTMLElement>('.form-error').forEach((el) => {
+          el.textContent = '';
+          el.classList.add('hidden');
+        });
+      };
+
+      // 3. Envío del formulario
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAllErrors();
+
+        const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+        const btnText = form.querySelector<HTMLElement>('.btn-text');
+        const statusText = form.querySelector<HTMLElement>('.form-status');
+
+        const formData = new FormData(form);
+        const firstName = String(formData.get('firstName') || '').trim();
+        const email = String(formData.get('email') || '').trim();
+        const phone = String(formData.get('phone') || '').trim();
+        const budget = String(formData.get('budget') || '').trim();
+        const website = String(formData.get('website') || '').trim();
+
+        let hasError = false;
+
+        if (!firstName || firstName.length < 2) {
+          showError('firstName', 'Por favor ingresa tu nombre completo.');
+          hasError = true;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+          showError('email', 'Por favor ingresa un correo de trabajo válido.');
+          hasError = true;
+        }
+
+        const cleanPhone = phone.replace(/\D/g, '');
+        if (!phone || cleanPhone.length < 7) {
+          showError('phone', 'Por favor ingresa un número de teléfono o WhatsApp válido.');
+          hasError = true;
+        }
+
+        if (!budget) {
+          showError('budget', 'Por favor selecciona un rango aproximado de presupuesto.');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        // Construir contexto de UTMs para adjuntar al lead
+        const landingName = form.dataset.landingName || 'Diagnóstico B2B';
+        const serviceTag = form.dataset.serviceTag || 'Diagnóstico Digital B2B';
+        const utmSource = sourceInput?.value || 'direct';
+        const utmMedium = mediumInput?.value || 'none';
+        const utmCampaign = campaignInput?.value || 'none';
+        const utmContent = contentInput?.value || 'none';
+
+        const projectNotes = `[Landing: ${landingName}] [UTMs: source=${utmSource}, medium=${utmMedium}, campaign=${utmCampaign}, content=${utmContent}]`;
+
+        if (submitBtn) submitBtn.disabled = true;
+        if (btnText) btnText.textContent = 'Enviando solicitud…';
+
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              locale: 'es',
+              firstName,
+              email,
+              phone,
+              website: website || undefined,
+              services: [serviceTag],
+              budget,
+              project: projectNotes,
+            }),
+          });
+
+          if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(errData.error || 'Ocurrió un error al enviar tus datos.');
+          }
+
+          // Disparar dataLayer para OpenAI Ads / GTM
+          try {
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({
+              event: 'lead_form_submitted',
+              form_type: 'ads_landing',
+              landing_name: landingName,
+              utm_source: utmSource,
+              utm_campaign: utmCampaign,
+            });
+          } catch {}
+
+          // Redirección inmediata a /gracias
+          window.location.href = '/gracias';
+        } catch (error: any) {
+          if (statusText) {
+            statusText.textContent = error.message || 'No pudimos enviar tus datos. Inténtalo de nuevo.';
+            statusText.classList.remove('text-muted');
+            statusText.classList.add('text-rose-600', 'font-medium');
+          }
+          if (submitBtn) submitBtn.disabled = false;
+          if (btnText) btnText.textContent = 'Solicitar diagnóstico gratuito';
+        }
+      });
+    });
+  }
+
+  // Ejecutar al cargar la página
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupLandingLeadForms);
+  } else {
+    setupLandingLeadForms();
+  }
+</script>

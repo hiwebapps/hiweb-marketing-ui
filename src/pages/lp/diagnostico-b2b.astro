@@ -1,0 +1,380 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import LandingLeadForm from '../../components/sections/LandingLeadForm.astro';
+import { Button } from '../../components/ui';
+
+const title = 'Diagnóstico Digital Gratuito para Empresas B2B — Hiweb';
+const description = 'Convierte tu sitio web en una máquina de leads calificados. Detecta dónde se fugan tus prospectos con un diagnóstico digital 100% gratuito.';
+---
+
+<Layout
+  title={title}
+  description={description}
+  noindex={true}
+  minimalNav={true}
+  minimalFooter={true}
+  landingNavCtaLabel="Pedir Diagnóstico Gratis"
+  landingNavCtaHref="#formulario"
+>
+  <main class="overflow-hidden">
+    <!-- ─────────────────────────────────────────────
+         1. HERO SECTION (Split Grid Above the Fold)
+         ───────────────────────────────────────────── -->
+    <section class="relative pt-6 pb-16 lg:py-20 px-4 sm:px-6 lg:px-8 border-b border-border bg-gradient-to-b from-surface/50 via-canvas to-canvas">
+      <div class="max-w-[1300px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- Columna izquierda: Hook & Message Match -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface border border-border text-xs sm:text-sm font-medium text-ink-soft shadow-xs">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>OpenAI & Google Ads B2B · Diagnóstico Gratuito</span>
+            </div>
+
+            <h1 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-ink leading-[1.12]">
+              Convierte tu sitio web en una <span class="bg-gradient-to-r from-ink to-ink-soft bg-clip-text text-transparent underline decoration-accent-lime decoration-4 underline-offset-4">máquina de leads calificados</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-ink-soft max-w-xl leading-relaxed">
+              El 80% de los compradores B2B investigan en Google y en motores de IA (ChatGPT, Perplexity) antes de contactar a un proveedor. Te mostramos exactamente en qué punto se fugan tus prospectos.
+            </p>
+
+            <!-- Value Bullets -->
+            <div class="space-y-3 pt-2">
+              <div class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <span class="text-sm sm:text-base text-ink-soft font-medium">
+                  <strong>Auditoría de visibilidad en IA:</strong> ¿Aparece tu empresa cuando preguntan por tus productos en ChatGPT?
+                </span>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <span class="text-sm sm:text-base text-ink-soft font-medium">
+                  <strong>Detección de fricción:</strong> Por qué tus visitantes no dejan sus datos ni solicitan cotización.
+                </span>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <span class="text-sm sm:text-base text-ink-soft font-medium">
+                  <strong>Plan de acción priorizado:</strong> 3 palancas inmediatas para duplicar prospectos calificados.
+                </span>
+              </div>
+            </div>
+
+            <!-- Social Proof Pill -->
+            <div class="pt-4 flex items-center gap-4 border-t border-border/80">
+              <div class="flex -space-x-2 overflow-hidden">
+                <span class="inline-block h-8 w-8 rounded-full ring-2 ring-canvas bg-surface-elevated font-semibold text-xs flex items-center justify-center text-ink">B2B</span>
+                <span class="inline-block h-8 w-8 rounded-full ring-2 ring-canvas bg-emerald-100 font-semibold text-xs flex items-center justify-center text-emerald-800">IA</span>
+                <span class="inline-block h-8 w-8 rounded-full ring-2 ring-canvas bg-ink font-semibold text-xs flex items-center justify-center text-canvas">+50</span>
+              </div>
+              <p class="text-xs sm:text-sm text-muted">
+                Más de <strong>50 marcas B2B e industriales</strong> han escalado su adquisición con Hiweb.
+              </p>
+            </div>
+          </div>
+
+          <!-- Columna derecha: Formulario Lead Gen -->
+          <div class="lg:col-span-5">
+            <LandingLeadForm
+              landingName="Diagnóstico B2B - OpenAI Ads"
+              submitLabel="Solicitar diagnóstico gratuito"
+              serviceTag="Diagnóstico Digital B2B"
+            />
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────
+         2. DOLORES QUE RESOLVEMOS (Problem POV)
+         ───────────────────────────────────────────── -->
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-surface">
+      <div class="max-w-[1300px] mx-auto">
+        <div class="max-w-2xl mb-12">
+          <span class="text-xs font-semibold uppercase tracking-wider text-muted">Diagnóstico de problemas</span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-ink mt-2">
+            ¿Tu marketing digital se siente como un gasto sin retorno?
+          </h2>
+          <p class="text-sm sm:text-base text-muted mt-2">
+            La mayoría de las empresas B2B caen en las mismas tres trampas que bloquean su crecimiento:
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Dolor 1 -->
+          <div class="rounded-2xl border border-border bg-canvas p-6 sm:p-8 flex flex-col justify-between shadow-xs">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-base mb-5">
+                01
+              </div>
+              <h3 class="font-display font-semibold text-lg text-ink mb-2">
+                Inviertes sin saber qué funciona realmente
+              </h3>
+              <p class="text-sm text-muted leading-relaxed">
+                Reportes llenos de impresiones, clics y "likes", pero ningún dato sobre cotizaciones reales o costo por lead cerrado. Cero visibilidad de retorno de inversión.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-border text-xs font-medium text-rose-600">
+              ✕ Pérdida constante de presupuesto
+            </div>
+          </div>
+
+          <!-- Dolor 2 -->
+          <div class="rounded-2xl border border-border bg-canvas p-6 sm:p-8 flex flex-col justify-between shadow-xs">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-base mb-5">
+                02
+              </div>
+              <h3 class="font-display font-semibold text-lg text-ink mb-2">
+                Pocos leads y de muy baja calidad
+              </h3>
+              <p class="text-sm text-muted leading-relaxed">
+                Llegan mensajes de estudiantes, personas sin presupuesto o prospectos que no corresponden a tu perfil de cliente ideal. Tu equipo de ventas pierde tiempo valioso.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-border text-xs font-medium text-rose-600">
+              ✕ Fricción y desgaste comercial
+            </div>
+          </div>
+
+          <!-- Dolor 3 -->
+          <div class="rounded-2xl border border-border bg-canvas p-6 sm:p-8 flex flex-col justify-between shadow-xs">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-base mb-5">
+                03
+              </div>
+              <h3 class="font-display font-semibold text-lg text-ink mb-2">
+                Invisibles en Google y en motores de IA
+              </h3>
+              <p class="text-sm text-muted leading-relaxed">
+                Cuando los decisores buscan a tus competidores en ChatGPT, Perplexity o Google, tu empresa ni siquiera es mencionada. Estás regalando cuota de mercado cada día.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-border text-xs font-medium text-rose-600">
+              ✕ Ventas que se lleva tu competencia
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────
+         3. DIFERENCIADORES Y EL SISTEMA HIWEB
+         ───────────────────────────────────────────── -->
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-canvas">
+      <div class="max-w-[1300px] mx-auto">
+        <div class="max-w-2xl mb-12">
+          <span class="text-xs font-semibold uppercase tracking-wider text-muted">El estándar Hiweb</span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-ink mt-2">
+            Un sistema integral diseñado específicamente para empresas B2B
+          </h2>
+          <p class="text-sm sm:text-base text-muted mt-2">
+            No somos una agencia genérica de consumo. Construimos infraestructura de captación para ciclos de decisión complejos.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="rounded-2xl border border-border bg-surface p-6 space-y-3">
+            <div class="w-9 h-9 rounded-lg bg-ink text-canvas flex items-center justify-center text-sm font-semibold">
+              01
+            </div>
+            <h3 class="font-display font-semibold text-base text-ink">Especialización B2B e Industrial</h3>
+            <p class="text-xs sm:text-sm text-muted leading-relaxed">
+              Entendemos la venta técnica, licitaciones y comités de compra. Hablamos el lenguaje de tus decisores.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-border bg-surface p-6 space-y-3">
+            <div class="w-9 h-9 rounded-lg bg-ink text-canvas flex items-center justify-center text-sm font-semibold">
+              02
+            </div>
+            <h3 class="font-display font-semibold text-base text-ink">SEO + Motores de IA (GEO / AEO)</h3>
+            <p class="text-xs sm:text-sm text-muted leading-relaxed">
+              Optimizamos tu presencia para que ChatGPT, Claude, Perplexity y Google citen tu marca como la opción de referencia.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-border bg-surface p-6 space-y-3">
+            <div class="w-9 h-9 rounded-lg bg-ink text-canvas flex items-center justify-center text-sm font-semibold">
+              03
+            </div>
+            <h3 class="font-display font-semibold text-base text-ink">Métricas Transparentes</h3>
+            <p class="text-xs sm:text-sm text-muted leading-relaxed">
+              Tableros claros en tiempo real. Sabrás con exactitud cuánto cuesta cada prospecto y qué canal genera los mejores clientes.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-border bg-surface p-6 space-y-3">
+            <div class="w-9 h-9 rounded-lg bg-ink text-canvas flex items-center justify-center text-sm font-semibold">
+              04
+            </div>
+            <h3 class="font-display font-semibold text-base text-ink">Equipo Integral 360°</h3>
+            <p class="text-xs sm:text-sm text-muted leading-relaxed">
+              Desarrollo web de alta velocidad, pauta en Ads, SEO y contenidos bajo una sola dirección sin proveedores fragmentados.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────
+         4. CÓMO FUNCIONA EL DIAGNÓSTICO (3 PASOS)
+         ───────────────────────────────────────────── -->
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-y border-border bg-surface/40">
+      <div class="max-w-[1300px] mx-auto text-center mb-12">
+        <span class="text-xs font-semibold uppercase tracking-wider text-muted">Proceso sin complicaciones</span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-ink mt-2">
+          Cómo recibir tu diagnóstico en 3 pasos sencillos
+        </h2>
+      </div>
+
+      <div class="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="flex flex-col items-center text-center space-y-3">
+          <div class="w-12 h-12 rounded-full bg-ink text-canvas font-display font-bold text-lg flex items-center justify-center shadow-sm">
+            1
+          </div>
+          <h3 class="font-display font-semibold text-lg text-ink">Llena tus datos</h3>
+          <p class="text-xs sm:text-sm text-muted leading-relaxed">
+            Completa el formulario en 60 segundos con tu sitio web y datos de contacto.
+          </p>
+        </div>
+
+        <div class="flex flex-col items-center text-center space-y-3">
+          <div class="w-12 h-12 rounded-full bg-ink text-canvas font-display font-bold text-lg flex items-center justify-center shadow-sm">
+            2
+          </div>
+          <h3 class="font-display font-semibold text-lg text-ink">Auditamos tu presencia</h3>
+          <p class="text-xs sm:text-sm text-muted leading-relaxed">
+            Revisamos tu posición en buscadores, motores de IA y los puntos de fuga de tu sitio.
+          </p>
+        </div>
+
+        <div class="flex flex-col items-center text-center space-y-3">
+          <div class="w-12 h-12 rounded-full bg-ink text-canvas font-display font-bold text-lg flex items-center justify-center shadow-sm">
+            3
+          </div>
+          <h3 class="font-display font-semibold text-lg text-ink">Sesión 1 a 1 de entrega</h3>
+          <p class="text-xs sm:text-sm text-muted leading-relaxed">
+            Te mostramos los hallazgos y el plan de acción sugerido. Sin compromiso de compra.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────
+         5. FAQ — RESOLUCIÓN DE OBJECIONES (Del Brief)
+         ───────────────────────────────────────────── -->
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-canvas">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-12">
+          <span class="text-xs font-semibold uppercase tracking-wider text-muted">Preguntas frecuentes</span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-ink mt-2">
+            Respuestas claras a tus dudas antes de iniciar
+          </h2>
+        </div>
+
+        <div class="space-y-4">
+          <!-- FAQ 1: ¿Cuánto cuesta? -->
+          <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-colors open:bg-canvas open:shadow-xs">
+            <summary class="flex items-center justify-between font-display font-semibold text-base sm:text-lg text-ink cursor-pointer list-none select-none">
+              <span>¿Cuánto cuesta el servicio y qué costo tiene el diagnóstico?</span>
+              <span class="ml-4 flex-shrink-0 text-muted transition-transform duration-200 group-open:rotate-180">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs sm:text-sm text-ink-soft leading-relaxed border-t border-border/60 pt-4">
+              <strong>El diagnóstico inicial es 100% gratuito y sin compromiso.</strong> En cuanto al servicio continuo de Hiweb, diseñamos propuestas modulares según el tamaño y la meta de cada empresa, típicamente con planes mensuales a partir de $25,000 MXN. En la llamada de entrega te daremos una cotización exacta adaptada a tu presupuesto.
+            </p>
+          </details>
+
+          <!-- FAQ 2: ¿En cuánto tiempo veo resultados? -->
+          <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-colors open:bg-canvas open:shadow-xs">
+            <summary class="flex items-center justify-between font-display font-semibold text-base sm:text-lg text-ink cursor-pointer list-none select-none">
+              <span>¿En cuánto tiempo comenzaré a ver resultados?</span>
+              <span class="ml-4 flex-shrink-0 text-muted transition-transform duration-200 group-open:rotate-180">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs sm:text-sm text-ink-soft leading-relaxed border-t border-border/60 pt-4">
+              Depende de la estrategia combinada: con campañas activas de <strong>Ads (Google, Meta, OpenAI)</strong> comenzamos a generar leads calificados desde las primeras 2 a 3 semanas. La optimización de <strong>SEO y presencia en motores de IA (GEO)</strong> madura entre el mes 2 y el mes 4, generando un flujo constante de prospectos orgánicos con costo marginal decreciente.
+            </p>
+          </details>
+
+          <!-- FAQ 3: ¿Hay contrato forzoso? -->
+          <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-colors open:bg-canvas open:shadow-xs">
+            <summary class="flex items-center justify-between font-display font-semibold text-base sm:text-lg text-ink cursor-pointer list-none select-none">
+              <span>¿Tienen contratos forzosos o plazos mínimos de permanencia?</span>
+              <span class="ml-4 flex-shrink-0 text-muted transition-transform duration-200 group-open:rotate-180">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs sm:text-sm text-ink-soft leading-relaxed border-t border-border/60 pt-4">
+              <strong>No trabajamos con plazos forzosos.</strong> Aunque recomendamos un período mínimo de 3 meses para que el algoritmo y el posicionamiento alcancen su pico de maduración, nuestros acuerdos son transparentes y mes con mes. Nos ganamos la permanencia con resultados medibles en tu mesa.
+            </p>
+          </details>
+
+          <!-- FAQ 4: ¿Conocen mi industria? -->
+          <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-colors open:bg-canvas open:shadow-xs">
+            <summary class="flex items-center justify-between font-display font-semibold text-base sm:text-lg text-ink cursor-pointer list-none select-none">
+              <span>¿Tienen experiencia en mi industria específica?</span>
+              <span class="ml-4 flex-shrink-0 text-muted transition-transform duration-200 group-open:rotate-180">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs sm:text-sm text-ink-soft leading-relaxed border-t border-border/60 pt-4">
+              Hemos trabajado con empresas de manufactura, logística, nearshoring, software/SaaS, servicios profesionales, inmobiliarias y salud. En el diagnóstico inicial analizamos específicamente a los competidores de tu nicho y el comportamiento de búsqueda de tus compradores antes de sugerir cualquier acción.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────
+         6. FINAL CTA DE REFUERZO
+         ───────────────────────────────────────────── -->
+    <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-surface text-center border-t border-border">
+      <div class="max-w-2xl mx-auto space-y-6">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-ink tracking-tight">
+          Deja de regalarle prospectos a tu competencia
+        </h2>
+        <p class="text-sm sm:text-base text-muted max-w-lg mx-auto">
+          Solicita tu Diagnóstico Digital hoy mismo. Te entregamos un análisis claro, accionable y con números reales para tu negocio.
+        </p>
+        <div class="pt-2">
+          <Button href="#formulario" variant="primary" size="lg">
+            Solicitar diagnóstico gratuito
+          </Button>
+        </div>
+        <p class="text-xs text-muted">
+          ✓ Sin costo · ✓ Sin plazos forzosos · ✓ Respuesta en menos de 24 horas
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>
