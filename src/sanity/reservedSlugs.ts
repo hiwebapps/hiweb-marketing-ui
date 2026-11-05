@@ -17,6 +17,8 @@ export const RESERVED_SLUGS = [
   'contact',
   'api',
   'studio',
+  'lp',
+  'gracias',
   'sitemap.xml',
   'robots.txt',
 ] as const;

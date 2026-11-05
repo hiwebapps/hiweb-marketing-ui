@@ -8,8 +8,12 @@ type FinalCtaProps = {
   description?: string;
   primaryLabel?: string;
   primaryHref?: string;
+  /** Opens the landing calendar instead of following primaryHref. */
+  primaryOpensCalendar?: boolean;
   secondaryLabel?: string;
   secondaryHref?: string;
+  /** Defaults to contacto so existing pages keep their anchor. */
+  anchorId?: string;
   headingWidth?: string;
   /** Language of the fallback copy when a field comes empty. */
   locale?: 'es' | 'en';
@@ -120,13 +124,17 @@ export function FinalCta({
   description = DEFAULTS[locale].description,
   primaryLabel = DEFAULTS[locale].primaryLabel,
   primaryHref = DEFAULTS[locale].primaryHref,
+  primaryOpensCalendar = false,
+  secondaryLabel,
+  secondaryHref,
+  anchorId = 'contacto',
   headingWidth,
   images,
 }: FinalCtaProps) {
   const width = headingProps(headingWidth);
   const rows = marqueeRows(images);
   return (
-    <section id="contacto" className="final-cta" data-scroll-section="contacto">
+    <section id={anchorId} className="final-cta" data-scroll-section={anchorId}>
       <div className="final-cta__panel">
         <div className="final-cta__marquee" aria-hidden="true">
           {rows.map((cards, index) => (
@@ -148,9 +156,22 @@ export function FinalCta({
             <HeadingText text={title} />
           </h2>
           <p className="final-cta__lead">{description}</p>
-          <Button href={primaryHref} variant="primary" size="md" className="final-cta__btn no-underline">
-            {primaryLabel}
-          </Button>
+          <div className="final-cta__actions">
+            {primaryOpensCalendar ? (
+              <Button type="button" variant="primary" size="md" className="no-underline" data-cal="">
+                {primaryLabel}
+              </Button>
+            ) : (
+              <Button href={primaryHref} variant="primary" size="md" className="no-underline">
+                {primaryLabel}
+              </Button>
+            )}
+            {secondaryLabel && secondaryHref ? (
+              <Button href={secondaryHref} variant="secondary" size="md" className="no-underline" target="_blank" rel="noopener">
+                {secondaryLabel}
+              </Button>
+            ) : null}
+          </div>
         </div>
       </div>
     </section>

@@ -1,0 +1,11 @@
+---
+import LpDocument from '../../../components/lp/LpDocument.astro';
+import { getLpPage } from '../../../lib/content/lp-load';
+
+export const prerender = true;
+
+const page = await getLpPage('/lp/servicios');
+if (!page) throw new Error('Falta el hub de servicios.');
+---
+
+<LpDocument page={page} />

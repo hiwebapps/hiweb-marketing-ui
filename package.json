@@ -29,7 +29,9 @@
     "sanity:migrate-home-sections": "tsx scripts/sanity/migrate-home-sections.ts",
     "sanity:migrate-home-sections:write": "tsx scripts/sanity/migrate-home-sections.ts --write",
     "sanity:migrate-blog-faqs": "tsx scripts/sanity/migrate-blog-faqs.ts",
-    "sanity:migrate-blog-faqs:write": "tsx scripts/sanity/migrate-blog-faqs.ts --write"
+    "sanity:migrate-blog-faqs:write": "tsx scripts/sanity/migrate-blog-faqs.ts --write",
+    "sanity:import-lp": "tsx scripts/sanity/import-lp-pages.ts",
+    "sanity:import-lp:write": "tsx scripts/sanity/import-lp-pages.ts --write"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.2",

@@ -1,0 +1,16 @@
+---
+import LpDocument from '../../../components/lp/LpDocument.astro';
+import { getLpPage, lpDetailPaths } from '../../../lib/content/lp-load';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+	const pages = await lpDetailPaths('industrias');
+	return pages.map((page) => ({ params: { slug: page.slug }, props: { path: page.path } }));
+}
+
+const page = await getLpPage(Astro.props.path);
+if (!page) throw new Error('Falta la landing de industria.');
+---
+
+<LpDocument page={page} />

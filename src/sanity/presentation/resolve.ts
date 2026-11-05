@@ -113,6 +113,26 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "aboutPage" && _id in ["aboutPage-en", "drafts.aboutPage-en"] && coalesce(slug.current, "${DEFAULT_ABOUT_EN_SLUG}") == $slug`,
     },
     {
+      route: '/lp/agencia',
+      filter: `_type == "lpPage" && path == "/lp/agencia"`,
+    },
+    {
+      route: '/lp/servicios',
+      filter: `_type == "lpPage" && path == "/lp/servicios"`,
+    },
+    {
+      route: '/lp/industrias',
+      filter: `_type == "lpPage" && path == "/lp/industrias"`,
+    },
+    {
+      route: '/lp/servicios/:slug',
+      filter: `_type == "lpPage" && path == "/lp/servicios/" + $slug`,
+    },
+    {
+      route: '/lp/industrias/:slug',
+      filter: `_type == "lpPage" && path == "/lp/industrias/" + $slug`,
+    },
+    {
       route: '/:slug',
       filter: `_type == "landingPage" && slug.current == $slug && coalesce(locale, "es") == "es"`,
     },
@@ -238,6 +258,15 @@ export const resolve: PresentationPluginOptions['resolve'] = {
           ],
         };
       },
+    }),
+    lpPage: defineLocations({
+      select: { title: 'title', path: 'path' },
+      resolve: (doc) => ({
+        locations: [
+          { title: doc?.title || 'Landing', href: doc?.path || '/lp/agencia' },
+          { title: 'Inicio', href: '/' },
+        ],
+      }),
     }),
     landingPage: defineLocations({
       select: { title: 'title', slug: 'slug.current' },

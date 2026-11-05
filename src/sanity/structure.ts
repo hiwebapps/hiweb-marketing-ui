@@ -43,6 +43,17 @@ const HIDDEN_FROM_FALLBACK = [
   'faq',
   'testimonial',
   'landingPage',
+  'lpPage',
+  'lpHero',
+  'logoMarquee',
+  'roiCalculator',
+  'statement',
+  'serviceSystem',
+  'lpServiceFocus',
+  'ctaBand',
+  'lpPortal',
+  'lpIndustryCards',
+  'lpCaseCards',
   'contactPage',
   'calendarPage',
   'sitePage',
@@ -497,6 +508,25 @@ export const structure: StructureResolver = (S, context) => {
             .defaultOrdering([{ field: 'name', direction: 'asc' }]),
         ),
       S.divider(),
+      S.listItem()
+        .title('Landings de campaña')
+        .id('lp-pages')
+        .icon(DocumentIcon)
+        .child(
+          S.list()
+            .title('Landings de campaña')
+            .items([
+              S.listItem()
+                .title('General')
+                .child(S.documentTypeList('lpPage').title('General').filter('_type == "lpPage" && template == "general"')),
+              S.listItem()
+                .title('Servicios')
+                .child(S.documentTypeList('lpPage').title('Servicios').filter('_type == "lpPage" && template == "servicios"')),
+              S.listItem()
+                .title('Industrias')
+                .child(S.documentTypeList('lpPage').title('Industrias').filter('_type == "lpPage" && template == "industrias"')),
+            ]),
+        ),
       S.listItem()
         .title('Páginas')
         .id('paginas')

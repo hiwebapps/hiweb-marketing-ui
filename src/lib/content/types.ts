@@ -944,3 +944,12 @@ export type PortalPage = {
   sections: PortalSection[];
   seo?: SeoFields;
 };
+
+export type {
+  LpPage,
+  LpSection,
+  LpTemplate,
+  LpRole,
+  LpNav,
+  LpPicker,
+} from './lp-types';

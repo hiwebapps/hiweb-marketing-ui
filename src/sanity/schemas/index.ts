@@ -5,11 +5,13 @@ import { contactPage } from './contactPage';
 import { beforeAfter } from './blocks/beforeAfter';
 import { faqBlock } from './blocks/faqBlock';
 import { landingSectionTypes } from './blocks/pageSections';
+import { lpSectionTypes } from './blocks/lpSections';
 import { instagramPhonePost } from './blocks/instagramPhone';
 import { blogTable } from './blogTable';
 import { faq } from './faq';
 import { testimonial } from './testimonial';
 import { landingPage } from './landingPage';
+import { lpPage } from './lpPage';
 import { author, post } from './post';
 import { caseStudy } from './caseStudy';
 import { caseSectionTypes } from './caseSections';
@@ -59,6 +61,7 @@ export const schemaTypes = [
   faqBlock,
   withVisibility(beforeAfter),
   ...landingSectionTypes,
+  ...lpSectionTypes,
   instagramPhonePost,
   ...portalSectionTypes,
   homeServiceItem,
@@ -98,5 +101,6 @@ export const schemaTypes = [
   faq,
   testimonial,
   landingPage,
+  lpPage,
   socialBrand,
 ];

@@ -33,6 +33,10 @@ interface Props {
 	minimalFooter?: boolean;
 	landingNavCtaLabel?: string;
 	landingNavCtaHref?: string;
+	landingNavCtaCalendar?: boolean;
+	landingNavBadge?: string;
+	landingNavWhatsappHref?: string;
+	landingNavWhatsappLabel?: string;
 }
 
 const {
@@ -47,6 +51,10 @@ const {
 	minimalFooter = false,
 	landingNavCtaLabel,
 	landingNavCtaHref,
+	landingNavCtaCalendar = false,
+	landingNavBadge,
+	landingNavWhatsappHref,
+	landingNavWhatsappLabel,
 } = Astro.props;
 
 const site = await getSiteSettings();
@@ -208,7 +216,15 @@ const jsonLdItems = rawJsonLd.map((item) => {
 			</noscript>
 		)}
 		{minimalNav ? (
-			<LandingNav ctaLabel={landingNavCtaLabel} ctaHref={landingNavCtaHref} />
+			<LandingNav
+				ctaLabel={landingNavCtaLabel}
+				ctaHref={landingNavCtaHref}
+				ctaOpensCalendar={landingNavCtaCalendar}
+				badge={landingNavBadge}
+				showBadge={landingNavBadge !== ''}
+				whatsappHref={landingNavWhatsappHref}
+				whatsappLabel={landingNavWhatsappLabel}
+			/>
 		) : (
 			<SiteNav client:load locale={lang} nav={nav} />
 		)}

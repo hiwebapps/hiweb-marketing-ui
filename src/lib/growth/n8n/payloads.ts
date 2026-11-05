@@ -28,6 +28,14 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
     lead.website ? `• Sitio web: ${slack(lead.website)}` : null,
     lead.services.length ? `• Servicios: ${slack(lead.services.join(", "))}` : null,
     lead.budget ? `• Presupuesto: ${slack(lead.budget)}` : null,
+    lead.country || lead.city
+      ? `• Ubicación: ${slack([lead.city, lead.country].filter(Boolean).join(', '))}`
+      : null,
+    lead.companySize ? `• Tamaño: ${slack(lead.companySize)}` : null,
+    lead.landing ? `• Landing: ${slack(lead.landing)}` : null,
+    lead.utm && Object.keys(lead.utm).length
+      ? `• UTMs: ${slack(Object.entries(lead.utm).map(([key, value]) => `${key}=${value}`).join(', '))}`
+      : null,
     lead.project ? `• Proyecto: ${slack(lead.project)}` : null,
     `• Idioma: ${lead.locale}`,
   ]

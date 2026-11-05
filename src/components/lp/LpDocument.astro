@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCalendarPage, getSiteSettings } from '../../lib/content';
+import type { LpPage } from '../../lib/content/lp-types';
+import { LpChrome } from './LpChrome';
+import LpMobileBar from './LpMobileBar.astro';
+import LpSectionRenderer from './LpSectionRenderer.astro';
+import PickerBar from './PickerBar.astro';
+import './lp.css';
+
+interface Props {
+	page: LpPage;
+}
+
+const { page } = Astro.props;
+const sections = page.sections.filter((section) => !section.hidden);
+const calendar = await getCalendarPage('es');
+const site = await getSiteSettings();
+---
+
+<Layout
+	title={page.title}
+	description={page.description}
+	noindex
+	minimalNav
+	minimalFooter
+	landingNavCtaLabel={page.nav.ctaLabel}
+	landingNavCtaCalendar
+	landingNavBadge={page.nav.badge}
+	landingNavWhatsappHref={page.nav.whatsappHref}
+	landingNavWhatsappLabel={page.nav.whatsappLabel}
+>
+	<div class="lp-shell">
+		{page.picker && page.watching ? <PickerBar prefix={page.picker.barPrefix} watching={page.watching} /> : null}
+		<main>
+			{sections.map((section) => (
+				<LpSectionRenderer section={section} calendar={calendar} site={site} />
+			))}
+		</main>
+		<LpMobileBar whatsappHref={page.nav.whatsappHref} />
+		<LpChrome
+			client:load
+			picker={page.picker}
+			autoOpen={page.role === 'hub' && Boolean(page.picker)}
+			calendar={calendar}
+			site={site}
+		/>
+	</div>
+</Layout>

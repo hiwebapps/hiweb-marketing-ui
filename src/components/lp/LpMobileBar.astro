@@ -1,0 +1,18 @@
+---
+interface Props {
+	calendarLabel?: string;
+	whatsappHref: string;
+	whatsappLabel?: string;
+}
+
+const { calendarLabel = 'Agendar', whatsappHref, whatsappLabel = 'WhatsApp' } = Astro.props;
+---
+
+<div class="lp-mobile-bar">
+	<button type="button" class="inline-flex min-h-11 items-center justify-center rounded-full bg-ink px-4 font-display text-sm font-semibold text-canvas" data-cal>
+		{calendarLabel}
+	</button>
+	<a href={whatsappHref} class="inline-flex min-h-11 items-center justify-center rounded-full border border-border-strong bg-canvas px-4 font-display text-sm font-semibold text-ink no-underline" target="_blank" rel="noopener">
+		{whatsappLabel}
+	</a>
+</div>

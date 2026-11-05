@@ -134,14 +134,20 @@ export function MetricsBand({
 
           {description ? <p className="metrics-band__lead">{description}</p> : null}
 
-          <div className="metrics-band__actions">
-            <Button href={primaryHref} variant="primary" size="md" className="no-underline">
-              {primaryLabel}
-            </Button>
-            <Button href={secondaryHref} variant="outline" size="md" glow={false} className="no-underline">
-              {secondaryLabel}
-            </Button>
-          </div>
+          {primaryLabel || secondaryLabel ? (
+            <div className="metrics-band__actions">
+              {primaryLabel ? (
+                <Button href={primaryHref} variant="primary" size="md" className="no-underline">
+                  {primaryLabel}
+                </Button>
+              ) : null}
+              {secondaryLabel ? (
+                <Button href={secondaryHref} variant="outline" size="md" glow={false} className="no-underline">
+                  {secondaryLabel}
+                </Button>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         <ul className="metrics-band__grid">

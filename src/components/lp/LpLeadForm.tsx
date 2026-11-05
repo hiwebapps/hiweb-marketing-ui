@@ -1,0 +1,280 @@
+import { useEffect, useState, type FormEvent } from 'react';
+import { LP_SERVICES } from '../../data/lp/catalog';
+import { Button } from '../ui/Button';
+import { TextField } from '../ui/TextField';
+
+const COUNTRIES = ['México', 'Estados Unidos', 'Canadá', 'Otro'];
+const SIZES = ['1 a 14 personas', '15 a 50 personas', '51 a 200 personas', 'Más de 200 personas'];
+const BUDGETS = ['+$10,000', '+$15,000', '+$30,000', '+$60,000', 'Personalizado'];
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'fbclid'] as const;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+type Utm = Partial<Record<(typeof UTM_KEYS)[number], string>>;
+
+type LpLeadFormProps = {
+  landingName: string;
+  interests?: string[];
+};
+
+function readUtms(): Utm {
+  if (typeof window === 'undefined') return {};
+  const params = new URLSearchParams(window.location.search);
+  const utm: Utm = {};
+  for (const key of UTM_KEYS) {
+    const value = params.get(key) || window.sessionStorage.getItem(`hw_${key}`) || '';
+    if (params.get(key)) {
+      try {
+        window.sessionStorage.setItem(`hw_${key}`, params.get(key) ?? '');
+      } catch {
+        /* private mode */
+      }
+    }
+    if (value) utm[key] = value;
+  }
+  return utm;
+}
+
+export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
+  const [step, setStep] = useState(0);
+  const [error, setError] = useState('');
+  const [sending, setSending] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [website, setWebsite] = useState('');
+  const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
+  const [companySize, setCompanySize] = useState('');
+  const [selected, setSelected] = useState<string[]>(interests);
+  const [budget, setBudget] = useState('');
+
+  useEffect(() => {
+    const onSet = (event: Event) => {
+      const detail = (event as CustomEvent<string[]>).detail;
+      if (!Array.isArray(detail)) return;
+      const known = new Set(LP_SERVICES.map((item) => item.slug));
+      setSelected(detail.filter((slug) => known.has(slug)));
+      setStep(2);
+      setError('');
+    };
+    window.addEventListener('lp-set-interests', onSet);
+    return () => window.removeEventListener('lp-set-interests', onSet);
+  }, []);
+
+  const validate = (index = step) => {
+    if (index === 0) {
+      if (firstName.trim().length < 2) return 'Escribe tu nombre.';
+      if (lastName.trim().length < 2) return 'Escribe tu apellido.';
+      if (!EMAIL_RE.test(email.trim())) return 'Escribe un email válido.';
+      if (phone.replace(/\D/g, '').length < 7) return 'Escribe un celular válido.';
+      if (website.trim() && !/^https?:\/\/.+\..+/i.test(website.trim()) && !/^[^\s]+\.[^\s]+$/.test(website.trim())) {
+        return 'El sitio web no parece una dirección válida.';
+      }
+    }
+    if (index === 1) {
+      if (!country) return 'Elige el país de la empresa.';
+      if (city.trim().length < 2) return 'Escribe la ciudad.';
+      if (!companySize) return 'Elige el tamaño de la empresa.';
+    }
+    if (index === 2 && selected.length === 0) return 'Elige al menos un servicio.';
+    if (index === 3 && !budget) return 'Elige un presupuesto.';
+    return '';
+  };
+
+  const next = () => {
+    const message = validate();
+    setError(message);
+    if (!message) setStep((value) => Math.min(value + 1, 3));
+  };
+
+  const toggle = (slug: string) => {
+    setSelected((current) =>
+      current.includes(slug) ? current.filter((item) => item !== slug) : [...current, slug],
+    );
+    setError('');
+  };
+
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    const message = validate(3);
+    setError(message);
+    if (message || sending) return;
+    setSending(true);
+    const utm = readUtms();
+    const site = website.trim();
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          locale: 'es',
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          website: site ? (site.startsWith('http') ? site : `https://${site}`) : undefined,
+          services: selected,
+          budget,
+          country,
+          city: city.trim(),
+          companySize,
+          landing: landingName,
+          utm,
+        }),
+      });
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(body?.error || 'No pudimos enviar tus datos.');
+      }
+      const dataLayer = ((window as Window & { dataLayer?: Record<string, string>[] }).dataLayer ??= []);
+      dataLayer.push({
+        event: 'lead_form_submitted',
+        form_type: 'ads_landing',
+        landing_name: landingName,
+        utm_source: utm.utm_source ?? '',
+        utm_campaign: utm.utm_campaign ?? '',
+      });
+      window.location.href = '/gracias';
+    } catch (cause) {
+      setSending(false);
+      setError(cause instanceof Error ? cause.message : 'No pudimos enviar tus datos.');
+    }
+  };
+
+  return (
+    <form onSubmit={submit} noValidate>
+      <p className="font-display text-xs font-semibold tracking-[0.14em] text-muted uppercase">
+        Paso {step + 1} de 4
+      </p>
+      <div className="mt-3 grid grid-cols-4 gap-1.5" aria-hidden="true">
+        {[0, 1, 2, 3].map((index) => (
+          <span key={index} className={['h-1 rounded-full', index <= step ? 'bg-ink' : 'bg-surface-elevated'].join(' ')} />
+        ))}
+      </div>
+
+      {step === 0 ? (
+        <div className="mt-5 grid gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <TextField label="Nombre" name="firstName" autoComplete="given-name" placeholder="Tu nombre" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
+            <TextField label="Apellido" name="lastName" autoComplete="family-name" placeholder="Tu apellido" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
+          </div>
+          <TextField label="Email" name="email" type="email" autoComplete="email" placeholder="tu@empresa.com" value={email} onChange={(event) => setEmail(event.target.value)} required />
+          <TextField label="Celular" name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="+52 999 000 0000" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+          <TextField label="Sitio web (opcional)" name="website" type="url" inputMode="url" autoComplete="url" placeholder="https://tuempresa.com" value={website} onChange={(event) => setWebsite(event.target.value)} />
+        </div>
+      ) : null}
+
+      {step === 1 ? (
+        <div className="mt-5 grid gap-4">
+          <label className="flex flex-col gap-2">
+            <span className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">País</span>
+            <select
+              name="country"
+              value={country}
+              required
+              onChange={(event) => setCountry(event.target.value)}
+              className="w-full rounded-xl border border-border bg-canvas px-4 py-3 font-sans text-sm text-ink"
+            >
+              <option value="">Elige un país</option>
+              {COUNTRIES.map((item) => (
+                <option key={item}>{item}</option>
+              ))}
+            </select>
+          </label>
+          <TextField label="Ciudad" name="city" autoComplete="address-level2" placeholder="Ciudad" value={city} onChange={(event) => setCity(event.target.value)} required />
+          <fieldset className="grid gap-2">
+            <legend className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Tamaño de la empresa</legend>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {SIZES.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  aria-pressed={companySize === item}
+                  onClick={() => setCompanySize(item)}
+                  className={[
+                    'rounded-full border px-3 py-2 font-sans text-sm',
+                    companySize === item ? 'border-ink bg-ink text-canvas' : 'border-border bg-canvas text-ink',
+                  ].join(' ')}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+      ) : null}
+
+      {step === 2 ? (
+        <fieldset className="mt-5">
+          <legend className="font-sans text-sm text-ink-soft">Elige uno o varios. Al menos uno.</legend>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {LP_SERVICES.map((service) => {
+              const on = selected.includes(service.slug);
+              return (
+                <button
+                  key={service.slug}
+                  type="button"
+                  aria-pressed={on}
+                  onClick={() => toggle(service.slug)}
+                  className={[
+                    'rounded-full border px-3 py-2 font-sans text-sm',
+                    on ? 'border-ink bg-ink text-canvas' : 'border-border bg-canvas text-ink',
+                  ].join(' ')}
+                >
+                  {service.name}
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+      ) : null}
+
+      {step === 3 ? (
+        <fieldset className="mt-5">
+          <legend className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Presupuesto mensual (MXN)</legend>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {BUDGETS.map((item) => (
+              <button
+                key={item}
+                type="button"
+                aria-pressed={budget === item}
+                onClick={() => setBudget(item)}
+                className={[
+                  'rounded-full border px-3 py-2 font-sans text-sm',
+                  budget === item ? 'border-ink bg-ink text-canvas' : 'border-border bg-canvas text-ink',
+                ].join(' ')}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+      ) : null}
+
+      {error ? (
+        <p className="mt-4 font-sans text-sm text-accent-orange" role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="mt-6 flex items-center justify-between gap-3">
+        {step > 0 ? (
+          <Button type="button" variant="ghost" onClick={() => { setStep((value) => value - 1); setError(''); }}>
+            Atrás
+          </Button>
+        ) : (
+          <span />
+        )}
+        {step < 3 ? (
+          <Button type="button" onClick={next}>Siguiente</Button>
+        ) : (
+          <Button type="submit" disabled={sending}>{sending ? 'Enviando…' : 'Enviar'}</Button>
+        )}
+      </div>
+      <p className="mt-4 text-center font-sans text-xs text-muted">
+        Al enviar aceptas nuestro <a href="/aviso-de-privacidad" className="underline">Aviso de privacidad</a>.
+      </p>
+    </form>
+  );
+}

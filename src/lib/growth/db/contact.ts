@@ -26,8 +26,9 @@ export async function insertContactLead(lead: ContactLead): Promise<string | nul
     d1,
     `INSERT INTO contact_leads (
       id, locale, first_name, last_name, email, phone, website,
-      services, budget, project, pending_sync, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
+      services, budget, project, country, city, company_size, landing, utm,
+      pending_sync, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
     id,
     lead.locale,
     lead.firstName,
@@ -38,6 +39,11 @@ export async function insertContactLead(lead: ContactLead): Promise<string | nul
     JSON.stringify(lead.services),
     lead.budget ?? null,
     lead.project ?? null,
+    lead.country ?? null,
+    lead.city ?? null,
+    lead.companySize ?? null,
+    lead.landing ?? null,
+    lead.utm ? JSON.stringify(lead.utm) : null,
     createdAt,
   );
   return id;

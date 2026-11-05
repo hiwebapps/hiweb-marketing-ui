@@ -191,7 +191,7 @@ export const pillarGrid = defineType({
           preview: { select: { title: 'title', subtitle: 'description' } },
         }),
       ],
-      validation: (rule) => rule.min(2).max(4),
+      validation: (rule) => rule.min(2).max(6),
     }),
     defineField({ name: 'ctaLabel', title: 'Texto del link en card', type: 'string', initialValue: 'Ver más' }),
   ],
@@ -383,7 +383,19 @@ export const finalCta = defineType({
     headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 3 }),
     defineField({ name: 'primaryCta', title: 'CTA principal', type: 'cta' }),
+    defineField({
+      name: 'primaryOpensCalendar',
+      title: 'El CTA principal abre el calendario',
+      type: 'boolean',
+      initialValue: false,
+    }),
     defineField({ name: 'secondaryCta', title: 'CTA secundario', type: 'cta' }),
+    defineField({
+      name: 'anchorId',
+      title: 'Ancla',
+      type: 'string',
+      description: 'Si se deja vacío, la sección usa el id contacto.',
+    }),
   ],
   preview: {
     select: { title: 'title' },
@@ -414,6 +426,50 @@ export const teamGrid = defineType({
       initialValue: false,
     }),
     defineField({ name: 'cta', title: 'CTA', type: 'cta' }),
+    defineField({
+      name: 'layout',
+      title: 'Disposición',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Grid', value: 'grid' },
+          { title: 'Slider', value: 'slider' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'grid',
+    }),
+    defineField({
+      name: 'members',
+      title: 'Integrantes de esta landing',
+      type: 'array',
+      description: 'Si hay integrantes aquí, se usan en lugar de las referencias.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          fields: [
+            defineField({ name: 'name', title: 'Nombre', type: 'string', validation: (rule) => rule.required() }),
+            defineField({ name: 'role', title: 'Puesto', type: 'string' }),
+            defineField({ name: 'bio', title: 'Bio', type: 'text', rows: 2 }),
+            defineField({ name: 'photo', title: 'Foto (URL)', type: 'url' }),
+            defineField({
+              name: 'category',
+              title: 'Categoría',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Web', value: 'web' },
+                  { title: 'Redes', value: 'redes' },
+                  { title: 'Diseño', value: 'diseno' },
+                ],
+              },
+              initialValue: 'web',
+            }),
+          ],
+          preview: { select: { title: 'name', subtitle: 'role' } },
+        }),
+      ],
+    }),
   ],
   preview: {
     select: { title: 'title' },

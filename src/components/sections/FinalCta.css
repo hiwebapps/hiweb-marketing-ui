@@ -147,8 +147,16 @@
   line-height: 1.55;
 }
 
-.final-cta__btn {
+.final-cta__btn,
+.final-cta__actions {
   margin-top: 1.75rem;
+}
+
+.final-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
 .final-cta__btn:focus-visible {

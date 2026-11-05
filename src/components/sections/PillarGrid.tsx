@@ -64,7 +64,11 @@ export function PillarGrid({
   headingWidth,
 }: PillarGridProps) {
   const cols =
-    pillars.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-2 lg:grid-cols-3';
+    pillars.length >= 6
+      ? 'sm:grid-cols-2 lg:grid-cols-3'
+      : pillars.length >= 4
+        ? 'sm:grid-cols-2 lg:grid-cols-4'
+        : 'sm:grid-cols-2 lg:grid-cols-3';
   const onSurface = tone === 'surface';
 
   return (

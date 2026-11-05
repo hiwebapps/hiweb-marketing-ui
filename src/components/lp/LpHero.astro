@@ -1,0 +1,81 @@
+---
+import { CalendarTool } from '../growth/CalendarTool';
+import type { CalendarPageCopy } from '../../lib/content/calendar-page';
+import type { LpHeroSection } from '../../lib/content/lp-types';
+import type { SiteIdentity } from '../../lib/site-identity';
+import { LpLeadForm } from './LpLeadForm';
+import './lp.css';
+
+interface Props {
+	section: LpHeroSection;
+	calendar: CalendarPageCopy;
+	site: SiteIdentity;
+}
+
+const { section, calendar, site } = Astro.props;
+---
+
+<section class="lp-hero">
+	<span class="lp-hero__blob top-[-12%] left-[-8%] h-72 w-72 bg-accent-purple/40" aria-hidden="true"></span>
+	<span class="lp-hero__blob right-[-6%] bottom-[-18%] h-80 w-80 bg-accent-cyan/25" aria-hidden="true"></span>
+	<div class="relative z-10 mx-auto grid max-w-[1300px] items-start gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,460px)] lg:px-8 lg:py-24">
+		<div>
+			<p class="font-display text-xs font-semibold tracking-[0.16em] text-accent-lime uppercase">{section.eyebrow}</p>
+			<h1 class="mt-4 font-display text-4xl leading-[1.05] font-semibold tracking-tight text-white md:text-6xl">{section.title}</h1>
+			<p class="mt-5 max-w-xl text-lg leading-relaxed text-white/75">{section.description}</p>
+			<div class="mt-8 flex flex-wrap gap-3">
+				<button type="button" class="inline-flex min-h-12 items-center rounded-full bg-white px-5 font-display text-sm font-semibold text-ink" data-cal>
+					{section.primaryLabel}
+				</button>
+				<a href={section.whatsappHref} class="inline-flex min-h-12 items-center rounded-full border border-white/25 px-5 font-display text-sm font-semibold text-white no-underline" target="_blank" rel="noopener">
+					{section.secondaryLabel}
+				</a>
+			</div>
+			{section.trust ? (
+				<p class="mt-8 flex items-center gap-3 text-sm text-white/80">
+					{section.avatars?.length ? (
+						<span class="flex -space-x-2" aria-hidden="true">
+							{section.avatars.slice(0, 4).map((src) => (
+								<img src={src} alt="" width="36" height="36" class="h-9 w-9 rounded-full border-2 border-[#111] object-cover" />
+							))}
+						</span>
+					) : null}
+					{section.trust}
+				</p>
+			) : null}
+		</div>
+
+		<div class="lp-form-card p-5 sm:p-6" id="contacto">
+			<div class="lp-tabs" role="tablist" aria-label="Forma de contacto" data-lp-tabs>
+				<button type="button" role="tab" id="lp-tab-message" aria-selected="true" aria-controls="lp-panel-message">Escribir mensaje</button>
+				<button type="button" role="tab" id="lp-tab-book" aria-selected="false" aria-controls="lp-panel-book" tabindex="-1">Agendar llamada</button>
+			</div>
+			<div id="lp-panel-message" role="tabpanel" aria-labelledby="lp-tab-message" class="mt-5">
+				<h2 class="font-display text-2xl font-semibold tracking-tight">Cuéntanos de tu empresa</h2>
+				<p class="mt-1 mb-4 text-sm text-muted">Cuatro pasos. Sin compromiso.</p>
+				<LpLeadForm client:load landingName={section.landingName} interests={section.interests} />
+			</div>
+			<div id="lp-panel-book" role="tabpanel" aria-labelledby="lp-tab-book" class="mt-5" hidden>
+				<p class="mb-4 text-sm text-muted">Elige día y hora para una llamada con el equipo que trabajaría tu cuenta.</p>
+				<CalendarTool client:load copy={calendar} site={site} embedded />
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	const list = document.querySelector('[data-lp-tabs]');
+	if (list instanceof HTMLElement) {
+		const tabs = Array.from(list.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+		const select = (tab: HTMLButtonElement) => {
+			for (const item of tabs) {
+				const on = item === tab;
+				item.setAttribute('aria-selected', String(on));
+				item.tabIndex = on ? 0 : -1;
+				const panel = document.getElementById(item.getAttribute('aria-controls') ?? '');
+				if (panel) panel.hidden = !on;
+			}
+		};
+		tabs.forEach((tab) => tab.addEventListener('click', () => select(tab)));
+	}
+</script>

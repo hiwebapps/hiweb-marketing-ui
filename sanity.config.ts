@@ -3,6 +3,7 @@ import { presentationTool } from 'sanity/presentation';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { completeLandingTemplate } from './src/sanity/actions/completeLandingTemplate';
+import { completeLpTemplate } from './src/sanity/actions/completeLpTemplate';
 import { createEnglishVersion } from './src/sanity/actions/createEnglishVersion';
 import { ensureEnglishPair } from './src/sanity/actions/ensureEnglishPair';
 import { createRedirect } from './src/sanity/actions/createRedirect';
@@ -14,6 +15,7 @@ import { StudioNavbar } from './src/sanity/components/StudioNavbar';
 import { resolve } from './src/sanity/presentation/resolve';
 import { SiteNavigator } from './src/sanity/presentation/SiteNavigator';
 import { landingTemplateSections, type LandingTemplateKind } from './src/sanity/landingTemplate';
+import { lpTemplateSections, type LpTemplateKind } from './src/sanity/lpTemplate';
 import { schemaTypes } from './src/sanity/schemas';
 import { industryStarter, serviceStarter } from './src/sanity/starters';
 import { structure } from './src/sanity/structure';
@@ -114,9 +116,11 @@ export default defineConfig({
       const withTemplate =
         context.schemaType === 'landingPage'
           ? [...prev, completeLandingTemplate]
-          : context.schemaType === 'post'
-            ? [...prev, createEnglishVersion]
-            : prev;
+          : context.schemaType === 'lpPage'
+            ? [...prev, completeLpTemplate]
+            : context.schemaType === 'post'
+              ? [...prev, createEnglishVersion]
+              : prev;
       const withPair =
         context.schemaType === 'service' ||
         context.schemaType === 'industry' ||
@@ -199,6 +203,22 @@ export default defineConfig({
         schemaType: 'post',
         value: { locale: 'en' },
       },
+      ...(['general', 'servicios', 'industrias'] as const).map((kind: LpTemplateKind) => ({
+        id: `lp-${kind}`,
+        title:
+          kind === 'general'
+            ? 'Landing de campaña — General'
+            : kind === 'servicios'
+              ? 'Landing de campaña — Servicios'
+              : 'Landing de campaña — Industrias',
+        schemaType: 'lpPage',
+        value: () => ({
+          template: kind,
+          role: 'hub',
+          noindex: true,
+          sections: lpTemplateSections(kind),
+        }),
+      })),
       ...(['serviceLite', 'industryLite', 'campaign'] as const).map((kind: LandingTemplateKind) => ({
         id: `landing-${kind}`,
         title:
