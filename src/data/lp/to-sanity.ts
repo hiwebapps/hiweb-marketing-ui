@@ -1,4 +1,29 @@
-import type { LpPage, LpSection } from '../../lib/content/lp-types';
+import type { LpImage, LpPage, LpSection } from '../../lib/content/lp-types';
+
+/** Maps an image URL to a Sanity asset id. Returns null when the image has not been uploaded. */
+export type AssetResolver = (src: string) => string | null;
+
+type Key = () => string;
+
+const SANITY_CDN = /^https:\/\/cdn\.sanity\.io\/images\/[^/]+\/[^/]+\/([a-f0-9]+)-(\d+x\d+)\.([a-z]+)/i;
+
+/** Sanity CDN URLs already point at an asset, so they need no upload. */
+export function sanityAssetId(src: string): string | null {
+  const match = src.match(SANITY_CDN);
+  return match ? `image-${match[1]}-${match[2]}-${match[3]}` : null;
+}
+
+function image(src: string, resolve: AssetResolver) {
+  const ref = sanityAssetId(src) ?? resolve(src);
+  return ref ? { _type: 'image', asset: { _type: 'reference', _ref: ref } } : null;
+}
+
+function images(items: LpImage[] | undefined, resolve: AssetResolver, key: Key) {
+  return (items ?? []).flatMap((item) => {
+    const value = image(item.src, resolve);
+    return value ? [{ ...value, _key: key(), alt: item.alt }] : [];
+  });
+}
 
 function block(text: string, key: string) {
   return [
@@ -12,14 +37,24 @@ function block(text: string, key: string) {
   ];
 }
 
-export function lpPageToSanity(page: LpPage) {
+export function lpImageSources(pages: LpPage[]): string[] {
+  const sources = new Set<string>();
+  for (const page of pages) {
+    for (const section of page.sections) {
+      if (section._type === 'lpHero') section.avatars?.forEach((item) => sources.add(item.src));
+      if (section._type === 'logoMarquee') section.logos.forEach((item) => sources.add(item.src));
+      if (section._type === 'teamGrid') section.members.forEach((item) => item.photo && sources.add(item.photo));
+    }
+  }
+  return [...sources].filter((src) => !sanityAssetId(src));
+}
+
+export function lpPageToSanity(page: LpPage, resolve: AssetResolver) {
   let count = 0;
   const key = () => {
     count += 1;
     return `k${count.toString(36)}`;
   };
-
-  const sections = page.sections.map((section) => toSection(section, key));
 
   return keyed(
     {
@@ -31,20 +66,23 @@ export function lpPageToSanity(page: LpPage) {
       template: page.template,
       role: page.role,
       description: page.description,
-      watching: page.watching,
-      interests: page.interests,
       noindex: true,
       nav: page.nav,
+      calendar: page.calendar,
       picker: page.picker,
-      sections,
+      sections: page.sections.map((section) => toSection(section, key, resolve)),
     },
     key,
   );
 }
 
-function keyed(obj: Record<string, unknown>, key: () => string): Record<string, unknown> {
+function keyed(obj: Record<string, unknown>, key: Key): Record<string, unknown> {
   const next = { ...obj };
   for (const [name, value] of Object.entries(next)) {
+    if (value === undefined) {
+      delete next[name];
+      continue;
+    }
     if (Array.isArray(value)) {
       next[name] = value.map((item) => {
         if (!item || typeof item !== 'object' || Array.isArray(item)) return item;
@@ -58,8 +96,14 @@ function keyed(obj: Record<string, unknown>, key: () => string): Record<string, 
   return next;
 }
 
-function toSection(section: LpSection, key: () => string): Record<string, unknown> {
+function toSection(section: LpSection, key: Key, resolve: AssetResolver): Record<string, unknown> {
   const _key = key();
+  if (section._type === 'lpHero') {
+    return { ...section, _key, avatars: images(section.avatars, resolve, key) };
+  }
+  if (section._type === 'logoMarquee') {
+    return { ...section, _key, logos: images(section.logos, resolve, key) };
+  }
   if (section._type === 'industryGrid') {
     return { ...section, _type: 'lpIndustryCards', _key };
   }
@@ -70,7 +114,9 @@ function toSection(section: LpSection, key: () => string): Record<string, unknow
       eyebrow: section.eyebrow,
       title: section.title,
       description: section.description,
-      cases: section.cases.map((item) => ({ ...item, _key: key() })),
+      cardCtaLabel: section.cardCtaLabel,
+      portfolioLabel: section.portfolioLabel,
+      portfolioHref: section.portfolioHref,
     };
   }
   if (section._type === 'faqSection') {
@@ -115,7 +161,17 @@ function toSection(section: LpSection, key: () => string): Record<string, unknow
       eyebrow: section.eyebrow,
       title: section.title,
       description: section.description,
-      members: section.members.map((member) => ({ ...member, _key: key() })),
+      members: section.members.map((member) => {
+        const photo = image(member.photo, resolve);
+        return {
+          _key: key(),
+          name: member.name,
+          role: member.role,
+          bio: member.bio,
+          category: member.category,
+          ...(photo ? { photoImage: photo } : { photo: member.photo }),
+        };
+      }),
       cta:
         section.ctaLabel && section.ctaHref
           ? { _type: 'cta', label: section.ctaLabel, href: section.ctaHref }
@@ -134,13 +190,6 @@ function toSection(section: LpSection, key: () => string): Record<string, unknow
       ...section,
       _key,
       metrics: section.metrics.map((metric) => ({ _type: 'metric', _key: key(), ...metric })),
-    };
-  }
-  if (section._type === 'pillarGrid') {
-    return {
-      ...section,
-      _key,
-      pillars: section.pillars.map((pillar) => ({ _key: key(), ...pillar })),
     };
   }
   return { ...section, _key };

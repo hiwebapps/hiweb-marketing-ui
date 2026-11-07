@@ -72,7 +72,7 @@ export function SectionHeader({
       {description ? (
         <FormattedText
           tone={tone}
-          className={['mt-4 !text-base md:!text-lg', descColor].join(' ')}
+          className={['mt-4 !text-sm !leading-relaxed md:!text-base', descColor].join(' ')}
           listClassName={tone === 'on-ink' ? 'marker:text-[#bdff01]' : 'marker:text-[#927afe]'}
         >
           {description}

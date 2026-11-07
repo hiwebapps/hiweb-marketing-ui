@@ -5,9 +5,15 @@ import type { LpPage, LpTemplate } from './lp-types';
 
 const LP_LIST_QUERY = `*[_type == "lpPage" && defined(path)]{ path, slug, template, role }`;
 const LP_PAGE_QUERY = `*[_type == "lpPage" && path == $path][0]{
-  _id, title, path, slug, template, role, description, watching, interests,
+  _id, title, path, slug, template, role, description,
   metaTitle, metaDescription,
-  nav, picker, sections
+  nav, calendar, picker,
+  sections[]{
+    ...,
+    _type == "lpCaseCards" => { "caseSlugs": caseRefs[]->slug.current },
+    _type == "faqSection" => { "faqRefs": faqRefs[]->{ question, answer } },
+    _type == "processPhases" => { "phases": phases[]{ ..., "icon": coalesce(iconImage.asset->url, icon) } }
+  }
 }`;
 
 async function sanityLpPage(path: string): Promise<LpPage | null> {

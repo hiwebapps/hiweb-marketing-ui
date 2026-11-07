@@ -451,7 +451,8 @@ export const teamGrid = defineType({
             defineField({ name: 'name', title: 'Nombre', type: 'string', validation: (rule) => rule.required() }),
             defineField({ name: 'role', title: 'Puesto', type: 'string' }),
             defineField({ name: 'bio', title: 'Bio', type: 'text', rows: 2 }),
-            defineField({ name: 'photo', title: 'Foto (URL)', type: 'url' }),
+            defineField({ name: 'photoImage', title: 'Foto', type: 'image', options: { hotspot: true } }),
+            defineField({ name: 'photo', title: 'Foto (URL)', type: 'url', description: 'Solo si no hay foto subida arriba.' }),
             defineField({
               name: 'category',
               title: 'Categoría',
@@ -466,7 +467,7 @@ export const teamGrid = defineType({
               initialValue: 'web',
             }),
           ],
-          preview: { select: { title: 'name', subtitle: 'role' } },
+          preview: { select: { title: 'name', subtitle: 'role', media: 'photoImage' } },
         }),
       ],
     }),

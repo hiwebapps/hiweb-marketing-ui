@@ -1,5 +1,7 @@
+import { CaseCards, type CaseIndexCard } from './CasesIndex';
 import { SectionBand } from './primitives/SectionBand';
 import { SectionHeader } from './primitives/SectionHeader';
+import './BlogIndex.css';
 
 export type CaseItem = {
   client: string;
@@ -50,11 +52,15 @@ const accentBar: Record<NonNullable<CaseItem['accent']>, string> = {
 
 type CasePreviewProps = {
   cases?: CaseItem[];
+  portfolio?: CaseIndexCard[];
   eyebrow?: string;
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
   headingWidth?: string;
+  cardCtaLabel?: string;
+  portfolioLabel?: string;
+  portfolioHref?: string;
 };
 
 export function CaseCard({ item }: { item: CaseItem }) {
@@ -90,11 +96,15 @@ export function CaseCard({ item }: { item: CaseItem }) {
 
 export function CasePreview({
   cases = DEFAULT_CASES,
+  portfolio,
   eyebrow = 'Casos',
   title = 'Resultados propios, solo con empresas consolidadas',
   description = 'Cliente, industria y outcome. Sin portfolio ornamental.',
   tone = 'canvas',
   headingWidth,
+  cardCtaLabel = 'Ver caso',
+  portfolioLabel = 'Ver portafolio →',
+  portfolioHref = '/portafolio',
 }: CasePreviewProps) {
   return (
     <SectionBand id="casos" tone={tone}>
@@ -105,21 +115,27 @@ export function CasePreview({
         badgeVariant="lime"
         headingWidth={headingWidth}
         actions={
-          <a
-            href="/portafolio"
-            className="font-display text-sm font-semibold tracking-wide text-ink no-underline"
-          >
-            Ver portafolio →
-          </a>
+          portfolioLabel ? (
+            <a
+              href={portfolioHref}
+              className="font-display text-sm font-semibold tracking-wide text-ink no-underline"
+            >
+              {portfolioLabel}
+            </a>
+          ) : undefined
         }
       />
-      <ul className="mt-12 grid gap-6 lg:grid-cols-3">
-        {cases.map((item) => (
-          <li key={item.client} data-reveal>
-            <CaseCard item={item} />
-          </li>
-        ))}
-      </ul>
+      {portfolio?.length ? (
+        <CaseCards cases={portfolio} ctaLabel={cardCtaLabel} />
+      ) : (
+        <ul className="mt-12 grid gap-6 lg:grid-cols-3">
+          {cases.map((item) => (
+            <li key={item.client} data-reveal>
+              <CaseCard item={item} />
+            </li>
+          ))}
+        </ul>
+      )}
     </SectionBand>
   );
 }

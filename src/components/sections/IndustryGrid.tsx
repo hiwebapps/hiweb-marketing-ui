@@ -7,6 +7,7 @@ import {
   type IndustryIconName,
 } from '../icons/IndustryIcons';
 import { Badge, Button } from '../ui';
+import { NavIcon } from './NavIcon';
 import { SectionBand } from './primitives/SectionBand';
 import { HeadingText, headingProps } from './primitives/heading';
 import './IndustryGrid.css';
@@ -52,6 +53,11 @@ const INDUSTRY_VISUALS: Record<string, { icon: IndustryIconName }> = {
   restaurantes: { icon: 'utensils' },
   saas: { icon: 'app' },
 };
+
+/** Industry icons and image URLs keep their own drawing. Other names come from the navbar set. */
+function isIndustryIcon(name: string) {
+  return (INDUSTRY_ICON_NAMES as readonly string[]).includes(name) || name.startsWith('http') || name.startsWith('/');
+}
 
 const DRAG_ARM = 8;
 const SWIPE_THRESHOLD = 56;
@@ -312,7 +318,13 @@ export function IndustryGrid({
                           aria-label={current ? undefined : `${locale === 'en' ? 'Show' : 'Mostrar'} ${item.nombre}`}
                         >
                           <span className="industry-slide__icon">
-                            <IndustryIcon name={icon} />
+                            {isIndustryIcon(icon) ? (
+                              <IndustryIcon name={icon} />
+                            ) : (
+                              <span className="industry-slide__nav-icon">
+                                <NavIcon name={icon} />
+                              </span>
+                            )}
                           </span>
                           <div className="industry-slide__copy">
                             <h3 className="industry-slide__title">{item.nombre}</h3>

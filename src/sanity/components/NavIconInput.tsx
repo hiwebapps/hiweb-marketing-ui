@@ -17,12 +17,13 @@ const frame = {
 export function NavIconInput(props: StringInputProps) {
   const name = typeof props.value === 'string' && props.value ? props.value : '';
   const usesServiceIcon = props.schemaType.name !== 'cardIcon';
+  const emptyHint = (props.schemaType.options as { emptyHint?: string } | undefined)?.emptyHint;
   return (
     <Flex direction="column" gap={3}>
       {props.renderDefault(props)}
-      {!name && usesServiceIcon ? (
+      {!name && (emptyHint || usesServiceIcon) ? (
         <Text size={1} muted>
-          Vacío: se usa el icono del servicio.
+          {emptyHint || 'Vacío: se usa el icono del servicio.'}
         </Text>
       ) : (
       <Flex align="center" gap={3}>

@@ -1,24 +1,20 @@
 ---
-import type { CalendarPageCopy } from '../../lib/content/calendar-page';
 import type { LpSection } from '../../lib/content/lp-types';
-import type { SiteIdentity } from '../../lib/site-identity';
 import LpHero from './LpHero.astro';
 import { CtaBand, LogoMarquee, LpReusable, RoiCalculator, ServiceFocus, ServiceSystem, StatementBlock } from './LpBlocks';
 
 interface Props {
 	section: LpSection;
-	calendar: CalendarPageCopy;
-	site: SiteIdentity;
 }
 
-const { section, calendar, site } = Astro.props;
+const { section } = Astro.props;
 ---
 
-{section._type === 'lpHero' ? <LpHero section={section} calendar={calendar} site={site} /> : null}
+{section._type === 'lpHero' ? <LpHero section={section} /> : null}
 {section._type === 'logoMarquee' ? <LogoMarquee {...section} /> : null}
 {section._type === 'roiCalculator' ? <RoiCalculator client:visible {...section} /> : null}
 {section._type === 'statement' ? <StatementBlock {...section} /> : null}
-{section._type === 'serviceSystem' ? <ServiceSystem {...section} /> : null}
+{section._type === 'serviceSystem' ? <ServiceSystem client:visible {...section} /> : null}
 {section._type === 'lpServiceFocus' ? <ServiceFocus {...section} /> : null}
 {section._type === 'ctaBand' ? <CtaBand {...section} /> : null}
 {section._type === 'pillarGrid' ||

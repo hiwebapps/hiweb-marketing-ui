@@ -282,6 +282,18 @@
   object-fit: contain;
 }
 
+.industry-slide__nav-icon {
+  display: contents;
+}
+
+.industry-slide__nav-icon svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .industry-slide__copy {
   display: flex;
   flex-direction: column;

@@ -18,7 +18,7 @@ function prefersReducedMotion() {
 function unused<T extends Element>(selector: string) {
   return Array.from(
     document.querySelectorAll<T>(`${selector}:not([data-motion]):not([data-motion-pending])`),
-  );
+  ).filter((el) => !el.closest('astro-island[ssr]'));
 }
 
 function mark(el: HTMLElement, kind: string) {
@@ -183,6 +183,7 @@ function observeLateIslands() {
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
+  document.addEventListener('astro:hydrate', schedule, true);
 }
 
 export function initMotion() {

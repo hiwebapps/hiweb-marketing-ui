@@ -1,0 +1,23 @@
+/** Navbar icon name for each campaign landing slug. */
+export const LP_PICKER_ICONS: Record<string, string> = {
+  seo: 'search',
+  'google-ads': 'googleads',
+  'meta-ads': 'meta',
+  'chatgpt-ads': 'spark',
+  social: 'video',
+  community: 'headset',
+  web: 'code',
+  ecommerce: 'cart',
+  branding: 'brush',
+  crm: 'box',
+  ia: 'spark',
+  inbound: 'book',
+  industrial: 'factory',
+  salud: 'heart',
+  inmobiliario: 'building',
+  turismo: 'plane',
+  restaurantes: 'utensils',
+  saas: 'app',
+  automotriz: 'car',
+  'servicios-profesionales': 'briefcase',
+};

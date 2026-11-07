@@ -28,8 +28,14 @@
   max-width: 32rem;
   color: var(--color-muted);
   font-family: var(--font-sans, Inter, system-ui, sans-serif);
-  font-size: 1.05rem;
-  line-height: 1.55;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+@media (min-width: 768px) {
+  .metrics-band__lead {
+    font-size: 1rem;
+  }
 }
 
 .metrics-band__actions {

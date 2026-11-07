@@ -1,22 +1,26 @@
 import { DocumentIcon } from '@sanity/icons/Document';
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { sectionInsertMenu } from '../sectionInsertMenu';
-import { LANDING_SECTION_MEMBERS } from './landingPage';
+import { lpIconField } from './blocks/lpSections';
 import { seoFields, seoGroups } from './shared';
 
 const LP_MEMBERS = [
-  ...LANDING_SECTION_MEMBERS,
-  defineArrayMember({ type: 'lpHero' }),
-  defineArrayMember({ type: 'logoMarquee' }),
-  defineArrayMember({ type: 'roiCalculator' }),
-  defineArrayMember({ type: 'statement' }),
-  defineArrayMember({ type: 'serviceSystem' }),
-  defineArrayMember({ type: 'lpServiceFocus' }),
-  defineArrayMember({ type: 'ctaBand' }),
-  defineArrayMember({ type: 'lpPortal' }),
-  defineArrayMember({ type: 'lpIndustryCards' }),
-  defineArrayMember({ type: 'lpCaseCards' }),
-];
+  'lpHero',
+  'logoMarquee',
+  'roiCalculator',
+  'statement',
+  'serviceSystem',
+  'lpServiceFocus',
+  'lpIndustryCards',
+  'pillarGrid',
+  'lpPortal',
+  'metricsBand',
+  'lpCaseCards',
+  'processPhases',
+  'teamGrid',
+  'faqSection',
+  'finalCta',
+].map((type) => defineArrayMember({ type }));
 
 export const lpPage = defineType({
   name: 'lpPage',
@@ -90,28 +94,50 @@ export const lpPage = defineType({
       group: 'content',
     }),
     defineField({
+      name: 'sections',
+      title: 'Secciones',
+      type: 'array',
+      group: 'content',
+      description: 'Añade, reordena, oculta o quita bloques.',
+      of: LP_MEMBERS,
+      options: { insertMenu: sectionInsertMenu },
+    }),
+    defineField({
       name: 'nav',
-      title: 'Barra',
+      title: 'Barra inferior en móvil',
       type: 'object',
       group: 'content',
+      options: { collapsible: true, collapsed: true },
       fields: [
-        defineField({ name: 'ctaLabel', title: 'Botón', type: 'string' }),
-        defineField({ name: 'badge', title: 'Insignia', type: 'string' }),
-        defineField({ name: 'whatsappHref', title: 'WhatsApp', type: 'url' }),
-        defineField({ name: 'whatsappLabel', title: 'Texto de WhatsApp', type: 'string' }),
+        defineField({ name: 'calendarLabel', title: 'Botón de agendar', type: 'string', description: 'Abre el calendario.' }),
+        defineField({ name: 'whatsappLabel', title: 'Botón de WhatsApp', type: 'string' }),
+        defineField({ name: 'whatsappHref', title: 'URL de WhatsApp', type: 'url' }),
+      ],
+    }),
+    defineField({
+      name: 'calendar',
+      title: 'Ventana del calendario',
+      type: 'object',
+      group: 'content',
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        defineField({ name: 'title', title: 'Título', type: 'string' }),
+        defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 2 }),
       ],
     }),
     defineField({
       name: 'picker',
-      title: 'Selector',
+      title: 'Selector de servicio o industria',
       type: 'object',
       group: 'content',
+      description: 'Ventana para elegir una landing. Déjala vacía para no mostrarla.',
+      options: { collapsible: true, collapsed: true },
       fields: [
+        defineField({ name: 'autoOpen', title: 'Abrir al entrar a la página', type: 'boolean', initialValue: false }),
         defineField({ name: 'title', title: 'Título', type: 'string' }),
         defineField({ name: 'subtitle', title: 'Subtítulo', type: 'string' }),
-        defineField({ name: 'allLabel', title: 'Ver todos', type: 'string' }),
+        defineField({ name: 'allLabel', title: 'Enlace a ver todos', type: 'string' }),
         defineField({ name: 'allHref', title: 'URL de ver todos', type: 'string' }),
-        defineField({ name: 'barPrefix', title: 'Prefijo de la barra', type: 'string' }),
         defineField({
           name: 'options',
           title: 'Opciones',
@@ -122,6 +148,7 @@ export const lpPage = defineType({
               fields: [
                 defineField({ name: 'slug', title: 'Slug', type: 'string' }),
                 defineField({ name: 'title', title: 'Título', type: 'string' }),
+                lpIconField(),
                 defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 2 }),
                 defineField({ name: 'href', title: 'URL', type: 'string' }),
               ],
@@ -130,23 +157,6 @@ export const lpPage = defineType({
           ],
         }),
       ],
-    }),
-    defineField({ name: 'watching', title: 'Estás viendo', type: 'string', group: 'content' }),
-    defineField({
-      name: 'interests',
-      title: 'Servicios de interés',
-      type: 'array',
-      group: 'content',
-      of: [defineArrayMember({ type: 'string' })],
-    }),
-    defineField({
-      name: 'sections',
-      title: 'Secciones',
-      type: 'array',
-      group: 'content',
-      description: 'Añade, reordena, oculta o quita bloques.',
-      of: LP_MEMBERS,
-      options: { insertMenu: sectionInsertMenu },
     }),
     ...seoFields,
   ],

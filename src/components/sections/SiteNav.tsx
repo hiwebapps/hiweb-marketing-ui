@@ -30,7 +30,7 @@ export function SiteNav({
   const navRef = useRef<HTMLElement>(null);
   const lastY = useRef(0);
   const closeTimer = useRef(0);
-  const menuId = useId();
+  const menuId = 'hw-nav-menu';
 
   useGSAP(
     () => {

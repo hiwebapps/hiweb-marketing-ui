@@ -5,6 +5,7 @@ type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   hint?: string;
   error?: string;
   icon?: ReactNode;
+  suffix?: ReactNode;
 };
 
 export function TextField({
@@ -12,6 +13,7 @@ export function TextField({
   hint,
   error,
   icon,
+  suffix,
   id,
   className = '',
   disabled,
@@ -45,12 +47,19 @@ export function TextField({
             'disabled:cursor-not-allowed disabled:opacity-40',
             error ? 'border-accent-red/70' : 'border-border hover:border-border-strong',
             icon ? 'pl-11' : '',
+            suffix ? 'pr-14' : '',
             className,
           ]
             .filter(Boolean)
             .join(' ')}
           {...props}
         />
+
+        {suffix ? (
+          <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 font-sans text-xs font-medium text-muted">
+            {suffix}
+          </span>
+        ) : null}
       </span>
 
       {error ? (

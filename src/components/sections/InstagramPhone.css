@@ -39,8 +39,14 @@
   max-width: 36rem;
   margin: 1rem 0 0;
   color: var(--color-muted, #5c5c5c);
-  font-size: 1.05rem;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+@media (min-width: 768px) {
+  .ig-phone-section__lead {
+    font-size: 1rem;
+  }
 }
 
 .ig-device {

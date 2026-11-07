@@ -1,9 +1,10 @@
-import type { LpNav, LpPage, LpPicker, LpSection } from '../../lib/content/lp-types';
+import type { LpNav, LpPage, LpPicker, LpSection, LpServiceCard } from '../../lib/content/lp-types';
+import { PILLAR_ICON_NAMES } from '../../components/icons/PillarIcons';
+import { LP_PICKER_ICONS } from './picker-icons';
 import {
   LP_AVATARS,
   LP_BENEFITS,
   LP_COMBOS,
-  LP_DEFAULT_CASES,
   LP_FAQ,
   LP_INDUSTRIES,
   LP_LOGOS,
@@ -13,51 +14,70 @@ import {
   LP_SERVICES,
   LP_TEAM,
   LP_WHATSAPP,
-  lpCases,
   lpFaq,
   lpRoiIndustries,
   lpServiceLink,
 } from './catalog';
+import {
+  LP_CALENDAR_DEFAULTS,
+  LP_CASES_DEFAULTS,
+  LP_FORM_DEFAULTS,
+  LP_NAV_DEFAULTS,
+  LP_ROI_INVESTMENT,
+  LP_ROI_LABELS,
+  LP_SYSTEM_CTA_DEFAULTS,
+} from './defaults';
 
 const NAV_CTA = 'Agenda tu diagnóstico';
 
-function nav(badge: string): LpNav {
-  return {
-    ctaLabel: NAV_CTA,
-    badge,
-    whatsappHref: LP_WHATSAPP,
-    whatsappLabel: '999 560 2388',
-  };
+const QUADRANT_ICONS: Record<string, string> = {
+  'Atraer demanda': 'target',
+  'Ser la respuesta': 'search',
+  'Construir marca': 'brush',
+  'Convertir y escalar': 'box',
+};
+
+function nav(): LpNav {
+  return { ...LP_NAV_DEFAULTS, whatsappHref: LP_WHATSAPP };
 }
 
-function servicePicker(): LpPicker {
+function serviceCard(slug: string): LpServiceCard | null {
+  const link = lpServiceLink(slug);
+  const full = LP_SERVICES.find((item) => item.slug === slug);
+  if (!link) return null;
+  return { ...link, title: full?.h1 || link.name, icon: LP_PICKER_ICONS[slug] };
+}
+
+function servicePicker(autoOpen: boolean): LpPicker {
   return {
+    autoOpen,
     title: '¿Qué servicio estás buscando?',
     subtitle: 'Elige uno y te mostramos cómo lo trabajamos.',
     allLabel: 'Ver todos los servicios',
     allHref: '/lp/servicios',
-    barPrefix: 'Estás viendo:',
     options: LP_SERVICES.map((item) => ({
       slug: item.slug,
       title: item.name,
       description: item.short,
       href: `/lp/servicios/${item.slug}`,
+      icon: LP_PICKER_ICONS[item.slug],
     })),
   };
 }
 
-function industryPicker(): LpPicker {
+function industryPicker(autoOpen: boolean): LpPicker {
   return {
+    autoOpen,
     title: '¿En qué industria está tu empresa?',
     subtitle: 'Elige una y te mostramos cómo compra tu cliente.',
     allLabel: 'Ver todas las industrias',
     allHref: '/lp/industrias',
-    barPrefix: 'Estás viendo:',
     options: LP_INDUSTRIES.map((item) => ({
       slug: item.slug,
       title: item.name,
       description: item.line,
       href: `/lp/industrias/${item.slug}`,
+      icon: LP_PICKER_ICONS[item.slug],
     })),
   };
 }
@@ -74,7 +94,9 @@ function roi(preset?: string): LpSection {
     description: 'Elige tu industria, ajusta tu inversión y ve una proyección con referencias del sector.',
     ctaLabel: 'Revisa estos números con un especialista',
     preset,
-    industries: lpRoiIndustries(),
+    investment: LP_ROI_INVESTMENT,
+    ...LP_ROI_LABELS,
+    industries: lpRoiIndustries().map((item) => ({ ...item, icon: LP_PICKER_ICONS[item.slug] })),
   };
 }
 
@@ -83,7 +105,7 @@ function pillars(): LpSection {
     _type: 'pillarGrid',
     eyebrow: 'Por qué Hiweb',
     title: 'La eficiencia de un equipo interno. El alcance de una agencia grande.',
-    pillars: LP_BENEFITS,
+    pillars: LP_BENEFITS.map((item, index) => ({ ...item, icon: PILLAR_ICON_NAMES[index % PILLAR_ICON_NAMES.length] })),
   };
 }
 
@@ -96,24 +118,12 @@ function portal(): LpSection {
     primaryLabel: 'Ver el portal',
     primaryHref: '/portal',
     secondaryLabel: 'Agenda tu diagnóstico',
+    secondaryHref: '#contacto',
   };
 }
 
-function band(): LpSection {
-  return {
-    _type: 'ctaBand',
-    title: '¿Quieres ver dónde está tu siguiente oportunidad?',
-    description: 'En una llamada revisamos tus canales y te decimos qué haríamos primero.',
-    primaryLabel: NAV_CTA,
-    secondaryLabel: 'Escríbenos por WhatsApp',
-    whatsappHref: LP_WHATSAPP,
-  };
-}
-
-function tail(caseKeys?: string[], faq = LP_FAQ): LpSection[] {
-  const cases = caseKeys ? lpCases(caseKeys) : LP_DEFAULT_CASES;
+function tail(faq = LP_FAQ): LpSection[] {
   return [
-    band(),
     {
       _type: 'metricsBand',
       eyebrow: 'Hiweb en números',
@@ -126,7 +136,8 @@ function tail(caseKeys?: string[], faq = LP_FAQ): LpSection[] {
       eyebrow: 'Casos de éxito',
       title: 'Resultados que se ven.',
       description: 'Datos reales de las plataformas de nuestros clientes.',
-      cases: cases.length ? cases : LP_DEFAULT_CASES,
+      caseSlugs: [],
+      ...LP_CASES_DEFAULTS,
     },
     {
       _type: 'processPhases',
@@ -172,15 +183,13 @@ function system(withCombos: boolean): LpSection {
     description: 'Doce servicios y un solo equipo trabajando hacia el mismo objetivo. Elige uno o conéctalos.',
     quadrants: LP_QUADRANTS.map((item) => ({
       title: item.title,
-      description: item.description,
+      icon: QUADRANT_ICONS[item.title],
       services: item.slugs.flatMap((slug) => {
-        const link = lpServiceLink(slug);
-        return link ? [link] : [];
+        const card = serviceCard(slug);
+        return card ? [card] : [];
       }),
     })),
-    coreLabel: 'Un mismo objetivo',
-    foot: 'Puedes empezar con un servicio. Al sumar varios tienes un solo estratega, un solo reporte y una sola meta.',
-    ctaLabel: 'Arma tu plan con nosotros',
+    ...LP_SYSTEM_CTA_DEFAULTS,
     combosTitle: withCombos ? 'Empieza por tu objetivo. Nosotros armamos la combinación.' : undefined,
     combos: withCombos ? LP_COMBOS : undefined,
   };
@@ -192,34 +201,30 @@ function industries(): LpSection {
     eyebrow: 'Industrias',
     title: 'Entendemos cómo compra tu cliente.',
     description: 'Cada sector decide distinto. Por eso no usamos la misma fórmula para todos.',
+    ctaLabel: 'Ver el sector',
     hrefPrefix: '/lp/industrias',
     industries: LP_INDUSTRIES.map((item) => ({
       slug: item.slug,
       nombre: item.name,
       tagline: item.line,
+      icon: LP_PICKER_ICONS[item.slug],
     })),
   };
 }
 
-function hero(input: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  landingName: string;
-  interests?: string[];
-}): LpSection {
+function hero(input: { title: string; description: string; landingName: string; interests?: string[] }): LpSection {
   return {
     _type: 'lpHero',
-    eyebrow: input.eyebrow,
     title: input.title,
     description: input.description,
     trust: '+20 marcas en México y el extranjero confían en Hiweb.',
-    avatars: LP_AVATARS,
+    avatars: LP_AVATARS.map((src, index) => ({ src, alt: LP_TEAM[index]?.name ?? '' })),
     primaryLabel: NAV_CTA,
     secondaryLabel: 'Escríbenos por WhatsApp',
     whatsappHref: LP_WHATSAPP,
     landingName: input.landingName,
     interests: input.interests ?? [],
+    ...LP_FORM_DEFAULTS,
   };
 }
 
@@ -233,11 +238,10 @@ export function localLpPages(): LpPage[] {
       path: '/lp/agencia',
       title: 'Agencia de marketing digital en México — Hiweb',
       description: 'Combinamos SEO, campañas, contenido y tecnología en un plan claro para hacer crecer tu empresa.',
-      nav: nav('Agencia de marketing'),
-      interests: [],
+      nav: nav(),
+      calendar: LP_CALENDAR_DEFAULTS,
       sections: [
         hero({
-          eyebrow: 'Agencia de marketing digital en México',
           title: 'Marketing con estrategia. Resultados que se ven.',
           description: 'Combinamos SEO, campañas, contenido y tecnología en un plan claro para hacer crecer tu empresa.',
           landingName: 'Landing general',
@@ -268,13 +272,11 @@ export function localLpPages(): LpPage[] {
       path: '/lp/servicios',
       title: 'Servicios de marketing digital — Hiweb',
       description: 'Doce servicios, un solo equipo y una estrategia que los hace trabajar juntos.',
-      nav: nav('Servicios'),
-      picker: servicePicker(),
-      watching: 'Todos los servicios',
-      interests: [],
+      nav: nav(),
+      calendar: LP_CALENDAR_DEFAULTS,
+      picker: servicePicker(true),
       sections: [
         hero({
-          eyebrow: 'Servicios de marketing digital',
           title: 'Todo tu marketing, conectado a un mismo objetivo.',
           description: 'Doce servicios, un solo equipo y una estrategia que los hace trabajar juntos.',
           landingName: 'Landing servicios',
@@ -295,13 +297,11 @@ export function localLpPages(): LpPage[] {
       path: '/lp/industrias',
       title: 'Marketing digital por industria — Hiweb',
       description: 'Diseñamos la estrategia según cómo decide tu cliente, cuánto tarda en comprar y dónde busca.',
-      nav: nav('Industrias'),
-      picker: industryPicker(),
-      watching: 'Todas las industrias',
-      interests: [],
+      nav: nav(),
+      calendar: LP_CALENDAR_DEFAULTS,
+      picker: industryPicker(true),
       sections: [
         hero({
-          eyebrow: 'Marketing digital por industria',
           title: 'Cada industria compra distinto. Tu marketing también debería.',
           description: 'Diseñamos la estrategia según cómo decide tu cliente, cuánto tarda en comprar y dónde busca.',
           landingName: 'Landing industrias',
@@ -330,13 +330,11 @@ export function localLpPages(): LpPage[] {
       path: `/lp/servicios/${service.slug}`,
       title: `${service.name} | Hiweb`,
       description: service.text,
-      nav: nav(service.name),
-      picker: servicePicker(),
-      watching: service.name,
-      interests: [service.slug],
+      nav: nav(),
+      calendar: LP_CALENDAR_DEFAULTS,
+      picker: servicePicker(false),
       sections: [
         hero({
-          eyebrow: service.name,
           title: service.h1,
           description: service.text,
           landingName: `Servicio: ${service.name}`,
@@ -359,7 +357,7 @@ export function localLpPages(): LpPage[] {
         },
         pillars(),
         portal(),
-        ...tail(service.case ? [service.case] : undefined, lpFaq(service.faq)),
+        ...tail(lpFaq(service.faq)),
       ],
     });
   }
@@ -377,13 +375,11 @@ export function localLpPages(): LpPage[] {
       path: `/lp/industrias/${industry.slug}`,
       title: `Marketing para ${industry.name.toLowerCase()} | Hiweb`,
       description: industry.text,
-      nav: nav(industry.name),
-      picker: industryPicker(),
-      watching: industry.name,
-      interests: industry.combo,
+      nav: nav(),
+      calendar: LP_CALENDAR_DEFAULTS,
+      picker: industryPicker(false),
       sections: [
         hero({
-          eyebrow: `Marketing para ${industry.name.toLowerCase()}`,
           title: industry.h1,
           description: industry.text,
           landingName: `Industria: ${industry.name}`,
@@ -402,6 +398,7 @@ export function localLpPages(): LpPage[] {
           relatedTitle: 'La combinación que mejor funciona en tu industria.',
           relatedDescription: 'Cada servicio cubre una etapa distinta de la decisión de tu cliente.',
           related,
+          kpisLabel: 'Lo que medimos:',
           kpis: industry.kpis,
           foot: 'Una sola estrategia para toda la combinación, con un mismo equipo.',
           bundleLabel: 'Cotiza la combinación completa',
@@ -409,7 +406,7 @@ export function localLpPages(): LpPage[] {
         },
         pillars(),
         portal(),
-        ...tail(industry.case ? [industry.case] : undefined, lpFaq(industry.faq)),
+        ...tail(lpFaq(industry.faq)),
       ],
     });
   }

@@ -1,5 +1,5 @@
 import type { FaqItem, Metric, ProcessPhase } from './types';
-import type { CaseItem } from '../../components/sections/CasePreview';
+import type { CaseIndexCard } from '../../components/sections/CasesIndex';
 import type { IndustryCard } from '../../components/sections/IndustryGrid';
 import type { Pillar } from '../../components/sections/PillarGrid';
 import type { TeamMember } from '../../components/sections/TeamGrid';
@@ -8,10 +8,14 @@ export type LpTemplate = 'general' | 'servicios' | 'industrias';
 export type LpRole = 'hub' | 'detail';
 
 export type LpNav = {
-  ctaLabel: string;
-  badge?: string;
-  whatsappHref: string;
+  calendarLabel: string;
   whatsappLabel: string;
+  whatsappHref: string;
+};
+
+export type LpCalendarCopy = {
+  title: string;
+  description: string;
 };
 
 export type LpPickerOption = {
@@ -19,22 +23,31 @@ export type LpPickerOption = {
   title: string;
   description: string;
   href: string;
+  /** Nombre de un icono de la navbar. */
+  icon?: string;
 };
 
 export type LpPicker = {
+  autoOpen: boolean;
   title: string;
   subtitle: string;
   allLabel: string;
   allHref: string;
-  barPrefix: string;
   options: LpPickerOption[];
 };
+
+export type LpImage = { src: string; alt: string };
 
 export type LpServiceLink = {
   slug: string;
   name: string;
   short: string;
   href: string;
+};
+
+export type LpServiceCard = LpServiceLink & {
+  title?: string;
+  icon?: string;
 };
 
 export type LpSectionBase = {
@@ -44,19 +57,25 @@ export type LpSectionBase = {
 
 export type LpHeroSection = LpSectionBase & {
   _type: 'lpHero';
-  eyebrow: string;
   title: string;
   description: string;
   trust?: string;
-  avatars?: string[];
+  avatars?: LpImage[];
   primaryLabel: string;
   secondaryLabel: string;
   whatsappHref: string;
   landingName: string;
   interests: string[];
+  formMessageTab: string;
+  formCallTab: string;
+  formTitle: string;
+  formSubtitle: string;
+  formCountries: string[];
+  formSizes: string[];
+  formBudgets: string[];
 };
 
-export type LpLogo = { src: string; alt: string };
+export type LpLogo = LpImage;
 
 export type LpLogoMarqueeSection = LpSectionBase & {
   _type: 'logoMarquee';
@@ -67,21 +86,54 @@ export type LpLogoMarqueeSection = LpSectionBase & {
 export type LpRoiIndustry = {
   slug: string;
   name: string;
+  icon?: string;
   cpl: number;
   close: number;
   ticket: number;
   margin: number;
 };
 
-export type LpRoiSection = LpSectionBase & {
-  _type: 'roiCalculator';
-  eyebrow: string;
-  title: string;
-  description: string;
-  ctaLabel: string;
-  preset?: string;
-  industries: LpRoiIndustry[];
+export type LpRoiInvestment = {
+  initial: number;
+  step: number;
+  min: number;
+  max: number;
 };
+
+export type LpRoiLabels = {
+  industryLabel: string;
+  investmentLabel: string;
+  assumptionsLabel: string;
+  assumptionsHint: string;
+  resetLabel: string;
+  cplLabel: string;
+  closeLabel: string;
+  ticketLabel: string;
+  marginLabel: string;
+  resultLabel: string;
+  formula: string;
+  negativeBadge: string;
+  negativeHint: string;
+  funnelInvestment: string;
+  funnelLeads: string;
+  funnelClients: string;
+  funnelRevenue: string;
+  funnelProfit: string;
+  disclaimer: string;
+  dockCta: string;
+};
+
+export type LpRoiSection = LpSectionBase &
+  LpRoiLabels & {
+    _type: 'roiCalculator';
+    eyebrow: string;
+    title: string;
+    description: string;
+    ctaLabel: string;
+    preset?: string;
+    investment: LpRoiInvestment;
+    industries: LpRoiIndustry[];
+  };
 
 export type LpStatementSection = LpSectionBase & {
   _type: 'statement';
@@ -92,8 +144,8 @@ export type LpStatementSection = LpSectionBase & {
 
 export type LpQuadrant = {
   title: string;
-  description: string;
-  services: LpServiceLink[];
+  icon?: string;
+  services: LpServiceCard[];
 };
 
 export type LpCombo = {
@@ -109,9 +161,8 @@ export type LpServiceSystemSection = LpSectionBase & {
   title: string;
   description: string;
   quadrants: LpQuadrant[];
-  coreLabel: string;
-  foot: string;
-  ctaLabel: string;
+  ctaTitle: string;
+  ctaText: string;
   combosTitle?: string;
   combos?: LpCombo[];
 };
@@ -127,6 +178,7 @@ export type LpServiceFocusSection = LpSectionBase & {
   relatedTitle: string;
   relatedDescription?: string;
   related: LpServiceLink[];
+  kpisLabel?: string;
   kpis?: string;
   foot: string;
   bundleLabel: string;
@@ -157,6 +209,7 @@ export type LpIndustryGridSection = LpSectionBase & {
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
+  ctaLabel?: string;
   hrefPrefix: string;
   industries: IndustryCard[];
 };
@@ -169,6 +222,7 @@ export type LpPortalSection = LpSectionBase & {
   primaryLabel?: string;
   primaryHref?: string;
   secondaryLabel?: string;
+  secondaryHref?: string;
 };
 
 export type LpMetricsSection = LpSectionBase & {
@@ -185,7 +239,12 @@ export type LpCasePreviewSection = LpSectionBase & {
   title?: string;
   description?: string;
   tone?: 'canvas' | 'surface';
-  cases: CaseItem[];
+  /** Case study slugs picked in Studio. Empty picks three that match the page. */
+  caseSlugs: string[];
+  cardCtaLabel?: string;
+  portfolioLabel?: string;
+  portfolioHref?: string;
+  portfolio?: CaseIndexCard[];
 };
 
 export type LpProcessSection = LpSectionBase & {
@@ -258,9 +317,7 @@ export type LpPage = {
   title: string;
   description: string;
   nav: LpNav;
+  calendar: LpCalendarCopy;
   picker?: LpPicker;
-  /** Label in the “Estás viendo” bar. */
-  watching?: string;
-  interests: string[];
   sections: LpSection[];
 };

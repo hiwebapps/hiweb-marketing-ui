@@ -1,11 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCalendarPage, getSiteSettings } from '../../lib/content';
-import type { LpPage } from '../../lib/content/lp-types';
+import { getCalendarPage, getCases, getIndustries, getSiteSettings } from '../../lib/content';
+import type { LpPage, LpSection } from '../../lib/content/lp-types';
+import { pickLpPortfolio, portfolioCandidates } from '../../lib/content/lp-portfolio';
 import { LpChrome } from './LpChrome';
 import LpMobileBar from './LpMobileBar.astro';
 import LpSectionRenderer from './LpSectionRenderer.astro';
-import PickerBar from './PickerBar.astro';
 import './lp.css';
 
 interface Props {
@@ -13,35 +13,59 @@ interface Props {
 }
 
 const { page } = Astro.props;
-const sections = page.sections.filter((section) => !section.hidden);
+const candidates = portfolioCandidates(await getCases(), await getIndustries());
+const sections = page.sections
+	.filter((section) => !section.hidden && section._type !== 'ctaBand')
+	.map((section) =>
+		section._type === 'casePreview' ? { ...section, portfolio: pickLpPortfolio(page, candidates, section.caseSlugs) } : section,
+	);
 const calendar = await getCalendarPage('es');
 const site = await getSiteSettings();
+
+type StageBlock = {
+	id: string;
+	kind: 'stage';
+	hero: Extract<LpSection, { _type: 'lpHero' }>;
+	logos: Extract<LpSection, { _type: 'logoMarquee' }>;
+};
+type SectionBlock = { id: string; kind: 'section'; section: LpSection };
+const blocks: Array<StageBlock | SectionBlock> = [];
+for (let index = 0; index < sections.length; index += 1) {
+	const section = sections[index];
+	const next = sections[index + 1];
+	if (section._type === 'lpHero' && next?._type === 'logoMarquee') {
+		blocks.push({ id: `stage-${index}`, kind: 'stage', hero: section, logos: next });
+		index += 1;
+		continue;
+	}
+	blocks.push({ id: `${section._type}-${index}`, kind: 'section', section });
+}
 ---
 
-<Layout
-	title={page.title}
-	description={page.description}
-	noindex
-	minimalNav
-	minimalFooter
-	landingNavCtaLabel={page.nav.ctaLabel}
-	landingNavCtaCalendar
-	landingNavBadge={page.nav.badge}
-	landingNavWhatsappHref={page.nav.whatsappHref}
-	landingNavWhatsappLabel={page.nav.whatsappLabel}
->
+<Layout title={page.title} description={page.description} noindex>
 	<div class="lp-shell">
-		{page.picker && page.watching ? <PickerBar prefix={page.picker.barPrefix} watching={page.watching} /> : null}
 		<main>
-			{sections.map((section) => (
-				<LpSectionRenderer section={section} calendar={calendar} site={site} />
-			))}
+			{blocks.map((block) =>
+				block.kind === 'stage' ? (
+					<div class="lp-stage">
+						<LpSectionRenderer section={block.hero} />
+						<LpSectionRenderer section={block.logos} />
+					</div>
+				) : (
+					<LpSectionRenderer section={block.section} />
+				),
+			)}
 		</main>
-		<LpMobileBar whatsappHref={page.nav.whatsappHref} />
+		<LpMobileBar
+			calendarLabel={page.nav.calendarLabel}
+			whatsappLabel={page.nav.whatsappLabel}
+			whatsappHref={page.nav.whatsappHref}
+		/>
 		<LpChrome
 			client:load
 			picker={page.picker}
-			autoOpen={page.role === 'hub' && Boolean(page.picker)}
+			autoOpen={Boolean(page.picker?.autoOpen)}
+			calendarCopy={page.calendar}
 			calendar={calendar}
 			site={site}
 		/>

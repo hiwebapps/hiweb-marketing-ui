@@ -1,11 +1,22 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { LP_SERVICES } from '../../data/lp/catalog';
+import { LP_FORM_DEFAULTS } from '../../data/lp/defaults';
 import { Button } from '../ui/Button';
 import { TextField } from '../ui/TextField';
 
-const COUNTRIES = ['México', 'Estados Unidos', 'Canadá', 'Otro'];
-const SIZES = ['1 a 14 personas', '15 a 50 personas', '51 a 200 personas', 'Más de 200 personas'];
-const BUDGETS = ['+$10,000', '+$15,000', '+$30,000', '+$60,000', 'Personalizado'];
+/** Highest budget option whose amount fits the investment. Options without a number never match. */
+function budgetFor(investment: number, budgets: string[]) {
+  let match = '';
+  let best = -1;
+  for (const label of budgets) {
+    const floor = Number(label.replace(/\D/g, ''));
+    if (floor > 0 && floor <= investment && floor > best) {
+      best = floor;
+      match = label;
+    }
+  }
+  return match;
+}
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'fbclid'] as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -14,6 +25,9 @@ type Utm = Partial<Record<(typeof UTM_KEYS)[number], string>>;
 type LpLeadFormProps = {
   landingName: string;
   interests?: string[];
+  countries?: string[];
+  sizes?: string[];
+  budgets?: string[];
 };
 
 function readUtms(): Utm {
@@ -34,7 +48,13 @@ function readUtms(): Utm {
   return utm;
 }
 
-export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
+export function LpLeadForm({
+  landingName,
+  interests = [],
+  countries = LP_FORM_DEFAULTS.formCountries,
+  sizes = LP_FORM_DEFAULTS.formSizes,
+  budgets = LP_FORM_DEFAULTS.formBudgets,
+}: LpLeadFormProps) {
   const [step, setStep] = useState(0);
   const [error, setError] = useState('');
   const [sending, setSending] = useState(false);
@@ -48,6 +68,7 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
   const [companySize, setCompanySize] = useState('');
   const [selected, setSelected] = useState<string[]>(interests);
   const [budget, setBudget] = useState('');
+  const [scenario, setScenario] = useState('');
 
   useEffect(() => {
     const onSet = (event: Event) => {
@@ -58,9 +79,20 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
       setStep(2);
       setError('');
     };
+    const onScenario = (event: Event) => {
+      const detail = (event as CustomEvent<{ summary?: string; investment?: number }>).detail;
+      if (!detail?.summary) return;
+      setScenario(detail.summary);
+      const match = budgetFor(Number(detail.investment) || 0, budgets);
+      if (match) setBudget(match);
+    };
     window.addEventListener('lp-set-interests', onSet);
-    return () => window.removeEventListener('lp-set-interests', onSet);
-  }, []);
+    window.addEventListener('lp-roi-scenario', onScenario);
+    return () => {
+      window.removeEventListener('lp-set-interests', onSet);
+      window.removeEventListener('lp-roi-scenario', onScenario);
+    };
+  }, [budgets]);
 
   const validate = (index = step) => {
     if (index === 0) {
@@ -116,6 +148,7 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
           website: site ? (site.startsWith('http') ? site : `https://${site}`) : undefined,
           services: selected,
           budget,
+          project: scenario || undefined,
           country,
           city: city.trim(),
           companySize,
@@ -144,23 +177,34 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
 
   return (
     <form onSubmit={submit} noValidate>
-      <p className="font-display text-xs font-semibold tracking-[0.14em] text-muted uppercase">
+      <p className="font-display text-xs font-medium tracking-[0.16em] text-muted uppercase">
         Paso {step + 1} de 4
       </p>
-      <div className="mt-3 grid grid-cols-4 gap-1.5" aria-hidden="true">
+      <div className="mt-2 grid grid-cols-4 gap-1.5" aria-hidden="true">
         {[0, 1, 2, 3].map((index) => (
           <span key={index} className={['h-1 rounded-full', index <= step ? 'bg-ink' : 'bg-surface-elevated'].join(' ')} />
         ))}
       </div>
 
+      {scenario ? (
+        <p className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-surface px-3 py-2 font-sans text-xs text-ink-soft" role="status">
+          <span>Adjuntamos tu escenario de la calculadora de ROI.</span>
+          <button type="button" className="shrink-0 font-medium text-ink underline" onClick={() => setScenario('')}>
+            Quitar
+          </button>
+        </p>
+      ) : null}
+
       {step === 0 ? (
-        <div className="mt-5 grid gap-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 grid gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             <TextField label="Nombre" name="firstName" autoComplete="given-name" placeholder="Tu nombre" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
             <TextField label="Apellido" name="lastName" autoComplete="family-name" placeholder="Tu apellido" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
           </div>
-          <TextField label="Email" name="email" type="email" autoComplete="email" placeholder="tu@empresa.com" value={email} onChange={(event) => setEmail(event.target.value)} required />
-          <TextField label="Celular" name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="+52 999 000 0000" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <TextField label="Email" name="email" type="email" autoComplete="email" placeholder="tu@empresa.com" value={email} onChange={(event) => setEmail(event.target.value)} required />
+            <TextField label="Celular" name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="+52 999 000 0000" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+          </div>
           <TextField label="Sitio web (opcional)" name="website" type="url" inputMode="url" autoComplete="url" placeholder="https://tuempresa.com" value={website} onChange={(event) => setWebsite(event.target.value)} />
         </div>
       ) : null}
@@ -177,7 +221,7 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
               className="w-full rounded-xl border border-border bg-canvas px-4 py-3 font-sans text-sm text-ink"
             >
               <option value="">Elige un país</option>
-              {COUNTRIES.map((item) => (
+              {countries.map((item) => (
                 <option key={item}>{item}</option>
               ))}
             </select>
@@ -186,7 +230,7 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
           <fieldset className="grid gap-2">
             <legend className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Tamaño de la empresa</legend>
             <div className="mt-2 flex flex-wrap gap-2">
-              {SIZES.map((item) => (
+              {sizes.map((item) => (
                 <button
                   key={item}
                   type="button"
@@ -234,7 +278,7 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
         <fieldset className="mt-5">
           <legend className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Presupuesto mensual (MXN)</legend>
           <div className="mt-3 flex flex-wrap gap-2">
-            {BUDGETS.map((item) => (
+            {budgets.map((item) => (
               <button
                 key={item}
                 type="button"
@@ -258,7 +302,7 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
         </p>
       ) : null}
 
-      <div className="mt-6 flex items-center justify-between gap-3">
+      <div className="mt-4 flex items-center justify-between gap-3">
         {step > 0 ? (
           <Button type="button" variant="ghost" onClick={() => { setStep((value) => value - 1); setError(''); }}>
             Atrás
@@ -272,7 +316,7 @@ export function LpLeadForm({ landingName, interests = [] }: LpLeadFormProps) {
           <Button type="submit" disabled={sending}>{sending ? 'Enviando…' : 'Enviar'}</Button>
         )}
       </div>
-      <p className="mt-4 text-center font-sans text-xs text-muted">
+      <p className="mt-3 text-center font-sans text-xs text-muted">
         Al enviar aceptas nuestro <a href="/aviso-de-privacidad" className="underline">Aviso de privacidad</a>.
       </p>
     </form>

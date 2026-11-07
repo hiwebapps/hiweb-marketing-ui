@@ -1,6 +1,6 @@
 import * as Sanity from 'sanity';
 import type { DocumentActionComponent, DocumentActionProps } from 'sanity';
-import { LP_TEMPLATE_TYPES, makeLpBlock, type LpTemplateKind } from '../lpTemplate';
+import { lpTemplateTypes, makeLpBlock, type LpTemplateKind } from '../lpTemplate';
 
 interface SectionLike {
   _type?: string;
@@ -30,11 +30,11 @@ function isKind(value: unknown): value is LpTemplateKind {
 export const completeLpTemplate: DocumentActionComponent = (props: DocumentActionProps) => {
   const { id, type, draft, published, onComplete } = props;
   const client = useStudioClient();
-  const doc = (draft ?? published) as { template?: string; sections?: SectionLike[] } | null;
+  const doc = (draft ?? published) as { template?: string; role?: string; sections?: SectionLike[] } | null;
   const kind: LpTemplateKind = isKind(doc?.template) ? doc.template : 'general';
   const existing = doc?.sections ?? [];
   const present = new Set(existing.map((section) => section?._type).filter(Boolean));
-  const missing = LP_TEMPLATE_TYPES[kind].filter((sectionType) => !present.has(sectionType));
+  const missing = lpTemplateTypes(kind, doc?.role).filter((sectionType) => !present.has(sectionType));
 
   return {
     label: missing.length === 0 ? 'Plantilla completa' : `Completar plantilla (+${missing.length})`,

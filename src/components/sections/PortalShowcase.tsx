@@ -30,6 +30,7 @@ const COPY = {
     window: 'Portal de Clientes',
     pieces: ['Carrusel Origen Chiapas', 'Sitio web', 'Artículo SEO'],
     pending: 'Pendiente',
+    approved: 'Aprobado',
     cursors: ['Claudia', 'Alex'],
   },
   en: {
@@ -43,9 +44,21 @@ const COPY = {
     window: 'Client Portal',
     pieces: ['Chiapas Origin carousel', 'Website', 'SEO article'],
     pending: 'Pending',
+    approved: 'Approved',
     cursors: ['Claudia', 'Alex'],
   },
 } as const;
+
+function CursorMark({ name, variant }: { name: string; variant: 'a' | 'b' }) {
+  return (
+    <span className={`portal-showcase__cursor portal-showcase__cursor--${variant}`}>
+      <svg viewBox="0 0 16 18" width="18" height="20" aria-hidden="true">
+        <path d="M1.4 1.1 1.4 14.6 5.6 10.7 9.1 17.1 11.6 15.7 8.1 9.4 13.8 8.9Z" />
+      </svg>
+      <span>{name}</span>
+    </span>
+  );
+}
 
 export function PortalShowcase({
   eyebrow,
@@ -94,15 +107,25 @@ export function PortalShowcase({
             </div>
             <div className="portal-showcase__body">
               <ul>
-                {copy.pieces.map((piece) => (
-                  <li key={piece}>
-                    <span>{piece}</span>
-                    <span className="portal-showcase__pill">{copy.pending}</span>
-                  </li>
-                ))}
+                {copy.pieces.map((piece, index) => {
+                  const actor = index === 0 ? 'a' : index === copy.pieces.length - 1 ? 'b' : null;
+                  return (
+                    <li key={piece} className={actor ? 'portal-showcase__row--target' : undefined}>
+                      <span>{piece}</span>
+                      {actor ? (
+                        <span className={`portal-showcase__pill portal-showcase__pill--live portal-showcase__pill--${actor}`}>
+                          <span className="portal-showcase__state portal-showcase__state--pending">{copy.pending}</span>
+                          <span className="portal-showcase__state portal-showcase__state--approved">{copy.approved}</span>
+                          <span className="portal-showcase__click" aria-hidden="true" />
+                          <CursorMark name={copy.cursors[actor === 'a' ? 0 : 1]} variant={actor} />
+                        </span>
+                      ) : (
+                        <span className="portal-showcase__pill">{copy.pending}</span>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
-              <span className="portal-showcase__cursor portal-showcase__cursor--a">{copy.cursors[0]}</span>
-              <span className="portal-showcase__cursor portal-showcase__cursor--b">{copy.cursors[1]}</span>
             </div>
           </div>
         </a>

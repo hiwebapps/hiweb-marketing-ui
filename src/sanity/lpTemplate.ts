@@ -1,55 +1,18 @@
+const TAIL = ['pillarGrid', 'lpPortal', 'metricsBand', 'lpCaseCards', 'processPhases', 'teamGrid', 'faqSection', 'finalCta'] as const;
+
 export const LP_TEMPLATE_TYPES = {
-  general: [
-    'lpHero',
-    'logoMarquee',
-    'roiCalculator',
-    'statement',
-    'serviceSystem',
-    'lpIndustryCards',
-    'pillarGrid',
-    'lpPortal',
-    'ctaBand',
-    'metricsBand',
-    'lpCaseCards',
-    'processPhases',
-    'teamGrid',
-    'faqSection',
-    'finalCta',
-  ],
-  servicios: [
-    'lpHero',
-    'logoMarquee',
-    'roiCalculator',
-    'serviceSystem',
-    'pillarGrid',
-    'lpPortal',
-    'ctaBand',
-    'metricsBand',
-    'lpCaseCards',
-    'processPhases',
-    'teamGrid',
-    'faqSection',
-    'finalCta',
-  ],
-  industrias: [
-    'lpHero',
-    'logoMarquee',
-    'roiCalculator',
-    'lpIndustryCards',
-    'serviceSystem',
-    'pillarGrid',
-    'lpPortal',
-    'ctaBand',
-    'metricsBand',
-    'lpCaseCards',
-    'processPhases',
-    'teamGrid',
-    'faqSection',
-    'finalCta',
-  ],
+  general: ['lpHero', 'logoMarquee', 'roiCalculator', 'statement', 'serviceSystem', 'lpIndustryCards', ...TAIL],
+  servicios: ['lpHero', 'logoMarquee', 'roiCalculator', 'serviceSystem', ...TAIL],
+  industrias: ['lpHero', 'logoMarquee', 'roiCalculator', 'lpIndustryCards', 'serviceSystem', ...TAIL],
 } as const;
 
 export type LpTemplateKind = keyof typeof LP_TEMPLATE_TYPES;
+
+const LP_DETAIL_TYPES = ['lpHero', 'logoMarquee', 'roiCalculator', 'lpServiceFocus', ...TAIL] as const;
+
+export function lpTemplateTypes(kind: LpTemplateKind, role?: string): readonly string[] {
+  return role === 'detail' ? LP_DETAIL_TYPES : LP_TEMPLATE_TYPES[kind];
+}
 
 export function makeLpBlock(type: string) {
   return {
@@ -59,6 +22,6 @@ export function makeLpBlock(type: string) {
   };
 }
 
-export function lpTemplateSections(kind: LpTemplateKind) {
-  return LP_TEMPLATE_TYPES[kind].map((type) => makeLpBlock(type));
+export function lpTemplateSections(kind: LpTemplateKind, role?: string) {
+  return lpTemplateTypes(kind, role).map((type) => makeLpBlock(type));
 }

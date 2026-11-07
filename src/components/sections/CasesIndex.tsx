@@ -52,7 +52,7 @@ export function CaseCards({
   ctaLabel?: string;
 }) {
   return (
-    <ul ref={listRef} className="blog-grid">
+    <ul ref={listRef} className="blog-grid" data-count={cases.length}>
       {cases.map((item) => (
         <li key={item.id} className="blog-card">
           <a href={caseHref(item)} className="blog-card__link">
