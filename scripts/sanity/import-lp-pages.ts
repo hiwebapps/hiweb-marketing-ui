@@ -29,18 +29,30 @@ if (!write) {
 }
 
 const token = readEnv('SANITY_API_WRITE_TOKEN');
-if (!token) {
-  console.error('Falta SANITY_API_WRITE_TOKEN en el entorno o en .env.');
-  process.exit(1);
+
+/** Without a write token, `sanity exec … --with-user-token` lends the signed-in CLI session. */
+async function writeClient() {
+  if (token) {
+    return createClient({
+      projectId: readEnv('PUBLIC_SANITY_PROJECT_ID') || 'fxardjr1',
+      dataset: readEnv('PUBLIC_SANITY_DATASET') || 'web-2026',
+      apiVersion: '2024-01-01',
+      token,
+      useCdn: false,
+    });
+  }
+  try {
+    const { getCliClient } = await import('sanity/cli');
+    return getCliClient({ apiVersion: '2024-01-01', useCdn: false });
+  } catch {
+    console.error(
+      'Falta SANITY_API_WRITE_TOKEN. Ponlo en .env o corre: npx sanity exec scripts/sanity/import-lp-pages.ts --with-user-token -- --write',
+    );
+    process.exit(1);
+  }
 }
 
-const client = createClient({
-  projectId: readEnv('PUBLIC_SANITY_PROJECT_ID') || 'fxardjr1',
-  dataset: readEnv('PUBLIC_SANITY_DATASET') || 'web-2026',
-  apiVersion: '2024-01-01',
-  token,
-  useCdn: false,
-});
+const client = await writeClient();
 
 const existing = await client.fetch<{ _id: string; _updatedAt: string }[]>(
   '*[_type == "lpPage"]{ _id, _updatedAt }',
