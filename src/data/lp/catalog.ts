@@ -528,7 +528,7 @@ export function lpServiceLink(slug: string): LpServiceLink | null {
     slug: service.slug,
     name: service.name,
     short: service.short,
-    href: `/lp/servicios/${service.slug}`,
+    href: `/ads/servicios/${service.slug}`,
   };
 }
 

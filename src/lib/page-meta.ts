@@ -17,6 +17,8 @@ export type PageMetaDoc = {
   titulo?: string;
   cliente?: string;
   slug?: SlugValue;
+  /** Full route, used by campaign landings. */
+  path?: string;
   locale?: string;
   metaTitle?: string;
   metaDescription?: string;
@@ -47,10 +49,11 @@ export function aboutPath(locale: 'es' | 'en', slug?: string) {
   return locale === 'en' ? `/en/${slug || DEFAULT_ABOUT_EN_SLUG}` : '/nosotros';
 }
 
-export function pagePath(type: string, id: string, doc: { locale?: string; slug?: SlugValue }) {
+export function pagePath(type: string, id: string, doc: { locale?: string; slug?: SlugValue; path?: string }) {
   const published = publishedId(id);
   const english = isEnglish(published, doc.locale);
   const slug = slugOf(doc.slug);
+  if (type === 'lpPage') return typeof doc.path === 'string' && doc.path.startsWith('/ads/') ? doc.path : '';
   if (type === 'homePage') return english ? '/en' : '/';
   if (type === 'aboutPage') return aboutPath(english ? 'en' : 'es', slug);
   if (type === 'contactPage') return '/contacto';

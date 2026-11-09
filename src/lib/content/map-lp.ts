@@ -239,7 +239,7 @@ function mapSection(raw: Record<string, unknown>): LpSection | null {
       title: text(raw.title) || undefined,
       description: text(raw.description) || undefined,
       ctaLabel: text(raw.ctaLabel) || undefined,
-      hrefPrefix: text(raw.hrefPrefix) || '/lp/industrias',
+      hrefPrefix: text(raw.hrefPrefix) || '/ads/industrias',
       industries: list(raw.industries).map((item) => ({
         slug: text(item.slug),
         nombre: text(item.nombre),
@@ -372,7 +372,7 @@ function mapSection(raw: Record<string, unknown>): LpSection | null {
 export function mapLpDocument(doc: Record<string, unknown> | null): LpPage | null {
   if (!doc) return null;
   const path = text(doc.path);
-  if (!path.startsWith('/lp/')) return null;
+  if (!path.startsWith('/ads/')) return null;
   const nav = record(doc.nav);
   const calendar = record(doc.calendar);
   const pickerRaw = record(doc.picker);

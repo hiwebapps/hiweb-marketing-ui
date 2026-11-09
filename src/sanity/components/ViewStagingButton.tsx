@@ -5,10 +5,11 @@ import { pagePath, type PageMetaDoc } from '../../lib/page-meta';
 
 const STAGING_ORIGIN = 'https://staging.hiweb.com.mx';
 
-function pageDocument(displayed: { locale?: unknown; slug?: unknown } | null): PageMetaDoc {
+function pageDocument(displayed: { locale?: unknown; slug?: unknown; path?: unknown } | null): PageMetaDoc {
   const slug = displayed?.slug;
   return {
     locale: typeof displayed?.locale === 'string' ? displayed.locale : undefined,
+    path: typeof displayed?.path === 'string' ? displayed.path : undefined,
     slug:
       typeof slug === 'string' || (slug && typeof slug === 'object' && 'current' in slug)
         ? (slug as PageMetaDoc['slug'])
@@ -22,7 +23,7 @@ export function ViewStagingButton() {
   const path = pagePath(
     documentType,
     documentId,
-    pageDocument(displayed as { locale?: unknown; slug?: unknown } | null),
+    pageDocument(displayed as { locale?: unknown; slug?: unknown; path?: unknown } | null),
   );
   if (!path) return null;
 

@@ -386,7 +386,7 @@ export const lpIndustryCards = defineType({
     headingWidthField(),
     defineField({ name: 'description', title: 'Descripción', type: 'text', rows: 2 }),
     defineField({ name: 'ctaLabel', title: 'Botón de cada card', type: 'string' }),
-    defineField({ name: 'hrefPrefix', title: 'Prefijo de URL', type: 'string', initialValue: '/lp/industrias', description: 'La card enlaza a prefijo/slug.' }),
+    defineField({ name: 'hrefPrefix', title: 'Prefijo de URL', type: 'string', initialValue: '/ads/industrias', description: 'La card enlaza a prefijo/slug.' }),
     defineField({
       name: 'industries',
       title: 'Cards',

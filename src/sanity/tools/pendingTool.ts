@@ -18,6 +18,7 @@ const DRAFTS_QUERY = /* groq */ `*[_id in path("drafts.**") && !(_type match "sa
   _updatedAt,
   locale,
   "slug": slug.current,
+  path,
   nombre,
   cliente,
   title,
@@ -56,6 +57,7 @@ type DraftRow = {
   _updatedAt: string;
   locale?: string;
   slug?: string;
+  path?: string;
   nombre?: string;
   cliente?: string;
   title?: string;
@@ -176,7 +178,7 @@ function DraftRowView({
 
   const id = publishedId(row._id);
   const english = isEnglish(id, row.locale);
-  const path = pagePath(row._type, id, { locale: row.locale, slug: row.slug });
+  const path = pagePath(row._type, id, { locale: row.locale, slug: row.slug, path: row.path });
   const isNew = !row.publishedAt;
 
   return createElement(

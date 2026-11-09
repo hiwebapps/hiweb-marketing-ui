@@ -41,10 +41,10 @@ export const lpPage = defineType({
       title: 'Ruta',
       type: 'string',
       group: 'content',
-      description: 'Empieza con /lp/. Por ejemplo /lp/servicios/seo.',
+      description: 'Empieza con /ads/. Por ejemplo /ads/servicios/seo.',
       validation: (rule) =>
         rule.required().custom((value) => {
-          if (typeof value !== 'string' || !value.startsWith('/lp/')) return 'La ruta debe empezar con /lp/';
+          if (typeof value !== 'string' || !value.startsWith('/ads/')) return 'La ruta debe empezar con /ads/';
           return true;
         }),
     }),

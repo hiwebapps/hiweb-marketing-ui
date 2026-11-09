@@ -113,24 +113,24 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       filter: `_type == "aboutPage" && _id in ["aboutPage-en", "drafts.aboutPage-en"] && coalesce(slug.current, "${DEFAULT_ABOUT_EN_SLUG}") == $slug`,
     },
     {
-      route: '/lp/agencia',
-      filter: `_type == "lpPage" && path == "/lp/agencia"`,
+      route: '/ads/agencia',
+      filter: `_type == "lpPage" && path == "/ads/agencia"`,
     },
     {
-      route: '/lp/servicios',
-      filter: `_type == "lpPage" && path == "/lp/servicios"`,
+      route: '/ads/servicios',
+      filter: `_type == "lpPage" && path == "/ads/servicios"`,
     },
     {
-      route: '/lp/industrias',
-      filter: `_type == "lpPage" && path == "/lp/industrias"`,
+      route: '/ads/industrias',
+      filter: `_type == "lpPage" && path == "/ads/industrias"`,
     },
     {
-      route: '/lp/servicios/:slug',
-      filter: `_type == "lpPage" && path == "/lp/servicios/" + $slug`,
+      route: '/ads/servicios/:slug',
+      filter: `_type == "lpPage" && path == "/ads/servicios/" + $slug`,
     },
     {
-      route: '/lp/industrias/:slug',
-      filter: `_type == "lpPage" && path == "/lp/industrias/" + $slug`,
+      route: '/ads/industrias/:slug',
+      filter: `_type == "lpPage" && path == "/ads/industrias/" + $slug`,
     },
     {
       route: '/:slug',
@@ -263,7 +263,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       select: { title: 'title', path: 'path' },
       resolve: (doc) => ({
         locations: [
-          { title: doc?.title || 'Landing', href: doc?.path || '/lp/agencia' },
+          { title: doc?.title || 'Landing', href: doc?.path || '/ads/agencia' },
           { title: 'Inicio', href: '/' },
         ],
       }),

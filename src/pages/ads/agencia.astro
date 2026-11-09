@@ -4,7 +4,7 @@ import { getLpPage } from '../../lib/content/lp-load';
 
 export const prerender = true;
 
-const page = await getLpPage('/lp/agencia');
+const page = await getLpPage('/ads/agencia');
 if (!page) throw new Error('Falta la landing general.');
 ---
 

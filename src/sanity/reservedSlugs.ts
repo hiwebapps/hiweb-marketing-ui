@@ -17,6 +17,7 @@ export const RESERVED_SLUGS = [
   'contact',
   'api',
   'studio',
+  'ads',
   'lp',
   'gracias',
   'sitemap.xml',

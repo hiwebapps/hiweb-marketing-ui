@@ -46,8 +46,9 @@ export async function lpDetailPaths(template: Extract<LpTemplate, 'servicios' | 
       query: LP_LIST_QUERY,
       stega: false,
     });
+    const prefix = `/ads/${template}/`;
     for (const item of data ?? []) {
-      if (item.template === template && item.role === 'detail' && item.path && item.slug) {
+      if (item.template === template && item.role === 'detail' && item.path?.startsWith(prefix) && item.slug) {
         pages.set(item.path, { slug: item.slug, path: item.path });
       }
     }

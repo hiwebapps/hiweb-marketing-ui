@@ -4,8 +4,8 @@ import { getLpPage } from '../../../lib/content/lp-load';
 
 export const prerender = true;
 
-const page = await getLpPage('/lp/servicios');
-if (!page) throw new Error('Falta el hub de servicios.');
+const page = await getLpPage('/ads/industrias');
+if (!page) throw new Error('Falta el hub de industrias.');
 ---
 
 <LpDocument page={page} />
