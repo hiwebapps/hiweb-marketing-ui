@@ -1,6 +1,7 @@
 ---
 import LpDocument from '../../../components/lp/LpDocument.astro';
 import { getLpPage, lpDetailPaths } from '../../../lib/content/lp-load';
+import { notFound } from '../../../lib/content/resolve-entry';
 
 export const prerender = true;
 
@@ -9,8 +10,9 @@ export async function getStaticPaths() {
 	return pages.map((page) => ({ params: { slug: page.slug }, props: { path: page.path } }));
 }
 
-const page = await getLpPage(Astro.props.path);
-if (!page) throw new Error('Falta la landing de industria.');
+// Staging renders on request, so getStaticPaths props are missing there.
+const page = await getLpPage(Astro.props.path ?? `/ads/industrias/${Astro.params.slug ?? ''}`);
+if (!page) return notFound();
 ---
 
 <LpDocument page={page} />
