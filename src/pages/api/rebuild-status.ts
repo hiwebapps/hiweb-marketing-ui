@@ -1,13 +1,13 @@
 /**
  * Live-site deploy queue.
- * GET is public and returns only { queued, deployAt }.
+ * GET is public and returns only { queued, deployAt, lastFiredAt }.
  * POST starts the deploy now. It accepts a Sanity session token for project fxardjr1.
  * Staging never dispatches.
  */
 import { env } from 'cloudflare:workers';
 import { getD1 } from '../../lib/growth/db/d1';
 import { canDispatchRebuild, dispatchRebuild, type RebuildBindings } from '../../lib/rebuild/dispatch';
-import { clearPendingRebuild, readRebuildStatus, restorePendingRebuild } from '../../lib/rebuild/queue';
+import { clearPendingRebuild, markRebuildFired, readRebuildStatus, restorePendingRebuild } from '../../lib/rebuild/queue';
 import { bearerToken, tokenIsProjectEditor } from '../../lib/sanity-auth';
 
 export const prerender = false;
@@ -52,12 +52,12 @@ export function OPTIONS({ request }: { request: Request }) {
 
 export async function GET({ request }: { request: Request }) {
   const database = getD1();
-  if (!database) return json(request, { queued: false, deployAt: null });
+  if (!database) return json(request, { queued: false, deployAt: null, lastFiredAt: null });
   try {
     return json(request, await readRebuildStatus(database));
   } catch (error) {
     console.error(error instanceof Error ? error.message : 'Rebuild status failed');
-    return json(request, { queued: false, deployAt: null }, 500);
+    return json(request, { queued: false, deployAt: null, lastFiredAt: null }, 500);
   }
 }
 
@@ -84,5 +84,6 @@ export async function POST({ request }: { request: Request }) {
     if (database && previous) await restorePendingRebuild(database, previous);
     return json(request, { ok: false, error: 'Deploy hook failed' }, 502);
   }
+  if (database) await markRebuildFired(database);
   return json(request, { ok: true, fired: true });
 }

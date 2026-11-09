@@ -187,12 +187,12 @@ El grafo deja `gsap-ssr-stub.ts` sin consumidores. Lo resuelve `astro.config.mjs
 
 ### `src/lib/rebuild/queue.ts`
 
-- Propósito: una sola fila `pending` en `rebuild_requests`. El webhook la marca; el cron dispara cuando han pasado 10 minutos desde el último publish.
-- Por qué está así: varios publishes seguidos deben reiniciar el reloj, no encolar diez deploys. Borrar con `requested_at` concreto evita pisar un publish que llegó mientras el cron ya leía la fila.
-- Exporta: `REBUILD_DEBOUNCE_MS` (10 minutos), `markRebuildRequested`, `flushRebuildIfDue`, `readRebuildStatus`, `clearPendingRebuild`, `restorePendingRebuild`.
+- Propósito: una fila `pending` en `rebuild_requests`. El webhook la marca y, 10 segundos después del último publish, el propio webhook dispara el deploy. El cron de cada minuto es el respaldo. Otra fila, `last-fired`, guarda cuándo salió el último deploy.
+- Por qué está así: un publish masivo desde Pendientes llega como un webhook por documento, uno tras otro. Cada uno reinicia el reloj de 10 segundos, así que el lote termina en un solo deploy. Borrar con `requested_at` concreto evita que dos comprobaciones disparen dos deploys.
+- Exporta: `REBUILD_DEBOUNCE_MS` (10 segundos), `markRebuildRequested`, `flushRebuildIfDue`, `markRebuildFired`, `readRebuildStatus`, `clearPendingRebuild`, `restorePendingRebuild`.
 - Depende de: `src/lib/growth/db/d1.ts`.
-- Lo usan: `flush.ts` (`flushRebuildIfDue`), `src/pages/api/sanity-webhook.ts` (`markRebuildRequested`), `src/pages/api/rebuild-status.ts` (`readRebuildStatus`, `clearPendingRebuild`, `restorePendingRebuild`).
-- Datos: `INSERT … ON CONFLICT` actualiza `requested_at`. `flushRebuildIfDue` devuelve `idle`, `waiting`, `superseded`, `retry` o `fired`. Si el disparo falla o lanza, reinserta la misma marca con `ON CONFLICT DO NOTHING`. `readRebuildStatus` devuelve `queued` y `deployAt` (marca + 10 minutos) sin autenticar.
+- Lo usan: `flush.ts` (`flushRebuildIfDue`), `src/pages/api/sanity-webhook.ts` (`markRebuildRequested`, `flushRebuildIfDue`), `src/pages/api/rebuild-status.ts` (`readRebuildStatus`, `clearPendingRebuild`, `restorePendingRebuild`, `markRebuildFired`).
+- Datos: `INSERT … ON CONFLICT` actualiza `requested_at`. `flushRebuildIfDue` devuelve `idle`, `waiting`, `superseded`, `retry` o `fired`, y al disparar escribe `last-fired`. Si el disparo falla o lanza, reinserta la misma marca con `ON CONFLICT DO NOTHING`. `readRebuildStatus` devuelve `queued`, `deployAt` (marca + 10 segundos) y `lastFiredAt` sin autenticar.
 - Hallazgos: A-13, G-09 (el estado de la cola es público en la ruta que llama a `readRebuildStatus`).
 
 ### `src/lib/rebuild/dispatch.ts`

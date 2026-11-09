@@ -24,7 +24,7 @@ Live prerenderiza las páginas de marketing. Staging apaga ese prerender para qu
 - Depende de: nada del grafo.
 - Lo usan: `wrangler deploy` y los workflows.
 - Datos: `compatibility_date` `2026-09-18`, flag `nodejs_compat`. Live: `PUBLIC_SITE_INDEXABLE=false`, `PUBLIC_SITE_URL=https://www.hiwebmarketing.com`, project `fxardjr1`, dataset `web-2026`, cron `* * * * *`, D1 `hiweb-marketing-quiz-calendar` (`282c179c-d35d-4dfa-b631-afaad98d802c`), `migrations_dir` `migrations/d1`. Staging: `PUBLIC_SITE_ENV=staging`, URL `https://staging.hiweb.com.mx`, la misma pareja Sanity, D1 distinta (`hiweb-marketing-quiz-calendar-staging`, `0391782c-b084-452c-a283-74af9c54451f`), crons `[]`. Observability encendida en live.
-- Hallazgos: A-13. El cron de live corre cada minuto. El flush no dispara el deploy hasta unos 10 minutos después del último publish. Staging no tiene cron y no debe tenerlo mientras siga en SSR. A-07. El default del repo de GitHub no está en este archivo: está en `src/lib/rebuild/dispatch.ts`. Si el Worker no tiene `CLOUDFLARE_DEPLOY_HOOK_URL` ni `GITHUB_DISPATCH_REPO`, el cron pega a `jahirgosu/hiweb-marketing-ui`. `PUBLIC_SITE_INDEXABLE` queda en `false` en los dos entornos.
+- Hallazgos: A-13. El webhook dispara el deploy 10 segundos después del último publish. El cron de live corre cada minuto como respaldo. Staging no tiene cron y no debe tenerlo mientras siga en SSR. A-07. El default del repo de GitHub no está en este archivo: está en `src/lib/rebuild/dispatch.ts`. Si el Worker no tiene `CLOUDFLARE_DEPLOY_HOOK_URL` ni `GITHUB_DISPATCH_REPO`, el cron pega a `jahirgosu/hiweb-marketing-ui`. `PUBLIC_SITE_INDEXABLE` queda en `false` en los dos entornos.
 
 ### `sanity.config.ts`
 
@@ -64,7 +64,7 @@ Live prerenderiza las páginas de marketing. Staging apaga ese prerender para qu
 - Depende de: `src/lib/rebuild/flush.ts` (`flushDueRebuild`).
 - Lo usan: `wrangler.jsonc` (`main`). El grafo no marca consumidores porque Wrangler lo carga por config.
 - Datos: `scheduled` hace `waitUntil(flushDueRebuild(env))`. No mira el evento del cron.
-- Hallazgos: A-13. En live el cron es cada minuto y el flush espera unos 10 minutos desde `requested_at`. Staging no registra cron, y `canDispatchRebuild` rechaza `PUBLIC_SITE_ENV=staging`. A-07. `flushDueRebuild` termina en `src/lib/rebuild/dispatch.ts`. Sin `CLOUDFLARE_DEPLOY_HOOK_URL`, el `POST` de respaldo va a `https://api.github.com/repos/${githubRepo}/dispatches` con default `jahirgosu/hiweb-marketing-ui`. El README identifica `hiwebapps/hiweb-marketing-ui`. Sin hook y sin `GITHUB_DISPATCH_REPO`, el cron marca el rebuild como fallido y reintenta cada minuto.
+- Hallazgos: A-13. En live el cron es cada minuto y el flush espera 10 segundos desde `requested_at`; normalmente el webhook ya disparó antes. Staging no registra cron, y `canDispatchRebuild` rechaza `PUBLIC_SITE_ENV=staging`. A-07. `flushDueRebuild` termina en `src/lib/rebuild/dispatch.ts`. Sin `CLOUDFLARE_DEPLOY_HOOK_URL`, el `POST` de respaldo va a `https://api.github.com/repos/${githubRepo}/dispatches` con default `jahirgosu/hiweb-marketing-ui`. El README identifica `hiwebapps/hiweb-marketing-ui`. Sin hook y sin `GITHUB_DISPATCH_REPO`, el cron marca el rebuild como fallido y reintenta cada minuto.
 
 ### `src/middleware.ts`
 
@@ -124,7 +124,7 @@ Live prerenderiza las páginas de marketing. Staging apaga ese prerender para qu
 - Depende de: secrets `SANITY_API_READ_TOKEN`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 - Lo usan: el dispatch de `src/lib/rebuild/dispatch.ts` cuando no hay deploy hook, y quien lo lance a mano.
 - Datos: Node 22, `npm ci`, `npm run build` con `PUBLIC_SITE_INDEXABLE=false`, project `fxardjr1`, dataset `web-2026`. Luego `wrangler deploy --keep-vars`. Timeout 20 minutos. Rama del checkout: la que dispare el workflow.
-- Hallazgos: A-07. El dispatch tiene que pegarle a este repo (`hiwebapps/hiweb-marketing-ui`) para que este archivo corra. El default del código apunta a `jahirgosu/hiweb-marketing-ui`. A-13. Aunque el workflow exista, el cron no lo llama hasta pasados unos 10 minutos, y solo si el camino de respaldo es el que está activo. El camino normal es `CLOUDFLARE_DEPLOY_HOOK_URL`.
+- Hallazgos: A-07. El dispatch tiene que pegarle a este repo (`hiwebapps/hiweb-marketing-ui`) para que este archivo corra. El default del código apunta a `jahirgosu/hiweb-marketing-ui`. A-13. Aunque el workflow exista, solo se llama si el camino de respaldo es el que está activo. El camino normal es `CLOUDFLARE_DEPLOY_HOOK_URL`.
 
 ### `.github/workflows/deploy-staging.yml`
 

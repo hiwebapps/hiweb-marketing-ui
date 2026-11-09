@@ -19,7 +19,7 @@ Todo lo de `src/sanity` que no es schema. Los tipos están en [sanity-schemas.md
 ### `src/sanity/client.ts`
 
 - Propósito: cliente de lectura del sitio.
-- Por qué está así: en live usa el API CDN para no gastar la cuota de API Requests del plan gratuito; el rebuild corre 10 minutos después de publicar, así que el CDN ya tiene el cambio. En staging el CDN está apagado porque no sirve drafts. En staging la perspectiva es `drafts` (hace falta token). En live es `published`. El token de staging se lee del binding del Worker, no solo de `import.meta.env`.
+- Por qué está así: en live usa el API CDN para no gastar la cuota de API Requests del plan gratuito; el rebuild arranca unos segundos después de publicar, y el build lee Sanity un par de minutos más tarde (tras clonar e instalar), cuando el CDN ya tiene el cambio. En staging el CDN está apagado porque no sirve drafts. En staging la perspectiva es `drafts` (hace falta token). En live es `published`. El token de staging se lee del binding del Worker, no solo de `import.meta.env`.
 - Exporta: `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_API_VERSION`, `isSanityConfigured`, `createSanityClient`, `getSanityClient`.
 - Depende de: `src/lib/site-env.ts`, `src/lib/runtime-env.ts`.
 - Lo usan: `src/lib/content/index.ts`, `src/pages/api/draft-mode/enable.ts`, `image.ts`, `lib/load-query.ts`.
@@ -214,7 +214,7 @@ Todo lo de `src/sanity` que no es schema. Los tipos están en [sanity-schemas.md
 - Depende de: `ViewStagingButton.tsx`.
 - Lo usan: `sanity.config.ts` (`__internal_tasks.footerAction`).
 - Datos: no lee el documento. El botón sí.
-- Hallazgos: A-13. El publish de live espera el cron (unos 10 minutos), no un reload inmediato.
+- Hallazgos: A-13. El publish de live dispara el deploy unos 10 segundos después del último publish, no un reload inmediato.
 
 ### `src/sanity/components/StudioNavbar.tsx`
 

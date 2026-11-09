@@ -393,7 +393,7 @@ function PendingTool(_props: { tool: Tool }) {
       toast.push({
         status: 'success',
         title: `${ok} ${ok === 1 ? 'documento publicado' : 'documentos publicados'}`,
-        description: 'hiwebmarketing.com se actualiza con el siguiente deploy del sitio.',
+        description: 'hiwebmarketing.com empieza a actualizarse en unos segundos y tarda unos 5 minutos en mostrar los cambios.',
       });
     }
     if (failed.length) {

@@ -1,8 +1,13 @@
 import { d1First, d1Run, type GrowthD1 } from '../growth/db/d1';
 
 const PENDING_ID = 'pending';
-/** Quiet period after the last Publish. A newer publish restarts the clock. */
-export const REBUILD_DEBOUNCE_MS = 10 * 60 * 1000;
+/** Same table, separate row: when the last deploy was fired. */
+const LAST_FIRED_ID = 'last-fired';
+/**
+ * Quiet period after the last Publish. A newer publish restarts the clock, so a bulk publish
+ * from Pendientes (one document after another) still ends in a single deploy.
+ */
+export const REBUILD_DEBOUNCE_MS = 10 * 1000;
 
 export async function markRebuildRequested(db: GrowthD1, now = new Date()) {
   await d1Run(
@@ -50,7 +55,18 @@ export async function flushRebuildIfDue(db: GrowthD1, fire: () => Promise<boolea
     );
     return 'retry' as const;
   }
+  await markRebuildFired(db, new Date(now));
   return 'fired' as const;
+}
+
+export async function markRebuildFired(db: GrowthD1, now = new Date()) {
+  await d1Run(
+    db,
+    `INSERT INTO rebuild_requests (id, requested_at) VALUES (?, ?)
+     ON CONFLICT(id) DO UPDATE SET requested_at = excluded.requested_at`,
+    LAST_FIRED_ID,
+    now.toISOString(),
+  );
 }
 
 export async function readRebuildStatus(db: GrowthD1) {
@@ -59,13 +75,20 @@ export async function readRebuildStatus(db: GrowthD1) {
     'SELECT requested_at FROM rebuild_requests WHERE id = ?',
     PENDING_ID,
   );
+  const fired = await d1First<{ requested_at: string }>(
+    db,
+    'SELECT requested_at FROM rebuild_requests WHERE id = ?',
+    LAST_FIRED_ID,
+  );
+  const lastFiredAt = fired?.requested_at ?? null;
   const requestedAt = Date.parse(row?.requested_at ?? '');
   if (!row?.requested_at || !Number.isFinite(requestedAt)) {
-    return { queued: false, deployAt: null as string | null };
+    return { queued: false, deployAt: null as string | null, lastFiredAt };
   }
   return {
     queued: true,
     deployAt: new Date(requestedAt + REBUILD_DEBOUNCE_MS).toISOString(),
+    lastFiredAt,
   };
 }
 

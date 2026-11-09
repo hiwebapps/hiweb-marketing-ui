@@ -13,6 +13,7 @@ declare const __HIWEB_STUDIO_BUILT_AT__: string | undefined;
 type RebuildStatus = {
   queued: boolean;
   deployAt: string | null;
+  lastFiredAt: string | null;
 };
 
 type StudioRelease = {
@@ -75,26 +76,15 @@ function releaseIsStale(remote: StudioRelease) {
   return saved.schema !== remote.schema || saved.createdAt !== remote.createdAt;
 }
 
-function minutesLeft(deployAt: string | null, now: number) {
-  if (!deployAt) return 0;
-  const remaining = Date.parse(deployAt) - now;
-  if (!Number.isFinite(remaining) || remaining <= 0) return 0;
-  return Math.ceil(remaining / 60_000);
-}
-
-/** The live site keeps building for a few minutes after the queue clears. */
+/** The live site keeps building for a few minutes after the deploy is fired. */
 const UPDATE_WINDOW_MS = 6 * 60 * 1000;
 
-function liveSiteMessage(status: RebuildStatus, deployAtMs: number | null, now: number) {
+function liveSiteMessage(status: RebuildStatus, now: number) {
   if (status.queued) {
-    const minutes = minutesLeft(status.deployAt, now);
-    if (minutes <= 0) {
-      return 'La espera terminó. hiwebmarketing.com empieza a actualizarse y tarda unos 5 minutos en mostrar los cambios.';
-    }
-    const label = minutes === 1 ? '1 minuto' : `${minutes} minutos`;
-    return `En espera. hiwebmarketing.com se actualiza en ${label}. Si publicas otro documento, la espera de 10 minutos vuelve a empezar. Después, el sitio tarda unos 5 minutos en mostrar los cambios.`;
+    return 'Publicado. hiwebmarketing.com empieza a actualizarse en unos segundos y tarda unos 5 minutos en mostrar los cambios.';
   }
-  if (deployAtMs && now < deployAtMs + UPDATE_WINDOW_MS) {
+  const firedAt = Date.parse(status.lastFiredAt ?? '');
+  if (Number.isFinite(firedAt) && now < firedAt + UPDATE_WINDOW_MS) {
     return 'hiwebmarketing.com se está actualizando. En unos minutos se ven los cambios. Recarga esa página con Ctrl+F5.';
   }
   return null;
@@ -103,7 +93,6 @@ function liveSiteMessage(status: RebuildStatus, deployAtMs: number | null, now: 
 export function StudioNavbar(props: NavbarProps) {
   const [stale, setStale] = useState(false);
   const [status, setStatus] = useState<RebuildStatus | null>(null);
-  const [deployAtMs, setDeployAtMs] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
@@ -123,10 +112,12 @@ export function StudioNavbar(props: NavbarProps) {
         if (!response.ok) throw new Error(`status ${response.status}`);
         const body = (await response.json()) as RebuildStatus;
         if (!cancelled) {
-          const next = { queued: Boolean(body.queued), deployAt: body.deployAt ?? null };
-          setStatus(next);
-          const at = Date.parse(next.deployAt ?? '');
-          if (Number.isFinite(at)) setDeployAtMs(at);
+          setStatus({
+            queued: Boolean(body.queued),
+            deployAt: body.deployAt ?? null,
+            lastFiredAt: body.lastFiredAt ?? null,
+          });
+          setNow(Date.now());
         }
       } catch {
         // A failed status check keeps the last message.
@@ -134,7 +125,7 @@ export function StudioNavbar(props: NavbarProps) {
     }
 
     void tick();
-    const poll = window.setInterval(() => void tick(), 30_000);
+    const poll = window.setInterval(() => void tick(), 15_000);
     const clock = window.setInterval(() => setNow(Date.now()), 15_000);
     return () => {
       cancelled = true;
@@ -143,7 +134,7 @@ export function StudioNavbar(props: NavbarProps) {
     };
   }, []);
 
-  const liveMessage = status ? liveSiteMessage(status, deployAtMs, now) : null;
+  const liveMessage = status ? liveSiteMessage(status, now) : null;
 
   return (
     <Flex direction="column">

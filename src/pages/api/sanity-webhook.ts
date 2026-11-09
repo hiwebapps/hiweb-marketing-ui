@@ -1,15 +1,18 @@
 /**
- * Sanity publish → one Cloudflare deploy, ten minutes after the last publish.
+ * Sanity publish → one Cloudflare deploy, a few seconds after the last publish.
  * Auth: Authorization: Bearer <SANITY_REVALIDATE_SECRET>
- * The cron in wrangler.jsonc calls the deploy hook. Staging never dispatches.
+ * Each webhook checks the queue once the quiet period ends. The cron in wrangler.jsonc retries
+ * if that check was cut short. Staging never dispatches.
  */
 import { env } from 'cloudflare:workers';
 import { getD1 } from '../../lib/growth/db/d1';
-import { canDispatchRebuild, type RebuildBindings } from '../../lib/rebuild/dispatch';
-import { markRebuildRequested } from '../../lib/rebuild/queue';
+import { canDispatchRebuild, dispatchRebuild, type RebuildBindings } from '../../lib/rebuild/dispatch';
+import { flushRebuildIfDue, markRebuildRequested, REBUILD_DEBOUNCE_MS } from '../../lib/rebuild/queue';
 import { safeEqual } from '../../lib/runtime-env';
 
 export const prerender = false;
+
+type WaitUntil = { waitUntil(promise: Promise<unknown>): void };
 
 function workerEnv(): RebuildBindings & { SANITY_REVALIDATE_SECRET?: string } {
   const runtime = env as RebuildBindings & { SANITY_REVALIDATE_SECRET?: string };
@@ -22,7 +25,9 @@ function workerEnv(): RebuildBindings & { SANITY_REVALIDATE_SECRET?: string } {
   };
 }
 
-export async function POST({ request }: { request: Request }) {
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export async function POST({ request, locals }: { request: Request; locals: { cfContext?: WaitUntil } }) {
   const bindings = workerEnv();
   const expected = bindings.SANITY_REVALIDATE_SECRET;
 
@@ -51,11 +56,19 @@ export async function POST({ request }: { request: Request }) {
 
   try {
     await markRebuildRequested(database);
-    return json({ ok: true, queued: true });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return json({ ok: false, error: message }, 500);
   }
+
+  locals.cfContext?.waitUntil(
+    wait(REBUILD_DEBOUNCE_MS + 500)
+      .then(() => flushRebuildIfDue(database, () => dispatchRebuild(bindings)))
+      .catch((error: unknown) => {
+        console.error(error instanceof Error ? error.message : 'Rebuild flush failed');
+      }),
+  );
+  return json({ ok: true, queued: true });
 }
 
 export function GET() {

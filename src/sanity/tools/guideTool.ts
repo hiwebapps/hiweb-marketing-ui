@@ -54,7 +54,7 @@ const SECTIONS: Section[] = [
       },
       {
         kind: 'note',
-        text: 'El borrador se ve en Staging al guardarse. hiwebmarketing.com usa la versión publicada. Después de Publish, el sitio espera 10 minutos por si publicas algo más y junta esos cambios. La barra de arriba solo aparece cuando hay esa espera, o cuando el sitio ya se está actualizando. Luego tarda unos 5 minutos en mostrar los cambios. Si aparece el aviso de una versión nueva de Studio, recarga antes de seguir editando.',
+        text: 'El borrador se ve en Staging al guardarse. hiwebmarketing.com usa la versión publicada. Después de Publish, el sitio empieza a actualizarse en unos segundos. Si publicas varios documentos seguidos, por ejemplo desde Pendientes, se juntan en una sola actualización. La barra de arriba avisa mientras el sitio se actualiza, y tarda unos 5 minutos en mostrar los cambios. Si aparece el aviso de una versión nueva de Studio, recarga antes de seguir editando.',
       },
       {
         kind: 'p',

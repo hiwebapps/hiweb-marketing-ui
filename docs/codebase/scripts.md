@@ -485,4 +485,4 @@ Un binding `DATABASE` y dos bases: live `hiweb-marketing-quiz-calendar` y stagin
 - Datos: `rebuild_requests` con `id` (la fila práctica es `pending`) y `requested_at`.
 - Escritura: aplica la tabla. No es dry-run. No toca Sanity.
 - Migración: no es Webflow.
-- Hallazgos: A-13. El cron corre cada minuto y no dispara hasta unos 10 minutos después del último publish. Staging tiene la lista de crons vacía. A-07. Si no hay `CLOUDFLARE_DEPLOY_HOOK_URL`, el dispatch de respaldo usa por defecto `jahirgosu/hiweb-marketing-ui`, no `hiwebapps/hiweb-marketing-ui`.
+- Hallazgos: A-13. El webhook dispara 10 segundos después del último publish y el cron de cada minuto es el respaldo. Staging tiene la lista de crons vacía. A-07. Si no hay `CLOUDFLARE_DEPLOY_HOOK_URL`, el dispatch de respaldo usa por defecto `jahirgosu/hiweb-marketing-ui`, no `hiwebapps/hiweb-marketing-ui`.
