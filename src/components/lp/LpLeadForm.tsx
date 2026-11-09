@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { LP_SERVICES } from '../../data/lp/catalog';
 import { LP_FORM_DEFAULTS } from '../../data/lp/defaults';
+import { readAttribution } from '../../lib/attribution';
 import { getTurnstileToken, HONEYPOT_FIELD, HONEYPOT_STYLE, preloadTurnstile } from '../../lib/growth/turnstile-client';
 import { Button } from '../ui/Button';
 import { TextField } from '../ui/TextField';
@@ -18,10 +19,7 @@ function budgetFor(investment: number, budgets: string[]) {
   }
   return match;
 }
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'fbclid'] as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-type Utm = Partial<Record<(typeof UTM_KEYS)[number], string>>;
 
 type LpLeadFormProps = {
   landingName: string;
@@ -30,24 +28,6 @@ type LpLeadFormProps = {
   sizes?: string[];
   budgets?: string[];
 };
-
-function readUtms(): Utm {
-  if (typeof window === 'undefined') return {};
-  const params = new URLSearchParams(window.location.search);
-  const utm: Utm = {};
-  for (const key of UTM_KEYS) {
-    const value = params.get(key) || window.sessionStorage.getItem(`hw_${key}`) || '';
-    if (params.get(key)) {
-      try {
-        window.sessionStorage.setItem(`hw_${key}`, params.get(key) ?? '');
-      } catch {
-        /* private mode */
-      }
-    }
-    if (value) utm[key] = value;
-  }
-  return utm;
-}
 
 export function LpLeadForm({
   landingName,
@@ -139,7 +119,7 @@ export function LpLeadForm({
     setError(message);
     if (message || sending) return;
     setSending(true);
-    const utm = readUtms();
+    const utm = readAttribution();
     const site = website.trim();
     try {
       const turnstileToken = await getTurnstileToken();

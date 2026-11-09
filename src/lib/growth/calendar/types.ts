@@ -1,3 +1,5 @@
+import type { LeadAttribution } from "../shared/lead-source";
+
 export type BookingStatus = "confirmed" | "cancelled";
 
 export type CalendarServiceOption = {
@@ -30,6 +32,7 @@ export type BookingInput = {
   selectedDate: string;
   selectedTime: string;
   locale?: 'es' | 'en';
+  utm?: LeadAttribution;
 };
 
 export type BookingRecord = {
@@ -44,6 +47,7 @@ export type BookingRecord = {
   selectedTime: string;
   status: BookingStatus;
   createdAt: string;
+  utm?: LeadAttribution;
 };
 
 export type BookResponse = {

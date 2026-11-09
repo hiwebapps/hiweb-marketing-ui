@@ -1,5 +1,6 @@
 import { getServiceLabel } from '../calendar/calendar-rules';
 import type { BookingInput, BookingRecord, BookingStatus } from '../calendar/types';
+import type { LeadAttribution } from '../shared/lead-source';
 import { createId } from '../shared/utils';
 import { d1All, d1First, d1Run, getD1 } from './d1';
 
@@ -15,7 +16,17 @@ type BookingDbRow = {
   selected_time: string;
   status: BookingStatus;
   created_at: string;
+  utm: string | null;
 };
+
+function parseUtm(value: string | null): LeadAttribution | undefined {
+  if (!value) return undefined;
+  try {
+    return JSON.parse(value) as LeadAttribution;
+  } catch {
+    return undefined;
+  }
+}
 
 function mapBookingRow(row: BookingDbRow): BookingRecord {
   return {
@@ -30,6 +41,7 @@ function mapBookingRow(row: BookingDbRow): BookingRecord {
     selectedTime: row.selected_time,
     status: row.status,
     createdAt: row.created_at,
+    utm: parseUtm(row.utm),
   };
 }
 
@@ -66,7 +78,7 @@ export async function getConfirmedBookingsForDate(dateIso: string): Promise<Book
   const rows = await d1All<BookingDbRow>(
     d1,
     `SELECT id, name, company, email, phone, website, service,
-            selected_date, selected_time, status, created_at
+            selected_date, selected_time, status, created_at, utm
      FROM calendar_bookings
      WHERE selected_date = ? AND status = 'confirmed'`,
     dateIso,
@@ -89,8 +101,8 @@ export async function insertBooking(input: BookingInput): Promise<BookingRecord 
       d1,
       `INSERT INTO calendar_bookings (
         id, name, company, email, phone, website, service,
-        selected_date, selected_time, status, pending_sync, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', 1, ?)`,
+        selected_date, selected_time, status, pending_sync, created_at, utm
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', 1, ?, ?)`,
       id,
       input.name,
       input.company ?? null,
@@ -101,6 +113,7 @@ export async function insertBooking(input: BookingInput): Promise<BookingRecord 
       input.selectedDate,
       input.selectedTime,
       createdAt,
+      input.utm ? JSON.stringify(input.utm) : null,
     );
   } catch (error) {
     if (isUniqueConstraint(error)) return null;
@@ -119,6 +132,7 @@ export async function insertBooking(input: BookingInput): Promise<BookingRecord 
     selectedTime: input.selectedTime,
     status: 'confirmed',
     createdAt,
+    utm: input.utm,
   };
 }
 
@@ -129,7 +143,7 @@ export async function getBookingById(id: string): Promise<BookingRecord | null> 
   const row = await d1First<BookingDbRow>(
     d1,
     `SELECT id, name, company, email, phone, website, service,
-            selected_date, selected_time, status, created_at
+            selected_date, selected_time, status, created_at, utm
      FROM calendar_bookings WHERE id = ?`,
     id,
   );

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { readAttribution } from '../../lib/attribution';
 import type { SiteIdentity } from '../../lib/site-identity';
 import {
   canNavigateMonth,
@@ -122,6 +123,7 @@ export function CalendarTool({ copy, site, embedded = false }: CalendarToolProps
           selectedDate: date,
           selectedTime: time,
           locale: copy.locale,
+          utm: readAttribution(),
         },
         { turnstileToken, [HONEYPOT_FIELD]: trap },
       );

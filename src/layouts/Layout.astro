@@ -237,6 +237,10 @@ const jsonLdItems = rawJsonLd.map((item) => {
 		)}
 		{PreviewChrome && <PreviewChrome />}
 		<script>
+			import { captureAttribution } from '../lib/attribution';
+
+			captureAttribution();
+
 			function loadMotion() {
 				['scroll', 'touchstart', 'pointerdown', 'keydown'].forEach((ev) => {
 					window.removeEventListener(ev, loadMotion, { passive: true } as EventListenerOptions);

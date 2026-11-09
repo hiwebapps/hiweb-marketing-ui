@@ -8,6 +8,7 @@ import { loadCalendarServices } from "./services";
 import { isSlotAvailable } from "./availability";
 import type { BookingInput, CalendarServiceOption } from "./types";
 import { AppError } from "../shared/errors";
+import { attributionFields } from "../shared/lead-source";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -139,6 +140,7 @@ export async function validateBookingInput(
     services: resolved.map((item) => item.id),
     selectedDate,
     selectedTime,
+    utm: attributionFields(input.utm),
   };
 }
 

@@ -31,12 +31,6 @@ const {
   </div>
 
   <form class="landing-lead-form space-y-4" data-landing-name={landingName} data-service-tag={serviceTag} novalidate>
-    <!-- Hidden tracking fields -->
-    <input type="hidden" name="utm_source" value="" />
-    <input type="hidden" name="utm_medium" value="" />
-    <input type="hidden" name="utm_campaign" value="" />
-    <input type="hidden" name="utm_content" value="" />
-    <input type="hidden" name="landing_url" value="" />
     <div aria-hidden="true" style={HONEYPOT_STYLE}>
       <label>
         Deja este campo vacío
@@ -155,6 +149,7 @@ const {
 </div>
 
 <script>
+  import { readAttribution } from '../../lib/attribution';
   import { getTurnstileToken, HONEYPOT_FIELD, preloadTurnstile } from '../../lib/growth/turnstile-client';
 
   function setupLandingLeadForms() {
@@ -162,35 +157,7 @@ const {
     if (forms.length) preloadTurnstile();
 
     forms.forEach((form) => {
-      // 1. Extraer y persistir UTMs de la URL
-      const params = new URLSearchParams(window.location.search);
-      const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'gclid', 'fbclid'];
-
-      utmKeys.forEach((key) => {
-        const value = params.get(key);
-        if (value) {
-          try {
-            sessionStorage.setItem(`hw_${key}`, value);
-          } catch {}
-        }
-      });
-
-      // Rellenar campos ocultos desde URL o sessionStorage
-      const getUtm = (key: string) => params.get(key) || sessionStorage.getItem(`hw_${key}`) || '';
-      
-      const sourceInput = form.querySelector<HTMLInputElement>('input[name="utm_source"]');
-      const mediumInput = form.querySelector<HTMLInputElement>('input[name="utm_medium"]');
-      const campaignInput = form.querySelector<HTMLInputElement>('input[name="utm_campaign"]');
-      const contentInput = form.querySelector<HTMLInputElement>('input[name="utm_content"]');
-      const urlInput = form.querySelector<HTMLInputElement>('input[name="landing_url"]');
-
-      if (sourceInput) sourceInput.value = getUtm('utm_source');
-      if (mediumInput) mediumInput.value = getUtm('utm_medium');
-      if (campaignInput) campaignInput.value = getUtm('utm_campaign');
-      if (contentInput) contentInput.value = getUtm('utm_content');
-      if (urlInput) urlInput.value = window.location.href;
-
-      // 2. Manejo de errores
+      // 1. Manejo de errores
       const showError = (fieldKey: string, message: string) => {
         const errorNode = form.querySelector<HTMLElement>(`[data-error-for="${fieldKey}"]`);
         if (errorNode) {
@@ -211,7 +178,7 @@ const {
         });
       };
 
-      // 3. Envío del formulario
+      // 2. Envío del formulario
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         clearAllErrors();
@@ -253,15 +220,9 @@ const {
 
         if (hasError) return;
 
-        // Construir contexto de UTMs para adjuntar al lead
         const landingName = form.dataset.landingName || 'Diagnóstico B2B';
         const serviceTag = form.dataset.serviceTag || 'Diagnóstico Digital B2B';
-        const utmSource = sourceInput?.value || 'direct';
-        const utmMedium = mediumInput?.value || 'none';
-        const utmCampaign = campaignInput?.value || 'none';
-        const utmContent = contentInput?.value || 'none';
-
-        const projectNotes = `[Landing: ${landingName}] [UTMs: source=${utmSource}, medium=${utmMedium}, campaign=${utmCampaign}, content=${utmContent}]`;
+        const utm = readAttribution();
 
         if (submitBtn) submitBtn.disabled = true;
         if (btnText) btnText.textContent = 'Enviando solicitud…';
@@ -281,7 +242,8 @@ const {
               website: website || undefined,
               services: [serviceTag],
               budget,
-              project: projectNotes,
+              landing: landingName,
+              utm,
             }),
           });
 
@@ -297,8 +259,8 @@ const {
               event: 'lead_form_submitted',
               form_type: 'ads_landing',
               landing_name: landingName,
-              utm_source: utmSource,
-              utm_campaign: utmCampaign,
+              utm_source: utm.utm_source ?? '',
+              utm_campaign: utm.utm_campaign ?? '',
             });
           } catch {}
 

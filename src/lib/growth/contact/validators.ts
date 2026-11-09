@@ -1,4 +1,5 @@
 import { AppError } from '../shared/errors';
+import { attributionFields, type LeadAttribution } from '../shared/lead-source';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -33,21 +34,8 @@ export type ContactLead = {
   city?: string;
   companySize?: string;
   landing?: string;
-  utm?: Record<string, string>;
+  utm?: LeadAttribution;
 };
-
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'fbclid'] as const;
-
-function utmFields(value: unknown): Record<string, string> | undefined {
-  if (!value || typeof value !== 'object') return undefined;
-  const source = value as Record<string, unknown>;
-  const utm: Record<string, string> = {};
-  for (const key of UTM_KEYS) {
-    const item = text(source[key], 200);
-    if (item) utm[key] = item;
-  }
-  return Object.keys(utm).length ? utm : undefined;
-}
 
 function text(value: unknown, max: number): string | undefined {
   if (typeof value !== 'string') return undefined;
@@ -93,6 +81,6 @@ export function validateContactLead(input: ContactLeadInput): ContactLead {
     city: text(input.city, 80),
     companySize: text(input.companySize, 80),
     landing: text(input.landing, 120),
-    utm: utmFields(input.utm),
+    utm: attributionFields(input.utm),
   };
 }

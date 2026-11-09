@@ -11,6 +11,7 @@ import {
 import type { BookingRecord } from "../calendar/types";
 import type { QuizLeadInput, QuizScoreResult } from "../quiz/types";
 import type { ContactLead } from "../contact/validators";
+import { classifyLeadSource, type LeadSource } from "../shared/lead-source";
 
 /** Visitor text in Slack mrkdwn: escaped so "<!channel>" or "<url|label>" stay plain text. */
 function slack(value: string | undefined | null): string {
@@ -20,8 +21,10 @@ function slack(value: string | undefined | null): string {
 export function buildContactN8nPayload(input: { leadId: string; lead: ContactLead }) {
   const { lead } = input;
   const name = [lead.firstName, lead.lastName].filter(Boolean).join(" ");
+  const source = classifyLeadSource(lead.utm);
   const slackText = [
     "✉️ *Nuevo mensaje de contacto*",
+    `• Origen: ${slack(source.label)}`,
     `• Nombre: ${slack(name)}`,
     `• Email: ${slack(lead.email)}`,
     lead.phone ? `• Celular: ${slack(lead.phone)}` : null,
@@ -46,6 +49,7 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
     event: "contact.submitted",
     leadId: input.leadId,
     lead,
+    source,
     slackText,
     submittedAt: new Date().toISOString(),
   };
@@ -78,6 +82,7 @@ function buildCalendarSlackText(
   booking: BookingRecord,
   scheduleLabel: string,
   serviceLabel: string,
+  source: LeadSource,
 ): string {
   if (event === "calendar.cancelled") {
     return [
@@ -92,6 +97,7 @@ function buildCalendarSlackText(
 
   const lines = [
     "📅 *Nueva cita agendada*",
+    `• Origen: ${slack(source.label)}`,
     `• Servicio: ${serviceLabel}`,
     `• Horario: ${scheduleLabel}`,
     `• Nombre: ${slack(booking.name)}`,
@@ -106,6 +112,9 @@ function buildCalendarSlackText(
   }
   if (booking.website) {
     lines.push(`• Sitio web: ${slack(booking.website)}`);
+  }
+  if (booking.utm && Object.keys(booking.utm).length) {
+    lines.push(`• UTMs: ${slack(Object.entries(booking.utm).map(([key, value]) => `${key}=${value}`).join(", "))}`);
   }
 
   lines.push(`• ID: ${booking.id}`);
@@ -140,12 +149,15 @@ export function buildCalendarN8nPayload(input: {
     booking.selectedDate,
     booking.selectedTime,
   );
+  const source = classifyLeadSource(booking.utm);
 
   const payload: {
     event: typeof event;
     bookingId: string;
     booking: BookingRecord;
+    source: LeadSource;
     summary: {
+      source: string;
       service: string;
       serviceLabel: string;
       scheduleLabel: string;
@@ -201,7 +213,9 @@ export function buildCalendarN8nPayload(input: {
     event,
     bookingId: booking.id,
     booking,
+    source,
     summary: {
+      source: source.label,
       service: booking.service,
       serviceLabel,
       scheduleLabel,
@@ -222,6 +236,7 @@ export function buildCalendarN8nPayload(input: {
         booking,
         scheduleLabel,
         serviceLabel,
+        source,
       ),
     },
     submittedAt: new Date().toISOString(),

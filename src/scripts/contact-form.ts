@@ -1,4 +1,5 @@
 /** Validates the contact form and posts it to /api/contact. Shared by /contacto and /en/contact. */
+import { readAttribution } from '../lib/attribution';
 import { getTurnstileToken, HONEYPOT_FIELD, preloadTurnstile } from '../lib/growth/turnstile-client';
 
 const form = document.querySelector('.contact-form');
@@ -75,6 +76,8 @@ if (form instanceof HTMLFormElement) {
           services,
           budget: budgetLabel,
           project: data.get('project'),
+          landing: window.location.pathname,
+          utm: readAttribution(),
         }),
       });
       const result = (await response.json().catch(() => ({}))) as { error?: string };

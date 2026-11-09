@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { LP_PICKER_ICONS } from '../../data/lp/picker-icons';
+import { withAttribution } from '../../lib/attribution';
 import { CalendarTool } from '../growth/CalendarTool';
 import { NavIcon } from '../sections/NavIcon';
 import type { CalendarPageCopy } from '../../lib/content/calendar-page';
@@ -43,10 +44,21 @@ export function LpChrome({ picker, autoOpen = false, calendarCopy, calendar, sit
       const dialog = target.closest('dialog');
       if (dialog && target === dialog) dialog.close();
     };
+    // Runs before the browser follows the link, including Ctrl+click and middle click.
+    const carryAttribution = (event: Event) => {
+      const anchor = event.target instanceof Element ? event.target.closest('a[href]') : null;
+      if (!(anchor instanceof HTMLAnchorElement)) return;
+      const next = withAttribution(anchor.href);
+      if (next !== anchor.href) anchor.href = next;
+    };
+    document.addEventListener('pointerdown', carryAttribution, true);
+    document.addEventListener('click', carryAttribution, true);
     document.addEventListener('click', onClick);
     const timer = autoOpen ? window.setTimeout(() => pickerRef.current?.showModal(), 350) : 0;
     return () => {
       window.clearTimeout(timer);
+      document.removeEventListener('pointerdown', carryAttribution, true);
+      document.removeEventListener('click', carryAttribution, true);
       document.removeEventListener('click', onClick);
     };
   }, [autoOpen]);
