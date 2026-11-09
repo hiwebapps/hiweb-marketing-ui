@@ -58,6 +58,7 @@ Copia `.env.example` a `.env`. Los IDs públicos ya vienen puestos. Completa sol
 | `SANITY_REVALIDATE_SECRET` | Un string largo que acuerden. | Header `Authorization: Bearer` del webhook `/api/sanity-webhook`. |
 | `CLOUDFLARE_DEPLOY_HOOK_URL` | Cloudflare → Worker `hiweb-marketing-ui` → Settings → Deploy hooks. | Rebuild al publicar en Sanity. |
 | `GITHUB_DISPATCH_TOKEN` | GitHub → Settings → Developer settings → fine-grained PAT con `contents` y `actions` sobre este repo. | Rebuild de respaldo si no hay Deploy Hook. |
+| `TURNSTILE_SECRET_KEY` | Cloudflare → Turnstile → widget **Hiweb sitio - formularios** (invisible). Ya está en los dos Workers. | `/api/contact` rechaza el envío sin un token válido. Sin la variable (dev) no se verifica. La clave pública está en `src/lib/growth/turnstile-client.ts`. |
 
 `PUBLIC_SITE_INDEXABLE` se queda en `false` hasta el cutover. Ver `docs/cms/CUTOVER-SEO.md`.
 

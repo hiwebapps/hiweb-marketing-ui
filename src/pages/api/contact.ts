@@ -5,6 +5,8 @@ import { dispatchContactWebhook } from '../../lib/growth/n8n/client';
 import { buildContactN8nPayload } from '../../lib/growth/n8n/payloads';
 import { jsonError } from '../../lib/growth/api/response';
 import { enforceRateLimit } from '../../lib/growth/api/rate-limit';
+import { verifyTurnstile } from '../../lib/growth/api/turnstile';
+import { HONEYPOT_FIELD } from '../../lib/growth/turnstile-client';
 import { AppError } from '../../lib/growth/shared/errors';
 
 export const prerender = false;
@@ -16,10 +18,20 @@ const CONTACT_LEADS_WINDOW_MS = 24 * 60 * 60 * 1000;
 export const POST: APIRoute = async ({ request }) => {
   try {
     await enforceRateLimit(request, 'FORM_RATE_LIMITER', 'contact');
-    const body = (await request.json().catch(() => null)) as ContactLeadInput | null;
+    const body = (await request.json().catch(() => null)) as
+      | (ContactLeadInput & { turnstileToken?: unknown } & Record<string, unknown>)
+      | null;
     if (!body || typeof body !== 'object') {
       throw new AppError('Faltan datos del formulario.', { statusCode: 400, code: 'INVALID_BODY' });
     }
+
+    // Only bots fill the hidden field. They get a normal answer so they do not retry differently.
+    const trap = body[HONEYPOT_FIELD];
+    if (typeof trap === 'string' && trap.trim()) {
+      return Response.json({ leadId: 'ok' });
+    }
+
+    await verifyTurnstile(request, body.turnstileToken);
 
     const lead = validateContactLead(body);
 

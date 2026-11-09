@@ -1,5 +1,6 @@
 import type { ContactField, ContactPageCopy } from '../../lib/content/contact';
 import type { SiteIdentity } from '../../lib/site-identity';
+import { HONEYPOT_FIELD, HONEYPOT_STYLE } from '../../lib/growth/turnstile-client';
 import { Button, TextArea, TextField } from '../ui';
 import { ContactBanner } from './ContactBanner';
 import './ContactForm.css';
@@ -54,6 +55,12 @@ export function ContactForm({ copy, site, locale = 'es', embedded = false }: Con
           data-sent={status.sent}
           data-failed={`${status.failed} ${site.email}.`}
         >
+          <div aria-hidden="true" style={HONEYPOT_STYLE}>
+            <label>
+              {locale === 'en' ? 'Leave this field empty' : 'Deja este campo vacío'}
+              <input type="text" name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" />
+            </label>
+          </div>
           <div className={project ? 'contact-form__grid contact-form__grid--split' : 'contact-form__grid'}>
             <div className="contact-form__fields">
               {left.map((row) => (

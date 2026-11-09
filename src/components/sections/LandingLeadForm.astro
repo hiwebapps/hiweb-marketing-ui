@@ -1,4 +1,6 @@
 ---
+import { HONEYPOT_FIELD, HONEYPOT_STYLE } from '../../lib/growth/turnstile-client';
+
 interface Props {
   landingName?: string;
   submitLabel?: string;
@@ -35,6 +37,12 @@ const {
     <input type="hidden" name="utm_campaign" value="" />
     <input type="hidden" name="utm_content" value="" />
     <input type="hidden" name="landing_url" value="" />
+    <div aria-hidden="true" style={HONEYPOT_STYLE}>
+      <label>
+        Deja este campo vacío
+        <input type="text" name={HONEYPOT_FIELD} tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
 
     <!-- 1. Nombre completo -->
     <div>
@@ -147,8 +155,11 @@ const {
 </div>
 
 <script>
+  import { getTurnstileToken, HONEYPOT_FIELD, preloadTurnstile } from '../../lib/growth/turnstile-client';
+
   function setupLandingLeadForms() {
     const forms = document.querySelectorAll<HTMLFormElement>('.landing-lead-form');
+    if (forms.length) preloadTurnstile();
 
     forms.forEach((form) => {
       // 1. Extraer y persistir UTMs de la URL
@@ -256,10 +267,13 @@ const {
         if (btnText) btnText.textContent = 'Enviando solicitud…';
 
         try {
+          const turnstileToken = await getTurnstileToken();
           const response = await fetch('/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+              turnstileToken,
+              [HONEYPOT_FIELD]: String(formData.get(HONEYPOT_FIELD) ?? ''),
               locale: 'es',
               firstName,
               email,

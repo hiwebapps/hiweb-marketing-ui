@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { LP_SERVICES } from '../../data/lp/catalog';
 import { LP_FORM_DEFAULTS } from '../../data/lp/defaults';
+import { getTurnstileToken, HONEYPOT_FIELD, HONEYPOT_STYLE, preloadTurnstile } from '../../lib/growth/turnstile-client';
 import { Button } from '../ui/Button';
 import { TextField } from '../ui/TextField';
 
@@ -69,6 +70,11 @@ export function LpLeadForm({
   const [selected, setSelected] = useState<string[]>(interests);
   const [budget, setBudget] = useState('');
   const [scenario, setScenario] = useState('');
+  const [trap, setTrap] = useState('');
+
+  useEffect(() => {
+    preloadTurnstile();
+  }, []);
 
   useEffect(() => {
     const onSet = (event: Event) => {
@@ -136,10 +142,13 @@ export function LpLeadForm({
     const utm = readUtms();
     const site = website.trim();
     try {
+      const turnstileToken = await getTurnstileToken();
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          turnstileToken,
+          [HONEYPOT_FIELD]: trap,
           locale: 'es',
           firstName: firstName.trim(),
           lastName: lastName.trim(),
@@ -177,6 +186,12 @@ export function LpLeadForm({
 
   return (
     <form onSubmit={submit} noValidate>
+      <div aria-hidden="true" style={HONEYPOT_STYLE}>
+        <label>
+          Deja este campo vacío
+          <input type="text" name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" value={trap} onChange={(event) => setTrap(event.target.value)} />
+        </label>
+      </div>
       <p className="font-display text-xs font-medium tracking-[0.16em] text-muted uppercase">
         Paso {step + 1} de 4
       </p>

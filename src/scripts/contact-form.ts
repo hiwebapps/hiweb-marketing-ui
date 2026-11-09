@@ -1,7 +1,10 @@
 /** Validates the contact form and posts it to /api/contact. Shared by /contacto and /en/contact. */
+import { getTurnstileToken, HONEYPOT_FIELD, preloadTurnstile } from '../lib/growth/turnstile-client';
+
 const form = document.querySelector('.contact-form');
 
 if (form instanceof HTMLFormElement) {
+  preloadTurnstile();
   const status = form.querySelector('.contact-form__status');
   const submit = form.querySelector('button[type="submit"]');
 
@@ -56,10 +59,13 @@ if (form instanceof HTMLFormElement) {
     showStatus(form.dataset.sending || '');
 
     try {
+      const turnstileToken = await getTurnstileToken();
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          turnstileToken,
+          [HONEYPOT_FIELD]: String(data.get(HONEYPOT_FIELD) ?? ''),
           locale: form.dataset.locale,
           firstName: data.get('firstName'),
           lastName: data.get('lastName'),
