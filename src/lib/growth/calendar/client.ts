@@ -6,11 +6,12 @@ export async function fetchAvailability(date: string) {
   return apiRequest<AvailabilityResponse>(`/api/calendar/availability?${params.toString()}`);
 }
 
-export async function bookAppointment(input: BookingInput) {
+/** `guard` carries the Turnstile token and the honeypot value. */
+export async function bookAppointment(input: BookingInput, guard: Record<string, string> = {}) {
   return apiRequest<BookResponse>('/api/calendar/book', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(input),
+    body: JSON.stringify({ ...input, ...guard }),
   });
 }
 

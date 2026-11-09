@@ -9,6 +9,7 @@ import {
   serviceRequiresWebsite,
 } from '../../lib/growth/calendar/calendar-rules';
 import { bookAppointment, cancelAppointment, fetchAvailability } from '../../lib/growth/calendar/client';
+import { getTurnstileToken, HONEYPOT_FIELD, HONEYPOT_STYLE, preloadTurnstile } from '../../lib/growth/turnstile-client';
 import type { CalendarPageCopy } from '../../lib/content/calendar-page';
 import type { BookingRecord, TimeSlot } from '../../lib/growth/calendar/types';
 import { ContactBanner } from '../sections/ContactBanner';
@@ -45,6 +46,11 @@ export function CalendarTool({ copy, site, embedded = false }: CalendarToolProps
   const [pending, setPending] = useState(false);
   const [booking, setBooking] = useState<BookingRecord | null>(null);
   const [cancelled, setCancelled] = useState(false);
+  const [trap, setTrap] = useState('');
+
+  useEffect(() => {
+    preloadTurnstile();
+  }, []);
 
   const cells = useMemo(() => getMonthCells(year, month), [year, month]);
   const selected = services.filter((item) => selectedIds.includes(item.id));
@@ -103,18 +109,22 @@ export function CalendarTool({ copy, site, embedded = false }: CalendarToolProps
     setPending(true);
     setError('');
     try {
-      const response = await bookAppointment({
-        name,
-        email,
-        phone,
-        company: company || undefined,
-        website: needsWebsite ? website : undefined,
-        service: selected.map((item) => item.label).join(', '),
-        services: selected.map((item) => item.id),
-        selectedDate: date,
-        selectedTime: time,
-        locale: copy.locale,
-      });
+      const turnstileToken = await getTurnstileToken();
+      const response = await bookAppointment(
+        {
+          name,
+          email,
+          phone,
+          company: company || undefined,
+          website: needsWebsite ? website : undefined,
+          service: selected.map((item) => item.label).join(', '),
+          services: selected.map((item) => item.id),
+          selectedDate: date,
+          selectedTime: time,
+          locale: copy.locale,
+        },
+        { turnstileToken, [HONEYPOT_FIELD]: trap },
+      );
       setBooking(response.booking);
     } catch (bookError) {
       setError(
@@ -168,6 +178,12 @@ export function CalendarTool({ copy, site, embedded = false }: CalendarToolProps
           </div>
         ) : (
           <form className="calendar-layout" onSubmit={submit}>
+            <div aria-hidden="true" style={HONEYPOT_STYLE}>
+              <label>
+                {copy.locale === 'en' ? 'Leave this field empty' : 'Deja este campo vacío'}
+                <input type="text" name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" value={trap} onChange={(event) => setTrap(event.target.value)} />
+              </label>
+            </div>
             <div className="calendar-layout__schedule">
               <div className="calendar-month">
                 <h2>{formatMonthYear(year, month, copy.locale)}</h2>
