@@ -24,7 +24,6 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 type LpLeadFormProps = {
   landingName: string;
   interests?: string[];
-  countries?: string[];
   sizes?: string[];
   budgets?: string[];
 };
@@ -32,7 +31,6 @@ type LpLeadFormProps = {
 export function LpLeadForm({
   landingName,
   interests = [],
-  countries = LP_FORM_DEFAULTS.formCountries,
   sizes = LP_FORM_DEFAULTS.formSizes,
   budgets = LP_FORM_DEFAULTS.formBudgets,
 }: LpLeadFormProps) {
@@ -44,8 +42,6 @@ export function LpLeadForm({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [website, setWebsite] = useState('');
-  const [country, setCountry] = useState('');
-  const [city, setCity] = useState('');
   const [companySize, setCompanySize] = useState('');
   const [selected, setSelected] = useState<string[]>(interests);
   const [budget, setBudget] = useState('');
@@ -62,7 +58,7 @@ export function LpLeadForm({
       if (!Array.isArray(detail)) return;
       const known = new Set(LP_SERVICES.map((item) => item.slug));
       setSelected(detail.filter((slug) => known.has(slug)));
-      setStep(2);
+      setStep(1);
       setError('');
     };
     const onScenario = (event: Event) => {
@@ -91,19 +87,16 @@ export function LpLeadForm({
       }
     }
     if (index === 1) {
-      if (!country) return 'Elige el país de la empresa.';
-      if (city.trim().length < 2) return 'Escribe la ciudad.';
       if (!companySize) return 'Elige el tamaño de la empresa.';
+      if (selected.length === 0) return 'Elige al menos un servicio.';
     }
-    if (index === 2 && selected.length === 0) return 'Elige al menos un servicio.';
-    if (index === 3 && !budget) return 'Elige un presupuesto.';
     return '';
   };
 
   const next = () => {
     const message = validate();
     setError(message);
-    if (!message) setStep((value) => Math.min(value + 1, 3));
+    if (!message) setStep(1);
   };
 
   const toggle = (slug: string) => {
@@ -115,7 +108,7 @@ export function LpLeadForm({
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    const message = validate(3);
+    const message = validate(0) || validate(1);
     setError(message);
     if (message || sending) return;
     setSending(true);
@@ -136,10 +129,8 @@ export function LpLeadForm({
           phone: phone.trim(),
           website: site ? (site.startsWith('http') ? site : `https://${site}`) : undefined,
           services: selected,
-          budget,
+          budget: budget || undefined,
           project: scenario || undefined,
-          country,
-          city: city.trim(),
           companySize,
           landing: landingName,
           utm,
@@ -157,7 +148,7 @@ export function LpLeadForm({
         utm_source: utm.utm_source ?? '',
         utm_campaign: utm.utm_campaign ?? '',
       });
-      window.location.href = '/gracias';
+      window.location.href = '/gracias?origen=formulario';
     } catch (cause) {
       setSending(false);
       setError(cause instanceof Error ? cause.message : 'No pudimos enviar tus datos.');
@@ -173,10 +164,10 @@ export function LpLeadForm({
         </label>
       </div>
       <p className="font-display text-xs font-medium tracking-[0.16em] text-muted uppercase">
-        Paso {step + 1} de 4
+        Paso {step + 1} de 2
       </p>
-      <div className="mt-2 grid grid-cols-4 gap-1.5" aria-hidden="true">
-        {[0, 1, 2, 3].map((index) => (
+      <div className="mt-2 grid grid-cols-2 gap-1.5" aria-hidden="true">
+        {[0, 1].map((index) => (
           <span key={index} className={['h-1 rounded-full', index <= step ? 'bg-ink' : 'bg-surface-elevated'].join(' ')} />
         ))}
       </div>
@@ -205,90 +196,45 @@ export function LpLeadForm({
       ) : null}
 
       {step === 1 ? (
-        <div className="mt-5 grid gap-4">
+        <div className="mt-5 grid gap-5">
           <label className="flex flex-col gap-2">
-            <span className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">País</span>
+            <span className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Tamaño de la empresa</span>
             <select
-              name="country"
-              value={country}
+              name="companySize"
+              value={companySize}
               required
-              onChange={(event) => setCountry(event.target.value)}
+              onChange={(event) => { setCompanySize(event.target.value); setError(''); }}
               className="w-full rounded-xl border border-border bg-canvas px-4 py-3 font-sans text-sm text-ink"
             >
-              <option value="">Elige un país</option>
-              {countries.map((item) => (
-                <option key={item}>{item}</option>
+              <option value="">Elige un tamaño</option>
+              {sizes.map((item) => (
+                <option key={item} value={item}>{item}</option>
               ))}
             </select>
           </label>
-          <TextField label="Ciudad" name="city" autoComplete="address-level2" placeholder="Ciudad" value={city} onChange={(event) => setCity(event.target.value)} required />
-          <fieldset className="grid gap-2">
-            <legend className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Tamaño de la empresa</legend>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {sizes.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  aria-pressed={companySize === item}
-                  onClick={() => setCompanySize(item)}
-                  className={[
-                    'rounded-full border px-3 py-2 font-sans text-sm',
-                    companySize === item ? 'border-ink bg-ink text-canvas' : 'border-border bg-canvas text-ink',
-                  ].join(' ')}
-                >
-                  {item}
-                </button>
-              ))}
+          <fieldset>
+            <legend className="font-sans text-sm text-ink-soft">Servicios que te interesan. Elige uno o varios.</legend>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {LP_SERVICES.map((service) => {
+                const on = selected.includes(service.slug);
+                return (
+                  <button
+                    key={service.slug}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => toggle(service.slug)}
+                    className={[
+                      'rounded-full border px-3 py-2 font-sans text-sm',
+                      on ? 'border-ink bg-ink text-canvas' : 'border-border bg-canvas text-ink',
+                    ].join(' ')}
+                  >
+                    {service.name}
+                  </button>
+                );
+              })}
             </div>
           </fieldset>
         </div>
-      ) : null}
-
-      {step === 2 ? (
-        <fieldset className="mt-5">
-          <legend className="font-sans text-sm text-ink-soft">Elige uno o varios. Al menos uno.</legend>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {LP_SERVICES.map((service) => {
-              const on = selected.includes(service.slug);
-              return (
-                <button
-                  key={service.slug}
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => toggle(service.slug)}
-                  className={[
-                    'rounded-full border px-3 py-2 font-sans text-sm',
-                    on ? 'border-ink bg-ink text-canvas' : 'border-border bg-canvas text-ink',
-                  ].join(' ')}
-                >
-                  {service.name}
-                </button>
-              );
-            })}
-          </div>
-        </fieldset>
-      ) : null}
-
-      {step === 3 ? (
-        <fieldset className="mt-5">
-          <legend className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Presupuesto mensual (MXN)</legend>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {budgets.map((item) => (
-              <button
-                key={item}
-                type="button"
-                aria-pressed={budget === item}
-                onClick={() => setBudget(item)}
-                className={[
-                  'rounded-full border px-3 py-2 font-sans text-sm',
-                  budget === item ? 'border-ink bg-ink text-canvas' : 'border-border bg-canvas text-ink',
-                ].join(' ')}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </fieldset>
       ) : null}
 
       {error ? (
@@ -305,7 +251,7 @@ export function LpLeadForm({
         ) : (
           <span />
         )}
-        {step < 3 ? (
+        {step === 0 ? (
           <Button type="button" onClick={next}>Siguiente</Button>
         ) : (
           <Button type="submit" disabled={sending}>{sending ? 'Enviando…' : 'Enviar'}</Button>

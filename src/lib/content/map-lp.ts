@@ -111,7 +111,10 @@ function mapSection(raw: Record<string, unknown>): LpSection | null {
       formMessageTab: text(raw.formMessageTab) || LP_FORM_DEFAULTS.formMessageTab,
       formCallTab: text(raw.formCallTab) || LP_FORM_DEFAULTS.formCallTab,
       formTitle: text(raw.formTitle) || LP_FORM_DEFAULTS.formTitle,
-      formSubtitle: text(raw.formSubtitle) || LP_FORM_DEFAULTS.formSubtitle,
+      formSubtitle:
+        text(raw.formSubtitle) === 'Cuatro pasos. Sin compromiso.'
+          ? LP_FORM_DEFAULTS.formSubtitle
+          : text(raw.formSubtitle) || LP_FORM_DEFAULTS.formSubtitle,
       formCountries: stringsOr(raw.formCountries, LP_FORM_DEFAULTS.formCountries),
       formSizes: stringsOr(raw.formSizes, LP_FORM_DEFAULTS.formSizes),
       formBudgets: stringsOr(raw.formBudgets, LP_FORM_DEFAULTS.formBudgets),

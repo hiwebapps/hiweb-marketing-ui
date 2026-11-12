@@ -46,34 +46,34 @@ type MarqueeCard = {
 const ROWS: MarqueeCard[][] = [
   [
     { src: '/images/services/branding.jpg', size: 'l' },
-    { src: 'https://picsum.photos/id/1015/720/420', size: 'xl' },
+    { src: '/images/services/desarrollo-web.jpg', size: 'xl' },
     { src: '/images/services/seo.jpg', size: 'm' },
-    { src: 'https://picsum.photos/id/119/640/400', size: 'l' },
+    { src: '/images/services/google-ads.jpg', size: 'l' },
     { src: '/images/services/meta-ads.jpg', size: 's' },
-    { src: 'https://picsum.photos/id/160/700/420', size: 'xl' },
+    { src: '/images/services/crm-automatizacion.jpg', size: 'xl' },
   ],
   [
-    { src: 'https://picsum.photos/id/180/700/420', size: 'xl' },
+    { src: '/images/services/community-manager.jpg', size: 'xl' },
     { src: '/images/services/google-ads.jpg', size: 'm' },
-    { src: 'https://picsum.photos/id/201/640/400', size: 'l' },
-    { src: '/images/services/redes-sociales.jpg', size: 's' },
-    { src: 'https://picsum.photos/id/28/720/420', size: 'xl' },
-    { src: '/images/services/ia-marketing.jpg', size: 'm' },
+    { src: '/images/services/redes-sociales.jpg', size: 'l' },
+    { src: '/images/services/seo.jpg', size: 's' },
+    { src: '/images/services/ia-marketing.jpg', size: 'xl' },
+    { src: '/images/services/branding.jpg', size: 'm' },
   ],
   [
     { src: '/images/services/desarrollo-web.jpg', size: 'l' },
-    { src: 'https://picsum.photos/id/29/640/400', size: 'm' },
+    { src: '/images/services/meta-ads.jpg', size: 'm' },
     { src: '/images/services/crm-automatizacion.jpg', size: 'xl' },
-    { src: 'https://picsum.photos/id/57/700/420', size: 's' },
+    { src: '/images/services/seo.jpg', size: 's' },
     { src: '/images/services/community-manager.jpg', size: 'l' },
-    { src: 'https://picsum.photos/id/122/640/400', size: 'm' },
+    { src: '/images/services/google-ads.jpg', size: 'm' },
   ],
   [
-    { src: 'https://picsum.photos/id/110/720/420', size: 'm' },
+    { src: '/images/services/redes-sociales.jpg', size: 'm' },
     { src: '/images/services/branding.jpg', size: 'xl' },
-    { src: 'https://picsum.photos/id/64/640/400', size: 's' },
+    { src: '/images/services/community-manager.jpg', size: 's' },
     { src: '/images/services/seo.jpg', size: 'l' },
-    { src: 'https://picsum.photos/id/76/700/420', size: 'xl' },
+    { src: '/images/services/ia-marketing.jpg', size: 'xl' },
     { src: '/images/services/meta-ads.jpg', size: 'm' },
   ],
 ];
@@ -106,7 +106,7 @@ function MarqueeRow({ cards, reverse }: { cards: MarqueeCard[]; reverse: boolean
             key={`${card.src}-${index}`}
             className={`final-cta__card final-cta__card--${card.size}`}
           >
-            <img src={card.src} alt="" draggable={false} decoding="async" />
+            <img src={card.src} alt="" draggable={false} decoding="async" loading="lazy" />
           </article>
         ))}
       </div>

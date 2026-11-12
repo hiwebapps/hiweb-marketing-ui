@@ -1,4 +1,5 @@
 ---
+import { getCtaBackdrop } from '../../lib/content';
 import type { LpSection } from '../../lib/content/lp-types';
 import LpHero from './LpHero.astro';
 import { CtaBand, LogoMarquee, LpReusable, RoiCalculator, ServiceFocus, ServiceSystem, StatementBlock } from './LpBlocks';
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const { section } = Astro.props;
+const images = section._type === 'finalCta' ? await getCtaBackdrop() : undefined;
 ---
 
 {section._type === 'lpHero' ? <LpHero section={section} /> : null}
@@ -26,5 +28,5 @@ section._type === 'processPhases' ||
 section._type === 'teamGrid' ||
 section._type === 'faqSection' ||
 section._type === 'finalCta' ? (
-	<LpReusable client:visible {...section} />
+	<LpReusable client:visible {...section} images={images} />
 ) : null}

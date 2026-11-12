@@ -4,7 +4,7 @@ export const LP_FORM_DEFAULTS = {
   formMessageTab: 'Escribir mensaje',
   formCallTab: 'Agendar llamada',
   formTitle: 'Cuéntanos de tu empresa',
-  formSubtitle: 'Cuatro pasos. Sin compromiso.',
+  formSubtitle: 'Dos pasos. Sin compromiso.',
   formCountries: ['México', 'Estados Unidos', 'Canadá', 'Otro'],
   formSizes: ['1 a 14 personas', '15 a 50 personas', '51 a 200 personas', 'Más de 200 personas'],
   formBudgets: ['+$10,000', '+$15,000', '+$30,000', '+$60,000', 'Personalizado'],

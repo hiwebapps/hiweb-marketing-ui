@@ -26,9 +26,11 @@ type CalendarToolProps = {
   site: SiteIdentity;
   /** Inside the contact tabs: no page wrapper and no banner. */
   embedded?: boolean;
+  /** Ads landings leave the confirmation screen and open this URL. */
+  successHref?: string;
 };
 
-export function CalendarTool({ copy, site, embedded = false }: CalendarToolProps) {
+export function CalendarTool({ copy, site, embedded = false, successHref }: CalendarToolProps) {
   const services = copy.services;
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [year, setYear] = useState(today.getFullYear());
@@ -127,6 +129,10 @@ export function CalendarTool({ copy, site, embedded = false }: CalendarToolProps
         },
         { turnstileToken, [HONEYPOT_FIELD]: trap },
       );
+      if (successHref) {
+        window.location.href = successHref;
+        return;
+      }
       setBooking(response.booking);
     } catch (bookError) {
       setError(

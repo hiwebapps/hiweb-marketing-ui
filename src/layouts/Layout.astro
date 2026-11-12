@@ -31,6 +31,8 @@ interface Props {
 	minimalNav?: boolean;
 	/** Landing mode: renders a clean, compliance-only footer. */
 	minimalFooter?: boolean;
+	/** Ads landings: no site nav, scroll indicator, or footer. */
+	bare?: boolean;
 	landingNavCtaLabel?: string;
 	landingNavCtaHref?: string;
 	landingNavCtaCalendar?: boolean;
@@ -49,6 +51,7 @@ const {
 	alternates,
 	minimalNav = false,
 	minimalFooter = false,
+	bare = false,
 	landingNavCtaLabel,
 	landingNavCtaHref,
 	landingNavCtaCalendar = false,
@@ -62,8 +65,8 @@ const site = await getSiteSettings();
 const oneLine = (value: string) => value.replace(/\s+/g, ' ').trim();
 const title = oneLine(rawTitle);
 const description = oneLine(Astro.props.description ?? site.tagline);
-const nav = await getNavigation(lang);
-const footer = await getFooter(lang);
+const nav = bare ? null : await getNavigation(lang);
+const footer = bare ? null : await getFooter(lang);
 const favicon = await getFavicon();
 const staging = import.meta.env.PUBLIC_SITE_ENV === 'staging';
 const PreviewChrome = staging
@@ -215,7 +218,7 @@ const jsonLdItems = rawJsonLd.map((item) => {
 				></iframe>
 			</noscript>
 		)}
-		{minimalNav ? (
+		{bare ? null : minimalNav ? (
 			<LandingNav
 				ctaLabel={landingNavCtaLabel}
 				ctaHref={landingNavCtaHref}
@@ -228,9 +231,9 @@ const jsonLdItems = rawJsonLd.map((item) => {
 		) : (
 			<SiteNav client:load locale={lang} nav={nav} />
 		)}
-		{!minimalNav && <ScrollIndicator client:media="(min-width: 768px)" locale={lang} />}
+		{!bare && !minimalNav && <ScrollIndicator client:media="(min-width: 768px)" locale={lang} />}
 		<slot />
-		{minimalFooter ? (
+		{bare ? null : minimalFooter ? (
 			<LandingFooter />
 		) : (
 			<SiteFooter client:visible locale={lang} footer={footer} site={site} />

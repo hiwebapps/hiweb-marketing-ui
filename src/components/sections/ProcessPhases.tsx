@@ -133,7 +133,7 @@ export function ProcessPhases({
               <li key={phase.index} className={`proceso__step proceso__step--${accent}`}>
                 <div className="proceso__node">
                   <span className="proceso__icon">
-                    {fileIcon ? <img src={phase.icon} alt="" /> : <Icon />}
+                    {fileIcon ? <img src={phase.icon} alt="" decoding="async" loading="lazy" /> : <Icon />}
                   </span>
                 </div>
                 {isLast ? null : (

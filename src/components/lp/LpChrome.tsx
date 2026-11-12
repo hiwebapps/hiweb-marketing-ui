@@ -74,7 +74,7 @@ export function LpChrome({ picker, autoOpen = false, calendarCopy, calendar, sit
             </div>
             <button type="button" className="text-2xl leading-none" aria-label="Cerrar" onClick={() => calendarRef.current?.close()}>×</button>
           </div>
-          <CalendarTool copy={calendar} site={site} embedded />
+          <CalendarTool copy={calendar} site={site} embedded successHref="/gracias?origen=agenda" />
         </div>
       </dialog>
 

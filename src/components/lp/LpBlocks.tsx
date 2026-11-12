@@ -24,7 +24,7 @@ export function LogoMarquee({ label, logos }: Extract<LpSection, { _type: 'logoM
       <div className="lp-marquee">
         <div className="lp-marquee__track">
           {loop.map((logo, index) => (
-            <img key={`${logo.alt}-${index}`} src={logo.src} alt={index < logos.length ? logo.alt : ''} height="44" />
+            <img key={`${logo.alt}-${index}`} src={logo.src} alt={index < logos.length ? logo.alt : ''} height="44" decoding="async" loading="lazy" />
           ))}
         </div>
       </div>
@@ -479,7 +479,7 @@ export function CtaBand({ title, description, primaryLabel, secondaryLabel, what
   );
 }
 
-export function LpReusable(section: LpSection) {
+export function LpReusable(section: LpSection & { images?: string[] }) {
   if (section._type === 'pillarGrid') {
     return (
       <PillarGrid
@@ -601,6 +601,7 @@ export function LpReusable(section: LpSection) {
         secondaryHref={section.secondaryHref}
         headingWidth={section.headingWidth}
         anchorId={section.anchorId}
+        images={section.images}
       />
     );
   }
