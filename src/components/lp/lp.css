@@ -132,8 +132,7 @@
   width: auto;
   max-width: 140px;
   object-fit: contain;
-  filter: grayscale(1) brightness(0) invert(1);
-  opacity: 0.82;
+  opacity: 0.92;
 }
 
 @keyframes lp-marquee {

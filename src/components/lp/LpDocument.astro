@@ -14,11 +14,16 @@ interface Props {
 
 const { page } = Astro.props;
 const candidates = portfolioCandidates(await getCases(), await getIndustries());
-const sections = page.sections
+const prepared = page.sections
 	.filter((section) => !section.hidden && section._type !== 'ctaBand')
 	.map((section) =>
 		section._type === 'casePreview' ? { ...section, portfolio: pickLpPortfolio(page, candidates, section.caseSlugs) } : section,
 	);
+const cases = prepared.filter((section) => section._type === 'casePreview');
+const rest = prepared.filter((section) => section._type !== 'casePreview');
+const calculatorAt = rest.findIndex((section) => section._type === 'roiCalculator');
+if (cases.length > 0 && calculatorAt >= 0) rest.splice(calculatorAt, 0, ...cases);
+const sections = cases.length > 0 && calculatorAt >= 0 ? rest : prepared;
 const calendar = await getCalendarPage('es');
 const site = await getSiteSettings();
 
