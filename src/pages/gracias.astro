@@ -38,14 +38,7 @@ const calendarSteps = [
 ];
 ---
 
-<Layout
-  title={title}
-  description={description}
-  noindex={true}
-  minimalNav={true}
-  minimalFooter={true}
-  landingNavBadge=""
->
+<Layout title={title} description={description} noindex={true} bare>
   <script is:inline>
     document.documentElement.dataset.gracias =
       new URLSearchParams(location.search).get('origen') === 'agenda' ? 'agenda' : 'formulario';
