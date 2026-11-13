@@ -10,6 +10,7 @@ export type ContactLeadInput = {
   email?: string;
   phone?: string;
   website?: string;
+  company?: string;
   services?: unknown;
   budget?: string;
   project?: string;
@@ -27,6 +28,7 @@ export type ContactLead = {
   email: string;
   phone?: string;
   website?: string;
+  company?: string;
   services: string[];
   budget?: string;
   project?: string;
@@ -74,6 +76,7 @@ export function validateContactLead(input: ContactLeadInput): ContactLead {
     email,
     phone,
     website: text(input.website, 300),
+    company: text(input.company, 120),
     services,
     budget: text(input.budget, 80),
     project: text(input.project, 4000),

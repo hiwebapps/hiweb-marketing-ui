@@ -49,6 +49,22 @@ function budgetAmount(budget: string): string | undefined {
   return digits ? String(Number(digits)) : undefined;
 }
 
+/** Internal values of the dropdown `fuente_ads_hiweb`. A label that is not an option fails the upsert. */
+const ADS_SOURCE_VALUES: Record<string, string> = {
+  "OpenAI Ads": "openai_ads",
+  "Meta Ads": "meta_ads",
+  "Google Ads": "google_ads",
+  "Orgánico (buscador)": "organico_seo",
+  Directo: "directo",
+};
+
+function adsSourceValue(label: string): string {
+  const known = ADS_SOURCE_VALUES[label];
+  if (known) return known;
+  if (label.startsWith("Referido")) return "referido";
+  return "otro";
+}
+
 /** Visitor text in Slack mrkdwn: escaped so "<!channel>" or "<url|label>" stay plain text. */
 function slack(value: string | undefined | null): string {
   return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -67,6 +83,7 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
     `• Email: ${slack(lead.email)}`,
     lead.phone ? `• Celular: ${slack(lead.phone)}` : null,
     lead.website ? `• Sitio web: ${slack(lead.website)}` : null,
+    lead.company ? `• Empresa: ${slack(lead.company)}` : null,
     servicesText ? `• Servicios: ${slack(servicesText)}` : null,
     lead.budget ? `• Presupuesto: ${slack(lead.budget)}` : null,
     lead.country || lead.city
@@ -90,6 +107,8 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
   };
   if (lead.phone) properties.phone = lead.phone;
   if (lead.website) properties.website = lead.website;
+  if (lead.company) properties.company = lead.company;
+  properties.fuente_ads_hiweb = adsSourceValue(source.label);
   const serviceDetail = [
     servicesText,
     lead.companySize ? `Tamaño: ${lead.companySize}` : "",
@@ -100,15 +119,10 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
     .join(" · ");
   if (serviceDetail) properties.hiweb_service = serviceDetail;
   if (servicesText) {
-    properties.qu_servicio_te_interesa = servicesText;
-    properties.qu_servicio_te_interesa_principalmente = servicesText;
-    properties.lead_ad_prop_qu_servicio_te_interesa_principalmente = servicesText;
-    properties.que_servicios_quieres_combinar = servicesText;
     const checks = checkboxServices(lead.services);
     if (checks) properties.servicios_interes_hiweb = checks;
   }
   if (lead.budget) {
-    properties.cul_es_tu_presupuesto_estimado_mensual_para_marketing_digital = lead.budget;
     const amount = budgetAmount(lead.budget);
     if (amount) properties.presupuesto_ads_mensual_hiweb = amount;
   }
@@ -118,6 +132,7 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
     `Email: ${lead.email}`,
     lead.phone && `Celular: ${lead.phone}`,
     lead.website && `Sitio web: ${lead.website}`,
+    lead.company && `Empresa: ${lead.company}`,
     servicesText && `Servicios: ${servicesText}`,
     lead.companySize && `Tamaño: ${lead.companySize}`,
     lead.landing && `Landing: ${lead.landing}`,
@@ -243,6 +258,7 @@ export function buildCalendarN8nPayload(input: {
     bookingId: string;
     booking: BookingRecord;
     source: LeadSource;
+    adsSource: string;
     summary: {
       source: string;
       service: string;
@@ -301,6 +317,7 @@ export function buildCalendarN8nPayload(input: {
     bookingId: booking.id,
     booking,
     source,
+    adsSource: adsSourceValue(source.label),
     summary: {
       source: source.label,
       service: booking.service,

@@ -39,6 +39,7 @@ export function LpLeadForm({
   const [sending, setSending] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [company, setCompany] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [website, setWebsite] = useState('');
@@ -80,6 +81,7 @@ export function LpLeadForm({
     if (index === 0) {
       if (firstName.trim().length < 2) return 'Escribe tu nombre.';
       if (lastName.trim().length < 2) return 'Escribe tu apellido.';
+      if (company.trim().length < 2) return 'Escribe el nombre de la empresa.';
       if (!EMAIL_RE.test(email.trim())) return 'Escribe un email válido.';
       if (phone.replace(/\D/g, '').length < 7) return 'Escribe un celular válido.';
       if (website.trim() && !/^https?:\/\/.+\..+/i.test(website.trim()) && !/^[^\s]+\.[^\s]+$/.test(website.trim())) {
@@ -126,6 +128,7 @@ export function LpLeadForm({
           locale: 'es',
           firstName: firstName.trim(),
           lastName: lastName.trim(),
+          company: company.trim(),
           email: email.trim(),
           phone: phone.trim(),
           website: site ? (site.startsWith('http') ? site : `https://${site}`) : undefined,
@@ -188,6 +191,7 @@ export function LpLeadForm({
             <TextField label="Nombre" name="firstName" autoComplete="given-name" placeholder="Tu nombre" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
             <TextField label="Apellido" name="lastName" autoComplete="family-name" placeholder="Tu apellido" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
           </div>
+          <TextField label="Nombre de la empresa" name="company" autoComplete="organization" placeholder="Tu empresa" value={company} onChange={(event) => setCompany(event.target.value)} required />
           <div className="grid gap-3 sm:grid-cols-2">
             <TextField label="Email" name="email" type="email" autoComplete="email" placeholder="tu@empresa.com" value={email} onChange={(event) => setEmail(event.target.value)} required />
             <TextField label="Celular" name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="+52 999 000 0000" value={phone} onChange={(event) => setPhone(event.target.value)} required />
