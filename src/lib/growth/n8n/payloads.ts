@@ -45,12 +45,48 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
     .filter(Boolean)
     .join("\n");
 
+  const properties: Record<string, string> = {
+    firstname: lead.firstName,
+    lastname: lead.lastName ?? "",
+    lead_source: "Formulario de contacto",
+  };
+  if (lead.phone) properties.phone = lead.phone;
+  if (lead.website) properties.website = lead.website;
+  const serviceDetail = [
+    lead.services.length ? lead.services.join(", ") : "",
+    lead.companySize ? `Tamaño: ${lead.companySize}` : "",
+    lead.landing ? `Landing: ${lead.landing}` : "",
+    lead.budget ? `Presupuesto: ${lead.budget}` : "",
+  ]
+    .filter(Boolean)
+    .join(" · ");
+  if (serviceDetail) properties.hiweb_service = serviceDetail;
+
+  const note = [
+    name && `Nombre: ${name}`,
+    `Email: ${lead.email}`,
+    lead.phone && `Celular: ${lead.phone}`,
+    lead.website && `Sitio web: ${lead.website}`,
+    lead.services.length && `Servicios: ${lead.services.join(", ")}`,
+    lead.companySize && `Tamaño: ${lead.companySize}`,
+    lead.landing && `Landing: ${lead.landing}`,
+    lead.budget && `Presupuesto: ${lead.budget}`,
+    lead.project && `Proyecto: ${lead.project}`,
+    source.label && `Origen: ${source.label}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
   return {
     event: "contact.submitted",
     leadId: input.leadId,
     lead,
     source,
     slackText,
+    hubspot: {
+      properties,
+      note,
+    },
     submittedAt: new Date().toISOString(),
   };
 }

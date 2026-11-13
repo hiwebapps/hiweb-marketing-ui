@@ -118,10 +118,10 @@ export const lpHero = defineType({
     defineField({ name: 'trust', title: 'Línea de confianza', type: 'string', group: 'content' }),
     defineField({
       name: 'avatars',
-      title: 'Fotos junto a la línea de confianza',
+      title: 'Logos junto a la línea de confianza',
       type: 'array',
       group: 'content',
-      description: 'Se muestran hasta 4.',
+      description: 'El sitio muestra Avant, Diazar, Gaios y Happy Store, tomados de la galería de clientes.',
       of: [lpImageMember('Foto')],
       validation: (rule) => rule.max(4),
     }),

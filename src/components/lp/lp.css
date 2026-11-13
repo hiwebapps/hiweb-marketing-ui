@@ -55,6 +55,20 @@
   text-align: left;
 }
 
+.lp-hero__marks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem 1rem;
+}
+
+.lp-hero__marks img {
+  height: 22px;
+  width: auto;
+  max-width: 84px;
+  object-fit: contain;
+}
+
 .lp-hero__blob {
   position: absolute;
   border-radius: 999px;

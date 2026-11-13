@@ -2,7 +2,6 @@ import type { LpNav, LpPage, LpPicker, LpSection, LpServiceCard } from '../../li
 import { PILLAR_ICON_NAMES } from '../../components/icons/PillarIcons';
 import { LP_PICKER_ICONS } from './picker-icons';
 import {
-  LP_AVATARS,
   LP_BENEFITS,
   LP_COMBOS,
   LP_FAQ,
@@ -218,7 +217,7 @@ function hero(input: { title: string; description: string; landingName: string; 
     title: input.title,
     description: input.description,
     trust: '+20 marcas en México y el extranjero confían en Hiweb.',
-    avatars: LP_AVATARS.map((src, index) => ({ src, alt: LP_TEAM[index]?.name ?? '' })),
+    avatars: LP_LOGOS.slice(0, 4),
     primaryLabel: NAV_CTA,
     secondaryLabel: 'Escríbenos por WhatsApp',
     whatsappHref: LP_WHATSAPP,
