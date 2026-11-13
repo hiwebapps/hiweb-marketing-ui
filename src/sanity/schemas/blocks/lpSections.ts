@@ -121,7 +121,7 @@ export const lpHero = defineType({
       title: 'Logos junto a la línea de confianza',
       type: 'array',
       group: 'content',
-      description: 'El sitio muestra Avant, Diazar, Gaios y Happy Store, tomados de la galería de clientes.',
+      description: 'El sitio muestra Industrial Basanlo, Witt, Avant y Diazar, en círculo.',
       of: [lpImageMember('Foto')],
       validation: (rule) => rule.max(4),
     }),

@@ -377,6 +377,13 @@ export const LP_TEAM: TeamMember[] = [
   { name: 'Jahir Gonzalez', role: 'Web Manager', bio: 'Construye los sitios y las landings de cada campaña.', photo: photo('a824609b50077b70000fbb1c62a71eeba6dfee53-2000x2000.png'), category: 'web' },
 ];
 
+export const LP_HERO_MARKS: LpLogo[] = [
+  { src: '/images/lp/marks/basanlo.webp', alt: 'Industrial Basanlo' },
+  { src: '/images/lp/marks/witt.webp', alt: 'Witt' },
+  { src: '/images/lp/marks/avant.webp', alt: 'Avant Rent a Car' },
+  { src: '/images/lp/marks/diazar.webp', alt: 'Diazar' },
+];
+
 export const LP_MARQUEE_EXTRAS: LpLogo[] = [
   { src: '/images/logos/industrial-basanlo.png', alt: 'Industrial Basanlo' },
   { src: '/images/logos/vw-comerciales.png', alt: 'VW Vehículos Comerciales' },

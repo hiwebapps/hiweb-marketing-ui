@@ -28,7 +28,7 @@ const { section } = Astro.props;
 					{section.avatars?.length ? (
 						<span class="lp-hero__marks" aria-hidden="true">
 							{section.avatars.slice(0, 4).map((avatar) => (
-								<img src={avatar.src} alt="" width="120" height="32" />
+								<img src={avatar.src} alt="" width="48" height="48" />
 							))}
 						</span>
 					) : null}

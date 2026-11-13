@@ -9,7 +9,7 @@ import {
   LP_ROI_LABELS,
   LP_SYSTEM_CTA_DEFAULTS,
 } from '../../data/lp/defaults';
-import { LP_LOGOS, LP_MARQUEE_EXTRAS } from '../../data/lp/catalog';
+import { LP_HERO_MARKS, LP_LOGOS, LP_MARQUEE_EXTRAS } from '../../data/lp/catalog';
 import { urlForWidth } from '../../sanity/image';
 import type { FaqItem, Metric, ProcessPhase } from './types';
 import type { LpImage, LpPage, LpPicker, LpRoiLabels, LpSection, LpServiceCard, LpServiceLink, LpTemplate } from './lp-types';
@@ -111,7 +111,7 @@ function mapSection(raw: Record<string, unknown>): LpSection | null {
       title: text(raw.title),
       description: text(raw.description),
       trust: text(raw.trust) || undefined,
-      avatars: LP_LOGOS.slice(0, 4),
+      avatars: LP_HERO_MARKS,
       primaryLabel: text(raw.primaryLabel) || 'Agenda tu diagnóstico',
       secondaryLabel: text(raw.secondaryLabel) || 'Escríbenos por WhatsApp',
       whatsappHref: text(raw.whatsappHref),
