@@ -377,6 +377,11 @@ export const LP_TEAM: TeamMember[] = [
   { name: 'Jahir Gonzalez', role: 'Web Manager', bio: 'Construye los sitios y las landings de cada campaña.', photo: photo('a824609b50077b70000fbb1c62a71eeba6dfee53-2000x2000.png'), category: 'web' },
 ];
 
+export const LP_MARQUEE_EXTRAS: LpLogo[] = [
+  { src: '/images/logos/industrial-basanlo.png', alt: 'Industrial Basanlo' },
+  { src: '/images/logos/vw-comerciales.png', alt: 'VW Vehículos Comerciales' },
+];
+
 export const LP_LOGOS: LpLogo[] = [
   { src: 'https://cdn.prod.website-files.com/65bdb53f22fa5cd7079bc4c1/695ad256088eb0f2d3a1a052_Frame%202.png', alt: 'Avant Rent a Car' },
   { src: 'https://cdn.prod.website-files.com/65bdb53f22fa5cd7079bc4c1/695ad2569ac7a2dda7cbe242_Frame%201.png', alt: 'Diazar' },
@@ -385,6 +390,7 @@ export const LP_LOGOS: LpLogo[] = [
   { src: 'https://cdn.prod.website-files.com/65bdb53f22fa5cd7079bc4c1/695ad25608f4f6ff106a38c8_Frame%203.png', alt: 'Enfoque 21' },
   { src: 'https://cdn.prod.website-files.com/65bdb53f22fa5cd7079bc4c1/695ad256390e5e0c94d74093_Frame%208.png', alt: "Paulo's Pizza" },
   { src: 'https://cdn.prod.website-files.com/65bdb53f22fa5cd7079bc4c1/695ad2565dd1817fac1779ff_Frame%207.png', alt: 'Zapatería La Península' },
+  ...LP_MARQUEE_EXTRAS,
 ];
 
 type CaseSource = {

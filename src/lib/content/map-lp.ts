@@ -9,7 +9,7 @@ import {
   LP_ROI_LABELS,
   LP_SYSTEM_CTA_DEFAULTS,
 } from '../../data/lp/defaults';
-import { LP_LOGOS } from '../../data/lp/catalog';
+import { LP_LOGOS, LP_MARQUEE_EXTRAS } from '../../data/lp/catalog';
 import { urlForWidth } from '../../sanity/image';
 import type { FaqItem, Metric, ProcessPhase } from './types';
 import type { LpImage, LpPage, LpPicker, LpRoiLabels, LpSection, LpServiceCard, LpServiceLink, LpTemplate } from './lp-types';
@@ -54,6 +54,14 @@ function images(value: unknown, width: number): LpImage[] {
   return value
     .map((item) => ({ src: imageUrl(item, width), alt: text(record(item).alt) }))
     .filter((item) => item.src);
+}
+
+/** Sanity stores the original strip. These two marks are appended on every landing. */
+function marqueeLogos(value: unknown): LpImage[] {
+  const remote = images(value, 320);
+  const base = remote.length ? remote : LP_LOGOS;
+  const present = new Set(base.map((logo) => logo.src));
+  return [...base, ...LP_MARQUEE_EXTRAS.filter((logo) => !present.has(logo.src))];
 }
 
 function templateOf(value: unknown): LpTemplate {
@@ -123,7 +131,7 @@ function mapSection(raw: Record<string, unknown>): LpSection | null {
   }
 
   if (type === 'logoMarquee') {
-    return { ...base, _type: 'logoMarquee', label: text(raw.label), logos: images(raw.logos, 320) };
+    return { ...base, _type: 'logoMarquee', label: text(raw.label), logos: marqueeLogos(raw.logos) };
   }
 
   if (type === 'roiCalculator') {
