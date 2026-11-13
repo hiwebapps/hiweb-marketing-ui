@@ -15,10 +15,37 @@ function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+/**
+ * Astro drops `ssr` and fires `astro:hydrate` as soon as the React renderer
+ * returns, but React 19 hydrates inside startTransition, so the island can
+ * still hold the server HTML for a while. Splitting a title in that window
+ * makes React throw #418 (hydration mismatch) and re-render the island.
+ * The fiber key React attaches to the root element is the real signal.
+ */
+function islandStillHydrating(el: Element): boolean {
+  const island = el.closest('astro-island');
+  if (!island) return false;
+  if (island.hasAttribute('ssr')) return true;
+  const root = island.firstElementChild;
+  return !!root && !Object.keys(root).some((key) => key.startsWith('__reactFiber'));
+}
+
+/**
+ * Targets skipped in the last scan because Astro already fired `astro:hydrate`
+ * but React has not committed yet. Islands still marked `ssr` (for example a
+ * `client:visible` one below the fold) are not counted: their own
+ * `astro:hydrate` schedules a new scan when they load.
+ */
+let deferredTargets = 0;
+
 function unused<T extends Element>(selector: string) {
   return Array.from(
     document.querySelectorAll<T>(`${selector}:not([data-motion]):not([data-motion-pending])`),
-  ).filter((el) => !el.closest('astro-island[ssr]'));
+  ).filter((el) => {
+    if (!islandStillHydrating(el)) return true;
+    if (!el.closest('astro-island[ssr]')) deferredTargets += 1;
+    return false;
+  });
 }
 
 function mark(el: HTMLElement, kind: string) {
@@ -142,14 +169,42 @@ function bindCounters() {
   });
 }
 
+const RETRY_MS = 100;
+/** About 10 s. Past that, the island is not going to hydrate; show its text. */
+const MAX_RETRIES = 100;
+let retries = 0;
+let retryTimer = 0;
+
+/** The CSS hides `[data-split]`/`[data-reveal]` until `data-motion` is set. */
+function showStuckTargets() {
+  document
+    .querySelectorAll<HTMLElement>('[data-split]:not([data-motion]), [data-reveal]:not([data-motion])')
+    .forEach((el) => {
+      if (islandStillHydrating(el) && !el.closest('astro-island[ssr]')) mark(el, 'static');
+    });
+}
+
 function scanMotion() {
+  deferredTargets = 0;
+  const before = document.querySelectorAll('[data-motion], [data-motion-pending]').length;
   bindSplits();
   bindReveals();
   bindCounters();
   bindExtras();
-  requestAnimationFrame(() => {
-    ScrollTrigger.refresh();
-  });
+  if (document.querySelectorAll('[data-motion], [data-motion-pending]').length !== before) {
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+  }
+
+  window.clearTimeout(retryTimer);
+  if (deferredTargets === 0) return;
+  if (retries >= MAX_RETRIES) {
+    showStuckTargets();
+    return;
+  }
+  retries += 1;
+  retryTimer = window.setTimeout(scanMotion, RETRY_MS);
 }
 
 let observerBound = false;
@@ -160,6 +215,7 @@ function observeLateIslands() {
 
   let scheduled = 0;
   const schedule = () => {
+    retries = 0;
     window.clearTimeout(scheduled);
     scheduled = window.setTimeout(() => {
       scanMotion();
