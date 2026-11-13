@@ -43,11 +43,7 @@ export function LpLeadForm({
   const [phone, setPhone] = useState('');
   const [website, setWebsite] = useState('');
   const [companySize, setCompanySize] = useState('');
-  const [selected, setSelected] = useState<string[]>(() => {
-    const known = new Set(LP_SERVICES.map((item) => item.slug));
-    const match = interests.find((slug) => known.has(slug));
-    return match ? [match] : [];
-  });
+  const [selected, setSelected] = useState<string[]>(interests);
   const [budget, setBudget] = useState('');
   const [scenario, setScenario] = useState('');
   const [trap, setTrap] = useState('');
@@ -61,8 +57,7 @@ export function LpLeadForm({
       const detail = (event as CustomEvent<string[]>).detail;
       if (!Array.isArray(detail)) return;
       const known = new Set(LP_SERVICES.map((item) => item.slug));
-      const match = detail.find((slug) => known.has(slug));
-      setSelected(match ? [match] : []);
+      setSelected(detail.filter((slug) => known.has(slug)));
       setStep(1);
       setError('');
     };
@@ -93,7 +88,7 @@ export function LpLeadForm({
     }
     if (index === 1) {
       if (!companySize) return 'Elige el tamaño de la empresa.';
-      if (selected.length === 0) return 'Elige un servicio.';
+      if (selected.length === 0) return 'Elige al menos un servicio.';
       if (!budget) return 'Elige un presupuesto de inversión mensual.';
     }
     return '';
@@ -103,6 +98,13 @@ export function LpLeadForm({
     const message = validate();
     setError(message);
     if (!message) setStep(1);
+  };
+
+  const toggle = (slug: string) => {
+    setSelected((current) =>
+      current.includes(slug) ? current.filter((item) => item !== slug) : [...current, slug],
+    );
+    setError('');
   };
 
   const submit = async (event: FormEvent) => {
@@ -211,21 +213,28 @@ export function LpLeadForm({
               ))}
             </select>
           </label>
-          <label className="flex flex-col gap-2">
-            <span className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Servicio que te interesa</span>
-            <select
-              name="service"
-              value={selected[0] ?? ''}
-              required
-              onChange={(event) => { setSelected(event.target.value ? [event.target.value] : []); setError(''); }}
-              className="w-full rounded-xl border border-border bg-canvas px-4 py-3 font-sans text-sm text-ink"
-            >
-              <option value="">Elige un servicio</option>
-              {LP_SERVICES.map((service) => (
-                <option key={service.slug} value={service.slug}>{service.name}</option>
-              ))}
-            </select>
-          </label>
+          <fieldset>
+            <legend className="font-sans text-sm text-ink-soft">Servicios que te interesan. Elige uno o varios.</legend>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {LP_SERVICES.map((service) => {
+                const on = selected.includes(service.slug);
+                return (
+                  <button
+                    key={service.slug}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => toggle(service.slug)}
+                    className={[
+                      'rounded-full border px-3 py-2 font-sans text-sm',
+                      on ? 'border-ink bg-ink text-canvas' : 'border-border bg-canvas text-ink',
+                    ].join(' ')}
+                  >
+                    {service.name}
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
           <label className="flex flex-col gap-2">
             <span className="font-display text-xs font-medium tracking-[0.14em] text-ink uppercase">Presupuesto de inversión mensual</span>
             <select

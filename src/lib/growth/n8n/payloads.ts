@@ -10,8 +10,44 @@ import {
 } from "../calendar/calendar-rules";
 import type { BookingRecord } from "../calendar/types";
 import type { QuizLeadInput, QuizScoreResult } from "../quiz/types";
+import { LP_SERVICES } from "../../../data/lp/catalog";
 import type { ContactLead } from "../contact/validators";
 import { classifyLeadSource, type LeadSource } from "../shared/lead-source";
+
+const SERVICE_NAMES = new Map(LP_SERVICES.map((item) => [item.slug, item.name]));
+
+/**
+ * Checkbox values for `servicios_interes_hiweb`. A value that is not an option
+ * fails the whole HubSpot upsert, so slugs without an option stay out of this map
+ * and still go to the text properties as their display name.
+ */
+const SERVICE_CHECKBOX: Record<string, readonly string[]> = {
+  seo: ["seo", "geo_aeo"],
+  "google-ads": ["google_ads"],
+  "meta-ads": ["meta_ads"],
+  "chatgpt-ads": ["openai_ads_chatgpt_ads"],
+  social: ["redes_sociales"],
+  web: ["sitio_web_landing_page"],
+  branding: ["branding_diseno"],
+  crm: ["crm_y_automatizacion"],
+};
+
+function serviceName(slug: string): string {
+  return SERVICE_NAMES.get(slug) ?? slug;
+}
+
+function checkboxServices(slugs: string[]): string {
+  const values = new Set<string>();
+  for (const slug of slugs) {
+    for (const value of SERVICE_CHECKBOX[slug] ?? []) values.add(value);
+  }
+  return [...values].join(";");
+}
+
+function budgetAmount(budget: string): string | undefined {
+  const digits = budget.replace(/\D/g, "");
+  return digits ? String(Number(digits)) : undefined;
+}
 
 /** Visitor text in Slack mrkdwn: escaped so "<!channel>" or "<url|label>" stay plain text. */
 function slack(value: string | undefined | null): string {
@@ -22,6 +58,8 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
   const { lead } = input;
   const name = [lead.firstName, lead.lastName].filter(Boolean).join(" ");
   const source = classifyLeadSource(lead.utm);
+  const serviceLabels = lead.services.map(serviceName);
+  const servicesText = serviceLabels.join(", ");
   const slackText = [
     "✉️ *Nuevo mensaje de contacto*",
     `• Origen: ${slack(source.label)}`,
@@ -29,7 +67,7 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
     `• Email: ${slack(lead.email)}`,
     lead.phone ? `• Celular: ${slack(lead.phone)}` : null,
     lead.website ? `• Sitio web: ${slack(lead.website)}` : null,
-    lead.services.length ? `• Servicios: ${slack(lead.services.join(", "))}` : null,
+    servicesText ? `• Servicios: ${slack(servicesText)}` : null,
     lead.budget ? `• Presupuesto: ${slack(lead.budget)}` : null,
     lead.country || lead.city
       ? `• Ubicación: ${slack([lead.city, lead.country].filter(Boolean).join(', '))}`
@@ -53,7 +91,7 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
   if (lead.phone) properties.phone = lead.phone;
   if (lead.website) properties.website = lead.website;
   const serviceDetail = [
-    lead.services.length ? lead.services.join(", ") : "",
+    servicesText,
     lead.companySize ? `Tamaño: ${lead.companySize}` : "",
     lead.landing ? `Landing: ${lead.landing}` : "",
     lead.budget ? `Presupuesto: ${lead.budget}` : "",
@@ -61,13 +99,26 @@ export function buildContactN8nPayload(input: { leadId: string; lead: ContactLea
     .filter(Boolean)
     .join(" · ");
   if (serviceDetail) properties.hiweb_service = serviceDetail;
+  if (servicesText) {
+    properties.qu_servicio_te_interesa = servicesText;
+    properties.qu_servicio_te_interesa_principalmente = servicesText;
+    properties.lead_ad_prop_qu_servicio_te_interesa_principalmente = servicesText;
+    properties.que_servicios_quieres_combinar = servicesText;
+    const checks = checkboxServices(lead.services);
+    if (checks) properties.servicios_interes_hiweb = checks;
+  }
+  if (lead.budget) {
+    properties.cul_es_tu_presupuesto_estimado_mensual_para_marketing_digital = lead.budget;
+    const amount = budgetAmount(lead.budget);
+    if (amount) properties.presupuesto_ads_mensual_hiweb = amount;
+  }
 
   const note = [
     name && `Nombre: ${name}`,
     `Email: ${lead.email}`,
     lead.phone && `Celular: ${lead.phone}`,
     lead.website && `Sitio web: ${lead.website}`,
-    lead.services.length && `Servicios: ${lead.services.join(", ")}`,
+    servicesText && `Servicios: ${servicesText}`,
     lead.companySize && `Tamaño: ${lead.companySize}`,
     lead.landing && `Landing: ${lead.landing}`,
     lead.budget && `Presupuesto: ${lead.budget}`,
