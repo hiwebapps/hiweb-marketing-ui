@@ -24,7 +24,7 @@ const { section } = Astro.props;
 				<Button href={section.whatsappHref} variant="secondary" size="md" className="no-underline" target="_blank" rel="noopener noreferrer" client:load>{section.secondaryLabel}</Button>
 			</div>
 			{section.trust ? (
-				<p class="mt-8 flex flex-col items-start gap-3 text-sm leading-snug text-white/80 sm:flex-row sm:items-center">
+				<p class="mt-8 flex flex-col items-start gap-4 text-sm leading-snug text-white/80">
 					{section.avatars?.length ? (
 						<span class="lp-hero__marks" aria-hidden="true">
 							{section.avatars.slice(0, 4).map((avatar) => (
