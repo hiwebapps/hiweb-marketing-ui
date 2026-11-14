@@ -224,11 +224,7 @@ function buildCalendarSlackText(
 }
 
 function buildCalendarEventDescription(booking: BookingRecord): string {
-  const lines = [
-    `Reserva ID: ${booking.id}`,
-    `Cliente: ${booking.name}`,
-    `Email: ${booking.email}`,
-  ];
+  const lines = [`Cliente: ${booking.name}`, `Email: ${booking.email}`];
   if (booking.company) {
     lines.push(`Empresa: ${booking.company}`);
   }
@@ -238,6 +234,9 @@ function buildCalendarEventDescription(booking: BookingRecord): string {
   if (booking.website) {
     lines.push(`Sitio web: ${booking.website}`);
   }
+  // El Worker y n8n localizan el evento buscando este id en el texto del evento
+  // (events.list?q=...). Va al final, como referencia discreta.
+  lines.push("", `Ref. ${booking.id}`);
   return lines.join("\n");
 }
 
